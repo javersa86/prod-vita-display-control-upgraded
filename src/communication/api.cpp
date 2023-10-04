@@ -272,6 +272,9 @@ void API::handleRequest(unsigned char* buffer)
         case (int)rxOpCodes::SYSTEM_SERVICE_NOTIFICATION_UPDATE:
             handleServiceNotifications(buffer);
             break;
+        case (int)rxOpCodes::SYSTEM_SERVICE_CALIBRATION_REQUEST:
+            handleServiceCalibrationRequest();
+            break;
         default:
             break;
     }
@@ -340,6 +343,9 @@ int API::getMessageLength(unsigned char op_code)
             break;
         case (int)rxOpCodes::SYSTEM_SERVICE_NOTIFICATION_UPDATE:
             return (int) rxLengths::SYSTEM_SERVICE_NOTIFICATION_UPDATE;
+            break;
+        case (int)rxOpCodes::SYSTEM_SERVICE_CALIBRATION_REQUEST:
+            return (int) rxLengths::SYSTEM_SERVICE_CALIBRATION_REQUEST;
             break;
         default:
             return 0;
@@ -847,6 +853,33 @@ void API::handleInitPowerdownCommandOK(unsigned char* buffer)
 {
     buffer++;
     emit powerdownConfirmed(*buffer);
+}
+
+/*SERVICE CALIBRATION VALUES*/
+
+void API::slotServiceCalibrationResponse(QVector<float> calibration_data)
+{
+    unsigned char data_request[(int)txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE];
+    data_request[0] = (unsigned char) txOpCodes::DISPLAY_SERVICE_CALIBRATION_RESPONSE;
+
+    int index = 1;
+    if(calibration_data.length() == 8)
+    {
+        for(int i = 0; i< 8; i++)
+        {
+            floatToBytes(calibration_data[i],&data_request[index]);
+            index = index + 4;
+        }
+    }
+
+    unsigned char crc = calculateCRC(data_request,(int)txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE);
+
+    request_queue.push(Message(data_request,crc,(int)txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE));
+}
+
+void API::handleServiceCalibrationRequest()
+{
+    emit serviceCalibrationSignal();
 }
 
 /*DRIVING PRESSURE REGULATOR SET CAL VAL*/

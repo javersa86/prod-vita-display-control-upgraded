@@ -44,7 +44,7 @@ Rectangle{
 
         onLimitedO2State:
         {
-            if (warningID == 50) //47
+            if (warningID == 51) //47
             {
                 if (stateVal === 0)
                 {
@@ -116,7 +116,7 @@ Rectangle{
         x: 91 + (.4 * parent.width) + 16
         anchors.verticalCenter: parent.verticalCenter
         color: Style.primary_light
-        visible: warningID == 69 || warningID == 70
+        visible: warningID == 70 || warningID == 71
     }
 
     Text {
@@ -127,7 +127,7 @@ Rectangle{
         x: 91 + (.4 * parent.width) + 16
         anchors.verticalCenter: parent.verticalCenter
         color: Style.primary_light
-        visible: (warningID == 50 && laserMinState) && !laserMinReached
+        visible: (warningID == 51 && laserMinState) && !laserMinReached
 
         property int limitedO2Seconds: 45
 

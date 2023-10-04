@@ -1074,6 +1074,23 @@ void Backend::powerdownConfirmed()
     }
 }
 
+/*------------------------SERVICE CALIBRATION----------------------------------------------*/
+
+void Backend::serviceCalibrationSlot()
+{
+    QVector<float> data = QVector<float>();
+    data.append(m_zeroManager->getZeroSP());
+    data.append(m_zeroManager->getZeroPIP());
+    data.append(m_o2CalManager->getMostRecentVoltVal().at(0).toFloat());
+    data.append(m_o2CalManager->getMostRecentVoltVal().at(1).toFloat());
+    data.append(0);
+    data.append(0);
+    data.append(0);
+    data.append(0);
+    emit signalServiceCalibrations(data);
+
+}
+
 /*------------------------DRIVING PRESSURE REGULATOR SET CAL VAL---------------------------*/
 
 void Backend::updateDPRStates(unsigned char val)
