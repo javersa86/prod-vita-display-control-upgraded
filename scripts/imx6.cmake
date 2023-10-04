@@ -1,0 +1,5 @@
+set(CMAKE_SYSROOT $OECORE_TARGET_SYSROOT)
+set(CMAKE_PREFIX_PATH $OECORE_TARGET_SYSROOT/usr/lib/cmake)
+set(CMAKE_C_COMPILER_ARG1 " -march=armv7-a -marm -mfpu=neon -mfloat-abi=hard ")
+set(CMAKE_CXX_COMPILER_ARG1 " -march=armv7-a -marm -mfpu=neon -mfloat-abi=hard ")
+set(OE_QMAKE_PATH_EXTERNAL_HOST_BINS $OECORE_NATIVE_SYSROOT/usr/bin)

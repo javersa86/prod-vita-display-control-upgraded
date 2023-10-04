@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="20px" viewBox="0 0 22 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Icon/base/thumbs-up</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.290196 0 0 0 0 0.886275 0 0 0 0 0.529412 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+        <path d="M23.5,10.9929742 L23.4542553,11.0866511 L23.5,11.0866511 L23.5,13.0070258 C23.5,13.2568319 23.4542558,13.5066342 23.362766,13.7564403 L20.3893617,20.7822014 C20.0843956,21.5940712 19.4897207,22 18.6053191,22 L9.82234043,22 C9.30389812,22 8.84645588,21.7970356 8.45,21.3911007 C8.05354412,20.9851658 7.85531915,20.5167864 7.85531915,19.9859485 L7.85531915,10.0093677 C7.85531915,9.47852974 8.05354412,9.01015035 8.45,8.60421546 L14.8542553,2 L15.906383,3.07728337 C16.1808524,3.35831522 16.3180851,3.70179344 16.3180851,4.10772834 L16.3180851,4.43559719 L15.3574468,9.02576112 L21.5329787,9.02576112 C22.051421,9.02576112 22.5088633,9.2209192 22.9053191,9.61124122 C23.301775,10.0015632 23.5,10.4621363 23.5,10.9929742 Z M2,22 L2,10.0093677 L5.93404255,10.0093677 L5.93404255,22 L2,22 Z" id="path-2"></path>
+    </defs>
+    <g id="Prototype:-v3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Settings---Calibration" transform="translate(-728.000000, -342.000000)">
+            <g id="Icon/base/thumbs-up" transform="translate(726.000000, 340.000000)" filter="url(#filter-1)">
+                <g>
+                    <mask id="mask-3" fill="white">
+                        <use xlink:href="#path-2"></use>
+                    </mask>
+                    <use id="🎨-icon-fill" fill="#667380" xlink:href="#path-2"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

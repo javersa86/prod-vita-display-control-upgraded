@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="25px" viewBox="0 0 24 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Combined Shape</title>
+    <defs>
+        <path d="M20.4705883,8 C21.2087268,8 23.4906024,10.7015401 25.5001502,14.0867701 L29.8994949,9.6862915 L31.3137085,11.1005051 L10.1005051,32.3137085 L8.6862915,30.8994949 L12.6940119,26.892785 C12.2474895,25.8617694 12,24.7244928 12,23.5294118 C12,17.882353 19.0588236,8 20.4705883,8 Z M28.9411766,23.5294118 C28.9411766,28.2075885 25.148765,32 20.4705883,32 C18.4921908,32 16.6722069,31.3217508 15.2304747,30.1850904 L27.4859515,17.9284826 C28.3546633,19.9219486 28.9411766,21.9016342 28.9411766,23.5294118 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/40/humidity" transform="translate(-8.000000, -8.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Combined-Shape" fill="#E3ECFB" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

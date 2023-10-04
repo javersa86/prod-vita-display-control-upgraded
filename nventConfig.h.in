@@ -1,0 +1,4 @@
+// the configured options and settings for nvent vita
+#define nvent_vita_display_VERSION_MAJOR @nvent-vita-display_VERSION_MAJOR@
+#define nvent_vita_display_VERSION_MINOR @nvent-vita-display_VERSION_MINOR@
+#define nvent_vita_display_VERSION_PATCH @nvent-vita-display_VERSION_PATCH@
