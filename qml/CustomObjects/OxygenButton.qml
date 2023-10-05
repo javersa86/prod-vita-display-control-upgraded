@@ -17,8 +17,6 @@ Button {
     property alias scaleHeight: scaleRectangleBox.height
     property alias measuredValueDisplay: scaleValueDisplay.y
 
-    property alias gradientBelowVisible: gradientBelow.visible
-
     property alias title: title.text
     property alias unit: unit.text
 
@@ -31,6 +29,13 @@ Button {
     property string helpText
 
     property var scalingY
+
+    property color warningDisplayed: Style.primary_light
+    property int presetState: 0
+
+    property int adjustmentState: 0
+    property int adjustmentCount: 0
+    property int resetCount: 0
 
     onMeasuredValueTextChanged:
     {
@@ -55,6 +60,75 @@ Button {
         if(scalingY > 1)
         {
             scalingY = 1
+        }
+    }
+
+    Connections
+    {
+        target: state_manager
+
+        onOxygenAdjustmentSignal:
+        {
+            if (id === 0)
+            {
+                if (!resetTimer.running && adjustmentState)
+                {
+                    resetTimer.start()
+                }
+                adjustmentTimer.stop()
+                adjustmentCount = 0
+            }
+
+            else if (id === 1)
+            {
+
+                if (resetTimer.running)
+                {
+                    resetTimer.stop()
+                    resetCount = 0
+                }
+
+                if (!adjustmentTimer.running && !adjustmentState)
+                {
+                    adjustmentTimer.start()
+                }
+            }
+        }
+    }
+
+    Timer
+    {
+        id: adjustmentTimer
+        repeat: true
+        interval: 1000
+        running: false
+        onTriggered:
+        {
+            adjustmentCount = adjustmentCount + 1
+            if (adjustmentCount >= 5)
+            {
+                adjustmentState = 1
+                adjustmentTimer.stop()
+                adjustmentCount = 0
+            }
+        }
+    }
+
+    Timer
+    {
+        id: resetTimer
+        repeat: true
+        interval: 1000
+        running: false
+        onTriggered:
+        {
+            resetCount = resetCount + 1
+            if (resetCount >= 2)
+            {
+                adjustmentState = 0
+                resetTimer.stop()
+                resetCount = 0
+            }
         }
     }
 
@@ -226,12 +300,40 @@ Button {
             width: 194
             color: Style.transparent
 
+            property bool oxygen_state: (state_manager.ventilating || state_manager.aux > 0) && !adjustmentState
+
             Text {
                 id: measuredValue
+                font: measuredUnitTitleBox.oxygen_state ? Style.setFont : Style.measuredFont
+                color: Style.primary_light
+                anchors.horizontalCenter: parent.horizontalCenter
+                y: measuredUnitTitleBox.oxygen_state ? 30 : 0
+                visible: !placeHolderText.visible
+            }
+
+            ProgressDisplayMeasureValue
+            {
+                id: measuredSpinner
+                anchors.horizontalCenter: parent.horizontalCenter
+                y: 10
+                visible: measuredUnitTitleBox.oxygen_state
+                colorState: warningDisplayed
+
+                onPressAndHold:
+                {
+                    pneumatic_button.color = Style.primary_light_selected
+                    pneumatic_button.delay(50)
+                }
+            }
+
+            Text {
+                id: placeHolderText
+                text: "-"
                 font: Style.measuredFont
                 color: Style.primary_light
                 anchors.horizontalCenter: parent.horizontalCenter
                 y: 0
+                visible: !(state_manager.ventilating || state_manager.aux > 0)
             }
 
             Text{

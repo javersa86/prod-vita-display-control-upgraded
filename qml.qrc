@@ -181,6 +181,7 @@
         <file>qml/iconography/icon_40_alarm_2.svg</file>
         <file>qml/iconography/icon_40_alarm_3.svg</file>
         <file>qml/CustomObjects/SettingButton.qml</file>
+        <file>qml/CustomObjects/OxygenButton.qml</file>
         <file>qml/Pages/PresetMaxPopup.qml</file>
         <file>qml/CustomObjects/DaylightSwitch.qml</file>
     </qresource>

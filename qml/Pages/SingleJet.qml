@@ -178,7 +178,7 @@ Rectangle {
         unit: stacking_pressure_1.unit
         title: stacking_pressure_1.title
         setValueText: state_manager.sp1
-        measuredValueText: "0" //Math.round(state_manager.notification_vector[ notificationSP1 ])
+        measuredValueText: "0"
         gradientBelowVisible: true
         measuredColor: Style.sp
         setColor: Style.sp
@@ -286,7 +286,7 @@ Rectangle {
         }
     }
 
-    PneumaticButton {
+    OxygenButton {
         id: o2_button
         objectName: "o2_button"
         x: 654
