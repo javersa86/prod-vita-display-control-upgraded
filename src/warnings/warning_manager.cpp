@@ -53,8 +53,6 @@ void WarningManager::setActiveWarnings(QVector<unsigned char> *warnings )
     {
         for (int i = 0; i < BEGIN_NOTICE_INDEX; i++)
         {
-            unsigned char temp = m_active_warnings.at(i);
-            unsigned char temp1= warnings->at(i);
             if(m_active_warnings.at(i) != warnings->at(i))
             {
                 changed = 1;
@@ -93,6 +91,8 @@ void WarningManager::setActiveWarnings(QVector<unsigned char> *warnings )
 
         for (int i = BEGIN_NOTICE_INDEX; i< NUM_WARNINGS; i++)
         {
+            if (i == 59 && m_service_due_state) continue;
+
             if(m_notices.at(i - BEGIN_NOTICE_INDEX) != warnings->at(i))
             {
                 changed = 1;
@@ -107,10 +107,17 @@ void WarningManager::setActiveWarnings(QVector<unsigned char> *warnings )
 
                 m_notices.replace(i - BEGIN_NOTICE_INDEX,warnings->at(i));
             }
-
             //Checks if O2 Calibration Progress warnings are active.
             setCalibrationProgress(i - BEGIN_NOTICE_INDEX);
         }
+
+        //Updates service due.
+        if (m_notices.at(8) != m_service_due_state)
+        {
+            changed = 1;
+            m_notices.replace(8,m_service_due_state);
+        }
+
         if(changed)
         {
             emit warningChanged();
@@ -345,4 +352,9 @@ void WarningManager::setStateValue(int id, int value)
 void WarningManager::pauseDisconnection(unsigned char value)
 {
     m_service_state = value;
+}
+
+void WarningManager::updateServiceAlarm(unsigned char state)
+{
+    m_service_due_state = state;
 }
