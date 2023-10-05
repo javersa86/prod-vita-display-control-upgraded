@@ -41,8 +41,6 @@ Button {
     property int adjustmentCount: 0
     property int resetCount: 0
 
-    enabled: !locked
-
     onMeasuredValueTextChanged:
     {
         scalingY = (1 - (Number.parseInt(measuredValue.text) - Number.parseInt(control.min)) / (Number.parseInt(control.max) - Number.parseInt(control.min)))
@@ -355,30 +353,6 @@ Button {
                 topPadding: 5
                 textFormat: Text.RichText
                 color: Style.unit
-            }
-        }
-
-        Item {
-            id: lockImage
-            width: 40
-            height: 40
-            anchors.left: parent.left
-            anchors.bottom:parent.bottom
-            visible: control.locked
-            Image {
-                id: alarm_icon
-                source: "../iconography/lock_element.svg"
-                sourceSize.width: width
-                sourceSize.height: height
-                width: parent.width
-                height: parent.height
-                smooth: true
-            }
-
-            ColorOverlay {
-                anchors.fill: alarm_icon
-                source: alarm_icon
-                color: control.borderColor
             }
         }
     }

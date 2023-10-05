@@ -16,7 +16,7 @@ Rectangle
 
     signal clicked();
 
-    PneumaticButton
+    SettingButton
     {
         id: pneumaticButton
         visible: !separated
@@ -25,9 +25,7 @@ Rectangle
         unit: humidity_1.unit
         title: humidity_1.title
         measuredValueText: state_manager.hum1
-        setValueText: state_manager.hum1
-        min: humidity_1.min
-        max: humidity_1.max
+
         onClicked:
         {
             parent.clicked()

@@ -24,7 +24,7 @@ Rectangle{
         y: .1 * parent.height
         color: Style.transparent
 
-        PneumaticButton
+        SettingButton
         {
             id: dp_button
             objectName: "dp_button"
@@ -36,9 +36,6 @@ Rectangle{
             unit: etco2_driving_pressure.unit
             title: "Driving Pressure"
             measuredValueText: state_manager.etco2DP
-            setValueText: state_manager.etco2DP
-            min: etco2_driving_pressure.min
-            max: etco2_driving_pressure.max
 
             onClicked:
             {
@@ -64,7 +61,7 @@ Rectangle{
             }
         }
 
-        PneumaticButton
+        SettingButton
         {
             id: it_button
             objectName: "it_button"
@@ -76,9 +73,6 @@ Rectangle{
             unit: etco2_inpiratory_time.unit
             title: "Inspiratory Time"
             measuredValueText: state_manager.etco2IT
-            setValueText: state_manager.etco2IT
-            min: etco2_inpiratory_time.min
-            max: etco2_inpiratory_time.max
 
             onClicked:
             {
@@ -104,7 +98,7 @@ Rectangle{
             }
         }
 
-        PneumaticButton
+        SettingButton
         {
             id: freq_button
             objectName: "freq_button"
@@ -116,9 +110,6 @@ Rectangle{
             unit: etco2_rate.unit
             title: "Rate"
             measuredValueText: state_manager.etco2Rate
-            setValueText: state_manager.etco2Rate
-            min: etco2_rate.min
-            max: etco2_rate.max
 
             onClicked:
             {
@@ -144,7 +135,7 @@ Rectangle{
             }
         }
 
-        PneumaticButton
+        SettingButton
         {
             id: breaths_button
             objectName: "breaths_button"
@@ -156,9 +147,6 @@ Rectangle{
             unit: etco2_num_breaths.unit
             title: "Number of Breaths"
             measuredValueText: state_manager.etco2NumBreaths
-            setValueText: state_manager.etco2NumBreaths
-            min: etco2_num_breaths.min
-            max: etco2_num_breaths.max
 
             onClicked:
             {

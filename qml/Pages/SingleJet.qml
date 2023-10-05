@@ -226,7 +226,7 @@ Rectangle {
         }
     }
 
-    PneumaticButton {
+    SettingButton {
         id: dp1_button
         objectName: "dp1_button"
         x: 340
@@ -235,21 +235,18 @@ Rectangle {
         unit: driving_pressure_1.unit
         title: driving_pressure_1.title
         measuredValueText: etco2_button.modeEnabled ? state_manager.etco2DP: state_manager.dp1
-        setValueText: etco2_button.modeEnabled ? state_manager.etco2DP: state_manager.dp1
-        min: driving_pressure_1.min
-        max: driving_pressure_1.max
 
         locked: etco2_button.modeEnabled
         borderColor: etco2_button.modeEnabled ? Style.mode_active_warning : Style.primary_light
 
         onClicked: {
             homeStack.push("SettingDial.qml", {"homeStack": homeStack, "title": title, "unit": unit,
-                               "settingID": setting_id, "min" : min, "max" : max, "value" : setValueText, "step" : driving_pressure_1.step, "popupStack": popupStack,
+                               "settingID": setting_id, "min" : driving_pressure_1.min, "max" : driving_pressure_1.max, "value" : measuredValueText, "step" : driving_pressure_1.step, "popupStack": popupStack,
                                "helpText":driving_pressure_1.help, "warningThreshold": driving_pressure_1.warningThreshold})
         }
     }
 
-    PneumaticButton {
+    SettingButton {
         id: freq1_button
         objectName: "freq1_button"
         x: 340
@@ -258,21 +255,18 @@ Rectangle {
         unit: rate_1.unit
         title: rate_1.title
         measuredValueText: etco2_button.modeEnabled ? state_manager.etco2Rate : state_manager.rate1
-        setValueText: etco2_button.modeEnabled ? state_manager.etco2Rate : state_manager.rate1
-        min: rate_1.min
-        max: rate_1.max
 
         locked: etco2_button.modeEnabled
         borderColor: etco2_button.modeEnabled ? Style.mode_active_warning : Style.primary_light
 
         onClicked: {
             homeStack.push("SettingDial.qml", {"homeStack": homeStack, "title": title, "unit": unit,
-                               "settingID": setting_id, "min" : min, "max" : max, "value" : setValueText, "step": rate_1.step, "popupStack": popupStack,
+                               "settingID": setting_id, "min" : rate_1.min, "max" : rate_1.max, "value" : measuredValueText, "step": rate_1.step, "popupStack": popupStack,
                                "helpText": rate_1.help, "warningThreshold": rate_1.warningThreshold})
         }
     }
 
-    PneumaticButton {
+    SettingButton {
         id: it1_button
         objectName: "it1_button"
         x: 654
@@ -281,16 +275,13 @@ Rectangle {
         unit: inspiratory_time_1.unit
         title: inspiratory_time_1.title
         measuredValueText: etco2_button.modeEnabled ? state_manager.etco2IT: state_manager.it1
-        setValueText: etco2_button.modeEnabled ? state_manager.etco2IT: state_manager.it1
-        min: inspiratory_time_1.min
-        max: inspiratory_time_1.max
 
         locked: etco2_button.modeEnabled
         borderColor: etco2_button.modeEnabled ? Style.mode_active_warning : Style.primary_light
 
         onClicked: {
             homeStack.push("SettingDial.qml", {"homeStack": homeStack, "title": title, "unit": unit,
-                               "settingID": setting_id, "min" : min, "max" : max, "value" : setValueText, "step": inspiratory_time_1.step, "popupStack": popupStack,
+                               "settingID": setting_id, "min" : inspiratory_time_1.min, "max" : inspiratory_time_1.max, "value" : measuredValueText, "step": inspiratory_time_1.step, "popupStack": popupStack,
                                "helpText": inspiratory_time_1.help, "warningThreshold": inspiratory_time_1.warningThreshold})
         }
     }

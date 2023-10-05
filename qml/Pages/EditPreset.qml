@@ -241,22 +241,33 @@ Rectangle{
             y: titleBox.y + titleBox.height + .1* mainContainer.height
 
             model: firstRow
-            delegate : PneumaticButton {
+            delegate : SettingButton {
                 setting_id: setting_idVal
                 unit:unitVal
                 title: titleVal
                 measuredValueText: root.values[setting_id]
-                min: minVal
-                max: maxVal
                 minOn: minOnVal
                 helpText: helpVal
                 step: stepVal
-                presetState: 1
 
                 onClicked: {
-                    root.adjustmentPage = root.stack.push("PresetDial.qml", {"popupStack": root.popupStack,"homeStack": root.stack, "title": title, "unit": unit, "settingID": setting_id, "min" : min, "max" : max, "value" : measuredValueText, "stack":root.stack, "minOn": minOn, "step" : step, "helpText": helpText})
-
-                }
+                    root.adjustmentPage = root.stack.push(
+                                "PresetDial.qml",
+                                {
+                                    "popupStack": root.popupStack,
+                                    "homeStack": root.stack,
+                                    "title": title,
+                                    "unit": unit,
+                                    "settingID": setting_id,
+                                    "min" : minVal,
+                                    "max" : maxVal,
+                                    "value" : measuredValueText,
+                                    "stack":root.stack,
+                                    "minOn": minOn,
+                                    "step" : step,
+                                    "helpText": helpText
+                                }
+                                )
 
                 Connections
                 {
@@ -283,20 +294,34 @@ Rectangle{
             y: titleBox.y + titleBox.height + .32* mainContainer.height
 
             model: secondRow
-            delegate : PneumaticButton {
+            delegate : SettingButton {
 
                 setting_id: setting_idVal
                 unit:unitVal
                 title: titleVal
                 measuredValueText: root.values[setting_id]
-                min: minVal
-                max: maxVal
                 minOn: minOnVal
                 step: stepVal
                 helpText: helpVal
 
                 onClicked: {
-                    root.adjustmentPage = root.stack.push("PresetDial.qml", {"popupStack": root.popupStack,"homeStack": root.stack, "title": title, "unit": unit, "settingID": setting_id, "min" : min, "max" : max, "value" : measuredValueText, "stack":root.stack, "minOn": minOn, "step" : step, "helpText": helpText})
+                    root.adjustmentPage = root.stack.push(
+                                "PresetDial.qml",
+                                {
+                                    "popupStack": root.popupStack,
+                                    "homeStack": root.stack,
+                                    "title": title,
+                                    "unit": unit,
+                                    "settingID": setting_id,
+                                    "min" : minVal,
+                                    "max" : maxVal,
+                                    "value" : measuredValueText,
+                                    "stack":root.stack,
+                                    "minOn": minOn,
+                                    "step" : step,
+                                    "helpText": helpText
+                                }
+                                )
                 }
 
                 Connections
