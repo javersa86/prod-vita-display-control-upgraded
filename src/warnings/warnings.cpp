@@ -344,6 +344,12 @@ AmbientTempSensorDefect::AmbientTempSensorDefect(const int &id, const QVector<QS
 
 }
 
+InternalTempHigh::InternalTempHigh(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+    SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
+{
+
+}
+
 LaserOK::LaserOK(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY, QStringLiteral("#6FCC68"))
 {
@@ -363,12 +369,6 @@ LowStaticAirPressure::LowStaticAirPressure(const int &id, const QVector<QString>
 }
 
 LowStaticO2Pressure::LowStaticO2Pressure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
-    Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
-{
-
-}
-
-InternalTempHigh::InternalTempHigh(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
