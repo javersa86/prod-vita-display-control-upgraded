@@ -61,7 +61,7 @@ class Backend : public QObject
     
     public:
         /**
-         * @brief constructor method that initializes important variables
+         * @brief Constructor method that initializes important variables
          * @details    Initializes array of functions to be called to send signals with messages to API.
          *             Constructs timer that will start when dehumidication begins and will signal countdown decrements of dehumdification time.
          *             Initializes all manager objects that referances the following:
@@ -178,6 +178,10 @@ class Backend : public QObject
          */
         void logsState(bool);
 
+        /**
+         * @brief Stops the progress for exporting service logs.
+         * @callergraph
+         */
         void stopProgress();
 
         /*--Dehumidification--------------------------------------------------------------*/
@@ -224,6 +228,7 @@ class Backend : public QObject
          *          - humidity 1 setting
          *          - humidity 2 setting
          *          - humidity aux setting
+         * @note    If humidity 1 and humidity aux do not equal each other, the seperate humidity mode will be set.
          * @param   setting_vals
          * @callergraph
          */
@@ -277,6 +282,7 @@ class Backend : public QObject
          *          - primary humidification
          *          - secondary humidification
          *          - auxiliary humidity
+         * @note Update Ventilation State if primary ventilation is active on startup and the EndTidal Button is disabled.
          * @param states
          * @callergraph
          */
@@ -309,7 +315,8 @@ class Backend : public QObject
         /*--Set Settings------------------------------------------------------------------*/
 
         /**
-         * @brief      Set pneumatic setting values from preset file.
+         * @brief      Receive settings update from the qml pages related to presets.
+         * @note To ensure a setings are set in the system, enables screen lock mode to ensure no user interference.
          * @param  settings
          * @callergraph
          */
@@ -318,7 +325,7 @@ class Backend : public QObject
         /**
          * @brief      Receive settings update from the qml pages.
          * @details    Save pneumatic settings to state object and constructor vector that will be sent to API.
-         *             Updates O2 if laser safe mode is enabled and if O2 is greater than laser safe O2 setting.
+         *             Updates O<sub>2</sub> in Limited O<sub>2</sub> mode is enabled and if O<sub>2</sub> is greater than Limited O<sub>2</sub> setting.
          *             Raises flag to send message to API to set pneumatic settings.
          * @param  id
          * @param value
@@ -371,6 +378,7 @@ class Backend : public QObject
          * @brief Receive message from API to get sensor measurements for water sensors for the Initiated Shutdown Procedure.
          * @param id
          * @param value
+         * @callergraph
          */
         void receiveWaterSensor(unsigned char id, unsigned char value);
 
@@ -543,7 +551,7 @@ class Backend : public QObject
          * @note    Sends signal to switch between precise and inprecise driving pressure set settings request in API class.
          *          Switches to default DPR state at end of method.
          *          Disables listening mode.
-         * @param   flag
+         * @param   id
          * @param   value
          * @callergraph
          */
@@ -614,7 +622,6 @@ class Backend : public QObject
          * @callgraph
          */
         void driveConnection(int connectionState);
-        void driveConnectionSuccess(int connectionState);
 
         /**
          * @brief Signal for drive disconnecting to QML page.
@@ -1005,16 +1012,16 @@ class Backend : public QObject
         void modesSet();
 
         /**
-         * @brief      Gets high or low O2 calibration values.
-         * @param  id
-         * @param  value
+         * @brief Gets high or low O<sub>2</sub> calibration values.
+         * @param id
+         * @param value
          */
         void handleO2CalVals(unsigned char, unsigned char);
 
         /**
-         * @brief      Gets high or low O2 calibration voltages and saves all O2 Calibration values and voltages.
-         * @param  id
-         * @param  value
+         * @brief Gets high or low O<sub>2</sub> calibration voltages and saves all O<sub>2</sub> Calibration values and voltages.
+         * @param id
+         * @param value
          */
         void handleVoltVals(unsigned char, float);
 
@@ -1029,8 +1036,16 @@ class Backend : public QObject
          * @return int
          */
         int getHumidityPercentage(int value);
+
         /**
          * @brief Switches humidity levels to percentages.
+         * @details
+         * Humidity pecentage to level conversions:
+         *   - 100% = Level 4
+         *   - 70% = Level 3
+         *   - 50% = Level 2
+         *   - 30% = Level 1
+         *   - 0% = Level 0
          * @param value
          * @return int
          */

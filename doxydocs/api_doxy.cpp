@@ -3,13 +3,13 @@
 /**
  * @ingroup communicationModule
  * @defgroup apiModule Communication API Controller
- * @brief Documentation for the main API Controller.
+ * @brief Documentation for the main \htmlonly API \endhtmlonly Controller.
  */
 
 /**
  * @ingroup  communicationModule
  * @defgroup apiConstsModule Communication API Constants
- * @brief Doucmentation for all API Contant values.
+ * @brief Doucmentation for all \htmlonly API \endhtmlonly Contant values.
  */
 
 /**
@@ -21,7 +21,7 @@
 /**
  * @ingroup  communicationModule
  * @defgroup messageModule Communication Message
- * @brief Documentation for Message component utilized for sending bytes to serial buffer.
+ * @brief Documentation for \htmlonly Message \endhtmlonly component utilized for sending bytes to serial buffer.
  */
 
 /**

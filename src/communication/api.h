@@ -365,6 +365,7 @@ class API : public QThread
 
         /**
          * @brief Adds a notification response to the outgoing queue when a notification is received.
+         * @note Called for every 10 notification received.
          */
         void queueNotificationResponse();
 
@@ -713,7 +714,7 @@ class API : public QThread
          * @param notifications
          * @callgraph
          */
-        void notificationUpdateSignal(QVector<float>);
+        void notificationUpdateSignal(QVector<float> notifications);
 
         /* warnings */  //report warnings changes to backend
         //API telling backend most severe warning and number of warnings. Warning ID will be -1 if no active warnings. Only sent on warning change
@@ -785,7 +786,7 @@ class API : public QThread
          * @param notifications
          * @callgraph
          */
-        void serviceNotificationUpdateSignal(QVector<float>);
+        void serviceNotificationUpdateSignal(QVector<float> notifications);
 };
 
 /** @} */

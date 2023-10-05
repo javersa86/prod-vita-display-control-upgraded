@@ -57,7 +57,7 @@
  * - Primary: @htmlonly <font color="#3D96A8">#3D96A8</font> @endhtmlonly
  * - Secondary: @htmlonly <font color="#6FCC68">#6FCC68</font> @endhtmlonly
  * - Tertiary: @htmlonly <font color="#FAE061">#FAE061</font> @endhtmlonly
- * - PIP: @htmlonly <font color="#C12E30">#C12E30</font> @endhtmlonly
+ * - \htmlonly PIP\endhtmlonly: @htmlonly <font color="#C12E30">#C12E30</font> @endhtmlonly
  * - SP: @htmlonly <font color="#0E6CBF">#0E6CBF</font> @endhtmlonly
  * - Primary Dark: @htmlonly <font color="#202531">#202531</font> @endhtmlonly
  * - Primary Light: @htmlonly <font color="#E3ECFB">#E3ECFB</font> @endhtmlonly
@@ -80,40 +80,40 @@
  * - Dissident: @htmlonly <font color="#FF223D">#FF223D</font> @endhtmlonly
  * - Cancel: @htmlonly <font color="#E24A5F">#E24A5F</font> @endhtmlonly
  * - Primary Light Disabled: @htmlonly <font color="#8CE3ECFB">#8CE3ECFB</font> @endhtmlonly
- * - Patient Warning: @htmlonly <font color="#F24C26">#F24C26</font> @endhtmlonly
- * - System Warning: @htmlonly <font color="#4A5AE4">#4A5AE4</font> @endhtmlonly
- * - Notice: @htmlonly <font color="#E2C044">#E2C044</font> @endhtmlonly
- * - Warning Description: @htmlonly <font color="#8CE3ECFB">#8CE3ECFB</font> @endhtmlonly
+ * - Patient \htmlonly Warning\endhtmlonly: @htmlonly <font color="#F24C26">#F24C26</font> @endhtmlonly
+ * - System \htmlonly Warning\endhtmlonly: @htmlonly <font color="#4A5AE4">#4A5AE4</font> @endhtmlonly
+ * - \htmlonly Notice\endhtmlonly: @htmlonly <font color="#E2C044">#E2C044</font> @endhtmlonly
+ * - \htmlonly Warning \endhtmlonly Description: @htmlonly <font color="#8CE3ECFB">#8CE3ECFB</font> @endhtmlonly
  * - Menu Color: @htmlonly <font color="#313C51">#313C51</font> @endhtmlonly
- * - Mode Active Warning: @htmlonly <font color="#FBA455">#FBA455</font> @endhtmlonly
+ * - Mode Active \htmlonly Warning\endhtmlonly: @htmlonly <font color="#FBA455">#FBA455</font> @endhtmlonly
  * - O<sub>2</sub> Color: @htmlonly <font color="#6FCC68">#6FCC68</font> @endhtmlonly
  * - Help Icon Selected: @htmlonly <font color="#804A90E2">#804A90E2</font> @endhtmlonly
- * - Mode Active Warning Selected: @htmlonly <font color="#8CFBA455">#8CFBA455</font> @endhtmlonly
+ * - Mode Active \htmlonly Warning \endhtmlonly Selected: @htmlonly <font color="#8CFBA455">#8CFBA455</font> @endhtmlonly
  * - General Set Display Selected: @htmlonly <font color="#8C4A90E2">#8C4A90E2</font> @endhtmlonly
  *
  * ## Fonts
  *
  * @htmlonly
  * Font Styles built from the Roboto Font Family, Style Variations, Sizes, and Weights:<br><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 96px;">- Measured Font</div><br><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 32px;">- Set Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">- Title Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">- Unit Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">- Min and Max Font</div><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-size: 34px;">- Statistic Font</div><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-size: 30px;">- Statistic Font (Small Version)</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 24px;">- Number Button Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 32px;">- Numeric UI Display Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 17px;">- Button Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 17px;"><u>- Button Font Underlined</u></div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 18px;"><u>- Cancel Font</u></div><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-size: 24px;">- Warning Flag Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 24px;">- Warning Title Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">- Warning Description Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 36px;">- Page Title Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 24px;">- Setting Page Title</div><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 72px;">- Loading Text Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 12px;">- Small Button Font</div>
+ * <div style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 96px;">Measured Font</div><br><br><br>
+ * <div style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 72px;">Loading Text Font</div><br><br>
+ * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 36px;">Page Title Font</div><br>
+ * <div style="font-family: 'Roboto Black', sans-serif; font-size: 34px;">Statistic Font</div><br>
+ * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 32px;">Set Font</div><br>
+ * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 32px;">Numeric UI Display Font</div><br>
+ * <div style="font-family: 'Roboto Black', sans-serif; font-size: 30px;">Statistic Font (Small Version)</div><br>
+ * <div style="font-family: 'Roboto Black', sans-serif; font-size: 24px;">Warning Flag Font</div><br>
+ * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 24px;">Warning Title Font</div><br>
+ * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 24px;">Number Button Font</div><br>
+ * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 24px;">Setting Page Title</div><br>
+ * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">Title Font</div><br>
+ * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">Unit Font</div><br>
+ * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">Min and Max Font</div><br>
+ * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 18px;"><u>Cancel Font</u></div><br>
+ * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">Warning Description Font</div><br>
+ * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 17px;">Button Font</div><br>
+ * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 17px;"><u>Button Font Underlined</u></div><br>
+ * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 12px;">Small Button Font</div>
  * @endhtmlonly
  *
  * @file Style.qml
@@ -132,12 +132,12 @@
  *
  * Contant texts used on the GUI for the Pneumatic Setting Titles and Units.
  * Constants included:
- * - PIP Title: Peak Insp. Pressure
+ * - \htmlonly PIP \endhtmlonly Title: Peak Insp. Pressure
  * - SP Title: Stacking Pressure
  * - Auxiliary Flow Title: Auxiliary
- * - Humidity Title: Humidity
+ * - \htmlonly Humidity \endhtmlonly Title: \htmlonly Humidity \endhtmlonly
  * - Driving Pressure Title: Driving Pressure
- * - Rate Title: Rate
+ * - \htmlonly Rate \endhtmlonly Title: \htmlonly Rate \endhtmlonly
  * - Inspiratory Time Title: Inspiratory Time
  * - Oxygen Title: Oxygen
  * - cmH<sub>2</sub>O Unit: cmH<sub>2</sub>

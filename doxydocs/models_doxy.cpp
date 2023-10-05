@@ -14,6 +14,12 @@
 
 /**
  * @ingroup modelsModule
+ * @defgroup serviceNotificationModels Service Models
+ * @brief Documentation for the model of Service Notifications.
+ */
+
+/**
+ * @ingroup modelsModule
  * @defgroup settingsModels Settings Models
  * @brief Documentation for the model of Settings.
  */

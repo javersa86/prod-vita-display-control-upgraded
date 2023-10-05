@@ -12,7 +12,7 @@
  * The Main Window is the basis for where all the activity from the Graphical User Interface, including the different menus and popups, take place.
  * When user powers on the device, the startup page will be displayed to load the main window. After loading page is cleared,
  * the home page will include the following:
- * - PIP and SP Line Graph
+ * - \htmlonly PIP \endhtmlonly and SP Line Graph
  *   - A line graph used to display the measured value for Peak Inspiratory Pressure (Red Line) and Stacking Pressure (Blue Line) as visual indicator
  *     for the amount of oxygen and air is being push into the patient.
  *   - The graph will continue to be updated while system is ventilating or not.
@@ -20,22 +20,22 @@
  *   - The Home Page displays all critical information required by the user for proper operation through the buttons.
  *   - Buttons used to push the pages used to adjust all 8 pneumatic settings.
  *   - The buttons will also display the set values, the value indicator within the settings range, the minimum value, and the maximum value.
- *   - When the system is ventilating, measured values will be displayed on the PIP, SP, O<sub>2</sub>, and Aux Flow.
- *   - For the PIP Button, lock icon will be displayed to indicate that the PIP Disconnection Mode is active.
- *   - For the Humidity Button, when humidity split mode is enabled, the two set values for humidity on the Jet and Auxiliary Lines will be displayed.
+ *   - When the system is ventilating, measured values will be displayed on the \htmlonly PIP\endhtmlonly, SP, O<sub>2</sub>, and Aux Flow.
+ *   - For the \htmlonly PIP \endhtmlonly Button, lock icon will be displayed to indicate that the \htmlonly PIP \endhtmlonly Disconnection Mode is active.
+ *   - For the \htmlonly Humidity \endhtmlonly Button, when humidity split mode is enabled, the two set values for humidity on the Jet and Auxiliary Lines will be displayed.
  *   - For the Oxygen Button, a spinner icon will surround the measured value until the value is adjusted to the set value, and reappear if measured value increases or decreases from set value.
  *   - Different colors will be displayed on buttons based on different criterias:
- *     - For the PIP Button, red will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the red line on the graph.
+ *     - For the \htmlonly PIP \endhtmlonly Button, red will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the red line on the graph.
  *     - For the SP Button, blue will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the blue line on the graph.
- *     - For the Driving Pressure, Rate, and Inspiratory Buttons, the borders surronding the buttons will be displayed in orange.
- *     - For the Oxygen Button, the borders, set value, measured value, minimum value, maximum value, and value indicator will be displayed in yellow or green based on which Laser-Safe warning is displayed on the warning banner.
+ *     - For the Driving Pressure, \htmlonly Rate\endhtmlonly, and Inspiratory Buttons, the borders surronding the buttons will be displayed in orange.
+ *     - For the Oxygen Button, the borders, set value, measured value, minimum value, maximum value, and value indicator will be displayed in yellow or green based on which Limited O<sub>2</sub> warning is displayed on the warning banner.
  *   - Statistical Displays for the MAP, TV, and MV values.
  *   - The End-Tidal Button to initiate or stop the End-Tidal Procedure.
  *   - Progress Timer Icon and Text for the counted number of time from start up or from the most recent End-Tidal Sequence.
- *   - Mode Switches for Laser-Safe Mode and Manual Mode.
- *   - Help Buttons with Titles for End-Tidal Mode, Laser-Safe Mode, and Manual Mode.
+ *   - Mode Switches for Limited O<sub>2</sub> Mode and Manual Mode.
+ *   - Help Buttons with Titles for End-Tidal Mode, Limited O<sub>2</sub> Mode, and Manual Mode.
  * - The following will be display on most of the pages:
- *   - The Warning Banner to display all active warnings.
+ *   - The \htmlonly Warning \endhtmlonly Banner to display all active warnings.
  *   - The Hamburger Menu and Button to open the navigation menu.
  *
  * @file HomeWindow.qml
@@ -43,7 +43,7 @@
  * @details
  * The following objects will be available to most of the pushed pages from home window:
  * - Home Icon: Icon on the top right corner of the screen where by pressing down, will return the user back to the Single Jet Adjustment Page.
- * - Warning Banner: Displays all active alarms on the system at the top of the screen.
+ * - \htmlonly Warning \endhtmlonly Banner: Displays all active alarms on the system at the top of the screen.
  * - Hamburger Menu and Icon - Pressing down on icon at the top left of the screen will show hidden navigational menu for more options.
  * @see main
  *
@@ -59,8 +59,8 @@
  * - Statistical Displays: Displays the measured values for MAP, TV, and MV.
  * - ETCO<sub>2</sub> Button: Pushing down on button will trigger the ETCO<sub>2</sub> Procedure.
  * - ETCO<sub>2</sub> Timer: Displays the elapse time since the last triggered ETCO2<sub>2</sub> Procedure.
- * - Mode Switches: Pushing down will trigger Laser-Safe Mode and Manual Mode.
- * - Help Icons: Pushing down pushes up Help Descriptions for ETCO<sub>2</sub>, Laser-Safe, and Manual.
+ * - Mode Switches: Pushing down will trigger Limited O<sub>2</sub> Mode and Manual Mode.
+ * - Help Icons: Pushing down pushes up Help Descriptions for ETCO<sub>2</sub>, Limited O<sub>2</sub>, and Manual.
  * @}
  */
 
@@ -79,15 +79,15 @@
  *
  * Pneumatic Settings that can be adjusted include the following:
  * - Driving Pressure
- * - Rate
+ * - \htmlonly Rate \endhtmlonly
  * - Inspiratory Time
  * - Stacking Pressure
  * - Oxygen Concentration
  * - Peak Inspiratory Pressure
  * - Auxiliary Flow
- * - Humidity (Consists of 2 Pneumatic Settings to adjust:
- *   - Humidity on the Jet Line
- *   - Humidity on the Auxiliary line
+ * - \htmlonly Humidity \endhtmlonly (Consists of 2 Pneumatic Settings to adjust):
+ *   - \htmlonly Humidity \endhtmlonly on the Jet Line
+ *   - \htmlonly Humidity \endhtmlonly on the Auxiliary line
  *
  * ## Dial and Keypads
  *
@@ -100,16 +100,58 @@
  * To save the pneumatic settings, the user can press down on the knob or press the save button available on the page. If user doesn't want to set the new pneumatic settings value, the user can exit the page with the cancel button.
  *
  * ## Confirmation Popup Window
- * If a warning threshold exists for a pneumatic setting, then a confirmation popup window will be displayed if set value is greater than or equal to warning threshold.
- * The Warning Threshold is uded for the following Pneumatic Settings:
+ * If a warning threshold exists for a pneumatic setting, then a confirmation popup window will be displayed if set value is greater than or equal to warning threshold. The \htmlonly Warning \endhtmlonly Threshold is uded for the following Pneumatic Settings:
  * - Peak Inspiratory Pressure
  * - Stacking Pressure
  * - Inspiratory Time
  *
+ * ## Help Descriptions
+ *
+ * The following are help descriptions available on the popup windows of the Help Icons from the Adjustment Pages:
+ *
+ * <table>
+ *  <tr>
+ *      <th>Pneumatic Settings</th>
+ *      <th>Help Descriptions</th>
+ *  </tr>
+ *  <tr>
+ *      <td>Driving Pressure</td>
+ *      <td>Driving Pressure indicates the desired pressure to be supplied from the NVENT Vita. This applied pressure increases or decreases respiratory flow causing an effect on TV/MV (i.e. ventilation). The Driving Pressure may be adjusted by the user to achieve better lung recruitment and compensate for lung compliance.</td>
+ *  </tr>
+ *  <tr>
+ *      <td>\htmlonly Rate \endhtmlonly</td>
+ *      <td>The Respiratory \htmlonly Rate \endhtmlonly setting, measured in Breaths Per Minute (BPM), adjusts the rate at which breaths are supplied to the patient.</td>
+ *  </tr>
+ *  <tr>
+ *      <td>Inspiratory Time</td>
+ *      <td>The Inspiratory Time is the percentage of time during the breath cycle in which critical gases are delivered to the patient.</td>
+ *  </tr>
+ *  <tr>
+ *      <td>Stacking Pressure</td>
+ *      <td>Stacking Pressure (SP) refers to the residual pressure in the airway as measured through the Blue Jet Line approximately 1 ms prior to each inspiratory phase beginning. This is similar to End Expiratory Pressure (EEP) (i.e. closed system ventilation) in critical care ventilators.<br><br>The VITA  will graphically display the measured Stacking Pressure on the main screen with a blue trace. The Blue graph lines can be hidden for the the Stacking Pressure from within settings. The set limit for SP is represented on the graph with a blue dashed line.<br><br>The operator can set the Stacking Pressure threshold from 1-100 cmH<sub>2</sub>O. The measured value must fall below the set threshold on each breath cycle, indicating that there is adequate egress to the flow of air exiting the patient (i.e. no stacking of breaths). Otherwise, the NVENT Vita immediately alerts the operator and restricts ventilation until the measured Stacking Pressure value drops to 30% of the set Stacking Pressure threshold.</td>
+ *  </tr>
+ *  <tr>
+ *      <td>Oxygen</td>
+ *      <td>The NVENT Vita is able to proportionally control the concentration of oxygen being delivered to the patient based on desired operator settings. The NVENT VITA performs an automatic O<sub>2</sub> calibration of the oxygen sensor 3 minutes after powering the device on. An automatic secondary O<sub>2</sub> calibration will be performed 10 mins after the device is powered on to ensure proper operation. Calibration can also be performed by the user manually, or it will occur automatically once every 24 hours the unit is powered on. The oxygen concentration can be set in 1% increments from  21% to 100%. The Oxygen setpoint will be delivered on both the Jet Line and the Auxiliary Line.</td>
+ *  </tr>
+ *  <tr>
+ *      <td>Peak Inspiratory Pressure</td>
+ *      <td>The Peak Inspiratory Pressure (\htmlonly PIP \endhtmlonly) measures continuously and is the highest pressure measured during the respiratory cycle and is an indication of both the resistance of the airways and the compliance of the patient. This pressure is measured on the Red \htmlonly PIP \endhtmlonly Line.<br><br>The VITA measures the \htmlonly PIP \endhtmlonly regularly and graphically displays the waveform measured on the main screen with a Red trace. The set limit for \htmlonly PIP \endhtmlonly is represented on the graph with a red dashed line.<br><br>The operator can set the \htmlonly PIP \endhtmlonly threshold from 0-100 cmH<sub>2</sub>O. If the measured \htmlonly PIP \endhtmlonly value meets the set threshold at any point during a breath cycle, the operator is immediately alerted and the Vita restricts ventilation until the measured \htmlonly PIP \endhtmlonly value drops to 30% of the set Peak Inspiratory Pressure threshold.</td>
+ *  </tr>
+ *  <tr>
+ *      <td>Auxiliary Flow</td>
+ *      <td>The NVENT Vita includes an auxiliary flow line used for supplemental gas flow where continuous flow is needed. The flow from the AUX port is delivered at the same O<sub>2</sub>% as the Jet 1. This line can also be supplied with humidity.<br>**Note: This line does not have pressure monitoring capabilities.**</td>
+ *  </tr>
+ *  <tr>
+ *      <td>\htmlonly Humidity \endhtmlonly</td>
+ *      <td>\htmlonly Humidity \endhtmlonly the Jet Line or Auxiliary can be controlled in a unified or separated mode by the operator. \htmlonly Humidity \endhtmlonly should be used whenever jetting time exceeds 30 minutes of continuous use, it is always advantageous to use humidity although not mandatory for shorter procedures. The use of humidity reduces the risk of drying of the tracheal mucosa, it also helps to prevent compliance issues caused by drying of the lungs.  The use of humidity also aids in airway surgery to prevent the tissues from becoming sticky for the surgeon.</td>
+ *  </tr>
+ * </table>
+ *
  * ## Related Topics
  *
  * For some of that adjustment pages, other options will be available:
- * - On the Peak Inspiratory Pressure Adjustment Page, the option to disable PIP Disconnection Mode will be available and will disappear after mode is disabled.
+ * - On the Peak Inspiratory Pressure Adjustment Page, the option to disable \htmlonly PIP \endhtmlonly  Disconnection Mode will be available and will disappear after mode is disabled.
  *
  * ## Addtional Information
  * Information regarding how humidity works differently is available in the following link: @ref humidityAdjustmentModule "Humidity Adjustments"
@@ -143,9 +185,10 @@
  *
  * ## Humidity Adjustments
  *
- * There are two Pneumatic Settings for Humidity, the Humidity on the Jet Line, and the Humidity on the Auxiliary Line. There are two modes that the user can switch between to adjust humidity:
- * - Unified Mode: A single dial or keypad will be displayed where the the user adjust Humidity on the Jet and Auxiliary lines at the same time and at the same value.
- * - Separated Mode: Two dials or two keypads will be displayed where the user can adjust Humidity on the Jet Line and the Auxiliary Line separately. It is important to note that when the user switches to Separated Mode, the default value to adjust from for Humidity on the Auxiliary Line is 0%.
+ * There are two Pneumatic Settings for \htmlonly Humidity\endhtmlonly, the \htmlonly Humidity \endhtmlonly on the Jet Line, and the \htmlonly Humidity \endhtmlonly on the Auxiliary Line. There are two modes that the user can switch between to adjust humidity:
+ * - Unified Mode: A single dial or keypad will be displayed where the the user adjust \htmlonly Humidity \endhtmlonly on the Jet and Auxiliary lines at the same time and at the same value.
+ * - Separated Mode: Two dials or two keypads will be displayed where the user can adjust \htmlonly Humidity \endhtmlonly on the Jet Line and the Auxiliary Line separately. It is important to note that when the user switches to Separated Mode, the default value to adjust from for \htmlonly Humidity \endhtmlonly on the Auxiliary Line is 0.
+ *      - Note: when the user pushes down on the encoder knob when adjusting the Auxiliary Line, instead of switching back to adjusting Jet Line, the page will exit back to the home page and save the humidity settings.
  *
  * ## Related Topics
  *
@@ -154,19 +197,14 @@
  * - The Dehumidication Option will allow the user to begin the Dehumidification Procedure.
  *
  * @file HumidityAdjustment.qml
- * @brief Page constructed from Interactive Knob Page where the user can switch between unified humidity and seperate humidity.
+ * @brief Page constructed from Interactive \htmlonly Knob \endhtmlonly Page where the user can switch between unified humidity and seperate humidity.
  *
  * @file HumidityUnifiedDial.qml
  * @brief Page where user adjusts humidity and humidity auxiliary at once with encoder knob.
  *
- * @file HumidityKeypad.qml
- * @brief Page where user adjusts humidity and humidity auxiliary at once with keypad and encoder knob.
- *
  * @file HumiditySeparatedDial.qml
  * @brief Page where user adjusts humidity and humidity auxiliary separately with encoder knob.
  *
- * @file HumiditySeparatedKeypad.qml
- * @brief Page where user adjusts humidity and humidity auxiliary separately with keypad and encoder knob.
  * @}
  *
  * @}
@@ -181,26 +219,26 @@
  * ## Presets
  * Presets are saved pneumatic settings created by medical professional for different purposes and medical procedures. The following will be saved in a preset:
  * - Driving Pressure
- * - Rate
+ * - \htmlonly Rate \endhtmlonly
  * - Inspiratory Time
  * - Stacking Pressure
  * - Oxygen Concentration
  * - Peak Inspiratory Pressure
  * - Auxiliary Flow
- * - Humidity (acting as a unified setting)
+ * - \htmlonly Humidity \endhtmlonly (acting as a unified setting)
  *
  * ## Creating Presets
  * The process of creating presets goes as follows:
  * - The user will select the Create Button to open the Preset Creation Page. The user will be required to enter the user passcode to continue the Preset Creation page.
  * - The default pneumatic settings to adjust from will include:
  *   - Driving Pressure: 20
- *   - Rate: 120
- *   - Inspiratory Rate: 35
+ *   - \htmlonly Rate \endhtmlonly: 120
+ *   - Inspiratory Time: 35
  *   - Stacking Pressure: 24
  *   - Oxygen Concentration: 100
  *   - Peak Inspiratory Pressure: 28
  *   - Auxiliary Flow: 0
- *   - Humidity: 0
+ *   - \htmlonly Humidity \endhtmlonly: 0
  * - The Preset Creation page is designed similarly to the Pneumatic Buttons on the Main Window and preset adjustment pages will be pushed from pressing down buttons.
  * - The user will have the option to adjust pneumatic setting with the encoder knob and the keypad.
  * - On the Preset Creation Page, there is an option to press down on the Preset Name, pushing up a keyboard to update and save it.
@@ -254,11 +292,34 @@
  *
  * @file SettingsProgressPage.qml
  * @brief Progress page will be displayed until system confirms that the pneumatic settings were implemented.
+ *
+ * @file PresetMaxPopup.qml
+ * @brief Popup window to be pushed if user tries to create more presets after max 12.
  * @}
  */
 
 /**
  * @ingroup pagesModule
+ * @defgroup jetActiveModule Shutdown Pages
+ * @{
+ * @brief The following pages relate to a popup window that would be display before the Dehumidifcation Procedure and Shutdown Procedure.
+ * @details
+ *
+ * ## Jet Active Popup Window
+ *
+ * A Popup window will be displayed based on the different criterias met before Shutting Down or Dehumidifying.
+ * - If the Auxiliary Line is Active.
+ * - If the Jet and Auxiliary Lines are Active.
+ * - If the Manual Mode is Active.
+ * - If the Manual Mode and Auxiliary Line is Active.
+ *
+ * @file JetActiveConfirmation.qml
+ * @brief Popup window will be display before the shutdown procedure if system is still ventilating.
+ * @}
+ */
+
+/**
+ * @ingroup jetActiveModule
  * @defgroup dehumidificationModule Dehumidification Pages
  * @{
  * @brief The following pages allow the user to initiate the dehumidification procedure.
@@ -266,11 +327,11 @@
  *
  * ## Dehumidification
  *
- * Before shutting the system down, it is important for the user to dehumidify the system to ensure the remaining water won't damage or corrode different parts. This is the reason why the option to dehumidify is also available on shutdown and on other pages. Dehumidification should only be required if the Humidity percentage is greater than or equal to 30% and water is running through the Jet or Auxiliary Lines.
+ * Before shutting the system down, it is important for the user to dehumidify the system to ensure the remaining water won't damage or corrode different parts. This is the reason why the option to dehumidify is also available on shutdown and on other pages. Dehumidification should only be required if the \htmlonly Humidity \endhtmlonly percentage is greater than or equal to 30% and water is running through the Jet or Auxiliary Lines.
  * The Dehumdification Procedure will go as followed:
  * - Pressing down on any of the dehumidification options will begin the procedure.
- *   - If the system is ventilating, a popup window will be displayed where the user will be required to stop ventilation on the Jet and Auxiliary Lines.
  * - A popup window will be displayed to describe how the procedure will work and how parameter must be met.
+ *   - If the system is ventilating, the inputs to continue will be disabled and text will change until ventilation stops.
  * - The next popup will require the user to input a checklist before dehumifiying.
  * - While the system is dehumidifying, the progress page will be displayed where a countdown timer will be displayed for 2 minutes.
  * - After dehumidification is complete, one of two popups will be displayed:
@@ -278,7 +339,7 @@
  *   - The "Dehumidification Failure Popup" where the user as the option to restart dehumidification.
  *
  * @file DehumidificationDisconnection.qml
- * @brief Popup window to begin the dehumidification procedure. The @ref JetActiveConfirmation.qml "Jet and Aux Line Active Window" may be displayed system is still ventilating.
+ * @brief Popup window to begin the dehumidification procedure.
  *
  * @file DehumidificationChecklist.qml
  * @brief Popup window to input checklist to insure that criteria is met before beginning dehumdification.
@@ -291,6 +352,28 @@
  *
  * @file DehumidificationFailure.qml
  * @brief Popup window is displayed when dehumidification is completed but failed.
+ * @}
+ */
+
+/**
+ * @ingroup jetActiveModule
+ * @defgroup shutdownProcedureModule Shutdown Procedure Pages
+ * @{
+ * @brief The following pages will be utilized for the Shutdown Procedure.
+ * @details
+ *
+ * ## Shutdown Procedure Popups
+ *
+ * If the user presses the power button, a popup window will be displayed with options to continue with shutdown or begin dehumidification before shutdown. The system cannot continue to ventilate while shutting down. If the system is still ventilating, all inputs will be disabled. If the user starts ventilating while on the shutdown popup, the options to continue with shutdown or dehumidification will be disabled, and will be enabled once user stops ventilating. After dehumidification (success or failure), the user will have the option to continue with shutdown or not.
+ *
+ * @file ShutdownConfirmation.qml
+ * @brief Popup window to confirm the shutdown of the system from the power button. There is also an option to dehumidify before shutting down.
+ *
+ * @file ContinueShutdown.qml
+ * @brief Popup window will appear after dehumidifying to continue with shutdown.
+ *
+ * @file ShutdownConfirmation.qml
+ * @brief Progress page before system shutdown completely.
  * @}
  */
 
@@ -310,31 +393,6 @@
  *
  * @file ScreenLockOverlay.qml
  * @brief Transparent Overlay that fills entire screen to prevent input like pneumatic setting adjustments. Popup window will be displayed if input is triggered. Push down encoder knob to exit out.
- * @}
- */
-
-/**
- * @ingroup pagesModule
- * @defgroup shutdownProcedureModule Shutdown Procedure Pages
- * @{
- * @brief The following pages will be utilized for the Shutdown Procedure.
- * @details
- *
- * ## Shutdown Procedure Popups
- *
- * If the user presses the power button, a popup window will be displayed with options to continue with shutdown or begin dehumidification before shutdown. The system cannot continue to ventilate while shutting down. If the system is still ventilating another popup will be displayed to turn off Jet or Auxiliary Line beforehand. If the user starts ventilating while on the shutdown popup, the options to continue with shutdown or dehumidification will be disabled, and will be enabled once user stops ventilating. After dehumidification (success or failure), the user will have the option to continue with shutdown or not.
- *
- * @file JetActiveConfirmation.qml
- * @brief Popup window will be display before the shutdown procedure if system is still ventilating.
- *
- * @file ShutdownConfirmation.qml
- * @brief Popup window to confirm the shutdown of the system from the power button. There is also an option to dehumidify before shutting down.
- *
- * @file ContinueShutdown.qml
- * @brief Popup window will appear after dehumidifying to continue with shutdown.
- *
- * @file ShutdownConfirmation.qml
- * @brief Progress page before system shutdown completely.
  * @}
  */
 
@@ -372,15 +430,15 @@
  *
  * The Setting Menu where the user can access multiple pages where the user can update important aspects of the NVENT-Vita, including the following:
  * - <b>Stacking Pressure:</b> The page where the user can update the visibility for the blue line on the graph.
- * - <b>Laser-Safe O<sub>2</sub>:</b> The page where the user can adjust the oxygen concentration for the Laser-Safe Mode.
+ * - <b>Limited O<sub>2</sub>:</b> The page where the user can adjust the oxygen concentration for the Limited O<sub>2</sub> Mode.
  * - <b>ETCO<sub>2</sub> Settings:</b> The page where the user can adjust the following Pneumatic Settings for the End-Tidal Procedure:
- *   - ETCO<sub>2</sub> Rate
+ *   - ETCO<sub>2</sub> \htmlonly Rate \endhtmlonly
  *   - ETCO<sub>2</sub> Inspiratory Time
  *   - ETCO<sub>2</sub> Number of Breaths
  *   - ETCO<sub>2</sub> Driving Pressure
  * - <b>O<sub>2</sub> Calibration:</b> The page where the user begins the O<sub>2</sub> Calibration Procedure.
- * - <b>PIP Disconnection:</b> The page where the user can enable and disable PIP Disconnection Mode.
- * - <b>Brightness and Volume:</b> The page where the user can adjust the volume of the alarm and the brightness of the screen.
+ * - <b> \htmlonly PIP \endhtmlonly Disconnection:</b> The page where the user can enable and disable PIP Disconnection Mode.
+ * - <b>Brightness and \htmlonly Volume\endhtmlonly:</b> The page where the user can adjust the volume of the alarm and the brightness of the screen.
  * - <b>About:</b> The page that displays important system data.
  *
  * ## Additional Information
@@ -398,7 +456,7 @@
  * @brief Page that allow the user to disable the Stacking Pressure line on the graph.
  *
  * @file LaserO2.qml
- * @brief Page to adjust the Oxygen Concentration for Laser-Safe mode.
+ * @brief Page to adjust the Oxygen Concentration for Limited O<sub>2</sub> mode.
  *
  * @file ETCO2Settings.qml
  * @brief Page to adjust the following pneumatic settings for ETCO<sub>2</sub>. Driving pressure, Inspiratory Time, Rate, and Number of Breaths.
@@ -426,11 +484,11 @@
  *
  * ### Adjusting Brightness
  *
- * Turning the encoder knob will increase or decrease the brightness of the screen and directly communicate with the brightness manager.
+ * Turning the encoder knob will increase or decrease the brightness of the screen and directly communicate with the brightness manager. To save Brightness, user will be required to press down on Save Button or the encoder knob.
  *
  * ### Adjusting Volume
  *
- * Turning the encoder knob will increase or decrease the volume used for the warning alarms. An alarm sound will be made after every turn indicate what the actual volume will sound like.
+ * Turning the encoder knob will increase or decrease the volume used for the warning alarms. An alarm sound will be made after every turn indicate what the actual volume will sound like. To save \htmlonly Volume\endhtmlonly, user will be required to press down on Save Button or the encoder knob.
  *
  * @file VolumeAndBrightness.qml
  * @brief Page to adjust the brightness of the screen and the volume of the alarm.
@@ -460,6 +518,7 @@
  * - Serial Number for the device.
  * - IP Address with option to refresh if device needs to reconnect with ethernet cable.
  * - Option to update preset passcode.
+ * - \htmlonly Switch \endhtmlonly digital clock between Daylight Savings Time and Standard Time
  *
  * ## Additional Information
  * Additonal Information for Passcode Pages available in the following link: @ref passcodeModule "Passcode Change"
@@ -540,7 +599,7 @@
  *   - Phone Number
  *   - Email / Website
  * - The options to update the date, time, and time zone for the digital clock. A popup window will be pushed up for part of the digital clock to be updated.
- * - The option to update the last and next service dates, popup windows are also constructed from @ref UpdateDate.qml "Date Popup Window".
+ * - The option to update the last and next service dates, popup windows are also constructed from @ref DatePopup.qml "Date Popup Window".
  * - Software Version Numbers for Display, System, and HMI Controller.
  * - Serial Number for the device.
  * - IP Address with option to refresh if device needs to reconnect with ethernet cable.
@@ -612,7 +671,7 @@
  * The sensors that need to be calibrated on the page include:
  * - Inlet Air
  * - Inlet O<sub>2</sub>
- * - PIP
+ * - \htmlonly PIP \endhtmlonly
  * - SP
  *
  * There will also be an option verify sensor calibration.
@@ -639,7 +698,7 @@
  * ## PIP and SP Zeroing and Verifying
  *
  * The user should not see values greater than 0 if the system isn’t ventilating. The service technician can conduct calibration
- * by zeroing the measured values for PIP and SP. Through the pop up window for each, the user can zero with the press of the
+ * by zeroing the measured values for \htmlonly PIP \endhtmlonly and SP. Through the pop up window for each, the user can zero with the press of the
  * button. A success or failure icon will be displayed based on the results. For the verification,
  * the user will need to use a verification tool for manually produce values up to 100.
  *
@@ -663,13 +722,13 @@
  * @brief Page to begin calibration and verification for SP.
  *
  * @file CalibrationPIP.qml
- * @brief Page to begin calibration and verification for PIP.
+ * @brief Page to begin calibration and verification for \htmlonly PIP \endhtmlonly.
  *
  * @file CalibrationInletAir.qml
  * @brief Page to begin calibration and verification for Inlet Air.
  *
  * @file CalibrationInletO2.qml
- * @brief Page to begin calibration and verification for Inlet O2.
+ * @brief Page to begin calibration and verification for Inlet O<sub>2</sub>.
  *
  * @file CalibrationDrivingPressure.qml
  * @brief Page to begin calibration procedures for Low Driving Pressure Regulator and High Driving Pressure Regulator.

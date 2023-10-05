@@ -33,10 +33,10 @@
  * The banner that will always be displayed at the top of the screen that will will display all the warnings on the system.
  *
  * Inputs on the warning banner include the following:
- * - <b>Warning Flag Icon:</b> Input used to show or hide more than one warning on the warning banner.
- * - <b>Warning Silence Button:</b> Button used to silence the alarm for warning on the warning banner.
- * - <b>Warning Troubleshoot Button:</b> Button used to push up the popup windows for troubleshooting steps for warnings on the warning banner.
- * - <b>Warning Clear Button:</b> Button used to clear warning on warning banner.
+ * - <b>\htmlonly Warning \endhtmlonly Flag Icon:</b> Input used to show or hide more than one warning on the warning banner.
+ * - <b>\htmlonly Warning \endhtmlonly Silence Button:</b> Button used to silence the alarm for warning on the warning banner.
+ * - <b>\htmlonly Warning \endhtmlonly Troubleshoot Button:</b> Button used to push up the popup windows for troubleshooting steps for warnings on the warning banner.
+ * - <b>\htmlonly Warning \endhtmlonly Clear Button:</b> Button used to clear warning on warning banner.
  *
  * ## Other Objects
  *
@@ -72,7 +72,7 @@
  * - <b>Menu Buttons:</b> Buttons only used to push up pages and popup windows from the navigation sidebar.
  * - <b>Number and Keyboard Buttons:</b> Buttons used only for keyboards and keypads.
  * - <b>Pneumatic Button:</b> The buttons pushes up the adjustment pages and displays the measured and set values for pneumatic settings.
- * - <b>Humidity Button:</b> Functions similarly to the Pneumatic Button, except that it displays the two humidities on the same button when separate humidities mode is enabled.
+ * - <b>\htmlonly Humidity \endhtmlonly Button:</b> Functions similarly to the Pneumatic Button, except that it displays the two humidities on the same button when separate humidities mode is enabled.
  * - <b>Preset Button:</b> Composed of multiple inputs to push up popup window to implement preset, and the pages to edit or delete presets.
  * - <b>Save Button:</b> Button used to confirm the update to the pnenumatic settings on adjustment pages.
  * - <b>Start Button:</b> Button used to start Air and O2 Calibration Procedures.
@@ -86,8 +86,9 @@
  * Mostly utilized for different modes on the display and the system.
  *
  * Switches on the display include the following:
- * - <b>Line Switch:</b> Switch used to show and hide the blue lines on the graph.
- * - <b>Mode Switch:</b> Switches used to enable or disable different op modes, include Laser-Safe, Manual, and PIP Disconnection.
+ * - <b>Daylight Saving Time \htmlonly Switch\endhtmlonly:</b> \htmlonly Switch \endhtmlonly used to switch between daylight savings time to standard time.
+ * - <b>Line \htmlonly Switch\endhtmlonly:</b> \htmlonly Switch \endhtmlonly used to show and hide the blue lines on the graph.
+ * - <b>Mode \htmlonly Switch\endhtmlonly:</b> Switches used to enable or disable different op modes, include Limited O<sub>2</sub>, Manual, and PIP Disconnection.
  *
  * ## Keyboards and Keypads
  *
@@ -128,7 +129,7 @@
  *   - Cancel Button
  *   - Save Button
  *   - Keypad Button: Switches to keypad layout page.
- *   - PIP Disconnection Button: Only available on the PIP Adjustment Page, and allows the user to disable PIP Disconnection Mode.
+ *   - \htmlonly PIP \endhtmlonly Disconnection Button: Only available on the \htmlonly PIP \endhtmlonly Adjustment Page, and allows the user to disable \htmlonly PIP \endhtmlonly Disconnection Mode.
  * - <b>Generic Dial Mini:</b> Smaller version of the Generic Dial with no cancel, save, keypad, or help icon buttons. Only available on Service Menu O<sub>2</sub> Calibration page.
  * - <b>Mode Setting Dial:</b> Used similarly to Generic Dial, but used for Pneumatic Settings related to Op Modes and include the following:
  *   - Dial Display
@@ -142,9 +143,11 @@
  *   - High Setting Confirmation Windows
  *   - Sensor Calibration Windows
  *   - Service Exporting Windows
- * - <b>Reverse Sliding Box Popup Window:</b> A popup window where it slides up from the bottom of the screen to the center.
- *   The popup windows are built from keyboard and keypad layouts.
- *
+ * - <b>Reverse Sliding Box Popup Window:</b> A popup window where it slides up from the bottom of the screen to the center. The popup windows are built from keyboard and keypad layouts.
+ * - <b>Mode \htmlonly Switch \endhtmlonly Confirmation Popup Window:</b> Popup Window displayed to continue the process of enabling the following Op Modes:
+ *   - ETCO<sub>2</sub> Mode
+ *   - Limited O<sub>2</sub> Mode
+ *   - Manual Mode
  *
  * @file ContactKeyboard/ContactKeyboardButton.qml
  * @brief Button used for keyboard to enter contact information.
@@ -174,7 +177,10 @@
  * @brief Keypad used to adjust pneumatic settings.
  *
  * @file CalibrateButton.qml
- * @brief Button used used to initiate calibration, including Sensors, Pressure Regulators, and O2 Calibration.
+ * @brief Button used to initiate calibration, including Sensors, Pressure Regulators, and O2 Calibration.
+ *
+ * @file CalibrationOptionsButton.qml
+ * @brief Button used to begin calibration procedures.
  *
  * @file CancelButton.qml
  * @brief Button used to exit back to previous page.
@@ -315,7 +321,10 @@
  * @brief Large banner icon at the top of the screen to display all warnings and alarms triggered in the system.
  *
  * @file WarningBannerAlarmIcon.qml
- * @brief Icon that displays the number of warnings. Pushing down shows and hides up to warnings at once.
+ * @brief Icon that displays one alarm. Pushing down shows and hides up to 3 warnings at once.
+ *
+ * @file WarningBannerAlarmIcons.qml
+ * @brief Icon that displays the number of different alarms. Pushing down shows and hides up to 3 warnings at once.
  *
  * @file WarningBannerModel.qml
  * @brief Layout for each warning on the warning banner, which includes title, color, and built-in troubleshoot and silence buttons.

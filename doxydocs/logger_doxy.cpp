@@ -39,7 +39,7 @@
 /**
  * @ingroup loggerModule
  * @defgroup o2CalManagerModule O2 Calibration Manager
- * @brief Documentation for how O2 Calibration values are stored on the Display Controller.
+ * @brief Documentation for how O<sub>2</sub> Calibration values are stored on the Display Controller.
  */
 
 /**
