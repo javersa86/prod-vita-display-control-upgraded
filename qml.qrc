@@ -5,7 +5,7 @@
         <file>qml/Pages/numeric_ui.qml</file>
         <file>qml/Pages/Humidity/HumidityAdjustment.qml</file>
         <file>qml/Pages/Humidity/HumidityUnifiedDial.qml</file>
-        <file alias="qml/CustomObjects/SettingButton">qml/Pages/Humidity/HumiditySeparatedDial.qml</file>
+        <file>qml/Pages/Humidity/HumiditySeparatedDial.qml</file>
         <file>qml/Pages/Humidity/HumidityKeypad.qml</file>
         <file>qml/Pages/Humidity/HumiditySeparatedKeypad.qml</file>
         <file>qml/Pages/SingleJet.qml</file>
@@ -180,6 +180,7 @@
         <file>qml/CustomObjects/WarningBannerAlarmIcons.qml</file>
         <file>qml/iconography/icon_40_alarm_2.svg</file>
         <file>qml/iconography/icon_40_alarm_3.svg</file>
+        <file>qml/CustomObjects/SettingButton.qml</file>
         <file>qml/Pages/PresetMaxPopup.qml</file>
         <file>qml/CustomObjects/DaylightSwitch.qml</file>
     </qresource>
