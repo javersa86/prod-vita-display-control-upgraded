@@ -28,6 +28,7 @@ Button {
 
     property int step
     property int setting_id
+    property int minOn
     property string helpText
 
     property var scalingY

@@ -300,15 +300,13 @@ Button {
             width: 194
             color: Style.transparent
 
-            property bool oxygen_state: (state_manager.ventilating || state_manager.aux > 0) && !adjustmentState
-
             Text {
                 id: measuredValue
-                font: measuredUnitTitleBox.oxygen_state ? Style.setFont : Style.measuredFont
+                font: !adjustmentState ? Style.setFont : Style.measuredFont
                 color: Style.primary_light
                 anchors.horizontalCenter: parent.horizontalCenter
-                y: measuredUnitTitleBox.oxygen_state ? 30 : 0
-                visible: !placeHolderText.visible
+                y: !adjustmentState ? 30 : 0
+                visible: (state_manager.ventilating || state_manager.aux > 0)
             }
 
             ProgressDisplayMeasureValue
@@ -316,7 +314,7 @@ Button {
                 id: measuredSpinner
                 anchors.horizontalCenter: parent.horizontalCenter
                 y: 10
-                visible: measuredUnitTitleBox.oxygen_state
+                visible: (state_manager.ventilating || state_manager.aux > 0) && !adjustmentState
                 colorState: warningDisplayed
 
                 onPressAndHold:
@@ -324,16 +322,6 @@ Button {
                     pneumatic_button.color = Style.primary_light_selected
                     pneumatic_button.delay(50)
                 }
-            }
-
-            Text {
-                id: placeHolderText
-                text: "-"
-                font: Style.measuredFont
-                color: Style.primary_light
-                anchors.horizontalCenter: parent.horizontalCenter
-                y: 0
-                visible: !(state_manager.ventilating || state_manager.aux > 0)
             }
 
             Text{
