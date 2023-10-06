@@ -268,6 +268,7 @@ Rectangle{
                                     "helpText": helpText
                                 }
                                 )
+                }
 
                 Connections
                 {
