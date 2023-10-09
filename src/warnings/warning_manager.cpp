@@ -112,10 +112,10 @@ void WarningManager::setActiveWarnings(QVector<unsigned char> *warnings )
         }
 
         //Updates service due.
-        if (m_notices.at(8) != m_service_due_state)
+        if (m_notices.at(7) != m_service_due_state)
         {
             changed = 1;
-            m_notices.replace(8,m_service_due_state);
+            m_notices.replace(7,m_service_due_state);
         }
 
         if(changed)
