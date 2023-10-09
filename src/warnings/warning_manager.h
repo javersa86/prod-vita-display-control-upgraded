@@ -71,6 +71,8 @@ class WarningManager : public QObject
 
         unsigned char m_service_state = 0;
 
+        unsigned char m_service_due_state = 0;
+
         /**
         * @brief Raise a "No Comm" warning if warnings are not updated.
         */
@@ -274,6 +276,13 @@ class WarningManager : public QObject
         * @callergraph
         */
         int getLaserWarning();
+
+        /**
+         * @brief Updates Service Due Warning.
+         * @param state
+         * @callergraph
+         */
+        void updateServiceAlarm(unsigned char state);
 
     private:
         /**
