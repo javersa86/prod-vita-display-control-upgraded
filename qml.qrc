@@ -182,5 +182,6 @@
         <file>qml/iconography/icon_40_alarm_3.svg</file>
         <file>qml/Pages/PresetMaxPopup.qml</file>
         <file>qml/CustomObjects/DaylightSwitch.qml</file>
+        <file>qml/CustomObjects/Keyboard/MachineKeyboardButton.qml</file>
     </qresource>
 </RCC>

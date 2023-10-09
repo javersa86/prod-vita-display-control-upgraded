@@ -56,3 +56,20 @@ void VersionManager::updateSerialNumber(QString serial)
     updateVersions();
 
 }
+
+void VersionManager::addDigit(QString input)
+{
+    if (m_serialNumber.size() >= 8) return;
+
+    m_serialNumber = m_serialNumber + input;
+    emit versionChanged();
+}
+
+
+void VersionManager::removeDigit()
+{
+    if (m_serialNumber.size() > 0)
+    {
+        m_serialNumber = m_serialNumber.left(m_serialNumber.size() - 1);
+    }
+}

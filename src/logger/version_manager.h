@@ -104,6 +104,9 @@ class VersionManager: public QObject
 
         void updateSerialNumber(QString serial);
 
+        void addDigit(QString input);
+        void removeDigit();
+
     signals:
 
         /**
