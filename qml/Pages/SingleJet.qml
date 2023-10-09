@@ -40,6 +40,7 @@ Rectangle {
     Component.onCompleted: {
         graph_timer.start();
         pip_update_timer.start();
+        maintenance_manager.startTimer();
         version_manager.logVersions();
 
         if (state_manager.laser_mode) lm_switch.checked = true
@@ -148,7 +149,7 @@ Rectangle {
 
           Image {
             id: pip_mode_icon
-            visible:enabled
+            visible:(pipModeFlag && !homeIcon.visible)
 
             source: "../iconography/icon_40_alarm_3.svg"
             width:pip_mode_indicator.width

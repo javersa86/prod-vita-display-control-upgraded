@@ -193,6 +193,13 @@ class Backend : public QObject
          */
         void initDehumidification(unsigned char);
 
+        /**
+         * @brief Raises the Service Due Warning from the display.
+         * @param state
+         * @callergraph
+         */
+        void serviceAlarmSlot(unsigned char state);
+
         /*--Start Up----------------------------------------------------------------------*/
 
         /**
