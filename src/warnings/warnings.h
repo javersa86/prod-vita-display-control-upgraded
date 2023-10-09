@@ -36,7 +36,7 @@
 /**
  * @brief Beginning index for notices sent for system.
  */
-#define BEGIN_NOTICE_INDEX 51
+#define BEGIN_NOTICE_INDEX 52
 
 /**
  * @brief Constant value that represent patient warnings.
@@ -840,6 +840,19 @@ public:
 };
 
 /**
+ * @brief Class for Internal Temp High Warnings.
+ */
+class InternalTempHigh: public SystemWarning
+{
+public:
+    /**
+     * @brief Contructor Method.
+     */
+    InternalTempHigh(const int &id, const QVector<QString> &troubleshooting =
+            QVector<QString>({QStringLiteral("Check that the exhaust fan (located on the device posterior) is not blocked.")}), const QString &title = QStringLiteral("Internal System Temperature High"));
+};
+
+/**
  * @brief Notices are low priority for they act as small reminders for procedure updates and small system changes.
  */
 class Notice : public Warning
@@ -908,19 +921,6 @@ public:
      */
     LowStaticAirPressure(const int &id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The input air pressure is below 35 PSI.")}), const QString &title = QStringLiteral("Low Static Air Pressure"));
-};
-
-/**
- * @brief Class for Internal Temp High Warnings.
- */
-class InternalTempHigh: public Notice
-{
-public:
-    /**
-     * @brief Contructor Method.
-     */
-    InternalTempHigh(const int &id, const QVector<QString> &troubleshooting =
-            QVector<QString>({QStringLiteral("Check that the exhaust fan (located on the device posterior) is not blocked.")}), const QString &title = QStringLiteral("Internal Temperature High"));
 };
 
 /**
