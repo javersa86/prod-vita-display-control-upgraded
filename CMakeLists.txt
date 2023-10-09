@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5.0)
 
 
 #Update the version of the software here
-project(nvent-vita-display LANGUAGES CXX VERSION 21.1.5)
+project(nvent-vita-display LANGUAGES CXX VERSION 1.1.2)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
