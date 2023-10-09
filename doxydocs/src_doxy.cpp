@@ -557,12 +557,22 @@
  *     - Contact support @ 888-730-5463
  *      </td>
  *      <td></td>
- *
+ *  </tr>
+ *  <tr>
+ *      <th style="background-color: #4A5AE4; border-color: #202531">Internal System Temperature High</th>
+ *      <td></td>
+ *      <td>51</td>
+ *      <td>System</td>
+ *      <td>Clear After Resolved</td>
+ *      <td>
+ *     - Check that the exhaust fan (located on the device posterior) is not blocked.
+ *      </td>
+ *      <td></td>
  *  </tr>
  *  <tr>
  *      <th style="background-color: #6FCC68; border-color: #202531">Limited O<sub>2</sub> Safe</th>
  *      <td>Triggered when Limited O<sub>2</sub> is enabled and the oxygen measurement is within the Limited O<sub>2</sub> Oxygen Concentration Range.</td>
- *      <td>51</td>
+ *      <td>52</td>
  *      <td>\htmlonly Notice \endhtmlonly</td>
  *      <td>Clear Autonomously</td>
  *      <td>
@@ -575,7 +585,7 @@
  *  <tr>
  *      <th style="background-color: #E2C044; border-color: #202531">Limited O<sub>2</sub> Prepping</th>
  *      <td>Triggered when Limited O<sub>2</sub> is enabled and the oxygen measurement is outside of the Limited O<sub>2</sub> Oxygen Concentration Range.</td>
- *      <td>52</td>
+ *      <td>53</td>
  *      <td>\htmlonly Notice \endhtmlonly</td>
  *      <td>Clear Autonomously</td>
  *      <td>
@@ -586,7 +596,7 @@
  *  <tr>
  *      <th style="background-color: #E2C044; border-color: #202531">Low Static O<sub>2</sub> Pressure</th>
  *      <td></td>
- *      <td>53</td>
+ *      <td>54</td>
  *      <td>System</td>
  *      <td>Clear Autonomously</td>
  *      <td>
@@ -597,22 +607,11 @@
  *  <tr>
  *      <th style="background-color: #E2C044; border-color: #202531">Low Static Air Pressure</th>
  *      <td></td>
- *      <td>54</td>
+ *      <td>55</td>
  *      <td>System</td>
  *      <td>Clear Autonomously</td>
  *      <td>
  *     - The input air pressure is below 35 PSI.
- *      </td>
- *      <td></td>
- *  </tr>
- *  <tr>
- *      <th style="background-color: #E2C044; border-color: #202531">Internal Temperature High</th>
- *      <td></td>
- *      <td>55</td>
- *      <td>System</td>
- *      <td>Clear After Resolved</td>
- *      <td>
- *     - Check that the exhaust fan (located on the device posterior) is not blocked.
  *      </td>
  *      <td></td>
  *  </tr>
