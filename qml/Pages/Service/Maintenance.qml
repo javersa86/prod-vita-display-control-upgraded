@@ -27,6 +27,27 @@ Rectangle{
     property StackView popupStack
     property Item updateDatePage
 
+    Connections
+    {
+        target: updateDatePage
+
+        onNextDateColor:
+        {
+            var tmpDateTimeText = time_manager.currentDateTime;
+            var dateTimeText = tmpDateTimeText.split(" ")[0];
+            var currentDate = new Date(dateTimeText);
+            var someDate = new Date(d);
+            if (someDate - currentDate > 0)
+            {
+                nextServiceDate.color = Style.primary_light
+            }
+            else
+            {
+                nextServiceDate.color = Style.pip
+            }
+        }
+    }
+
     Rectangle
     {
         id: mainContainer
@@ -35,6 +56,23 @@ Rectangle{
         x: 100
         y: .17 * parent.height
         color: Style.transparent
+
+
+        Component.onCompleted:
+        {
+            var tmpDateTimeText = time_manager.currentDateTime;
+            var dateTimeText = tmpDateTimeText.split(" ")[0];
+            var currentDate = new Date(dateTimeText);
+            var someDate = Date.fromLocaleString(Qt.locale(), maintenance_manager.nextServiceDate, "MM/dd/yyyy")
+            if (someDate - currentDate > 0)
+            {
+                nextServiceDate.color = Style.primary_light
+            }
+            else
+            {
+                nextServiceDate.color = Style.pip
+            }
+        }
 
         Rectangle
         {
@@ -317,25 +355,12 @@ Rectangle{
                         font:Style.settingPageTitle
                         anchors.centerIn: parent
                     }
-                    Component.onCompleted:
-                    {
-                        var currentDate = new Date();
-                        var someDate = Date.fromLocaleString(Qt.locale(), maintenance_manager.nextServiceDate, "MM/dd/yyyy")
-                        if (someDate - currentDate > 0)
-                        {
-                            nextServiceDate.color = Style.primary_light
-                        }
-                        else
-                        {
-                            nextServiceDate.color = Style.pip
-                        }
-                    }
                     MouseArea
                     {
                         anchors.fill: parent
                         onClicked:
                         {
-                            root_window.popupStack.push("DatePopup.qml",
+                            root_window.updateDatePage = root_window.popupStack.push("DatePopup.qml",
                                                         {
                                                             "popupStack" : popupStack,
                                                             "titleStr" : "Maintenance: Next Service Date",

@@ -214,7 +214,9 @@ Rectangle{
                     }
                     Component.onCompleted:
                     {
-                        var currentDate = new Date();
+                        var tmpDateTimeText = time_manager.currentDateTime;
+                        var dateTimeText = tmpDateTimeText.split(" ")[0];
+                        var currentDate = new Date(dateTimeText);
                         var someDate = Date.fromLocaleString(Qt.locale(), maintenance_manager.nextServiceDate, "MM/dd/yyyy")
                         if (someDate - currentDate > 0)
                         {

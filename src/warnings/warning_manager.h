@@ -71,6 +71,8 @@ class WarningManager : public QObject
 
         unsigned char m_service_state = 0;
 
+        unsigned char m_service_due_state = 0;
+
         /**
         * @brief Raise a "No Comm" warning if warnings are not updated.
         */
@@ -275,6 +277,13 @@ class WarningManager : public QObject
         */
         int getLaserWarning();
 
+        /**
+         * @brief Updates Service Due Warning.
+         * @param state
+         * @callergraph
+         */
+        void updateServiceAlarm(unsigned char state);
+
     private:
         /**
          * @brief Constant array for all warnings on the system.
@@ -332,12 +341,12 @@ class WarningManager : public QObject
             JetWaterSensorFailure(48),
             AuxWaterSensorFailure(49),
             AmbientTempSensorDefect(50),
+            InternalTempHigh(51),
 
-            LaserOK(51),
-            LaserPrepping(52),
-            LowStaticO2Pressure(53),
-            LowStaticAirPressure(54),
-            InternalTempHigh(55),
+            LaserOK(52),
+            LaserPrepping(53),
+            LowStaticO2Pressure(54),
+            LowStaticAirPressure(55),
             ManualModePIPMonitoringRecommended(56),
             PIPMonitoringRecommended(57),
             ETCO2Active(58),
