@@ -102,6 +102,8 @@ class VersionManager: public QObject
          */
         void logVersions();
 
+        void updateSerialNumber(QString serial);
+
     signals:
 
         /**

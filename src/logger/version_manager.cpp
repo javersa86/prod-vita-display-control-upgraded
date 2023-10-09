@@ -47,3 +47,12 @@ void VersionManager::logVersions()
     qInfo() << "NVENT" << "," << "HMI VERSION" << "," << m_hmiVersion;
     qInfo() << "NVENT" << "," << "SERIAL NUMBER" << "," << m_serialNumber;
 }
+
+void VersionManager::updateSerialNumber(QString serial)
+{
+    std::vector<std::string> vector2 = {SERIAL_NUMBER,serial.toStdString()};
+    m_versionCsvManager.updateRecord(1,&vector2[0]);
+
+    updateVersions();
+
+}
