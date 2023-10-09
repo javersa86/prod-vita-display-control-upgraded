@@ -13,7 +13,7 @@
 /**
  * @brief Constant for number of warnings in system.
  */
-#define NUM_WARNINGS 71
+#define NUM_WARNINGS 72
 
 /**
  * @brief Constant for number of bytes used for warnings in notification vector.
@@ -65,6 +65,7 @@
  *          - Confirm DPR Calibration Request: 19
  *          - Enable Pressure Sensor Zero Request: 20
  *          - Service Notification Received: 21
+ *          - Service Calibration Response: 22
  */
 enum class txOpCodes
 {
@@ -95,7 +96,8 @@ enum class txOpCodes
     DISPLAY_CONFIRM_DPR_CAL_REQUEST = 19, // Useless
     DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST = 20,
 
-    DISPLAY_SERVICE_NOTIFICATION_RECEIVED = 21
+    DISPLAY_SERVICE_NOTIFICATION_RECEIVED = 21,
+    DISPLAY_SERVICE_CALIBRATION_RESPONSE = 22
 };
 
 /**
@@ -123,6 +125,7 @@ enum class txOpCodes
  *          - Confirm DPR Calibration Request: 1
  *          - Enable Pressure Sensor Zero Request: 2
  *          - Service Notification Received: 1
+ *          - Service Calibration Response: 33
  */
 enum class txLengths
 {
@@ -154,7 +157,8 @@ enum class txLengths
     DISPLAY_CONFIRM_DPR_CAL_REQUEST = 1,
     DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST = 6,
 
-    DISPLAY_SERVICE_NOTIFICATION_RECEIVED = 1
+    DISPLAY_SERVICE_NOTIFICATION_RECEIVED = 1,
+    DISPLAY_SERVICE_CALIBRATION_RESPONSE = 1 + 8 * 4,
 };
 
 /**
@@ -182,6 +186,7 @@ enum class txLengths
  *          - Confirm DPR Calibration Response: 119
  *          - Enable Pressure Sensor Zero Response: 120
  *          - Service Notification Update: 121
+ *          - Service Calibration Request: 122
  */
 enum class rxOpCodes
 {
@@ -213,7 +218,8 @@ enum class rxOpCodes
     SYSTEM_CONFIRM_DPR_CAL_RESPONSE = 119,
     SYSTEM_ENABLE_PRESSURE_SENSOR_ZERO_RESPONSE = 120,
 
-    SYSTEM_SERVICE_NOTIFICATION_UPDATE = 121
+    SYSTEM_SERVICE_NOTIFICATION_UPDATE = 121,
+    SYSTEM_SERVICE_CALIBRATION_REQUEST = 122
 };
 
 /**
@@ -239,8 +245,9 @@ enum class rxOpCodes
  *          - Enable DPR Calibration Response: 1
  *          - Set DPR Calibration Value Response: 1
  *          - Confirm DPR Calibration Response: 1
- *          - Enable Pressure Sensor Zero Response: 1
- *          - Service Notification Update: 16
+ *          - Enable Pressure Sensor Zero Response: 3
+ *          - Service Notification Update: 21
+ *          - Service Calibration Request: 1
  */
 enum class rxLengths
 {
@@ -272,6 +279,7 @@ enum class rxLengths
     SYSTEM_CONFIRM_DPR_CAL_RESPONSE = 1,
     SYSTEM_ENABLE_PRESSURE_SENSOR_ZERO_RESPONSE = 3,
 
-    SYSTEM_SERVICE_NOTIFICATION_UPDATE = 1 + NUM_SERVICE_NOTIFICATIONS*4
+    SYSTEM_SERVICE_NOTIFICATION_UPDATE = 1 + NUM_SERVICE_NOTIFICATIONS*4,
+    SYSTEM_SERVICE_CALIBRATION_REQUEST = 1
 };
 /** @} */

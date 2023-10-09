@@ -428,6 +428,14 @@ class API : public QThread
          */
         void handleInitPowerdownCommandOK(unsigned char* buffer);
 
+        /* SERVICE CALIBRATION VALUES */
+
+        /**
+         * @brief Emits calibration value request.
+         *
+         */
+        void handleServiceCalibrationRequest();
+
         /*DRIVING PRESSURE REGULATOR SET CAL VAL*/
 
         /**
@@ -546,6 +554,15 @@ class API : public QThread
          * @callergraph
          */
         void confirmPowerdown(unsigned char);
+
+        /* Service Calibration Values */
+
+        /**
+         * @brief slotServiceCalibrationResponse
+         * @param calibration_data
+         * @callergraph
+         */
+        void slotServiceCalibrationResponse(QVector<float>);
 
         /* dpr */
 
@@ -738,6 +755,14 @@ class API : public QThread
          * @callgraph
          */
         void powerdownConfirmed(unsigned char);
+
+        /* service calibration */
+
+        /**
+         * @brief Sends signal to the backend program for service calibration values.
+         * @callgraph
+         */
+        void serviceCalibrationSignal();
 
         /* dpr */
 
