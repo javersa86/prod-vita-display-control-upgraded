@@ -657,7 +657,9 @@
  *      <td>
  *     - The system is due for servicing. Schedule an appointment.
  *      </td>
- *      <td></td>
+ *      <td>
+ *     - The only notice raised exclusively from the display controller.
+ *      </td>
  *  </tr>
  *  <tr>
  *      <th style="background-color: #E2C044; border-color: #202531">Battery Replacement Due</th>
@@ -808,6 +810,8 @@
  *     - State 1: Limted O<sub>2</sub> Prepping or O<sub>2</sub> Calibration
  *     - State 2: Neither
  *   - Updates the Limted O<sub>2</sub> \htmlonly Warning \endhtmlonly Title Text based on the different states of mode adjustments.
+ * - Updates the state of the Service Due Notice.
+ *   - The only warning solely raised be the Display Software due to maintenance date data stored in display controler.
  */
 
 /**
@@ -946,10 +950,10 @@
  *      <td>10</td>
  *      <td>lpm</td>
  *      <td>0</td>
- *      <td>70</td>
+ *      <td>65</td>
  *      <td>1</td>
- *      <td>0</td>
- *      <td>71</td>
+ *      <td>3</td>
+ *      <td>66</td>
  *  </tr>
  *  <tr>
  *      <th>\htmlonly Humidity \endhtmlonly 1</th>
