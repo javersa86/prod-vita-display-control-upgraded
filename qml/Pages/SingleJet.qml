@@ -149,7 +149,7 @@ Rectangle {
 
           Image {
             id: pip_mode_icon
-            visible:enabled
+            visible:(pipModeFlag && !homeIcon.visible)
 
             source: "../iconography/icon_40_alarm_3.svg"
             width:pip_mode_indicator.width
