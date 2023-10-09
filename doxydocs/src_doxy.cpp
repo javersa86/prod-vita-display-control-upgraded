@@ -20,7 +20,7 @@
  *
  * ## Warnings
  *
- * There are a total of 70 warnings that can occur while running the NVENT-VITA. While the system determines which warnings need to be displayed and the alarms that need to be played, the display manages the data and procedures needed to handle and dismiss those warnings.
+ * There are a total of <b>72</b> warnings that can occur while running the NVENT-VITA. While the system determines which warnings need to be displayed and the alarms that need to be played, the display manages the data and procedures needed to handle and dismiss those warnings.
  *
  * Each warning will consist will include:
  * - A \htmlonly Warning \endhtmlonly ID
@@ -810,7 +810,7 @@
  *     - State 1: Limted O<sub>2</sub> Prepping or O<sub>2</sub> Calibration
  *     - State 2: Neither
  *   - Updates the Limted O<sub>2</sub> \htmlonly Warning \endhtmlonly Title Text based on the different states of mode adjustments.
- * - Updates the state of the Service Due Notice.
+ * - Updates the state of the Service Due \htmlonly Notice\endhtmlonly.
  *   - The only warning solely raised be the Display Software due to maintenance date data stored in display controler.
  */
 
