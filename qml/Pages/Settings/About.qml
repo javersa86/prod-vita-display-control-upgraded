@@ -607,6 +607,43 @@ Rectangle{
                     }
                 }
             }
+
+            Rectangle
+            {
+                id: hoursOperatingBox
+                width: .5 * (.5 * parent.width)
+                height: parent.height
+                color: Style.transparent
+                anchors.left: serialNumberBox.right
+                anchors.top: ipAddressBox.bottom
+                anchors.topMargin: 8
+
+                Text {
+                    id: hoursOperatingTitle
+                    text: qsTr("Hours Operating")
+                    color:Style.primary_light
+                    font: Style.buttonFont
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+
+                }
+
+                Rectangle
+                {
+                    height: .4 * parent.height
+                    width: .8 * parent.width
+                    color: Style.transparent
+                    anchors.top: hoursOperatingTitle.bottom
+                    anchors.left: parent.left
+
+                    Text {
+                        text: "00:00"
+                        color: Style.primary_light
+                        font: Style.settingPageTitle
+                        anchors.centerIn: parent
+                    }
+                }
+            }
         }
     }
 }
