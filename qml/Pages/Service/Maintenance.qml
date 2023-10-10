@@ -675,6 +675,7 @@ Rectangle{
 
                 Rectangle
                 {
+                    id: serialNumberContainer
                     height: .4 * parent.height
                     width: .8 * parent.width
                     radius: width / 15
@@ -688,6 +689,30 @@ Rectangle{
                         color: Style.primary_light
                         font: Style.settingPageTitle
                         anchors.centerIn: parent
+                    }
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        pressAndHoldInterval: 225
+                        onPressAndHold:
+                        {
+                            serialNumberContainer.color = Style.primary_light_selected
+                            serialNumberTimer.start()
+                        }
+                    }
+                    Timer
+                    {
+                        id: serialNumberTimer
+                        interval: 50
+                        repeat: false
+
+                        onTriggered:
+                        {
+                            popupStack.push("MachinePopUp.qml", {"popupStack": popupStack})
+                            serialNumberContainer.color = Style.unclickable_border
+                            serialNumberTimer.stop()
+                        }
+
                     }
                 }
             }

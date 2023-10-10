@@ -27,7 +27,7 @@ Rectangle {
 
     Connections
     {
-        target: part_manager
+        target: version_manager
     }
 
     MouseArea
@@ -43,11 +43,11 @@ Rectangle {
         {
             if (keyId === 0)
             {
-                part_manager.addDigit(keyValue)
+                version_manager.addDigit(keyValue)
             }
             else if (keyId === 1)
             {
-                part_manager.removeDigit()
+                version_manager.removeDigit()
             }
         }
     }

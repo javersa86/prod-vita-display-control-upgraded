@@ -102,9 +102,24 @@ class VersionManager: public QObject
          */
         void logVersions();
 
+        /**
+         * @brief Manually updates the text for the Serial Number.
+         * @param serial
+         */
         void updateSerialNumber(QString serial);
+        /**
+         * @brief Confirm and saves updated to CSV file for the Serial Number.
+         */
+        void confirmSerialNumber();
 
+        /**
+         * @brief Add digit to the Serial Number.
+         * @param input
+         */
         void addDigit(QString input);
+        /**
+         * @brief Remove digit from the Serial Number.
+         */
         void removeDigit();
 
     signals:

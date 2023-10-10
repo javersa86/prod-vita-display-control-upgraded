@@ -183,5 +183,7 @@
         <file>qml/Pages/PresetMaxPopup.qml</file>
         <file>qml/CustomObjects/DaylightSwitch.qml</file>
         <file>qml/CustomObjects/Keyboard/MachineKeyboardButton.qml</file>
+        <file>qml/CustomObjects/Keyboard/MachineKeyboardLayout.qml</file>
+        <file>qml/Pages/Service/MachinePopUp.qml</file>
     </qresource>
 </RCC>
