@@ -36,7 +36,7 @@
 /**
  * @brief Beginning index for notices sent for system.
  */
-#define BEGIN_NOTICE_INDEX 50
+#define BEGIN_NOTICE_INDEX 52
 
 /**
  * @brief Constant value that represent patient warnings.
@@ -758,19 +758,6 @@ public:
 };
 
 /**
- * @brief Class for Internal Temp High Warnings.
- */
-class InternalTempHigh: public SystemWarning
-{
-public:
-    /**
-     * @brief Contructor Method.
-     */
-    InternalTempHigh(const int &id, const QVector<QString> &troubleshooting =
-            QVector<QString>({QStringLiteral("Check that the exhaust fan (located on the device posterior) is not blocked.")}), const QString &title = QStringLiteral("Internal Temperature High"));
-};
-
-/**
  * @brief Class for Dehumidification Warnings.
  */
 class DehumidificationFailed: public SystemWarning
@@ -798,32 +785,6 @@ public:
      */
     FlashError(const int &id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The system has failed to restore data from memory.")}), const QString &title = QStringLiteral("Failed to Restore Memory"));
-};
-
-/**
- * @brief Class for Low Static O2 Pressure Warnings.
- */
-class LowStaticO2Pressure: public SystemWarning
-{
-public:
-    /**
-     * @brief Contructor Method.
-     */
-    LowStaticO2Pressure(const int &id, const QVector<QString> &troubleshooting =
-            QVector<QString>({QStringLiteral("The input oxygen pressure is below 35 PSI.")}), const QString &title = QStringLiteral("Low Static O<sub>2</sub> Pressure"));
-};
-
-/**
- * @brief Class for Low Static Air Pressure Warnings.
- */
-class LowStaticAirPressure: public SystemWarning
-{
-public:
-    /**
-     * @brief Contructor Method.
-     */
-    LowStaticAirPressure(const int &id, const QVector<QString> &troubleshooting =
-            QVector<QString>({QStringLiteral("The input air pressure is below 35 PSI.")}), const QString &title = QStringLiteral("Low Static Air Pressure"));
 };
 
 /**
@@ -863,6 +824,32 @@ public:
      */
     AuxWaterSensorFailure(const int &id, const QVector<QString> &troubleshootingSteps =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Auxiliary Water Sensor Failure!"));
+};
+
+/**
+ * @brief Class for Ambient Temperature Sensor Defect Warnings
+ */
+class AmbientTempSensorDefect: public SystemWarning
+{
+public:
+    /**
+     * @brief Constructor Method.
+     */
+    AmbientTempSensorDefect(const int &id, const QVector<QString> &troubleshootingSteps =
+            QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Ambient Temperature Sensor Defect!"));
+};
+
+/**
+ * @brief Class for Internal Temp High Warnings.
+ */
+class InternalTempHigh: public SystemWarning
+{
+public:
+    /**
+     * @brief Contructor Method.
+     */
+    InternalTempHigh(const int &id, const QVector<QString> &troubleshooting =
+            QVector<QString>({QStringLiteral("Check that the exhaust fan (located on the device posterior) is not blocked.")}), const QString &title = QStringLiteral("Internal System Temperature High"));
 };
 
 /**
@@ -908,6 +895,32 @@ public:
      */
     LaserPrepping(const int &id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Limited O<sub>2</sub> mode is active. The system is prepping for laser use.")}), const QString &title = QStringLiteral("Limited O<sub>2</sub> Prepping to 21%"));
+};
+
+/**
+ * @brief Class for Low Static O2 Pressure Warnings.
+ */
+class LowStaticO2Pressure: public Notice
+{
+public:
+    /**
+     * @brief Contructor Method.
+     */
+    LowStaticO2Pressure(const int &id, const QVector<QString> &troubleshooting =
+            QVector<QString>({QStringLiteral("The input oxygen pressure is below 35 PSI.")}), const QString &title = QStringLiteral("Low Static O<sub>2</sub> Pressure"));
+};
+
+/**
+ * @brief Class for Low Static Air Pressure Warnings.
+ */
+class LowStaticAirPressure: public Notice
+{
+public:
+    /**
+     * @brief Contructor Method.
+     */
+    LowStaticAirPressure(const int &id, const QVector<QString> &troubleshooting =
+            QVector<QString>({QStringLiteral("The input air pressure is below 35 PSI.")}), const QString &title = QStringLiteral("Low Static Air Pressure"));
 };
 
 /**

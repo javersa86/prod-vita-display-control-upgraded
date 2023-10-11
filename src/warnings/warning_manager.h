@@ -71,6 +71,8 @@ class WarningManager : public QObject
 
         unsigned char m_service_state = 0;
 
+        unsigned char m_service_due_state = 0;
+
         /**
         * @brief Raise a "No Comm" warning if warnings are not updated.
         */
@@ -275,6 +277,13 @@ class WarningManager : public QObject
         */
         int getLaserWarning();
 
+        /**
+         * @brief Updates Service Due Warning.
+         * @param state
+         * @callergraph
+         */
+        void updateServiceAlarm(unsigned char state);
+
     private:
         /**
          * @brief Constant array for all warnings on the system.
@@ -331,28 +340,29 @@ class WarningManager : public QObject
             BreathTimingFailure(47),
             JetWaterSensorFailure(48),
             AuxWaterSensorFailure(49),
+            AmbientTempSensorDefect(50),
+            InternalTempHigh(51),
 
-            LaserOK(50),
-            LaserPrepping(51),
-            LowStaticO2Pressure(52),
-            LowStaticAirPressure(53),
-            InternalTempHigh(54),
-            ManualModePIPMonitoringRecommended(55),
-            PIPMonitoringRecommended(56),
-            ETCO2Active(57),
-            ServiceDue(58),
-            BatteryReplacement(59),
-            HeaterHumidiferOff(60),
-            HumidificationDeactivated(61),
-            JetHumidificationOff(62),
+            LaserOK(52),
+            LaserPrepping(53),
+            LowStaticO2Pressure(54),
+            LowStaticAirPressure(55),
+            ManualModePIPMonitoringRecommended(56),
+            PIPMonitoringRecommended(57),
+            ETCO2Active(58),
+            ServiceDue(59),
+            BatteryReplacement(60),
+            HeaterHumidiferOff(61),
+            HumidificationDeactivated(62),
             JetHumidificationOff(63),
-            AuxHumidificationOff(64),
-            AuxFlowDeactivated(65),
-            DistilledWater(66),
-            PumpsPriming(67),
-            HumidityReminder(68),
-            O2CalInProgressNoLaser(69),
-            O2CalInProgress(70)
+            JetHumidificationOff(64),
+            AuxHumidificationOff(65),
+            AuxFlowDeactivated(66),
+            DistilledWater(67),
+            PumpsPriming(68),
+            HumidityReminder(69),
+            O2CalInProgressNoLaser(70),
+            O2CalInProgress(71)
         };
         /** @} */
 };

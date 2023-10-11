@@ -272,6 +272,20 @@ int main(int argc, char *argv[])
                      &backend, &Backend::receiveHMIButtonPress,
                      Qt::QueuedConnection);
 
+
+    //SERVICE CALIBRATION
+    QObject::connect(&api, &API::serviceCalibrationSignal,
+                     &backend, &Backend::serviceCalibrationSlot,
+                     Qt::QueuedConnection);
+
+    QObject::connect(&backend, &Backend::signalServiceCalibrations,
+                     &api, &API::slotServiceCalibrationResponse,
+                     Qt::QueuedConnection);
+
+    QObject::connect(&maintenanceManager, &MaintenanceManager::alarmSignal,
+                     &backend, &Backend::serviceAlarmSlot,
+                     Qt::QueuedConnection);
+
     //GPIO
     //The knob sends increments(+/-1) and button push signals. This is used directly by the API.
     Knob knob{9, 57, 55};\

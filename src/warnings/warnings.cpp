@@ -308,12 +308,6 @@ JetWaterPumpError::JetWaterPumpError(const int &id, const QVector<QString> &trou
 
 }
 
-InternalTempHigh::InternalTempHigh(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
-    SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
-{
-
-}
-
 DehumidificationFailed::DehumidificationFailed(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
@@ -322,18 +316,6 @@ DehumidificationFailed::DehumidificationFailed(const int &id, const QVector<QStr
 
 FlashError::FlashError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
-{
-
-}
-
-LowStaticAirPressure::LowStaticAirPressure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
-    SystemWarning(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
-{
-
-}
-
-LowStaticO2Pressure::LowStaticO2Pressure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
-    SystemWarning(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
@@ -356,6 +338,18 @@ AuxWaterSensorFailure::AuxWaterSensorFailure(const int &id, const QVector<QStrin
 
 }
 
+AmbientTempSensorDefect::AmbientTempSensorDefect(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+    SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
+{
+
+}
+
+InternalTempHigh::InternalTempHigh(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+    SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
+{
+
+}
+
 LaserOK::LaserOK(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY, QStringLiteral("#6FCC68"))
 {
@@ -363,6 +357,18 @@ LaserOK::LaserOK(const int &id, const QVector<QString> &troubleshooting_steps, c
 }
 
 LaserPrepping::LaserPrepping(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+    Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
+{
+
+}
+
+LowStaticAirPressure::LowStaticAirPressure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+    Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
+{
+
+}
+
+LowStaticO2Pressure::LowStaticO2Pressure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 

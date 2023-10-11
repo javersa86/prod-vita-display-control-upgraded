@@ -237,6 +237,11 @@ void Backend::sendDehumidityValue()
     emit dehumidificationTime(m_dehumidification_seconds);
 }
 
+void Backend::serviceAlarmSlot(unsigned char state)
+{
+    m_warningManager->updateServiceAlarm(state);
+}
+
 /*------------------------START UP PATHWAY--------------------------*/
 
 void Backend::checkStartupComplete()
@@ -749,8 +754,14 @@ void Backend::initGetO2Cals()
 void Backend::initClearAlarm(int warning_id)
 {
     m_warningManager->clearWarning(warning_id);
-    m_warning_to_clear = warning_id;
 
+    if (warning_id == 59)
+    {
+        m_warningManager->updateServiceAlarm(0);
+        return;
+    }
+
+    m_warning_to_clear = warning_id;
     sendClearAlarm();
     m_message_flags[(int)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST] = 1;
 }
@@ -1072,6 +1083,23 @@ void Backend::powerdownConfirmed()
     {
         system("shutdown -h now");
     }
+}
+
+/*------------------------SERVICE CALIBRATION----------------------------------------------*/
+
+void Backend::serviceCalibrationSlot()
+{
+    QVector<float> data = QVector<float>();
+    data.append(m_zeroManager->getZeroSP());
+    data.append(m_zeroManager->getZeroPIP());
+    data.append(m_o2CalManager->getMostRecentVoltVal().at(0).toFloat());
+    data.append(m_o2CalManager->getMostRecentVoltVal().at(1).toFloat());
+    data.append(0);
+    data.append(0);
+    data.append(0);
+    data.append(0);
+    emit signalServiceCalibrations(data);
+
 }
 
 /*------------------------DRIVING PRESSURE REGULATOR SET CAL VAL---------------------------*/

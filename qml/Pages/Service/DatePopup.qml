@@ -18,6 +18,8 @@ Rectangle {
     property int stateVal: 1
     property int check
 
+    signal nextDateColor(var d)
+
     MouseArea
     {
         anchors.fill: parent
@@ -42,6 +44,7 @@ Rectangle {
             else if (check == 2)
             {
                 maintenance_manager.nextServiceDate = monthText.text + "/" + dayText.text + "/" + yearText.text
+                nextDateColor(monthText.text + "/" + dayText.text + "/" + yearText.text);
             }
             else if (check == 3)
             {

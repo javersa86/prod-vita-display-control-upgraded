@@ -189,6 +189,13 @@ class Backend : public QObject
          */
         void initDehumidification(unsigned char);
 
+        /**
+         * @brief Raises the Service Due Warning from the display.
+         * @param state
+         * @callergraph
+         */
+        void serviceAlarmSlot(unsigned char state);
+
         /*--Start Up----------------------------------------------------------------------*/
 
         /**
@@ -509,6 +516,14 @@ class Backend : public QObject
          */
         void powerdownConfirmed();
 
+        /*--SERVICE CALIBRATION-----------------------------------------------------------*/
+
+        /**
+         * @brief Sends calibration values.
+         * @callergraph
+         */
+        void serviceCalibrationSlot();
+
         /*--DRIVING PRESSURE REGULATOR SET CAL VAL----------------------------------------*/
 
         //From QML
@@ -725,6 +740,15 @@ class Backend : public QObject
          * @callgraph
          */
         void powerDownCommand(int);
+
+        /*--Service Calibration-----------------------------------------------------------*/
+
+        /**
+         * @brief Signal to send back calibration data.
+         * @param data
+         * @callgraph
+         */
+        void signalServiceCalibrations(QVector<float> data);
 
         /*--Calibrate DPR-----------------------------------------------------------------*/
 
