@@ -1241,13 +1241,13 @@
  *
  * The \htmlonly GPIO \endhtmlonly object for the \htmlonly Knob \endhtmlonly Controller allows the developer to export and set the direction and edge of a pin. If the direction is "in" (the direction is always "in'' for our case), the developer can get the value of the pin in addition to exporting the pin, opening the file descriptor, getting the file descriptor, and setting the direction and edge of the pin. In Linux, the direction, edge, and value of a pin are all saved in files once the pin is exported. To modify the direction, edge, or value, the developer just needs to modify the file. One must never modify the file of a pin with direction "in '' though. To get the direction, edge, or value of a pin, one must simply read the file.
  *
- * <b>GPIO File Directory Access</b>
+ * <b>\htmlonly GPIO \endhtmlonly File Directory Access</b>
  * There are 3 \htmlonly GPIO \endhtmlonly components to the knob controller, one representing pin A, one representing pin B, and one representing the switch used for the button.
  *
- * - /sys/class/gpio - root for where the GPIO updates any pins available
+ * - /sys/class/gpio - root for where the \htmlonly GPIO \endhtmlonly updates any pins available
  * - /sys/class/gpio/gpio9 - Pin A.
  * - /sys/class/gpio/gpio57 - Pin B.
- * - /sys/class/gpio/gpio55 - Switch Pin.
+ * - /sys/class/gpio/gpio55 - \htmlonly Switch \endhtmlonly Pin.
  *
  */
 

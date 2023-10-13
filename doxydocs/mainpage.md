@@ -15,6 +15,8 @@ This manual is divided in the following sections:
 
 The NVENT-VITA Display Controller software is the graphical user interface application that allows the user to interact with NVENT VITA’s system features. The software is designed to manage and track the different pneumatic settings, measurements, modes, data, and other features available on the device. For the display controller software, it consists of frontend components, the backend controller, and the \htmlonly API \endhtmlonly Thread where the display controller communicates with the system controller. 
 
+<b>Display Version: 1.1.5</b>
+
 ## Technologies Used
 
 The display controller software is a Qt cross platform application that utilizes QML files for the frontend and C++ header and source code for the backend. The application utilizes multiple libraries from the following modules from Qt 5.12.3: 
@@ -108,7 +110,7 @@ For when the op mode is enabled, the QThread for the knob controller will restar
 6. If the file descriptor for Pin A is updated, the state representing Pin A on the encoder object changes.
 7. If the file descriptor for Pin B is updated, the state representing Pin B on the encoder object changes.
 8. If the file descriptor for \htmlonly Switch \endhtmlonly Pin is updated, the state of the Button object changes.
-   - Thread will sleep for 75.
+   - Thread will sleep for 75 ms.
 9. At the ending, flushes out the standard output.
 
 #### Module References
