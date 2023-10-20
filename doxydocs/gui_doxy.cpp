@@ -8,17 +8,11 @@
  *
  * ## Pages
  *
- * In context to the graphical user interface, a page refers to a screen within an application
- * that presents a specific set of information or functionality to the user.
- * A page will be composed of different objects, texts, and inputs (refered to as mouse areas).
- * Each page size will match the screen size of the display controller's screen, which is 1280 x 800.
- * For popup windows, the page itself will still be 1280 x 800, but the background will be transparent and the middle section will be composed of a rectangular box.
+ * In context to the graphical user interface, a page refers to a screen within an application that presents a specific set of information or functionality to the user. A page will be composed of different objects, texts, and inputs (referred to as mouse areas). Each page size will match the screen size of the display controller's screen, which is 1280 x 800. For popup windows, the page itself will still be 1280 x 800, but the background will be transparent and the middle section will be composed of a rectangular box.
  *
  * ## Page StackViews
  *
- * A StackView is a component that provides a way to manage multiple views/pages in stack-like manner for navigation. Stack refers to an data structure that folls the Last-In-First-Out (LIFO) Model. It is a collection of elements in which items can be added or removed only from one end.
- * Note that for Popup windows and pages that are not the Home page, the Preset Creation page, and the Service Menu page will automatically redirect
- * back to the home page if there is no activity or input for at least 1 minute.
+ * A StackView is a component that provides a way to manage multiple views/pages in a stack-like manner for navigation. Stack refers to a data structure that follows the Last-In-First-Out (LIFO) Model. It is a collection of elements in which items can be added or removed only from one end. Note that for Popup windows and pages that are not the Home page, the Preset Creation page, and the Service Menu page will automatically redirect back to the home page if there is no activity or input for at least 1 minute.
  *
  * ### Home Stack
  * Where the user will navigate between main components of the GUI, including the following:

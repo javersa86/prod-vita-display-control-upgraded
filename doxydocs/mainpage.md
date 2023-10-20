@@ -13,7 +13,7 @@ This manual is divided in the following sections:
 
 ## Display Background
 
-The NVENT-VITA Display Controller software is the graphical user interface application that allows the user to interact with NVENT VITA’s system features. The software is designed to manage and track the different pneumatic settings, measurements, modes, data, and other features available on the device. For the display controller software, it consists of frontend components, the backend controller, and the \htmlonly API \endhtmlonly Thread where the display controller communicates with the system controller. 
+The NVENT-VITA Display Controller software is the graphical user interface application that allows the user to interact with NVENT VITA’s system features. The software is designed to manage and track the different pneumatic settings, measurements, modes, data, and other features available on the device. For the display controller software, it consists of frontend components, the backend controller, and the API Thread where the display controller communicates with the system controller.
 
 <b>Display Version: 1.1.5</b>
 
@@ -67,25 +67,24 @@ This page gives detailed information on threading.
 
 #### Background
 
-The user will power on the device and startup the display application. On Startup, and after the main functions declares the important variable and initiate the different managers and controllers, the API Controller will start the main thread.
+The user will power on the device and startup the display application. On Startup, and after the main functions declare the important variable and initiate the different managers and controllers, the API Controller will start the main thread.
 
 #### Sequence of Events
 
-The \htmlonly API \endhtmlonly Controller is built and running from QThread that starts at the start of the application. Each loop represents an \htmlonly API \endhtmlonly Cycle of at least 30 milliseconds.
-
-1. Open the Serial Port connected to the system controller through the serial port object with the following Port Name and Baud \htmlonly Rate\endhtmlonly:
+1. The \htmlonly API \endhtmlonly Controller is built and running from QThread that starts at the start of the application. Each loop represents an \htmlonly API \endhtmlonly Cycle of at least 30 milliseconds.
+2. Starts by opening the Serial Port connected to the system controller through the serial port object with the following Port Name and Baud \htmlonly Rate\endhtmlonly:
     - Serial Port Parameters:
       - Port Name: "/dev/ttyUSB0"
       - Baud \htmlonly Rate\endhtmlonly: 115200
     - If the serial object fails to open the serial port, then an attempt will be made to close the port and exit the thread.
-    - If the port does open, then the appropriate configurations will be made. 
-2. Afterwards, an infinite while loop will be triggered and will only be interrupted by request. 
-3. Checks to see if System Controller is connected to the Display Controller via devices object.
-4. Reads and processes bytes from the MCU.
-5. Handles the different requests and responses from the system controller and sends signals to backend controller for updates.
-6. While the \htmlonly API \endhtmlonly Controller is handling messages from the system, it is also adding messages to a message queue from requests and responses from the backend controller via signals.
-7. After handling the different requests and responses and if the queue is not empty, the message queue will lock the mutex for the thread, pop up to 5 messages from the queue, and write those messages to the serial object. The thread and other running threads will wake up again.
-8. The thread will sleep for at least 25 milliseconds.
+    - If the port is opened, then the appropriate configurations will be made.
+3. Afterwards, an infinite while loop will be triggered and will only be interrupted by request. 
+4. Checks to see if the System Controller is connected to the Display Controller via devices object.
+5. Reads and processes bytes from the MCU.
+6. Handles the different requests and responses from the system controller and sends signals to the backend controller for updates.
+7. While the \htmlonly API \endhtmlonly Controller is handling messages from the system, it is also adding messages to a message queue from requests and responses from the backend controller via signals.
+8. After handling the different requests and responses and if the queue is not empty, the message queue will lock the mutex for the thread, pop up to 5 messages from the queue, and write those messages to the serial object. The thread and other running threads will wake up again.
+9. The thread will sleep for at least 25 milliseconds.
 
 #### Module References
 
@@ -95,18 +94,16 @@ The \htmlonly API \endhtmlonly Controller is built and running from QThread that
 
 #### Background
 
-Activities available on the NVENT-VIta include adjusting pneumatic settings in the system. For when adjustment pages are displayed, the Op Mode "Listening Knob" will be enabled (usually when backend emits signal to the knob controller).
+Activities available on the NVENT-VIta include adjusting pneumatic settings in the system. For when adjustment pages are displayed, the Op Mode "Listening Knob" will be enabled (usually when the backend emits a signal to the knob controller).
 
 #### Sequence of Events
 
-For when the op mode is enabled, the QThread for the knob controller will restart with following sequence:
-
 1. Open the file descriptors for \htmlonly GPIO \endhtmlonly objects representing Pin A, Pin B, and the \htmlonly Switch \endhtmlonly Pin.
 2. Sets the state of the switch of the button object with \htmlonly GPIO \endhtmlonly object switch, and the states of the encoder object with the Pin A and B \htmlonly GPIO \endhtmlonly objects.
-3. The while loop will then trigger and while only be disabled when Op Mode is disabled.
-4. Constructs the pollfd "fdset", the data structure that tracks the file descriptors for each \htmlonly GPIO \endhtmlonly object and sets each event notification to POLLPRI.
+3. The while loop will then trigger and only be disabled when Op Mode is disabled.
+4. Constructs the POLLFD "fdset", the data structure that tracks the file descriptors for each \htmlonly GPIO \endhtmlonly object and sets each event notification to POLLPRI.
    - POLLPRI: to read urgent data
-5. Poll the memory of the fdset for the number of events that changed.
+5. Poll the memory of the fd_set for the number of events that changed.
 6. If the file descriptor for Pin A is updated, the state representing Pin A on the encoder object changes.
 7. If the file descriptor for Pin B is updated, the state representing Pin B on the encoder object changes.
 8. If the file descriptor for \htmlonly Switch \endhtmlonly Pin is updated, the state of the Button object changes.

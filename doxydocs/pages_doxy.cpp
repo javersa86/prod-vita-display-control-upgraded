@@ -9,34 +9,27 @@
  *
  * ## Home Pages and Main Window
  *
- * The Main Window is the basis for where all the activity from the Graphical User Interface, including the different menus and popups, take place.
- * When user powers on the device, the startup page will be displayed to load the main window. After loading page is cleared,
- * the home page will include the following:
- * - \htmlonly PIP \endhtmlonly and SP Line Graph
- *   - A line graph used to display the measured value for Peak Inspiratory Pressure (Red Line) and Stacking Pressure (Blue Line) as visual indicator
- *     for the amount of oxygen and air is being push into the patient.
- *   - The graph will continue to be updated while system is ventilating or not.
- * - Pneumatic Settings Adjustment Buttons
- *   - The Home Page displays all critical information required by the user for proper operation through the buttons.
- *   - Buttons used to push the pages used to adjust all 8 pneumatic settings.
- *   - The buttons will also display the set values, the value indicator within the settings range, the minimum value, and the maximum value.
- *   - When the system is ventilating, measured values will be displayed on the \htmlonly PIP\endhtmlonly, SP, O<sub>2</sub>, and Aux Flow.
- *   - For the \htmlonly PIP \endhtmlonly Button, lock icon will be displayed to indicate that the \htmlonly PIP \endhtmlonly Disconnection Mode is active.
- *   - For the \htmlonly Humidity \endhtmlonly Button, when humidity split mode is enabled, the two set values for humidity on the Jet and Auxiliary Lines will be displayed.
- *   - For the Oxygen Button, a spinner icon will surround the measured value until the value is adjusted to the set value, and reappear if measured value increases or decreases from set value.
- *   - Different colors will be displayed on buttons based on different criterias:
- *     - For the \htmlonly PIP \endhtmlonly Button, red will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the red line on the graph.
- *     - For the SP Button, blue will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the blue line on the graph.
- *     - For the Driving Pressure, \htmlonly Rate\endhtmlonly, and Inspiratory Buttons, the borders surronding the buttons will be displayed in orange.
- *     - For the Oxygen Button, the borders, set value, measured value, minimum value, maximum value, and value indicator will be displayed in yellow or green based on which Limited O<sub>2</sub> warning is displayed on the warning banner.
- *   - Statistical Displays for the MAP, TV, and MV values.
- *   - The End-Tidal Button to initiate or stop the End-Tidal Procedure.
- *   - Progress Timer Icon and Text for the counted number of time from start up or from the most recent End-Tidal Sequence.
- *   - Mode Switches for Limited O<sub>2</sub> Mode and Manual Mode.
- *   - Help Buttons with Titles for End-Tidal Mode, Limited O<sub>2</sub> Mode, and Manual Mode.
- * - The following will be display on most of the pages:
- *   - The \htmlonly Warning \endhtmlonly Banner to display all active warnings.
- *   - The Hamburger Menu and Button to open the navigation menu.
+ * The Main Window is the basis for where all the activity from the Graphical User Interface, including the different menus and popups, take place. When the user powers on the device, the startup page will be displayed to load the main window. After the loading page is cleared, the home page will include different features.
+ * The PIP and SP Line Graph is a line graph used to display the measured value for Peak Inspiratory Pressure (Red Line) and Stacking Pressure (Blue Line) as a visual indicator for the amount of oxygen and air being pushed into the patient. The graph will continue to be updated while the system is ventilating or not.
+ * The Home Page displays all critical information required by the user for proper operation through Pneumatic Buttons. These buttons are used to push pages used to adjust all 8 pneumatic settings. They will also display the set values, the value indicator within the settings range, the minimum value, and the maximum value.
+ * When the system is ventilating, measured values will be displayed on the PIP, SP, Oxygen, and Auxiliary Flow Buttons.
+ * For the PIP Button, lock icon will be displayed to indicate that the PIP Disconnection Mode is active.
+ * For the Humidity Button, when humidity split mode is enabled, the two set values for humidity on the Jet and Auxiliary Lines will be displayed.
+ * For the Oxygen Button, a spinner icon will surround the measured value until the value is adjusted to the set value, and reappear if measured value increases or decreases from set value.
+ * Different colors will be displayed on buttons based on different criterias:
+ * - For the PIP Button, red will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the red line on the graph.
+ * - For the SP Button, blue will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the blue line on the graph.
+ * - For the Driving Pressure, Rate, and Inspiratory Buttons, the borders surrounding the buttons will be displayed in orange during End-Tidal Mode.
+ * - For the Oxygen Button, the borders, set value, measured value, minimum value, maximum value, and value indicator will be displayed in yellow or green based on which Limited O2 warning is displayed on the warning banner.
+ * The home page will also include other options for the user to interact with.
+ * The Statistical Displays will show the measured values for MAP, TV, and MV.
+ * The End-Tidal Button will initiate or stop the End-Tidal Procedure.
+ * The Progress Timer Icon and Text for the counted number of time from startup or from the most recent End-Tidal Sequence.
+ * The Mode Switches will be used to enable or disable for Limited O2 Mode and Manual Mode. Note: a confirmation message will be displayed to confirm the enabling of End-Tidal, Limited O2, and Manual.
+ * The Help Buttons with Titles will push up descriptions for End-Tidal Mode, Limited O2 Mode, and Manual Mode.
+ * Lastly, the following will be display on most of the pages:
+ * - The Warning Banner to display all active warnings.
+ * - The Hamburger Menu and Button to open the navigation menu.
  *
  * @file HomeWindow.qml
  * @brief This is the main page where all activity is taking place and where all pages and popup windows are pushed from.
@@ -77,33 +70,20 @@
  *
  * ## Pneumatic Settings
  *
- * Pneumatic Settings that can be adjusted include the following:
- * - Driving Pressure
- * - \htmlonly Rate \endhtmlonly
- * - Inspiratory Time
- * - Stacking Pressure
- * - Oxygen Concentration
- * - Peak Inspiratory Pressure
- * - Auxiliary Flow
- * - \htmlonly Humidity \endhtmlonly (Consists of 2 Pneumatic Settings to adjust):
- *   - \htmlonly Humidity \endhtmlonly on the Jet Line
- *   - \htmlonly Humidity \endhtmlonly on the Auxiliary line
+ * Pneumatic Settings that can be adjusted include the following: Driving Pressure, Rate, Inspiratory Time, Stacking Pressure, Oxygen Concentration, Peak Inspiratory Pressure, Auxiliary Flow, and Humidity (which consists of 2 Humidity Settings to adjust on the Jet Line and on the Auxiliary line).
  *
  * ## Dial and Keypads
  *
  * For the adjustment pages related to the pneumatic settings, the user has the option to switch between two adjustment pages:
  * - <b>Dial Page:</b> When the user opens the dial page, the encoder knob will be enabled, which will be the only tool to increase or decrease the setting.
- * - <b>Keypad Page:</b> Subpage utilized for direct inputs onto the GUI to enter specific values to pneumatic settings. The encoder knob is also enabled on subpage to increase or decrease setting.
+ * - <b>Keypad Page:</b> Subpage utilized for direct inputs onto the GUI to enter specific values to pneumatic settings. The encoder knob is also enabled on subpage to increase or decrease settings.
  *
  * ## Saving or Cancelling Settings
  *
- * To save the pneumatic settings, the user can press down on the knob or press the save button available on the page. If user doesn't want to set the new pneumatic settings value, the user can exit the page with the cancel button.
+ * To save the pneumatic settings, the user can press down on the knob or press the save button available on the page. If the user doesn't want to set the new pneumatic settings value, the user can exit the page with the cancel button.
  *
  * ## Confirmation Popup Window
- * If a warning threshold exists for a pneumatic setting, then a confirmation popup window will be displayed if set value is greater than or equal to warning threshold. The \htmlonly Warning \endhtmlonly Threshold is uded for the following Pneumatic Settings:
- * - Peak Inspiratory Pressure
- * - Stacking Pressure
- * - Inspiratory Time
+ * If a warning threshold exists for a pneumatic setting, then a confirmation popup window will be displayed if the set value is greater than or equal to the warning threshold. The Warning Threshold is used for the following Pneumatic Settings: Peak Inspiratory Pressure, Stacking Pressure, and Inspiratory Time.
  *
  * ## Help Descriptions
  *
@@ -124,11 +104,11 @@
  *  </tr>
  *  <tr>
  *      <td>Inspiratory Time</td>
- *      <td>The Inspiratory Time is the percentage of time during the breath cycle in which critical gases are delivered to the patient.</td>
+ *      <td>The Inspiratory Time is the percentage of time during the breath cycle in which critical gasses are delivered to the patient.</td>
  *  </tr>
  *  <tr>
  *      <td>Stacking Pressure</td>
- *      <td>Stacking Pressure (SP) refers to the residual pressure in the airway as measured through the Blue Jet Line approximately 1 ms prior to each inspiratory phase beginning. This is similar to End Expiratory Pressure (EEP) (i.e. closed system ventilation) in critical care ventilators.<br><br>The VITA  will graphically display the measured Stacking Pressure on the main screen with a blue trace. The Blue graph lines can be hidden for the the Stacking Pressure from within settings. The set limit for SP is represented on the graph with a blue dashed line.<br><br>The operator can set the Stacking Pressure threshold from 1-100 cmH<sub>2</sub>O. The measured value must fall below the set threshold on each breath cycle, indicating that there is adequate egress to the flow of air exiting the patient (i.e. no stacking of breaths). Otherwise, the NVENT Vita immediately alerts the operator and restricts ventilation until the measured Stacking Pressure value drops to 30% of the set Stacking Pressure threshold.</td>
+ *      <td>Stacking Pressure (SP) refers to the residual pressure in the airway as measured through the Blue Jet Line approximately 1 ms prior to each inspiratory phase beginning. This is similar to End Expiratory Pressure (EEP) (i.e. closed system ventilation) in critical care ventilators.<br><br>The VITA will graphically display the measured Stacking Pressure on the main screen with a blue trace. The Blue graph lines can be hidden for the Stacking Pressure from within settings. The set limit for SP is represented on the graph with a blue dashed line.<br><br>The operator can set the Stacking Pressure threshold from 1-100 cmH2O. The measured value must fall below the set threshold on each breath cycle, indicating that there is adequate egress to the flow of air exiting the patient (i.e. no stacking of breaths). Otherwise, the NVENT Vita immediately alerts the operator and restricts ventilation until the measured Stacking Pressure value drops to 30% of the set Stacking Pressure threshold.</td>
  *  </tr>
  *  <tr>
  *      <td>Oxygen</td>
