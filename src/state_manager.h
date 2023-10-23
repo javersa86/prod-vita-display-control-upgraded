@@ -388,9 +388,6 @@ class StateManager : public QObject
 
         QVector<double> service_notification_vector = QVector<double>(NUM_SERVICE_NOTIFICATIONS, 0);
 
-        unsigned char m_limited_o2_set_reached = 0;
-        unsigned char m_limited_o2_min_reached = 0;
-
         unsigned char m_oxygen_adjusting = 0;
 
     public:
@@ -950,9 +947,15 @@ class StateManager : public QObject
          */
         QVector<double> getServiceNotificationVector();
 
-        void resetLimitedO2();
-
+        /**
+         * @brief Get adjustment state for oxygen measurement.
+         * @return int
+         */
         int getOxygenAdjustmentState();
+
+        /**
+         * @brief Update adjustment state for oxygen measurement.
+         */
         void adjustOxygen();
 
     public slots:

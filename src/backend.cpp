@@ -856,16 +856,12 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
             receiveSettingsUpdate((unsigned char) SettingIds::O2, m_stateManager->laserO2Setting());
             m_stateManager->setSetO2Val(o2_val);
         }
-
-        m_stateManager->resetLimitedO2();
     }
     //If laser mode does not need to be changed
     else if (modeID == (unsigned char) ModeIDs::LASER_MODE && !value)
     {
         //O2 value changes
         receiveSettingsUpdate((unsigned char) SettingIds::O2, m_stateManager->getSetO2Val());
-
-        m_stateManager->resetLimitedO2();
     }
     //If calibration mode is active
     else if (modeID == (unsigned char) ModeIDs::O2_CALIBRATION_MODE)

@@ -46,18 +46,32 @@ Rectangle{
         {
             if (warningID == 52) //47
             {
-                if (stateVal === 0)
+                if (stateVal === 2)
                 {
+                    console.log("At min")
                     if (!limitedO2Timer.running && !laserMinState)
                     {
+                        console.log("At min")
                         root.title = "Limited O<sub>2</sub> Prepping at 21%";
                         laserMinState = true;
                         laserText.limitedO2Seconds = 45;
                         limitedO2Timer.start();
                     }
                 }
-                else if (stateVal === 1)
+                else if (stateVal === 3)
                 {
+                    console.log("To Set");
+                    laserMinState = true;
+                    laserMinReached = true;
+                    limitedO2Timer.stop();
+                    root.title = "Limited O<sub>2</sub> Prepping to " + state_manager.o2 + "%";
+                }
+                else if (stateVal === 4)
+                {
+                    console.log("Safe");
+                    laserMinState = true;
+                    laserMinReached = true;
+                    limitedO2Timer.stop();
                     root.title = "Limited O<sub>2</sub> Safe";
                 }
             }
@@ -152,7 +166,6 @@ Rectangle{
             laserText.limitedO2Seconds = laserText.limitedO2Seconds - 1;
             if (laserText.limitedO2Seconds == 0)
             {
-                root.title = "Limited O<sub>2</sub> Prepping to " + state_manager.o2 + "%";
                 laserMinReached = true
                 limitedO2Timer.stop()
             }
