@@ -13,7 +13,7 @@ This manual is divided in the following sections:
 
 ## Display Background
 
-The NVENT-VITA Display Controller software is the graphical user interface application that allows the user to interact with NVENT VITA’s system features. The software is designed to manage and track the different pneumatic settings, measurements, modes, data, and other features available on the device. For the display controller software, it consists of frontend components, the backend controller, and the API Thread where the display controller communicates with the system controller.
+The NVENT-VITA Display Controller software is the graphical user interface application that allows the user to interact with NVENT VITA’s system features. The software is designed to manage and track the different pneumatic settings, measurements, modes, data, and other features available on the device. For the display controller software, it consists of frontend components, the backend controller, and the \htmlonly API \endhtmlonly Thread where the display controller communicates with the system controller.
 
 <b>Display Version: 1.1.5</b>
 
@@ -61,15 +61,23 @@ The NVENT-VITA is divided in the following modules:
 \tableofcontents
 This page gives detailed information on threading.
 
+## Definitions
+
+<b>Thread</b> - A sequence of software code the application must execute.f
+
+## Background
+
+For the display application to run alongside the system controller, multiple threads need to run continuously with the system and concurrently with each other.
+
 \section thread_list List of Threads
 
 \subsection thread1 API Thread
 
-#### Background
+### Background
 
-The user will power on the device and startup the display application. On Startup, and after the main functions declare the important variable and initiate the different managers and controllers, the API Controller will start the main thread.
+The user will power on the device and startup the display application. On Startup, and after the main functions declare the important variables and initiate the different managers and controllers, the API Controller will start the main thread.
 
-#### Sequence of Events
+### Sequence of Events
 
 1. The \htmlonly API \endhtmlonly Controller is built and running from QThread that starts at the start of the application. Each loop represents an \htmlonly API \endhtmlonly Cycle of at least 30 milliseconds.
 2. Starts by opening the Serial Port connected to the system controller through the serial port object with the following Port Name and Baud \htmlonly Rate\endhtmlonly:
@@ -77,7 +85,7 @@ The user will power on the device and startup the display application. On Startu
       - Port Name: "/dev/ttyUSB0"
       - Baud \htmlonly Rate\endhtmlonly: 115200
     - If the serial object fails to open the serial port, then an attempt will be made to close the port and exit the thread.
-    - If the port is opened, then the appropriate configurations will be made.
+    - If the port is opened, then the appropriate configurations will be made. 
 3. Afterwards, an infinite while loop will be triggered and will only be interrupted by request. 
 4. Checks to see if the System Controller is connected to the Display Controller via devices object.
 5. Reads and processes bytes from the MCU.
@@ -86,17 +94,17 @@ The user will power on the device and startup the display application. On Startu
 8. After handling the different requests and responses and if the queue is not empty, the message queue will lock the mutex for the thread, pop up to 5 messages from the queue, and write those messages to the serial object. The thread and other running threads will wake up again.
 9. The thread will sleep for at least 25 milliseconds.
 
-#### Module References
+### Module References
 
 - \ref communicationModule "Communication Module"
 
 \subsection thread2 Encoder Knob Thread
 
-#### Background
+### Background
 
-Activities available on the NVENT-VIta include adjusting pneumatic settings in the system. For when adjustment pages are displayed, the Op Mode "Listening Knob" will be enabled (usually when the backend emits a signal to the knob controller).
+Activities available on the NVENT-VITA include adjusting pneumatic settings in the system. For when adjustment pages are displayed, the Op Mode "Listening Knob" will be enabled (usually when the backend emits a signal to the knob controller).
 
-#### Sequence of Events
+### Sequence of Events
 
 1. Open the file descriptors for \htmlonly GPIO \endhtmlonly objects representing Pin A, Pin B, and the \htmlonly Switch \endhtmlonly Pin.
 2. Sets the state of the switch of the button object with \htmlonly GPIO \endhtmlonly object switch, and the states of the encoder object with the Pin A and B \htmlonly GPIO \endhtmlonly objects.
@@ -110,7 +118,7 @@ Activities available on the NVENT-VIta include adjusting pneumatic settings in t
    - Thread will sleep for 75 ms.
 9. At the ending, flushes out the standard output.
 
-#### Module References
+### Module References
 
 - \ref gpioModule "Knob Controller and other GPIO Components"
 - \ref pneumaticSettingPagesModule "Pneumatic Settings Adjustment Pages"
@@ -120,15 +128,32 @@ Activities available on the NVENT-VIta include adjusting pneumatic settings in t
 \page modules Modules
 \tableofcontents
 
+@defgroup moduleDefinitions Definitions
+@brief Definitions available for all modules.
+@details
+
+<b>Module</b> - Any of a number of distinct but interrelated units from which a program may be built up or into which a complex activity may be analyzed.<br>
+<b>Main</b> - Section of a program that is entered first and from which program units and procedures are called.<br>
+<b>Frontend</b> - Everything a user sees and interacts with.<br>
+<b>\htmlonly Backend \endhtmlonly</b> - The portion of the code the user doesn’t see.<br>
+<b>State</b> - information designed to remember preceding events or user interactions.<br>
+<b>Manager</b> - Organizes and stores extra data on the display.<br>
+<b>\htmlonly API \endhtmlonly</b> - Application Programming Interface, a way for two or more computer programs to communicate with each other.<br>
+<b>\htmlonly GPIO \endhtmlonly</b> (General Purpose Input/Output) - A set of pins on a microcontroller or single-board computer that can be configured to either read input signals from external devices or provide output signals to control external devices. \htmlonly GPIO \endhtmlonly pins can be used to interact with various electronic components and peripherals, such as sensors, LEDS, motors, buttons, and more.<br>
+<b>Queue</b> - A data structure that follows the First-In-First-Out (FIFO) Principle, where the element added first will be the first to be removed. Elements are added to the "tail" of the queue, and removed from the "head" of the queue.<br>
+<b>Enqueue</b> - The operation of adding (pushing) an element to the rear end of a queue.<br>
+<b>Dequeue</b> - The operation of removing (popping) an element from the front end of a queue.<br>
+
 @defgroup frontendModule Frontend Module (GUI)
 @brief Documentation for all QML files.
+@details
 
 # NVENT VITA Frontend Module Documentation
 
-## Introduction
+## GUI Background
 The frontend software is the Graphical User Interface that the user will interact with to trigger and change events in the backend module. The GUI will be composed of multiple pages, objects, images, and styling tools.
 
-## Technologies used
+## GUI Technologies used
 The frontend is built using QML, a markup language used in the Qt framework for designing the Graphical User Interface. It utilizes the following QT 5 libraries:
 * QtQuick 2.12
 * QtQuick.Controls 2.12
@@ -149,7 +174,7 @@ JavaScript is also utilized on the pages and objects for different purposes. Mos
 
 The <b>“qml.qrc” file</b> is also XML-based resource collection file used by Qt to bundle QML files and the other assets together.
 
-## Directory Structure
+## GUI Directory Structure
 
 The GUI pages are ordered as followed:
 - <b>/qml:</b> Header directory for the Graphical User Interface.

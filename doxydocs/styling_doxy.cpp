@@ -7,23 +7,9 @@
  * @brief Font Family utilized for different texts.
  * @details
  *
- * ## Font Family: Roboto
+ * The Font Family chosen for the display: Roboto.<br>
  *
- * Roboto was chosen for the font family for all texts on the Graphical User Interface for its readability and its modern aesthetic that makes it a suitable choice for contemporary designs. The font family also makes the NVENT-Vita look more professional, especially in the field of medicine.
- *
- * Style variations for the font family include:
- * - Black
- * - Black Italic
- * - Bold
- * - Bold Italic
- * - Italic
- * - Light
- * - Light Italic
- * - Medium
- * - Medium Italic
- * - Regular
- * - Thin
- * - Thin Italic
+ * Roboto was chosen for the font family for all texts on the Graphical User Interface for its readability and its modern aesthetic that makes it a suitable choice for contemporary designs. The font family also makes the NVENT-Vita look more professional, especially in the field of medicine. Style variations for the font family include: Black, Black Italic, Bold, Bold Italic, Italic, Light, Light Italic, Medium, Medium Italic, Regular, Thin, and Thin Italic.
  *
  * @file Roboto-Black.ttf
  * @file Roboto-BlackItalic.ttf
@@ -47,49 +33,159 @@
  * @brief Colors and Fonts
  * @details
  *
- * ## Styles and Fonts
- *
  * Text on the GUI will be displayed in different style variations of the Roboto Font Family, and sizes. Text and object will be displayed in different sizes, and colors.
  *
- * ### Hex Colors
- *
- * Hex Code representing colors (some color are meant to be transparent and utilized as a alpha layer):
- * - Primary: @htmlonly <font color="#3D96A8">#3D96A8</font> @endhtmlonly
- * - Secondary: @htmlonly <font color="#6FCC68">#6FCC68</font> @endhtmlonly
- * - Tertiary: @htmlonly <font color="#FAE061">#FAE061</font> @endhtmlonly
- * - \htmlonly PIP\endhtmlonly: @htmlonly <font color="#C12E30">#C12E30</font> @endhtmlonly
- * - SP: @htmlonly <font color="#0E6CBF">#0E6CBF</font> @endhtmlonly
- * - Primary Dark: @htmlonly <font color="#202531">#202531</font> @endhtmlonly
- * - Primary Light: @htmlonly <font color="#E3ECFB">#E3ECFB</font> @endhtmlonly
- * - Primary Dark Translucent: @htmlonly <font color="#8C202531">#8C202531</font> @endhtmlonly
- * - General Measured Value: @htmlonly <font color="#E6E3ECFB">#E6E3ECFB</font> @endhtmlonly
- * - General Set Display: @htmlonly <font color="#4A90E2">#4A90E2</font> @endhtmlonly
- * - Scale Rectangle Border: @htmlonly <font color="#66F2F2F2">#66F2F2F2</font> @endhtmlonly
- * - Unit: @htmlonly <font color="#99E3ECFB">#99E3ECFB</font> @endhtmlonly
- * - Min and Max: @htmlonly <font color="#BFE3ECFB">#BFE3ECFB</font> @endhtmlonly
- * - Transparent: @htmlonly <font color="#00000000">#00000000</font> @endhtmlonly
- * - Unclickable Border: @htmlonly <font color="#313C51">#313C51</font> @endhtmlonly
- * - Statistic Value: @htmlonly <font color="#E6E3ECFB">#E6E3ECFB</font> @endhtmlonly
- * - Mode Active: @htmlonly <font color="#1F2A34">#1F2A34</font> @endhtmlonly
- * - Mode Inactive: @htmlonly <font color="#506385">#506385</font> @endhtmlonly
- * - Mode Label: @htmlonly <font color="#3D96A8">#3D96A8</font> @endhtmlonly
- * - Primary Light Selected: @htmlonly <font color="#1AE3ECFB">#1AE3ECFB</font> @endhtmlonly
- * - Numeric UI Unit: @htmlonly <font color="#A1A7B2">#A1A7B2</font> @endhtmlonly
- * - Affirmative: @htmlonly <font color="#4AE287">#4AE287</font> @endhtmlonly
- * - Affirmative Translucent: @htmlonly <font color="#804AE287">#804AE287</font> @endhtmlonly
- * - Dissident: @htmlonly <font color="#FF223D">#FF223D</font> @endhtmlonly
- * - Cancel: @htmlonly <font color="#E24A5F">#E24A5F</font> @endhtmlonly
- * - Primary Light Disabled: @htmlonly <font color="#8CE3ECFB">#8CE3ECFB</font> @endhtmlonly
- * - Patient \htmlonly Warning\endhtmlonly: @htmlonly <font color="#F24C26">#F24C26</font> @endhtmlonly
- * - System \htmlonly Warning\endhtmlonly: @htmlonly <font color="#4A5AE4">#4A5AE4</font> @endhtmlonly
- * - \htmlonly Notice\endhtmlonly: @htmlonly <font color="#E2C044">#E2C044</font> @endhtmlonly
- * - \htmlonly Warning \endhtmlonly Description: @htmlonly <font color="#8CE3ECFB">#8CE3ECFB</font> @endhtmlonly
- * - Menu Color: @htmlonly <font color="#313C51">#313C51</font> @endhtmlonly
- * - Mode Active \htmlonly Warning\endhtmlonly: @htmlonly <font color="#FBA455">#FBA455</font> @endhtmlonly
- * - O<sub>2</sub> Color: @htmlonly <font color="#6FCC68">#6FCC68</font> @endhtmlonly
- * - Help Icon Selected: @htmlonly <font color="#804A90E2">#804A90E2</font> @endhtmlonly
- * - Mode Active \htmlonly Warning \endhtmlonly Selected: @htmlonly <font color="#8CFBA455">#8CFBA455</font> @endhtmlonly
- * - General Set Display Selected: @htmlonly <font color="#8C4A90E2">#8C4A90E2</font> @endhtmlonly
+ * For the Hex Code representing colors (some color are meant to be transparent and utilized as a alpha layer):
+ * <table>
+ *  <tr>
+ *      <th>Color Name</th>
+ *      <th>Hex Code</th>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary</th>
+ *      <td>@htmlonly <font color="#3D96A8">#3D96A8</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Secondary</th>
+ *      <td>@htmlonly <font color="#6FCC68">#6FCC68</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Tertiary</th>
+ *      <td>@htmlonly <font color="#FAE061">#FAE061</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>\htmlonly PIP\endhtmlonly</th>
+ *      <td>@htmlonly <font color="#C12E30">#C12E30</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>SP</th>
+ *      <td>@htmlonly <font color="#0E6CBF">#0E6CBF</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary Dark</th>
+ *      <td>@htmlonly <font color="#202531">#202531</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary Light</th>
+ *      <td>@htmlonly <font color="#E3ECFB">#E3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary Dark Translucent</th>
+ *      <td>@htmlonly <font color="#8C202531">#8C202531</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>General Measured Value</th>
+ *      <td>@htmlonly <font color="#E6E3ECFB">#E6E3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>General Set Display</th>
+ *      <td>@htmlonly <font color="#4A90E2">#4A90E2</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Scale Rectangle Border</th>
+ *      <td>@htmlonly <font color="#66F2F2F2">#66F2F2F2</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Unit</th>
+ *      <td>@htmlonly <font color="#99E3ECFB">#99E3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Min and Max</th>
+ *      <td>@htmlonly <font color="#BFE3ECFB">#BFE3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Transparent</th>
+ *      <td>@htmlonly <font color="#00000000">#00000000</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Unclickable Border</th>
+ *      <td>@htmlonly <font color="#313C51">#313C51</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Statistic Value</th>
+ *      <td>@htmlonly <font color="#E6E3ECFB">#E6E3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Mode Active</th>
+ *      <td>@htmlonly <font color="#1F2A34">#1F2A34</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Mode Inactive</th>
+ *      <td>@htmlonly <font color="#506385">#506385</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Mode Label</th>
+ *      <td>@htmlonly <font color="#3D96A8">#3D96A8</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary Light Selected</th>
+ *      <td>@htmlonly <font color="#1AE3ECFB">#1AE3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Numeric UI Unit</th>
+ *      <td>@htmlonly <font color="#A1A7B2">#A1A7B2</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Affirmative</th>
+ *      <td>@htmlonly <font color="#4AE287">#4AE287</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Affirmative Translucent</th>
+ *      <td>@htmlonly <font color="#804AE287">#804AE287</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Dissident</th>
+ *      <td>@htmlonly <font color="#FF223D">#FF223D</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Cancel</th>
+ *      <td>@htmlonly <font color="#E24A5F">#E24A5F</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary Light Disabled</th>
+ *      <td>@htmlonly <font color="#8CE3ECFB">#8CE3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Patient \htmlonly Warning\endhtmlonly</th>
+ *      <td>@htmlonly <font color="#F24C26">#F24C26</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>System \htmlonly Warning\endhtmlonly</th>
+ *      <td>@htmlonly <font color="#4A5AE4">#4A5AE4</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>\htmlonly Notice\endhtmlonly</th>
+ *      <td>@htmlonly <font color="#E2C044">#E2C044</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>\htmlonly Warning \endhtmlonly Description</th>
+ *      <td>@htmlonly <font color="#8CE3ECFB">#8CE3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Menu Color</th>
+ *      <td>@htmlonly <font color="#313C51">#313C51</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Mode Active \htmlonly Warning\endhtmlonly</th>
+ *      <td>@htmlonly <font color="#FBA455">#FBA455</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>O<sub>2</sub> Color</th>
+ *      <td>@htmlonly <font color="#6FCC68">#6FCC68</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Help Icon Selected</th>
+ *      <td>@htmlonly <font color="#804A90E2">#804A90E2</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Mode Active \htmlonly Warning \endhtmlonly Selected</th>
+ *      <td>@htmlonly <font color="#8CFBA455">#8CFBA455</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>General Set Display Selected</th>
+ *      <td>@htmlonly <font color="#8C4A90E2">#8C4A90E2</font> @endhtmlonly</td>
+ *  </tr>
+ * </table>
  *
  * ## Fonts
  *

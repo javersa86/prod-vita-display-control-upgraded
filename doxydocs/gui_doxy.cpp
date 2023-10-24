@@ -6,40 +6,23 @@
  * @brief All pages used for the Graphical User Interface.
  * @details
  *
- * ## Pages
+ * ## Page Description
  *
  * In context to the graphical user interface, a page refers to a screen within an application that presents a specific set of information or functionality to the user. A page will be composed of different objects, texts, and inputs (referred to as mouse areas). Each page size will match the screen size of the display controller's screen, which is 1280 x 800. For popup windows, the page itself will still be 1280 x 800, but the background will be transparent and the middle section will be composed of a rectangular box.
  *
  * ## Page StackViews
  *
- * A StackView is a component that provides a way to manage multiple views/pages in a stack-like manner for navigation. Stack refers to a data structure that follows the Last-In-First-Out (LIFO) Model. It is a collection of elements in which items can be added or removed only from one end. Note that for Popup windows and pages that are not the Home page, the Preset Creation page, and the Service Menu page will automatically redirect back to the home page if there is no activity or input for at least 1 minute.
+ * A <b>StackView</b> is a component that provides a way to manage multiple views/pages in a stack-like manner for navigation. Stack refers to a data structure that follows the Last-In-First-Out (LIFO) Model. It is a collection of elements in which items can be added or removed only from one end. Note that for Popup windows and pages that are not the Home page, the Preset Creation page, and the Service Menu page will automatically redirect back to the home page if there is no activity or input for at least 1 minute.
  *
- * ### Home Stack
- * Where the user will navigate between main components of the GUI, including the following:
- * - the Home Window Page
- * - Adjustment Pages
- * - the Preset Pages
- * - the Settings Menu Page
- * - Passcode Pages
- * - the Service Menu Page
+ * The <b>Home Stack</b> is where the user will navigate between main components of the GUI, including the following: the Home Window Page, Adjustment Pages, the Preset Pages, the Settings Menu Page, Passcode Pages, and the Service Menu Page.
  *
- * ### Popup Stack
- * Where the user pushes up Popup Windows and other pages separate from the main components:
- * - Screen Lock Popup and Overlay
- * - Dehumidfication Popups and Progress Page
- * - Jet Active Popup and Shutdown Procedure Popups
- * - Help and Troubleshooting Boxes
- * - Preset Name Popup and Preset Implementation Popup
- * - Pneumatic Settings Confirmation Popup
+ * The <b>Popup Stack</b> is where the user pushes up Popup Windows and other pages separate from the main components: the Screen Lock Popup and Overlay, Dehumidification Popups and Progress Page, the Jet Active Popup and Shutdown Procedure Popups, the Help and Troubleshooting Boxes, the Preset Name Popup and the Preset Implementation Popup, and the Pneumatic Settings Confirmation Popup.
  *
- * ### Adjustment Page StackViews
- * StackViews are also utilized for adjustment pages where the user will need to switch between the dial page, and the keypad page.
+ * The <b>Adjustment Page</b> Stacks are utilized for adjustment pages where the user will need to switch between the dial page, and the keypad page.
  *
- * ### Service Popup StackView
- * StackView specifically for the popup windows available on the Service Menu.
+ * The <b>Service Popup Stack</b> is specifically for the popup windows available on the Service Menu.
  *
- * ### Settings Stacks for Settings and Service Menus
- * StackViews used to containing menu pages.
+ * The <b>Settings Stacks</b> are used to contain menu pages for the Settings Menu and the Service Menu.
  *
  * ## Additional Information
  *
@@ -68,9 +51,7 @@
  *
  * ## Styling
  *
- * Styling refers to the overall design for the the Graphical User Interface. Styling include color of centein objects and pages, the font and sizes for text and titles, and the even the positioning and sizes of objects on pages.
- * Styling is significantly important not only to the NVENT-VITA, but to UI Development in general, for it is important to the visual appeal,
- * improving user experience, reinforcing branding and identity, differentiation to other products, and aiding in the communication between user and interface.
+ * Styling refers to the overall design for the Graphical User Interface. Styling includes color of centein objects and pages, the font and sizes for text and titles, and even the positioning and sizes of objects on pages. Styling is significantly important not only to the NVENT-VITA, but to UI Development in general, for it is important to the visual appeal, improving user experience, reinforcing branding and identity, differentiation to other products, and aiding in the communication between user and interface.
  *
  * ## Additional Information
  *

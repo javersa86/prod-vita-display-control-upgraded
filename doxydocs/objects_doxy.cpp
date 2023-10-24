@@ -12,11 +12,9 @@
  *
  * ## Graph
  *
- * The graph is argueble the most important object on the NVENT-Vita, for it displays the measured output for Peak Inspiratory Pressure (RED) and Stacking Pressure (BLUE) in a visual style.
- * The graph will be update every 30 milliseconds with new PIP and SP measured values retrieved from the notifications. There will be two dashed lines that will be displayed. Two dash lines will display
- * the set values for each pneumatic settings. There will also be the solid lines that displays the measured values.
+ * The graph is arguably the most important object on the NVENT-Vita, for it displays the measured output for Peak Inspiratory Pressure (RED) and Stacking Pressure (BLUE) in a visual style. The graph will be updated every 30 milliseconds with new PIP and SP measured values retrieved from the notifications. There will be two dashed lines that will be displayed. Two dash lines will display the set values for each pneumatic setting. There will also be solid lines that display the measured values.
  *
- * ## Navigational Sidebar (Hamburger Menu) and Inputs
+ * ## Navigational Sidebar and Inputs
  *
  * The navigational sidebar will allow the user to navigate between pages and menus, and push popups for different procedures, including the following:
  * - Home Option to redirect back to Home Page.
@@ -88,7 +86,7 @@
  * Switches on the display include the following:
  * - <b>Daylight Saving Time \htmlonly Switch\endhtmlonly:</b> \htmlonly Switch \endhtmlonly used to switch between daylight savings time to standard time.
  * - <b>Line \htmlonly Switch\endhtmlonly:</b> \htmlonly Switch \endhtmlonly used to show and hide the blue lines on the graph.
- * - <b>Mode \htmlonly Switch\endhtmlonly:</b> Switches used to enable or disable different op modes, include Limited O<sub>2</sub>, Manual, and PIP Disconnection.
+ * - <b>Mode \htmlonly Switch\endhtmlonly:</b> Switches used to enable or disable different op modes, include Limited O<sub>2</sub>, Manual, and \htmlonly PIP \endhtmlonly Disconnection.
  *
  * ## Keyboards and Keypads
  *
@@ -99,19 +97,19 @@
  * The following keyboards and keypads will be available for different features and in different formats:
  * - <b>Base Keypad (filename keyboard):</b> Built-in keypad used for all keypad adjustment pages on the GUI.
  * - <b>Contact Information:</b>
- *   - Keyboard Buttons and Layouts: QML Objects connected to the contact manager that can be
+ *   - <b>Keyboard Buttons and Layouts:</b> QML Objects connected to the contact manager that can be
  *     used to generate and style the rows of buttons used for inputting contact information.
- *   - Contact Information Keyboard: Keyboards generated with different shift states (Uppercase, Lowercase, All Caps, numbers,
+ *   - <b>Contact Information Keyboard:</b> Keyboards generated with different shift states (Uppercase, Lowercase, All Caps, numbers,
  *     and symbols) and can be used to input Company Names,
  *     Street Address, Towns/Cities, States, and email/website.
- *   - Contact Information Keypad: Built in keypad used to input phone and postal code for contact information.
+ *   - <b>Contact Information Keypad:</b> Built in keypad used to input phone and postal code for contact information.
  * - <b>Preset Name Keyboard Buttons and Layouts:</b> QML Objects connected to the preset manager used to generate a keyboard with
  *   different shift states to input the preset's name.
  * - <b>Serial Number Keyboard Buttons and Layouts:</b> QML Objects connected to the part manager used to generate a keyboard to input
  *   a part's serial number.
  * - <b>Date and Time:</b>
- *   - Date Keypad: Built-in keypad used to input date.
- *   - PassCode Keypad: Built-in Keypads used for the PassCode pages.
+ *   - <b>Date Keypad:</b> Built-in keypad used to input date.
+ *   - <b>PassCode Keypad:</b> Built-in Keypads used for the PassCode pages.
  *
  * ## Page Layouts
  *
