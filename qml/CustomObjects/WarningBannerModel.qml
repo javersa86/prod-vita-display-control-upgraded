@@ -48,10 +48,8 @@ Rectangle{
             {
                 if (stateVal === 2)
                 {
-                    console.log("At min")
                     if (!limitedO2Timer.running && !laserMinState)
                     {
-                        console.log("At min")
                         root.title = "Limited O<sub>2</sub> Prepping at 21%";
                         laserMinState = true;
                         laserText.limitedO2Seconds = 45;
@@ -60,7 +58,6 @@ Rectangle{
                 }
                 else if (stateVal === 3)
                 {
-                    console.log("To Set");
                     laserMinState = true;
                     laserMinReached = true;
                     limitedO2Timer.stop();
@@ -68,7 +65,6 @@ Rectangle{
                 }
                 else if (stateVal === 4)
                 {
-                    console.log("Safe");
                     laserMinState = true;
                     laserMinReached = true;
                     limitedO2Timer.stop();

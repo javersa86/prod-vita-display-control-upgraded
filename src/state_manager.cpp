@@ -194,11 +194,10 @@ unsigned char StateManager::getModeEnabled(unsigned char modeID)
 
 void StateManager::setMode(unsigned char modeID, unsigned char value, unsigned char success)
 {
-    if (modeID == (int)ModeIDs::LASER_MODE && value > 1)
+    if (modeID == (int)ModeIDs::LASER_MODE && value == 1 && success > 1)
     {
-        qDebug() << "Value: " + QString::number(value);
-        emit limitedO2State(value);
-        value = 1;
+        emit limitedO2State(success);
+        success = 1;
     }
     m_modes[modeID] = value;
     m_modes_success[modeID] = success;
