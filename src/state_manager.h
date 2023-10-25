@@ -144,6 +144,11 @@ class StateManager : public QObject
 
     //Mode Success
     /**
+     * @brief limited_o2_success
+     */
+    Q_PROPERTY(unsigned char limited_o2_success READ limitedO2Success NOTIFY modeChanged)
+
+    /**
      * @brief dehumidify_success
      */
     Q_PROPERTY(unsigned char dehumidify_success READ dehumidifySuccess NOTIFY modeChanged)
@@ -536,6 +541,11 @@ class StateManager : public QObject
         */
         void setSeparateHumidity(unsigned char);
 
+        /**
+        * @brief  Gets state for when Limited O2 succeeds, fails, or other states available.
+        * @return unsigned char
+         */
+        unsigned char limitedO2Success();
         /**
         * @brief  Gets state for when dehumidification succeeds or fails.
         * @return unsigned char

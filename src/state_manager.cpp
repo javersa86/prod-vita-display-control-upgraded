@@ -194,14 +194,15 @@ unsigned char StateManager::getModeEnabled(unsigned char modeID)
 
 void StateManager::setMode(unsigned char modeID, unsigned char value, unsigned char success)
 {
-    if (modeID == (int)ModeIDs::LASER_MODE && value == 1 && success > 1)
-    {
-        emit limitedO2State(success);
-        success = 1;
-    }
     m_modes[modeID] = value;
     m_modes_success[modeID] = success;
     emit modeChanged();
+
+
+    if (modeID == (int)ModeIDs::LASER_MODE && value == 1)
+    {
+        emit limitedO2State(success);
+    }
 }
 
 unsigned char StateManager::o2CalSuccess()
@@ -217,6 +218,11 @@ unsigned char StateManager::dehumidifySuccess()
 unsigned char StateManager::etco2Success()
 {
     return m_modes_success[(int)ModeIDs::ETCO2_MODE];
+}
+
+unsigned char StateManager::limitedO2Success()
+{
+    return m_modes_success[(int)ModeIDs::LASER_MODE];
 }
 
 /*---Subsystems---------------------------------------------*/

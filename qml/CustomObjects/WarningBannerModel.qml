@@ -29,6 +29,11 @@ Rectangle{
     property bool laserMinState: false
     property bool laserMinReached: false
 
+    property string limited_o2_title: state_manager.limited_o2_success === 1 ? "Limited O<sub>2</sub> Prepping to 21%" :
+                                      state_manager.limited_o2_success === 2 ? "Limited O<sub>2</sub> Prepping at 21%" :
+                                      state_manager.limited_o2_success === 3 ? "Limited O<sub>2</sub> Prepping to " + state_manager.o2 + "%" :
+                                      state_manager.limited_o2_success === 4 ? "Limited O<sub>2</sub> Safe" : "Limited O<sub>2</sub> Prepping to 21%"
+
     onLaserMinStateChanged:
     {
         if (!laserMinState)
@@ -50,7 +55,6 @@ Rectangle{
                 {
                     if (!limitedO2Timer.running && !laserMinState)
                     {
-                        root.title = "Limited O<sub>2</sub> Prepping at 21%";
                         laserMinState = true;
                         laserText.limitedO2Seconds = 45;
                         limitedO2Timer.start();
@@ -61,14 +65,12 @@ Rectangle{
                     laserMinState = true;
                     laserMinReached = true;
                     limitedO2Timer.stop();
-                    root.title = "Limited O<sub>2</sub> Prepping to " + state_manager.o2 + "%";
                 }
                 else if (stateVal === 4)
                 {
                     laserMinState = true;
                     laserMinReached = true;
                     limitedO2Timer.stop();
-                    root.title = "Limited O<sub>2</sub> Safe";
                 }
             }
         }
@@ -111,7 +113,7 @@ Rectangle{
         font: Style.warningTitle
         x: 91
         anchors.verticalCenter: parent.verticalCenter
-        text: title
+        text: root.warningID == 52 || root.warningID == 53 ? limited_o2_title : title
         color: Style.primary_light
         width: .4 * parent.width
         maximumLineCount: 2
