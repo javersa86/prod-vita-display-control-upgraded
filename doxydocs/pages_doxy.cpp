@@ -11,22 +11,22 @@
  *
  * The <b>Main Window/Home Page</b> is the basis for where all the activity from the Graphical User Interface, including the different menus and popups, take place. When the user powers on the device, the startup page will be displayed to load the main window. After the loading page is cleared, the home page will include different features.<br>
  *
- * The <b>PIP and SP Line Graph</b> is a line graph used to display the measured value for Peak Inspiratory Pressure (Red Line) and Stacking Pressure (Blue Line) as a visual indicator for the amount of oxygen and air being pushed into the patient. The graph will continue to be updated while the system is ventilating or not.<br>
+ * The <b>\htmlonly PIP \endhtmlonly and SP Line Graph</b> is a line graph used to display the measured value for Peak Inspiratory Pressure (Red Line) and Stacking Pressure (Blue Line) as a visual indicator for the amount of oxygen and air being pushed into the patient. The graph will continue to be updated while the system is ventilating or not.<br>
  *
  * The Home Page displays all critical information required by the user for proper operation through <b>Pneumatic Buttons</b>. These buttons are used to push pages used to adjust all 8 pneumatic settings. They will also display the set values, the value indicator within the settings range, the minimum value, and the maximum value.<br>
  *
- * When the system is ventilating, measured values will be displayed on the PIP, SP, Oxygen, and Auxiliary Flow Buttons.<br>
+ * When the system is ventilating, measured values will be displayed on the \htmlonly PIP\endhtmlonly, SP, Oxygen, and Auxiliary Flow Buttons.<br>
  *
- * For the <b>PIP Button</b>, lock icon will be displayed to indicate that the <b>PIP Disconnection Mode</b> is active.<br>
+ * For the <b>\htmlonly PIP \endhtmlonly Button</b>, lock icon will be displayed to indicate that the <b>\htmlonly PIP \endhtmlonly Disconnection Mode</b> is active.<br>
  *
- * For the <b>Humidity Button</b>, when humidity split mode is enabled, the two set values for humidity on the Jet and Auxiliary Lines will be displayed.<br>
+ * For the <b>\htmlonly Humidity \endhtmlonly Button</b>, when humidity split mode is enabled, the two set values for humidity on the Jet and Auxiliary Lines will be displayed.<br>
  *
  * For the <b>Oxygen Button</b>, a spinner icon will surround the measured value until the value is adjusted to the set value, and reappear if measured value increases or decreases from set value.<br>
  *
  * Different colors will be displayed on buttons based on different criterias:
- * - For the PIP Button, red will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the red line on the graph.
+ * - For the \htmlonly PIP \endhtmlonly Button, red will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the red line on the graph.
  * - For the SP Button, blue will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the blue line on the graph.
- * - For the Driving Pressure, Rate, and Inspiratory Buttons, the borders surrounding the buttons will be displayed in orange during <b>End-Tidal Mode</b>.
+ * - For the Driving Pressure, \htmlonly Rate, \endhtmlonly and Inspiratory Buttons, the borders surrounding the buttons will be displayed in orange during <b>End-Tidal Mode</b>.
  * - For the Oxygen Button, the borders, set value, measured value, minimum value, maximum value, and value indicator will be displayed in yellow or green based on which <b>Limited O<sub>2</sub></b> warning is displayed on the warning banner.
  *
  * The home page will also include other options for the user to interact with.<br>
@@ -42,7 +42,7 @@
  * The <b>Help Buttons</b> with Titles will push up descriptions for End-Tidal Mode, Limited O<sub>2</sub> Mode, and Manual Mode.<br>
  *
  * Lastly, the following will be display on most of the pages:
- * - The <b>Warning Banner</b> to display all active warnings.
+ * - The <b>htmlonly Warning \endhtmlonly Banner</b> to display all active warnings.
  * - The <b>Hamburger Menu and Button</b> to open the navigation menu.
  *
  * @file HomeWindow.qml
@@ -117,8 +117,6 @@
  * @{
  * @brief Requires adjustment to the Jet Line and the Auxiliary Line.
  * @details
- *
- * ## Humidity Adjustments
  *
  * On the \htmlonly Humidity \endhtmlonly Adjustment Page, there are two Pneumatic Settings for \htmlonly Humidity\endhtmlonly, the \htmlonly Humidity \endhtmlonly on the Jet Line, and the \htmlonly Humidity \endhtmlonly on the Auxiliary Line. There are two modes that the user can switch between to adjust humidity:
  *
@@ -221,6 +219,8 @@
  * @brief The following pages relate to a popup window that would be display before the Dehumidifcation Procedure and Shutdown Procedure.
  * @details
  *
+ * ## Shutdown and Dehumidification Pages
+ *
  * A Popup window will be displayed based on the different criterias met before Shutting Down or Dehumidifying.
  * - If the Auxiliary Line is Active.
  * - If the Jet and Auxiliary Lines are Active.
@@ -277,7 +277,7 @@
  * @brief The following pages will be utilized for the Shutdown Procedure.
  * @details
  *
- * For the Shutdown Procedure Popups, If the user presses the power button, a popup window will be displayed with options to continue with shutdown or begin dehumidification before shutdown. The system cannot continue to ventilate while shutting down. If the system is still ventilating, all inputs will be disabled. If the user starts ventilating while on the shutdown popup, the options to continue with shutdown or dehumidification will be disabled, and will be enabled once user stops ventilating. After dehumidification (success or failure), the user will have the option to continue with shutdown or not.
+ * For the <b>Shutdown Procedure Popups,</b> If the user presses the power button, a popup window will be displayed with options to continue with shutdown or begin dehumidification before shutdown. The system cannot continue to ventilate while shutting down. If the system is still ventilating, all inputs will be disabled. If the user starts ventilating while on the shutdown popup, the options to continue with shutdown or dehumidification will be disabled, and will be enabled once user stops ventilating. After dehumidification (success or failure), the user will have the option to continue with shutdown or not.
  *
  * @file ShutdownConfirmation.qml
  * @brief Popup window to confirm the shutdown of the system from the power button. There is also an option to dehumidify before shutting down.
@@ -375,7 +375,7 @@
  *  </tr>
  * </table>
  *
- * The following are Help Descriptions available on the popup windows for modes:<br>
+ * The following are <b>Help Descriptions</b> available on the popup windows for modes:<br>
  *
  * <table>
  *  <tr>
