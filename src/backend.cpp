@@ -830,9 +830,14 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
         }
 
     }
+    unsigned char tmp_success = 2;
+    if (modeID == (unsigned char)ModeIDs::LASER_MODE)
+    {
+        tmp_success = 1;
+    }
 
     //State objects sets which mode that needs to be enabled
-    m_stateManager->setMode(modeID, value, 2);
+    m_stateManager->setMode(modeID, value, tmp_success);
     //Sets which mode that needs to be changed
     m_send_modes[modeID] = 1;
 

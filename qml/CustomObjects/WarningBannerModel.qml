@@ -49,29 +49,26 @@ Rectangle{
 
         onLimitedO2State:
         {
-            if (warningID == 52) //47
+            if (stateVal === 2)
             {
-                if (stateVal === 2)
-                {
-                    if (!limitedO2Timer.running && !laserMinState)
-                    {
-                        laserMinState = true;
-                        laserText.limitedO2Seconds = 45;
-                        limitedO2Timer.start();
-                    }
-                }
-                else if (stateVal === 3)
+                if (!limitedO2Timer.running && !laserMinState)
                 {
                     laserMinState = true;
-                    laserMinReached = true;
-                    limitedO2Timer.stop();
+                    laserText.limitedO2Seconds = 45;
+                    limitedO2Timer.start();
                 }
-                else if (stateVal === 4)
-                {
-                    laserMinState = true;
-                    laserMinReached = true;
-                    limitedO2Timer.stop();
-                }
+            }
+            else if (stateVal === 3)
+            {
+                laserMinState = true;
+                laserMinReached = true;
+                limitedO2Timer.stop();
+            }
+            else if (stateVal === 4)
+            {
+                laserMinState = true;
+                laserMinReached = true;
+                limitedO2Timer.stop();
             }
         }
 
