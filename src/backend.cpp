@@ -363,7 +363,14 @@ void Backend::receiveModes(QVector<int> modes)
             //Reset modes that weren't changed by knob.
             if (i != (int) ModeIDs::LISTENING_KNOB)
             {
-                m_stateManager->setMode(i, modes.at(i), 1);
+                if (i == (int) ModeIDs::LASER_MODE)
+                {
+                    m_stateManager->setMode(i, modes.at(i), 0);
+                }
+                else
+                {
+                    m_stateManager->setMode(i, modes.at(i), 1);
+                }
             }
             //Reset modes that were changed by knob.
             else if(modes[(int) ModeIDs::LISTENING_KNOB] != m_stateManager->listeningToKnob())
@@ -831,9 +838,13 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
 
     }
     unsigned char tmp_success = 2;
-    if (modeID == (unsigned char)ModeIDs::LASER_MODE)
+    if (modeID == (unsigned char)ModeIDs::LASER_MODE && value)
     {
         tmp_success = 1;
+    }
+    else if (modeID == (unsigned char)ModeIDs::LASER_MODE && !value)
+    {
+        tmp_success = 0;
     }
 
     //State objects sets which mode that needs to be enabled

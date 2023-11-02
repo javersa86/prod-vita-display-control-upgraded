@@ -198,7 +198,7 @@ void StateManager::setMode(unsigned char modeID, unsigned char value, unsigned c
     m_modes_success[modeID] = success;
     emit modeChanged();
 
-    if (modeID == (int)ModeIDs::LASER_MODE && value == 1)
+    if (modeID == (int)ModeIDs::LASER_MODE)
     {
         emit limitedO2State(success);
     }
