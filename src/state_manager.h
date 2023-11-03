@@ -144,6 +144,11 @@ class StateManager : public QObject
 
     //Mode Success
     /**
+     * @brief limited_o2_success
+     */
+    Q_PROPERTY(unsigned char limited_o2_success READ limitedO2Success NOTIFY modeChanged)
+
+    /**
      * @brief dehumidify_success
      */
     Q_PROPERTY(unsigned char dehumidify_success READ dehumidifySuccess NOTIFY modeChanged)
@@ -388,9 +393,6 @@ class StateManager : public QObject
 
         QVector<double> service_notification_vector = QVector<double>(NUM_SERVICE_NOTIFICATIONS, 0);
 
-        unsigned char m_limited_o2_set_reached = 0;
-        unsigned char m_limited_o2_min_reached = 0;
-
         unsigned char m_oxygen_adjusting = 0;
 
     public:
@@ -539,6 +541,11 @@ class StateManager : public QObject
         */
         void setSeparateHumidity(unsigned char);
 
+        /**
+        * @brief  Gets state for when Limited O2 succeeds, fails, or other states available.
+        * @return unsigned char
+         */
+        unsigned char limitedO2Success();
         /**
         * @brief  Gets state for when dehumidification succeeds or fails.
         * @return unsigned char
@@ -950,9 +957,15 @@ class StateManager : public QObject
          */
         QVector<double> getServiceNotificationVector();
 
-        void resetLimitedO2();
-
+        /**
+         * @brief Get adjustment state for oxygen measurement.
+         * @return int
+         */
         int getOxygenAdjustmentState();
+
+        /**
+         * @brief Update adjustment state for oxygen measurement.
+         */
         void adjustOxygen();
 
     public slots:

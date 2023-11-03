@@ -363,7 +363,14 @@ void Backend::receiveModes(QVector<int> modes)
             //Reset modes that weren't changed by knob.
             if (i != (int) ModeIDs::LISTENING_KNOB)
             {
-                m_stateManager->setMode(i, modes.at(i), 1);
+                if (i == (int) ModeIDs::LASER_MODE)
+                {
+                    m_stateManager->setMode(i, modes.at(i), 0);
+                }
+                else
+                {
+                    m_stateManager->setMode(i, modes.at(i), 1);
+                }
             }
             //Reset modes that were changed by knob.
             else if(modes[(int) ModeIDs::LISTENING_KNOB] != m_stateManager->listeningToKnob())
@@ -830,9 +837,18 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
         }
 
     }
+    unsigned char tmp_success = 2;
+    if (modeID == (unsigned char)ModeIDs::LASER_MODE && value)
+    {
+        tmp_success = 1;
+    }
+    else if (modeID == (unsigned char)ModeIDs::LASER_MODE && !value)
+    {
+        tmp_success = 0;
+    }
 
     //State objects sets which mode that needs to be enabled
-    m_stateManager->setMode(modeID, value, 2);
+    m_stateManager->setMode(modeID, value, tmp_success);
     //Sets which mode that needs to be changed
     m_send_modes[modeID] = 1;
 
@@ -856,16 +872,12 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
             receiveSettingsUpdate((unsigned char) SettingIds::O2, m_stateManager->laserO2Setting());
             m_stateManager->setSetO2Val(o2_val);
         }
-
-        m_stateManager->resetLimitedO2();
     }
     //If laser mode does not need to be changed
     else if (modeID == (unsigned char) ModeIDs::LASER_MODE && !value)
     {
         //O2 value changes
         receiveSettingsUpdate((unsigned char) SettingIds::O2, m_stateManager->getSetO2Val());
-
-        m_stateManager->resetLimitedO2();
     }
     //If calibration mode is active
     else if (modeID == (unsigned char) ModeIDs::O2_CALIBRATION_MODE)

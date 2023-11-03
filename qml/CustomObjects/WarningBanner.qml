@@ -42,8 +42,25 @@ Rectangle{
                          descriptionVal: warning_manager.getWarningDesc(warnings[i]),
                          clearTextVal: warning_manager.getWarningClearText(warnings[i]),
                          warningIDVal: warnings[i],
-                         warningIndexVal: i})
+                         warningIndexVal: i,
+                         laserMinStateVal: false,
+                         limitedO2TitleVal: getLimitedO2State(warnings[i])})
         }
+    }
+
+    function getLimitedO2State(index) {
+
+        if (index === 52 || index === 53)
+        {
+            if (state_manager.limited_o2_success === 1) return "Limited O<sub>2</sub> Prepping to 21%"
+            if (state_manager.limited_o2_success === 2) {
+                if (Math.round(state_manager.notification_vector[2]) > 22) return "Limited O<sub>2</sub> Prepping to 21%"
+                return "Limited O<sub>2</sub> Prepping at 21%"
+            }
+            if (state_manager.limited_o2_success === 3) return "Limited O<sub>2</sub> Prepping to " + state_manager.o2 + "%"
+            if (state_manager.limited_o2_success === 4) return "Limited O<sub>2</sub> Safe"
+        }
+        return "";
     }
 
     onWarningsChanged:
@@ -97,7 +114,10 @@ Rectangle{
             clearText: clearTextVal;
             warningIndex: warningIndexVal;
             popupStack: root.popupStack;
-            warningExpanded: warningListView.expanded && warnings.length > 3
+            warningExpanded: warningListView.expanded && warnings.length > 3;
+            laserMinState: laserMinStateVal;
+            limitedO2Title: limitedO2TitleVal;
+
         }
         clip: true
 

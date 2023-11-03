@@ -26,17 +26,9 @@ Rectangle{
 
     property bool warningExpanded
 
-    property bool laserMinState: false
-    property bool laserMinReached: false
+    property bool laserMinState
 
-    onLaserMinStateChanged:
-    {
-        if (!laserMinState)
-        {
-            limitedO2Timer.stop()
-            laserText.limitedO2Seconds = 45;
-        }
-    }
+    property string limitedO2Title
 
     Connections
     {
@@ -44,29 +36,39 @@ Rectangle{
 
         onLimitedO2State:
         {
-            if (warningID == 52) //47
+            if (stateVal === 0)
             {
-                if (stateVal === 0)
+                root.limitedO2Title = "Limited O<sub>2</sub> Prepping to 21%";
+                laserMinState = false;
+            }
+            else if (stateVal === 1)
+            {
+                root.limitedO2Title = "Limited O<sub>2</sub> Prepping to 21%";
+
+            }
+            else if (stateVal === 2)
+            {
+                root.limitedO2Title = "Limited O<sub>2</sub> Prepping at 21%";
+                if (!limitedO2Timer.running && !laserMinState)
                 {
-                    if (!limitedO2Timer.running && !laserMinState)
-                    {
-                        root.title = "Limited O<sub>2</sub> Prepping at 21%";
-                        laserMinState = true;
-                        laserText.limitedO2Seconds = 45;
-                        limitedO2Timer.start();
-                    }
-                }
-                else if (stateVal === 1)
-                {
-                    root.title = "Limited O<sub>2</sub> Safe";
+                    laserMinState = true;
+                    laserText.limitedO2Seconds = 45;
+                    limitedO2Timer.start();
                 }
             }
-        }
+            else if (stateVal === 3)
+            {
+                if (root.limitedO2Title === "Limited O<sub>2</sub> Safe")
+                {
+                    return;
+                }
 
-        onOxygenAdjustmentSignal:
-        {
-            laserMinState = false
-            laserMinReached = false
+                root.limitedO2Title = "Limited O<sub>2</sub> Prepping to " + state_manager.o2 + "%";
+            }
+            else if (stateVal === 4)
+            {
+                root.limitedO2Title = "Limited O<sub>2</sub> Safe";
+            }
         }
     }
 
@@ -101,7 +103,7 @@ Rectangle{
         font: Style.warningTitle
         x: 91
         anchors.verticalCenter: parent.verticalCenter
-        text: title
+        text: root.warningID == 52 || root.warningID == 53 ? limitedO2Title : title
         color: Style.primary_light
         width: .4 * parent.width
         maximumLineCount: 2
@@ -127,7 +129,7 @@ Rectangle{
         x: 91 + (.4 * parent.width) + 16
         anchors.verticalCenter: parent.verticalCenter
         color: Style.primary_light
-        visible: (warningID == 52 && laserMinState) && !laserMinReached
+        visible: warningID == 52 && laserMinState && root.limitedO2Title === "Limited O<sub>2</sub> Prepping at 21%"
 
         property int limitedO2Seconds: 45
 
@@ -152,8 +154,6 @@ Rectangle{
             laserText.limitedO2Seconds = laserText.limitedO2Seconds - 1;
             if (laserText.limitedO2Seconds == 0)
             {
-                root.title = "Limited O<sub>2</sub> Prepping to " + state_manager.o2 + "%";
-                laserMinReached = true
                 limitedO2Timer.stop()
             }
         }
