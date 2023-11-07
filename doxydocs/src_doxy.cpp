@@ -457,7 +457,13 @@
  *  </tr>
  * </table>
  *
- * Additionally, for warnings <b>No Water Detected in Jet Line, No Water Detected in Auxiliary Line, </b> and <b>No Water Detected in Jet and Auxiliary Line,</b> the clear button is replaced with a prime button. The warning <b>Limited O<sub>2</sub> Safe</b> is colored Green to indicate Laser is active but oxygen is within safe range. Plus, depending on the different states of Oxygen Concentration, alternative titles include Limited O<sub>2</sub> Prepping to 21%, Limited O<sub>2</sub> Prepping at 21%, and Limited O<sub>2</sub> Prepping to (Set Value). The only notice raised exclusively from the display controller is <b>Service Due.</b> For information on the warnings troubleshooting steps, see @ref helpPagesModule "Help Pages."
+ * Additionally, for warnings <b>No Water Detected in Jet Line, No Water Detected in Auxiliary Line, </b> and <b>No Water Detected in Jet and Auxiliary Line,</b> the clear button is replaced with a prime buttonas an indication that the warnings will be cleared, but water will also be pumped into the system.
+ *
+ * The warning <b>Limited O<sub>2</sub> Safe</b> is colored Green to indicate Laser is active but oxygen is within safe range. Plus, depending on the different success values for the Op Mode in the State Manager, alternative titles include Limited O<sub>2</sub> Prepping to 21%, Limited O<sub>2</sub> Prepping at 21%, and Limited O<sub>2</sub> Prepping to (Set Value).
+ *
+ * The only notice raised exclusively from the display controller is <b>Service Due.</b> For information on the warnings troubleshooting steps, see @ref helpPagesModule "Help Pages."
+ *
+ * For when <b> Oxygen Calibration in Progress</b> and <b>Oxygen Calibration in Progress, Limited O<sub>2</sub> Adjustment in Progress</b> is active or inactive, a signal is sent to the O<sub>2</sub> Calibration Manager to start or stop the 1 minute timer on the Warning Banner.
  *
  * ## Warning Manager
  *
@@ -468,16 +474,14 @@
  *
  * The warning manager receives most warnings from the notifications via backend controller and will only raise the <b>No Communication \htmlonly Warning \endhtmlonly</b> itself if the system fails to send notifications for at least 3 seconds. Timer is created to track disconnection timer. The No Communication warning is prevented from being triggered when the Service Menu is opened due to notifications pausing.
  *
- * Most recent pneumatic settings are saved for warnings raised at the time, and will be utilized for logging purposes.
+ * Most recent pneumatic settings are saved for warnings raised at the time, and will be utilized for logging purposes. All active and inactive warnings with settings are saved to the Log Manager.
  *
  * The number of active warnings, titles, ids, descriptions, class type, color, troubleshooting steps, and clearing behaviors are returned to the warning banner.
  *
- * For when Limted O<sub>2</sub> Mode is enabled:
- * - Returns the states to updated the colors for Limted O<sub>2</sub> related QML components (the Pneumatic Button and the Limted O<sub>2</sub> Switch):
- *   - State 0: Limted O<sub>2</sub> Safe
- *   - State 1: Limted O<sub>2</sub> Prepping or O<sub>2</sub> Calibration
- *   - State 2: Neither
- * - Updates the Limted O<sub>2</sub> \htmlonly Warning \endhtmlonly Title Text based on the different states of mode adjustments.
+ * For when Limited O2 Mode is active, the warning manager sends the states representing colors to QML components (the Pneumatic Button and the Limited O2 Switch) that are active alongside the Limited O2 Warnings:
+ * - State 0: Limted O<sub>2</sub> Safe is green.
+ * - State 1: Limted O<sub>2</sub> Prepping or O<sub>2</sub> Calibration warnings are yellow.
+ * - State 2: Neither
  *
  * Updates the state of the Service Due \htmlonly Notice \endhtmlonly due it being the only warning solely raised by the display controller due to maintenance date data stored in the display controller.
  */
@@ -490,7 +494,7 @@
  *
  * ## Models
  *
- * Constants and Models will be utilized for the the backend module.
+ * Constants and Models will be utilized throughout the backend as identifiers to distinguish between modes, pneumatic settings, and other settings.
  *
  * ### Op Mode IDs
  *
@@ -590,12 +594,12 @@
  *
  * ### Pneumatic Settings Models
  *
- * The Pneumatic Settings Models consists of the following:
+ * The Pneumatic Settings Models contain values used to distinguish between each Pneumatic Setting, and what limitations are required for adjustment. A model consists of the following:
  * - Setting ID
- * - Minimum Value
- * - Maximum Value
- * - The increment value: The value that will increment or decrement the pneumatic setting value when turning the encoder knob.
- * - Minimum On Specific Value: Utilized by the \htmlonly Humidity \endhtmlonly Adjustment Pages to prevent a value to be set within a range.
+ * - The Minimum: the lowest value the user is allowed to adjust to.
+ * - The Maximum: the highest value the user is allowed to adjust to.
+ * - The Increment: The value that will increment or decrement the pneumatic setting value when turning the encoder knob.
+ * - Minimum On Specific Value: Utilized to prevent a value to be set within a range.
  * - \htmlonly Warning \endhtmlonly Threshold: If a pneumatic setting is set greater than or equal to a warning threshold, then a warning will be sent to the GUI.
  *
  * <table>
@@ -907,7 +911,7 @@
  * - <b>TYPE:</b> Which type and location for what activity is occuring. The label "(SERVICE)" will be written for activities involving the Service Menu.
  * - <b>EVENT:</b> A description for what is occurring on the device.
  *
- * The writing of all service log entries are triggered from qInfo statements in the backend source code. IMPORTANT: Service log files are deleted after 2 weeks and warning logs are deleted after 3 months.
+ * The writing of all service log entries are triggered from qInfo statements in the backend source code. For the other managers, if CSV corruption occurs, the occurrence is logged to the Log Manager and a new CSV file is created. <b>IMPORTANT: Service log files are deleted after 2 weeks and warning logs are deleted after 3 months.</b>
  *
  * ## Brightness Manager
  *
@@ -926,15 +930,15 @@
  *
  * ## DPR Manager
  *
- * Logs the dates and times of the lowest and highest Driving Pressure Regulator Calibration values (technically the same measurement types) onto a CSV file. The manager will store up to 5 entries and will delete the oldest entry when adding a new one.
+ * Logs the dates and times of the lowest and highest Driving Pressure Regulator Calibration values (technically the same measurement types) onto a CSV file. The manager will store up to 5 entries and will delete the oldest entry when adding a new one. Updates the Log Manager for when new entries are added, and if entries are deleted.
  *
  * ## Maintenance Manager
  *
- * Updates and saves dates for the last service appointment and the next service appointment onto a CSV file.
+ * Updates and saves dates for the last service appointment and the next service appointment onto a CSV file. Updates the Log Manager for when dates are updated.
  *
  * ## O2 Calibration Manager
  *
- * Logs the dates and times of the lowest and highest O<sub>2</sub> Calibration Values and Voltages onto a CSV file. The manager will save up to 5 entries and will delete the oldest entry when adding a new one. The manager is also tasked with running the timer for the Warning Banner's O<sub>2</sub> Calibration 1 minute progress time.
+ * Logs the dates and times of the lowest and highest O<sub>2</sub> Calibration Values and Voltages onto a CSV file. The manager will save up to 5 entries and will delete the oldest entry when adding a new one. Updates Log Manager for when entries are added or deleted. The manager is also tasked with running the timer for the Warning Banner's O<sub>2</sub> Calibration 1 minute progress time and is triggered when related warnings are active..
  *
  * ## Part Manager
  *
@@ -963,11 +967,11 @@
  * - Heater Cartridge
  * - Jet Valve
  *
- * The manager will update different CSV files. One for saving the part's name, serial number (if available), and installation/replacement date. Another CSV file tracks each parts' hours operating, the total number of hours and minutes for how long the part is running on the device. The last CSV files track each parts' hours of ventilation, the total number of hours and minutes for when the system is ventilating with each part. Both time CSV files are updated from managers internal timers that increment each second. The ventilation timer will only run when the system is ventilating.
+ * The manager will update different CSV files. One for saving the part's name, serial number (if available), and installation/replacement date. Another CSV file tracks each parts' hours operating, the total number of hours and minutes for how long the part is running on the device. The last CSV files track each parts' hours of ventilation, the total number of hours and minutes for when the system is ventilating with each part. Both time CSV files are updated from managers internal timers that increment each second. The ventilation timer will only run when the system is ventilating. All parts installed will be logged to the Log Manager.
  *
  * ## Passcode Manager
  *
- * Updates and saves the 4 digit passcode used for creating, editing, and deleting presets, and passcode used for entering the service menu. While the main user will be able to update the preset passcode, the service technician can only update the service passcode and forcefully update the preset passcode.
+ * Updates and saves the 4 digit passcode used for creating, editing, and deleting presets, and passcode used for entering the service menu. While the main user will be able to update the preset passcode, the service technician can only update the service passcode and forcefully update the preset passcode. Updates the Log Manager for when passcodes are entered correctly, entered incorrectly, or changed.
  *
  * ## Preset Manager
  *
@@ -975,8 +979,7 @@
  * Each preset will include the following pneumatic settings to adjust: Driving Pressure, \htmlonly Rate\endhtmlonly, Inspiratory Time, Stacking Pressure, Oxygen Concentration,
  * Peak Inspiratory Pressure, Auxiliary Flow, and \htmlonly Humidity \endhtmlonly.
  *
- * The preset manager also creates edits and deletes the names for each preset on another CSV file. A name will be helpful in distinguishing the
- * different presets for medical experts and are updated alongside presets.
+ * The preset manager also creates edits and deletes the names for each preset on another CSV file. A name will be helpful in distinguishing the different presets for medical experts and are updated alongside presets.
  *
  * ## Time Manager
  *
@@ -986,14 +989,15 @@
  * - <b>Internal Time:</b> the internal date and time that is never changed and is utilized for all user updates for time
  * - <b>Daylight Savings Time:</b> the state for when time zone should be in Daylight Savings Time or Standard Time
  *
+ * All updates are logged to the Log Manager.
+ *
  * ## Version Manager
  *
- * Manages and saves the version number for the HMI Controller and the NVENT-VITA serial number on the CSV file.
+ * Manages and saves the version number for the HMI Controller and the NVENT-VITA serial number on the CSV file. Entries are logged to the Log Manager on startup.
  *
  * ## Zero Manager
  *
- * Manages and saves the sensor calibration data, including zeroing and verification values, and time stamps on CSV files.
- * Each file will save up to 5 entries, and deletes the oldest on if new value is added.
+ * Manages and saves the sensor calibration data, including zeroing and verification values, and time stamps on CSV files. Each file will save up to 5 entries, and deletes the oldest one if new value is added.
  *
  * Sensor Calibration Procedures include the following:
  * - <b>Stacking Pressure</b>

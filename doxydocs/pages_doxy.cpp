@@ -11,39 +11,33 @@
  *
  * The <b>Main Window/Home Page</b> is the basis for where all the activity from the Graphical User Interface, including the different menus and popups, take place. When the user powers on the device, the startup page will be displayed to load the main window. After the loading page is cleared, the home page will include different features.<br>
  *
- * The <b>\htmlonly PIP \endhtmlonly and SP Line Graph</b> is a line graph used to display the measured value for Peak Inspiratory Pressure (Red Line) and Stacking Pressure (Blue Line) as a visual indicator for the amount of oxygen and air being pushed into the patient. The graph will continue to be updated while the system is ventilating or not.<br>
+ * The Home Page displays all critical information required by the user for proper operation through <b>Pneumatic Buttons</b>. These buttons are used to push pages used to adjust all 8 pneumatic settings. They will also display the set values, the value indicator within the settings range, the minimum value, and the maximum value. Further details on how pneumatic settings are adjusted, see @ref pneumaticSettingPagesModule "Pneumatic Settigns Adjustment Pages."<br>
  *
- * The Home Page displays all critical information required by the user for proper operation through <b>Pneumatic Buttons</b>. These buttons are used to push pages used to adjust all 8 pneumatic settings. They will also display the set values, the value indicator within the settings range, the minimum value, and the maximum value.<br>
+ * When the system is ventilating, measurements received from the <b>Notifications</b> will be displayed on the home page. The set values on the Pneumatic Buttons for \htmlonly <b>PIP</b>, \endhtmlonly <b>SP</b>, <b>O<sub>2</sub></b>, and <b>Auxiliary Flow</b> will be replaced, and the <b>Statistical Displays</b> will show <b>MAP</b> and <b>TV</b>. Another Statical Display will show <b>MV</b>, which is converted from TV. <br>
  *
- * When the system is ventilating, measured values will be displayed on the \htmlonly PIP\endhtmlonly, SP, Oxygen, and Auxiliary Flow Buttons.<br>
+ * The \htmlonly <b>PIP and SP Line Graph</b> \endhtmlonly is a line graph used to display the measured value for <b>Peak Inspiratory Pressure</b> (Red Line) and <b>Stacking Pressure</b> (Blue Line) as a visual indicator for the amount of oxygen and air being pushed into the patient. The graph will continue to be updated while the system is ventilating or not; see @ref customObjectsModule "Graph." <br>
  *
- * For the <b>\htmlonly PIP \endhtmlonly Button</b>, lock icon will be displayed to indicate that the <b>\htmlonly PIP \endhtmlonly Disconnection Mode</b> is active.<br>
+ * For the <b>Oxygen Button</b>, a spinner icon will surround the measured value until the value is adjusted to the set value, and reappear if the measured value increases or decreases from the set value. <br>
  *
- * For the <b>\htmlonly Humidity \endhtmlonly Button</b>, when humidity split mode is enabled, the two set values for humidity on the Jet and Auxiliary Lines will be displayed.<br>
+ * For the \htmlonly <b>PIP Button</b>, \endhtmlonly lock icon will be displayed to indicate that the \htmlonly <b>PIP Disconnection Mode</b> \endhtmlonly is active.<br>
  *
- * For the <b>Oxygen Button</b>, a spinner icon will surround the measured value until the value is adjusted to the set value, and reappear if measured value increases or decreases from set value.<br>
+ * For the \htmlonly <b>Humidity Button</b>, \endhtmlonly when humidity split mode is enabled, the two set values for humidity on the Jet and Auxiliary Lines will be displayed. for more information on separate humidities, @ref humidityAdjustmentModule "Humidity Adjustment Page." <br>
  *
  * Different colors will be displayed on buttons based on different criterias:
  * - For the \htmlonly PIP \endhtmlonly Button, red will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the red line on the graph.
  * - For the SP Button, blue will be displayed on the set value, measured value, minimum value, maximum value, and value indicator to match the color for the blue line on the graph.
- * - For the Driving Pressure, \htmlonly Rate, \endhtmlonly and Inspiratory Buttons, the borders surrounding the buttons will be displayed in orange during <b>End-Tidal Mode</b>.
+ * - For the Driving Pressure, \htmlonly Rate \endhtmlonly, and Inspiratory Buttons, the borders surrounding the buttons will be displayed in orange during <b>End-Tidal Mode</b>.
  * - For the Oxygen Button, the borders, set value, measured value, minimum value, maximum value, and value indicator will be displayed in yellow or green based on which <b>Limited O<sub>2</sub></b> warning is displayed on the warning banner.
  *
- * The home page will also include other options for the user to interact with.<br>
+ * The <b>End-Tidal Button</b> will initiate or stop the End-Tidal Procedure. <br>
  *
- * The <b>Statistical Displays</b> will show the measured values for MAP, TV, and MV.<br>
+ * The Progress Timer Icon and Text for the counted number of time from startup or from the most recent End-Tidal Sequence. <br>
  *
- * The <b>End-Tidal Button</b> will initiate or stop the End-Tidal Procedure.<br>
- *
- * The Progress Timer Icon and Text for the counted number of time from startup or from the most recent End-Tidal Sequence.<br>
- *
- * The <b>Mode Switches</b> will be used to enable or disable for Limited O<sub>2</sub> Mode and Manual Mode. <b>Note: a confirmation message will be displayed to confirm the enabling of End-Tidal, Limited O2, and Manual.</b><br>
+ * The <b>Mode Switches</b> will be used to enable or disable for Limited O<sub>2</sub> Mode and Manual Mode. <b>Note: a confirmation message will be displayed to confirm the enabling of End-Tidal, Limited O<sub>2</sub>, and Manual.</b><br>
  *
  * The <b>Help Buttons</b> with Titles will push up descriptions for End-Tidal Mode, Limited O<sub>2</sub> Mode, and Manual Mode.<br>
  *
- * Lastly, the following will be display on most of the pages:
- * - The <b>htmlonly Warning \endhtmlonly Banner</b> to display all active warnings.
- * - The <b>Hamburger Menu and Button</b> to open the navigation menu.
+ * The following are objects on the homepage that will also be available on the other pages: the \htmlonly <b>Warning Banner</b> \endhtmlonly will display all active warnings and the <b>Navigational Sidebar Button</b> will open the navigational menu. See @ref  customObjectsModule "Custom Objects."
  *
  * @file HomeWindow.qml
  * @brief This is the main page where all activity is taking place and where all pages and popup windows are pushed from.
@@ -82,15 +76,17 @@
  *
  * The <b>Pneumatic Settings</b> are utilized to create ventilation states based on what is required for the patient, and can be adjusted to different states and values.<br>
  *
- * <b>Pneumatic Settings</b> that can be adjusted include the following: Driving Pressure, \htmlonly Rate,\endhtmlonly Inspiratory Time, Stacking Pressure, Oxygen Concentration, Peak Inspiratory Pressure, Auxiliary Flow, and \htmlonly Humidity \endhtmlonly (which consists of 2 \htmlonly Humidity \endhtmlonly Settings to adjust on the Jet Line and on the Auxiliary line).<br>
+ * <b>Pneumatic Settings</b> that can be adjusted include the following: Driving Pressure, \htmlonly Rate,\endhtmlonly Inspiratory Time, Stacking Pressure, Oxygen Concentration, Peak Inspiratory Pressure, Auxiliary Flow, and \htmlonly Humidity. \endhtmlonly <br>
  *
  * For the adjustment pages related to the pneumatic settings, the user has the option to switch between two adjustment pages:
  * - <b>Dial Page:</b> When the user opens the dial page, the encoder knob will be enabled, which will be the only tool to increase or decrease the setting.
  * - <b>Keypad Page:</b> Subpage utilized for direct inputs onto the GUI to enter specific values to pneumatic settings. The encoder knob is also enabled on subpage to increase or decrease settings.
  *
- * To save the pneumatic settings, the user can press down on the knob or press the save button available on the page. If the user doesn't want to set the new pneumatic settings value, the user can exit the page with the cancel button.<br>
+ * To save the pneumatic settings, the user can press down on the knob or press the save button available on the page. If the user doesn't want to set the new pneumatic settings value, the user can exit the page with the cancel button. To see how pneumatic settings are exchanged with the system.<br>
  *
  * If a warning threshold exists for a pneumatic setting, then a confirmation popup window will be displayed if the set value is greater than or equal to the warning threshold. The \htmlonly Warning \endhtmlonly Threshold is used for the following Pneumatic Settings: Peak Inspiratory Pressure, Stacking Pressure, and Inspiratory Time.<br>
+ *
+ * The user will be restricted to adjusting Auxiliary Flow between 1 and 3. <br>
  *
  * Each adjustment will include a description of the related pneumatic setting: see @ref helpPagesModule "Help Pages." For some of those adjustment pages, other options will be available.<br>
  *
@@ -118,13 +114,17 @@
  * @brief Requires adjustment to the Jet Line and the Auxiliary Line.
  * @details
  *
- * On the \htmlonly Humidity \endhtmlonly Adjustment Page, there are two Pneumatic Settings for \htmlonly Humidity\endhtmlonly, the \htmlonly Humidity \endhtmlonly on the Jet Line, and the \htmlonly Humidity \endhtmlonly on the Auxiliary Line. There are two modes that the user can switch between to adjust humidity:
+ * ## Humidity Adjustment Page
+ *
+ * For \htmlonly Humidity, \endhtmlonly there are two Pneumatic Settings to adjust: \htmlonly Humidity \endhtmlonly on the Jet Line, and the \htmlonly Humidity \endhtmlonly on the Auxiliary Line. There are two modes that the user can switch between to adjust humidity:
  *
  * - <b>Unified Mode:</b> A single dial or keypad will be displayed where the the user adjust \htmlonly Humidity \endhtmlonly on the Jet and Auxiliary lines at the same time and at the same value.
  *
  * - <b>Separated Mode:</b> Two dials or two keypads will be displayed where the user can adjust \htmlonly Humidity \endhtmlonly on the Jet Line and the Auxiliary Line separately. It is important to note that when the user switches to Separated Mode, the default value to adjust from for \htmlonly Humidity \endhtmlonly on the Auxiliary Line is 0.
  *
  *      - Note: when the user pushes down on the encoder knob when adjusting the Auxiliary Line, instead of switching back to adjusting Jet Line, the page will exit back to the home page and save the humidity settings.
+ *
+ * Also note, if humidity is adjusted to a value greater than 0, and if no water is detected in the system, the <b>No Water Detected</b> warning will be available in the <b>Warning Banner</b> to pump water into the system.
  *
  * The following options will also be available on the \htmlonly Humidity \endhtmlonly Adjustment Page:
  * - The <b>Pump Priming Reset button </b> will be displayed after 3 attempts to prime the jet lines with water.
@@ -152,7 +152,7 @@
  * @details
  * ## Preset Options
  *
- * <b>Presets</b> are saved pneumatic settings created by medical professionals for different purposes and medical procedures. The following will be saved in a preset: Driving Pressure, \htmlonly Rate \endhtmlonly, Inspiratory Time, Stacking Pressure, Oxygen Concentration, Peak Inspiratory Pressure, Auxiliary Flow, and \htmlonly Humidity \endhtmlonly (acting as a unified setting).<br>
+ * <b>Presets</b> are saved pneumatic settings created by medical professionals for different purposes and medical procedures. Presets can be created, edited, deleted, or implemented to the system through the “Presets” option on the <b>Navigational Sidebar</b>.  The following will be saved in a preset: Driving Pressure, \htmlonly Rate \endhtmlonly, Inspiratory Time, Stacking Pressure, Oxygen Concentration, Peak Inspiratory Pressure, Auxiliary Flow, and \htmlonly Humidity \endhtmlonly (acting as a unified setting).<br>
  *
  * The process of creating presets goes as follows:
  * 1. The user will select the Create Button to open the Preset Creation Page. The user will be required to enter the user passcode to continue the Preset Creation page.
@@ -177,7 +177,7 @@
  * - If Pneumatic Settings are displayed in blue and include a down arrow icon will indicate that the values are decreased.
  * - Pneumatic Settings that remain the same will be displayed in gray.
  *
- * Pressing the confirm button will set all Pneumatic Settings to the system controller. A loading screen will be displayed while the system is implementing Pneumatic Settings.<br>
+ * Pressing the confirm button will set all Pneumatic Settings to the system controller. A loading screen will be displayed while the system is implementing Pneumatic Settings. If ventilation is active on the Jet or Auxiliary line, confirming the Preset implementation will be disabled with the message: "Stop Ventilating to Implement a Preset". <br>
  *
  * The user also has the option to edit previously created presets by pressing down on the <b>Edit Button</b> on the <b>Preset Icon</b>. A page similarly to the Preset Creation Page will be displayed and work the same way. The previously saved Pneumatic Settings and Preset Name will be displayed by default. Accessing the page will also require passcode input.<br>
  *
@@ -241,7 +241,7 @@
  * @brief The following pages allow the user to initiate the dehumidification procedure.
  * @details
  *
- * For the <b>Dehumidification Procedure,</b> and before shutting the system down, it is important for the user to dehumidify the system to ensure the remaining water won't damage or corrode different parts. This is the reason why the option to dehumidify is also available on shutdown and on other pages. <b>Dehumidification</b> should only be required if the \htmlonly Humidity \endhtmlonly percentage is greater than or equal to 30% and water is running through the Jet or Auxiliary Lines.
+ * For the <b>Dehumidification Procedure,</b> and before shutting the system down, it is important for the user to dehumidify the system to ensure the remaining water won't damage or corrode different parts. This is the reason why the option to dehumidify is also available on the <b>Shutdown Procedure Popups</b>, the <b>Navigational Sidebar</b>, and the <b>Humidity Adjustment Page</b>. <b>Dehumidification</b> should only be required if the \htmlonly Humidity \endhtmlonly percentage is greater than or equal to 30% and water is running through the Jet or Auxiliary Lines.
  *
  * The Dehumdification Procedure will go as followed:
  * 1. Pressing down on any of the dehumidification options will begin the procedure.
@@ -277,7 +277,7 @@
  * @brief The following pages will be utilized for the Shutdown Procedure.
  * @details
  *
- * For the <b>Shutdown Procedure Popups,</b> If the user presses the power button, a popup window will be displayed with options to continue with shutdown or begin dehumidification before shutdown. The system cannot continue to ventilate while shutting down. If the system is still ventilating, all inputs will be disabled. If the user starts ventilating while on the shutdown popup, the options to continue with shutdown or dehumidification will be disabled, and will be enabled once user stops ventilating. After dehumidification (success or failure), the user will have the option to continue with shutdown or not.
+ * For the <b>Shutdown Procedure Popups,</b> if the user presses the power button, a popup window will be displayed with options to continue with shutdown or begin dehumidification before shutdown. The system cannot continue to ventilate while shutting down. If the system is still ventilating, all inputs will be disabled. If the user starts ventilating while on the shutdown popup, the options to continue with shutdown or dehumidification will be disabled, and will be enabled once user stops ventilating. After dehumidification (success or failure), the user will have the option to continue with shutdown or not.
  *
  * @file ShutdownConfirmation.qml
  * @brief Popup window to confirm the shutdown of the system from the power button. There is also an option to dehumidify before shutting down.
@@ -299,7 +299,7 @@
  *
  * ## Screen Lock Mode
  *
- * For maintenance purposes, it is important for the screen and buttons to be cleaned, which is why the option to disable the screen and buttons is available to the user. If the system is required to remain running, screen lock mode will be helpful to prevent mis inputs. A Popup Window will be displayed with instructions on how to continue with the cleaning procedure. Continuing will display a transparent overlay over the screen that will prevent the user from pressing any other inputs. If the user presses the screen or the HMI Buttons, the message "Screen lock mode is active. Press the dial to unlock and interact with the screen." will be displayed on screen. Pressing down on the encoder knob will disable Screen Lock Mode and the user will exit from the screen overlay. If touch is detected on the screen or the other HMI Buttons while pressing down on the knob, the message "Moisture detected on panel. Please dry off screen." will be displayed, screen lock will not be disabled.
+ * For maintenance purposes, it is important for the screen and buttons to be cleaned, which is why the option to disable the screen and buttons is available to the user on the <b>Navigational Sidebar</b>. If the system is required to remain running, screen lock mode will be helpful to prevent miss inputs. A Popup Window will be displayed with instructions on how to continue with the cleaning procedure. Continuing will display a transparent overlay over the screen that will prevent the user from pressing any other inputs. If the user presses the screen or the HMI Buttons, the message "Screen lock mode is active. Press the dial to unlock and interact with the screen." will be displayed on screen. Pressing down on the encoder knob will disable Screen Lock Mode and the user will exit from the screen overlay. If touch (water residue or other substances) is detected on the screen or the other HMI Buttons while pressing down on the knob, the message "Moisture detected on panel. Please dry off screen." will be displayed, screen lock will not be disabled.
  *
  * @file ScreenLockConfirmation.qml
  * @brief Popup window to push up the screen lock overlay.
@@ -933,6 +933,7 @@
  * - For adjusting brightness, turning the encoder knob will increase or decrease the brightness of the screen and directly communicate with the brightness manager. To save Brightness, the user will be required to press down on Save Button or the encoder knob.
  *
  * - For adjusting volume, turning the encoder knob will increase or decrease the volume used for the warning alarms. An alarm sound will be made after every turn indicating what the actual volume will sound like. To save \htmlonly Volume\endhtmlonly, the user will be required to press down on Save Button or the encoder knob.
+ *   - <b>Note:</b> The \htmlonly <b>Volume</b> \endhtmlonly is classified as a Pneumatic Setting for easier communication with the system.
  *
  * @file VolumeAndBrightness.qml
  * @brief Page to adjust the brightness of the screen and the volume of the alarm.
@@ -1135,7 +1136,7 @@
  * @brief The Pages to manage the exporting of service logs.
  * @details
  *
- * Upon opening the page, the user will be required to check, mount, and create directories for the USB stick attached to the back of the device. If the USB stick is detected, then the user will be able to open the pop up to export all service logs to directories NVENT_events and NVENT_warnings. The option to reconnect the USB stick will be available if failed to connect for the first time. The window will display the progress of each file to the USB stick. To ensure that no data is lost due to inappropriate removal of stick, the disconnection button will unmount the USB stick.
+ * The <b>Service Logs Page</b> where the user can export service logs to a USB Stick. Upon opening the page, the user will be required to check, mount, and create directories for the USB stick attached to the back of the device. If the USB stick is detected, then the user will be able to open the pop up to export all service logs to directories <b>NVENT_events</b> and <b>NVENT_warnings</b>. The option to reconnect the USB stick will be available if failed to connect for the first time. The window will display the progress of each file to the USB stick. To ensure that no data is lost due to inappropriate removal of the stick, the disconnection button will unmount the USB stick.
  *
  * @file ServiceLogs.qml
  * @brief Page to export service logs to USB Drive and show the progress of exporting service logs to USB Drive.

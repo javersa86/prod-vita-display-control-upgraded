@@ -122,6 +122,10 @@ Activities available on the NVENT-VITA include adjusting pneumatic settings in t
 
 - \ref gpioModule "Knob Controller and other GPIO Components"
 - \ref pneumaticSettingPagesModule "Pneumatic Settings Adjustment Pages"
+- \ref humidityAdjustmentModule "HumidityAdjustment Page"
+- \ref settingsMenuPagesModule "Settings Menu"
+- \ref serviceMenuPagesModule "Service Menu"
+- \ref customObjectsModule "Custom Objects"
 
 <!--- defines major modules -->
 
@@ -230,6 +234,29 @@ The backend code is organizaed as followed:
 * <b>/src/models:</b> Defines the constant values and models for pneumatic settings, modes, measurements, subsystems, notifications, HMI Buttons, and other settings.
 * <b>/src/warnings:</b> Defines the constant values related to warnings, the model structure for all warnings, and contains the management for all warnings running on the system.
 
+## Operational Modes
+
+The Operational Modes (Op Modes) are the distinct settings in which user input produces different results compared to the standard setting of the device.
+
+<table>
+    <tr>
+    <th>Mode</th><th>Description</th></tr>
+    <tr><td>Limited O<sub>2</sub></td><td>The laser on the system is active and the measured oxygen is required to be within a safer threshold to avoid ignition.</td></tr>
+    <tr><td>Double Jets</td><td>The device is venting on two jet lines.</td></tr>
+    <tr><td>Manual</td><td>Disables automatic ventilation, and the user needs to manually vent the system by pressing down on the encoder knob.</td></tr>
+    <tr><td>Screen Lock</td><td>Disables functionality for the screen and the HMI inputs that are not the encoder pushdown button.</td></tr>
+    <tr><td>Demo</td><td>Displays all functions of the device, but only for demonstration purposes. Warnings will be hidden.</td></tr>
+    <tr><td>\htmlonly PIP \endhtmlonly Disconnected Monitoring</td><td>The \htmlonly PIP \endhtmlonly line is monitored for pressure that is used for a connected patient. Ventilation is disabled if a patient is not found.</td></tr>
+    <tr><td>End-Tidal (ETCO<sub>2</sub>) Procedure</td><td>The device ventilates at a state where the level of carbon dioxide is released at the end of an exhaled breath.</td></tr>
+    <tr><td>Dehumidification</td><td>Water vapor is being removed from the device.</td></tr>
+    <tr><td>O<sub>2</sub> Calibration</td><td>The oxygen sensor is calibrating the accurately read the measurement for oxygen concentration.</td></tr>
+    <tr><td>Alarm Sounding</td><td>The device is raising an alarm sound to indicate a warning that needs to be addressed at a high priority, for when the mode is disabled and the warning is still active, a countdown timer will be displayed.</td></tr>
+    <tr><td>\htmlonly Humidity \endhtmlonly Priming Reset Available</td><td>The humidification system will be deactivated after the user fails to pump water after 3 attempts. Button will be available in the humidity adjustment page to disabled mode and reset pumps.</td></tr>
+    <tr><td>Listening To \htmlonly Knob \endhtmlonly </td><td>The encoder knob is active and listening for input.</td></tr>
+    <tr><td>Service Calibration</td><td>Mode only active when the Service Menu is accessed. The Notifications will be disabled, and the Service Notifications will be enabled. The measurements required for calibration will be available and displayed in the Service Menu Calibration page.</td></tr>
+    <tr><td>Screen Lock Touched</td><td>Temporary mode that is triggered when Screen Lock Mode is enabled and the user touches the screen or other HMI Inputs.</td></tr>
+</table>
+
 ## Functionality
 The backend consists of the following components:
 * \htmlonly Backend \endhtmlonly Controller: main application that handles tasks from the requests and responses from the \htmlonly API \endhtmlonly and QML inputs.
@@ -242,9 +269,10 @@ The backend consists of the following components:
 ## Backend Controller
 
 ### Backend Description
-The backend controller is where all activity occurs from the user inputs on the Graphical User Interface and the updates from the system controller.
 
-### Request Functions
+The backend controller is where all activity occurs from the user inputs on the Graphical User Interface and the updates from the system controller. Note that all activities interact with all the managers on the application; see State Manager, Warnings and \htmlonly Warning \endhtmlonly Manager, and Log Manager and other Managers for detail on how data and log entries are saved on the display.
+
+### Backend Request Function
 
 Requests functions construct Op Code Requests that are sent to the system controller through the \htmlonly API \endhtmlonly Thread. The process of sending messages to the \htmlonly API \endhtmlonly go as followed: 
 1. Requests are contructed through different datetypes like unsigned characters, ints, and QVectors.
@@ -253,9 +281,11 @@ Requests functions construct Op Code Requests that are sent to the system contro
 4. While a flag is raised, the associated signal will continue to be emitted with the contructed request. 
 5. The flag will be set to false (lowered) when the \htmlonly API \endhtmlonly thread emits their response signal and trigger the \htmlonly Backend \endhtmlonly QObject response slot. 
 
-The following are functions that are signaled to the \htmlonly API \endhtmlonly Thread, to send requests from the system controller. The first 5 requests are only sent on startup, which would then trigger the home page to be displayed.
+### Startup Requests
 
-The <b>Get Settings Request</b> retrieves all pneumatic settings from the \htmlonly API \endhtmlonly on startup If Humidity levels do not equal each other, Separate Humidities Mode will be set. The \htmlonly Humidity \endhtmlonly Percentages will be converted to the following levels:
+The first 5 requests are only sent on startup, which would then trigger the home page to be displayed. The responses to these requests will save the values received from the \htmlonly API \endhtmlonly to the <b>State Manager</b>.
+
+The <b>Get Settings Request</b> retrieves all pneumatic settings from the \htmlonly API \endhtmlonly on startup if \htmlonly Humidity \endhtmlonly levels do not equal each other, Separate Humidities Mode will be set. The \htmlonly Humidity \endhtmlonly Percentages will be converted to the following levels:
 - 100% to level 4
 - 70% to level 3
 - 50% to level 2
@@ -269,19 +299,21 @@ The <b>Get Op Modes Request</b> retrieves the state of all op modes enabled or d
 The <b>Get Subsystem State Request</b> retrieves the state of all subsystems on the system on startup.
   
 The <b>Get System Version Request</b> retrieves the most recent version number of the system controller on startup. Also saves the most recent version of the display controller.
+
+### Backend Requests
   
-The <b>Set Settings Request</b> updates the values for pneumatic settings requests updates to the system controller. One pneumatic setting can be changed, such as updating the rate from 30 BPM to 90 BPM. But for implementing a <b>Preset</b>, all pneumatic settings can be changed. When <b>Limited O<sub>2</sub> Oxygen Concentration</b> is less than the current oxygen concentration, oxygen concentration is updated. <b>\htmlonly Humidity\endhtmlonly</b> on the jet line and the auxiliary line is updated at once. When updating <b>\htmlonly Humidity\endhtmlonly</b>, levels will be converted to the following percentages:
+The <b>Set Settings Request</b> updates the values for pneumatic settings requests updates to the system controller. One pneumatic setting can be changed, such as updating the rate from 30 BPM to 90 BPM. But for implementing a <b>Preset</b>, all pneumatic settings can be changed. When <b>Limited O<sub>2</sub> Oxygen Concentration</b> is less than the current oxygen concentration, oxygen concentration is updated. <b>\htmlonly Humidity\endhtmlonly</b> on the jet line and the auxiliary line is updated at once. All setting updates are logged to the <b>Log Manager</b>. When updating <b>\htmlonly Humidity\endhtmlonly</b>, levels will be converted to the following percentages:
 - level 4 to 100%
 - level 3 to 70%
 - level 2 to 50%
 - level 1 to 30%
 - level 0 to 0%
       
-The <b>Get Measured Request</b> retrieves measurements running on the system, such as for detecting water on the system, O2 Calibration Voltages, or low and high O2 Calibration values.
+The <b>Get Measured Request</b> retrieves measurements running on the system, such as for detecting water on the system, O<sub>2</sub> Calibration Voltages, or low and high O<sub>2</sub> Calibration values, and saves the measurements to the <b>State Manager</b>.
     
-The <b>Clear \htmlonly Warning \endhtmlonly Request</b> clears warnings running on the system by ID. If the warning ID is 59, the display will clear the Service Due warning in the warning manager.
+The <b>Clear \htmlonly Warning \endhtmlonly Request</b> clears warnings running on the system by ID. If the warning ID is 59, the display will clear the Service Due warning in the warning manager. If \htmlonly <b>PIP Disconnection Monitoring</b> \endhtmlonly is active, the \htmlonly PIP \endhtmlonly Disconnection warning is triggered and ventilation stops. Clearing the warning will restart ventilation. If the warning ID is either 4, 5, 6, or 7, (the <b> No Water Detected </b> warnings), the warning will be cleared, but the device will also attempt to pump water into the system if a water tube is connected. The warning that is cleared is logged to the <b> Log Manager </b>. 
   
-The <b>Enable Op Mode Request</b> enables or disables an Op Mode on the system. Based on which Op Mode is enabled or disabled, different activities in the \htmlonly Backend \endhtmlonly occur:
+The <b>Enable Op Mode Request</b> enables or disables an Op Mode available in <b>Operation Modes</b> to the <b>State Manager</b> and the system. All Op Mode activities are logged to the <b>Log Manager</b>. Based on which Op Mode is enabled or disabled, different activities in the \htmlonly Backend \endhtmlonly occur:
 
 <table>
     <tr>
@@ -321,10 +353,10 @@ The <b>Enable Op Mode Request</b> enables or disables an Op Mode on the system. 
     <tr>
         <td>O<sub>2</sub> Calibration Mode</td>
         <td>
-        - The 1 minute timer stored in the O<sub>2</sub> Calibration Manager will start.
+        - Logs most recent calibration data to Log Manager.
         </td>
         <td>
-        - The 1 minute timer stored in the O<sub>2</sub> Calibration Manager will stop.
+        - Logs most recent calibration data to Log Manager.
         </td>
     </tr>
     <tr>
@@ -363,9 +395,9 @@ The following Op Modes Requested will not proceed if different criterias are met
 
 The only Op Modes that will be enabled or disbaled together at the same time are <b>Screen Lock Mode</b> and <b>Screen Lock Touched Mode</b>.
     
-The <b>Shutdown Confirm Send Request</b> sends a request to the system to confirm that the device can shutdown completely, and can cancel the shutdown procedure.
+The <b>Shutdown Confirm Send Request</b> sends a request to the system to confirm that the device can shutdown completely, and can cancel the shutdown procedure. Flags for shutting are also saved to the State Manager. Also, the shutdown request is logged to the Log Manager.
   
-The <b>Set DPR Cal Val Request</b> requests to update the state of calibration for pressure regulators. Depending on which state is active, different activities in the \htmlonly Backend \endhtmlonly will occur:
+The <b>Set DPR Cal Val Request</b> requests to update the state of calibration for pressure regulators. All state changes are logged to the Log Manager. Depending on which state is active, different activities in the \htmlonly Backend \endhtmlonly will occur:
 
 <table>
 <tr>
@@ -382,11 +414,11 @@ The <b>Set DPR Cal Val Request</b> requests to update the state of calibration f
 </tr>
 <tr>
     <td>Air Regulator</td>
-    <td>Sets Driving Pressure to 48.</td>
+    <td>Sets Driving Pressure to 48. State change confirmation is logged to the Log Manager.</td>
 </tr>
 <tr>
     <td>O<sub>2</sub> Regulator</td>
-    <td>Sets Driving Pressure to 48.</td>
+    <td>Sets Driving Pressure to 48. State change confirmation is logged to the Log Manager.</td>
 </tr>
 <tr>
     <td>Default</td>
@@ -394,22 +426,33 @@ The <b>Set DPR Cal Val Request</b> requests to update the state of calibration f
 </tr>
 </table>
 
-The <b>Enable Pressure Sensor Zero Request</b> sends calibration verification for the following sensors: Inlet Air, Inlet O<sub>2</sub>, \htmlonly PIP\endhtmlonly, and SP. Saves value to Zero Calibration Manager for Sensor values.
+The <b>Enable Pressure Sensor Zero Request</b> sends calibration verification for the following sensors: Inlet Air, Inlet O<sub>2</sub>, \htmlonly PIP\endhtmlonly, and SP. Saves value to Zero Calibration Manager for Sensor values. States of calibrations are logged to the Log Manager.
   
 ### Other Backend Functions
-- For Modes Requested from the system, the following will occur:
-  - When the system enables the O<sub>2</sub> Calibration Op Mode, the 1 minute timer stored in the O<sub>2</sub> Calibration Manager will start and O<sub>2</sub> Calibration values and voltages are requested.
-  - When the system disables the O<sub>2</sub> Calibration Op Mode, the 1 minute timer stored in the O<sub>2</sub> Calibration Manager will stop.
-  - When the system enables dehumidification, the \htmlonly Humidity \endhtmlonly on the Jet Line and the Auxiliary Line is set to 0.
-- Detect the dev port for a USB drive, and find and create the directories to send service logs to.
-- Eject dev port for USB drive.
-- Update log manager for when the service menu is opened.
-- Runs a 2 minute countdown timer for when the dehumidification progress page is up.
-- Receives ventilation status updates from the system, which will be utilized for the state manager, the End-Tidal Button, and the part manager.
-- Receiving the ids for which the HMI button is pushed, is especially useful for screen lock mode.
-- When the system begins the shutdown procedure, the backend requests measurements for Water Sensors to determine if water is detected on Jet and Auxiliary Lines.
-- Receive notifications and service notifications from the \htmlonly API \endhtmlonly.
-- Sends service calibration data as a QVector back to the system via signal to \htmlonly API \endhtmlonly.
+
+The backend will continuously receive data from the system. Most importantly, the backend receives <b>Notifications</b> and <b>Service Notifications</b> from the \htmlonly API. \endhtmlonly
+
+The following are data is received from the Notifications and Service Notifications:
+- The measurements for Stacking Pressure, Oxygen, Peak Inspiratory Pressure, Auxiliary Flow, TV, and MAP that are saved to the State Manager.
+- The states for all 72 warnings are saved to the \htmlonly Warning \endhtmlonly Banner.
+- The silence timer countdown time to the State Manager.
+- The measurements for the average Stacking Pressure data, the instantaneous Stacking Pressure data, the average Peak Inspiratory Pressure data, the instantaneous Peak Inspiratory Pressure data, and the real-time O<sub>2</sub> Calibration voltage to the State Manager.
+
+The backend will also receive ventilation status updates, which will be utilized for the state manager, the End-Tidal Button, and the part manager; and ids for which the HMI button is pushed, and is especially useful for screen lock mode. Both inputs are saved to the State Manager and will be logged to the Log Manager.
+
+For Modes requested from the system, the states of the Modes will be logged to the Log Manager, and the following will occur:
+- When the system enables or disables the O<sub>2</sub> Calibration Op Mode successfully, the measurement for the lowest and highest Calibration values and voltages are requested to the system, then saved to the State Manager and O<sub>2</sub> Calibration Manager. Calibration failures with no new measurements will be logged to the Log Manager.
+- When the system enables dehumidification, the \htmlonly Humidity \endhtmlonly on the Jet Line and the Auxiliary Line is set to 0.
+
+For exporting service logs and other files to the USB, the backend detects the dev port for a USB drive, and finds and creates the directories to send files. Once finished, the backend will eject the dev port for the USB drive.
+
+For <b>Service Menu</b> service logs, the backend updates the log manager for when the service menu is opened, see Log Manager.
+
+For <b>Dehumidification</b>, the backend runs a 2 minute countdown timer for when the dehumidification progress page is up.
+
+For when the system begins the <b>Shutdown Procedure</b>, the backend requests measurements for Water Sensors to determine if water is detected on Jet and Auxiliary Lines. All values are saved to the State Manager.
+
+Lastly, the backend sends service calibration data as a QVector back to the system via signal to \htmlonly API \endhtmlonly.
 
 ## State Manager
 
@@ -448,7 +491,7 @@ Op Modes
 States stored that represent when mode is enabled or disabled. Op Modes include the following:
 - Limited O<sub>2</sub> Mode
 - Manual Mode
-- PIP Monitoring Mode
+- \htmlonly PIP \endhtmlonly Monitoring Mode
 - Demo Mode
 - Screen Lock Mode
 - Double Jets Mode

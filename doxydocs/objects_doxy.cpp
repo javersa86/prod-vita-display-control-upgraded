@@ -28,11 +28,12 @@
  *
  * ## Warning Banner
  *
- * The banner that will always be displayed at the top of the screen that will will display all the warnings on the system.
+ * The banner that will always be displayed at the top of the screen will display all the warnings on the system.
  *
  * Inputs on the warning banner include the following:
  * - <b>\htmlonly Warning \endhtmlonly Flag Icon:</b> Input used to show or hide more than one warning on the warning banner.
- * - <b>\htmlonly Warning \endhtmlonly Silence Button:</b> Button used to silence the alarm for warning on the warning banner.
+ * - <b>\htmlonly Warning \endhtmlonly Silence Button:</b> Button used to silence the alarm sounding for the active warning with the highest priority. For when the button is pressed, a countdown timer will be displayed for 2 minutes.
+ *   - Note: The time data is being received from the notifications.
  * - <b>\htmlonly Warning \endhtmlonly Troubleshoot Button:</b> Button used to push up the popup windows for troubleshooting steps for warnings on the warning banner.
  * - <b>\htmlonly Warning \endhtmlonly Clear Button:</b> Button used to clear warning on warning banner.
  *
