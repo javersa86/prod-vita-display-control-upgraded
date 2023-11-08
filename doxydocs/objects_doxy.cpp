@@ -1,20 +1,30 @@
 //Module for objects
 
 /**
- * @addtogroup customObjectsModule
- * @brief Objects that are utilized for different pages.
+ * @ingroup customObjectsModule
+ * @defgroup customObjectsGraph Graph
+ * @brief Object for graph used on the home page to display the PIP and SP.
  * @{
  * @details
  *
- * # Custom Objects
- *
- * The QML Custom Objects are utilized on multiple pages across the Graphical User Interface. Custom Objects include buttons, switches, keyboards, keypads, icons, page layouts, and even major components to the software.
- *
- * ## Graph
+ * \subsubsection customObjectsGraph Graph
  *
  * The graph is arguably the most important object on the NVENT-Vita, for it displays the measured output for Peak Inspiratory Pressure (RED) and Stacking Pressure (BLUE) in a visual style. The graph will be updated every 30 milliseconds with new PIP and SP measured values retrieved from the notifications. There will be two dashed lines that will be displayed. Two dash lines will display the set values for each pneumatic setting. There will also be solid lines that display the measured values.
  *
- * ## Navigational Sidebar and Inputs
+ * @file Graph.qml
+ * @brief Graph used on the home page to display the PIP and SP.
+ *
+ * @}
+ */
+
+/**
+ * @ingroup customObjectsModule
+ * @defgroup customObjectsNavigation Navigational Sidebar and Inputs
+ * @brief Objects for the Navigational Sidebar.
+ * @{
+ * @details
+ *
+ * \subsubsection customObjectsNavigation Navigational Sidebar and Inputs
  *
  * The navigational sidebar will allow the user to navigate between pages and menus, and push popups for different procedures, including the following:
  * - Home Option to redirect back to Home Page.
@@ -26,7 +36,20 @@
  *
  * Button will push up Sidebar will be available on top left corner.
  *
- * ## Warning Banner
+ * @file HamburgerMenu.qml
+ * @brief Menu used to navigate to the follow pages and popups, Home, Presets, Dehumidification, Settings Menu, Screen Lock, and Service Menu.
+ *
+ * @}
+ */
+
+/**
+ * @ingroup customObjectsModule
+ * @defgroup customObjectsWarningBanner Warning Banner
+ * @brief Objects for the Warning Banner.
+ * @{
+ * @details
+ *
+ * \subsubsection customObjectsWarningBanner Warning Banner
  *
  * The banner that will always be displayed at the top of the screen will display all the warnings on the system.
  *
@@ -37,7 +60,29 @@
  * - <b>\htmlonly Warning \endhtmlonly Troubleshoot Button:</b> Button used to push up the popup windows for troubleshooting steps for warnings on the warning banner.
  * - <b>\htmlonly Warning \endhtmlonly Clear Button:</b> Button used to clear warning on warning banner.
  *
- * ## Other Objects
+ * @file WarningBanner.qml
+ * @brief Large banner icon at the top of the screen to display all warnings and alarms triggered in the system.
+ *
+ * @file WarningBannerAlarmIcon.qml
+ * @brief Icon that displays one alarm. Pushing down shows and hides up to 3 warnings at once.
+ *
+ * @file WarningBannerAlarmIcons.qml
+ * @brief Icon that displays the number of different alarms. Pushing down shows and hides up to 3 warnings at once.
+ *
+ * @file WarningBannerModel.qml
+ * @brief Layout for each warning on the warning banner, which includes title, color, and built-in troubleshoot and silence buttons.
+ *
+ * @}
+ */
+
+/**
+ * @ingroup customObjectsModule
+ * @defgroup customObjectsOtherObjects Other Objects
+ * @brief Other objects available on the GUI.
+ * @{
+ * @details
+ *
+ * \subsubsection customObjectsOtherObjects Other Objects
  *
  * Other are also significant to the Graphical User interface:
  * - <b>Checklist Alarm Icon:</b> Changes red to green based on the pressure for verifying values for Inlet Air and Inlet O<sub>2</sub>.
@@ -53,7 +98,49 @@
  * - <b>Time Zone Text:</b> QML Array of Text utilized as options for updating the Time Zone on the digital clock.
  * - <b>Vertical Indicator:</b> Icon that displays the minimum, maximum, and set value between the two for a pneumatic setting.
  *
- * ## Buttons and Other Inputs
+ * @file CheckListAlarm.qml
+ * @brief Icon displayed green or red if criteria is met for calibration procedure.
+ *
+ * @file DialDisplay.qml
+ * @brief Icon large used to display the setting value and unit on the adjustment page. Contains input signal as well.
+ *
+ * @file IncorrectPassCode.qml
+ * @brief Text used for incorrect passcode input with shaking effect.
+ *
+ * @file ProgressDisplay.qml
+ * @brief Spinner Icon used for the start up and shutdown progress pages.
+ *
+ * @file PresetValueColumns.qml
+ * @brief Display preset pages before implementation.
+ *
+ * @file PresetProgressDisplay.qml
+ * @brief Spinner Icon used on the Preset Implementation Progress page.
+ *
+ * @file ProgressDisplayMeasureValue.qml
+ * @brief Spinner Icon that surround measured value for oxygen concentration on pneumatic button.
+ *
+ * @file ProgressDisplayMini.qml
+ * @brief Smaller version.
+ *
+ * @file StatisticDisplay.qml
+ * @brief Displays the measured values for MAP, TV, and MV.
+ *
+ * @file TimeZoneText.qml
+ * @brief Text array storing existing time zone to update the digital clock.
+ *
+ * @file VerticalIndicator.qml
+ * @brief Bar icon to display the set value between the minimum and maximum values.
+ * @}
+ */
+
+/**
+ * @ingroup customObjectsModule
+ * @defgroup customObjectsInputs Buttons and Other Inputs
+ * @brief Inputs on the GUI.
+ * @{
+ * @details
+ *
+ * \subsubsection customObjectsInputs Buttons and Other Inputs
  *
  * Mutliple Buttons will trigger different actions from multiple pages. All buttons and inputs will have a press and hold signal where the user will require to push down on screen for at least 50 milliseconds.
  *
@@ -79,7 +166,76 @@
  * - <b>Setting Options Button:</b> Button used to switch between pages and popup windows on the settings and service menus.
  * - <b>Verify Button:</b> Button used to verify the accuracy measured values for sensor calibration. Confirm State is available.
  *
- * ## Switches
+ * @file NumberButton.qml
+ * @brief Button used for keypads.
+ *
+ * @file CalibrateButton.qml
+ * @brief Button used to initiate calibration, including Sensors, Pressure Regulators, and O2 Calibration.
+ *
+ * @file CalibrationOptionsButton.qml
+ * @brief Button used to begin calibration procedures.
+ *
+ * @file CancelButton.qml
+ * @brief Button used to exit back to previous page.
+ *
+ * @file CheckListItem.qml
+ * @brief Icon used for checklist items on calibration pages.
+ *
+ * @file ContactKeyboard/ContactKeyboardButton.qml
+ * @brief Button used for keyboard to enter contact information.
+ *
+ * @file ContinueButton.qml
+ * @brief Button used to for complete activity on page.
+ *
+ * @file EndTidalButton.qml
+ * @brief Button used to initiate the ETCO<sub>2</sub> procedure.
+ *
+ * @file HamburgerButton.qml
+ * @brief Button used to push up the navigational menu.
+ *
+ * @file HelpIcon.qml
+ * @brief Icon used to display the help description.
+ *
+ * @file HelpIconLabeled.qml
+ * @brief Icon used to display the help description and title. Used to for mode buttons on home page.
+ *
+ * @file MenuButton.qml
+ * @brief Button used as an option for the navigational menu.
+ *
+ * @file Keyboard/KeyboardButton.qml
+ * @brief Button used for keyboard.
+ *
+ * @file Keyboard/SerialNumberKeyboardButton.qml
+ * @brief Button used for keyboard to enter component's serial number.
+ *
+ * @file PneumaticButton.qml
+ * @brief Button used to push up adjustment pages and to display the set and measured values for the pneumatic settings.
+ *
+ * @file PresetIcon.qml
+ * @brief Icon used used to display preset values, and push up pages to edit, delete, and implement presets.
+ *
+ * @file SaveButton.qml
+ * @brief Button used to save and confirm pneumatic setting from adjustment pages.
+ *
+ * @file SettingOptionsButton.qml
+ * @brief Button used for menu options and for multiple purposes for different modes.
+ *
+ * @file StartButton.qml
+ * @brief Button used for calibration.
+ *
+ * @file VerifyButton.qml
+ * @brief Button used to confirm that caribration values are accurate on verification pages.
+ * @}
+ */
+
+/**
+ * @ingroup customObjectsModule
+ * @defgroup customObjectsSwitches Switches
+ * @brief Switches on the GUI.
+ * @{
+ * @details
+ *
+ * \subsubsection customObjectsSwitches Switches
  *
  * Switches work differently from buttons and inputs, in that it does not reset or disappear after input.
  * Mostly utilized for different modes on the display and the system.
@@ -89,7 +245,28 @@
  * - <b>Line \htmlonly Switch\endhtmlonly:</b> \htmlonly Switch \endhtmlonly used to show and hide the blue lines on the graph.
  * - <b>Mode \htmlonly Switch\endhtmlonly:</b> Switches used to enable or disable different op modes, include Limited O<sub>2</sub>, Manual, and \htmlonly PIP \endhtmlonly Disconnection.
  *
- * ## Keyboards and Keypads
+ * @file DaylightSwitch.qml
+ * @brief Switch between Daylight Savings.
+ *
+ * @file LineButton.qml
+ * @brief Switch used to show or hide the blue line on the graph.
+ *
+ * @file DialButton.qml
+ * @brief Button used to switch between unified and seperate humidity on humidity adjustment page, or used to switch from keypad to dial on ETCO<sub>2</sub> adjustment page.
+ *
+ * @file KeypadButton.qml
+ * @brief Button used to switch dial to keypad on ETCO<sub>2</sub> Adjustment pages.
+ * @}
+ */
+
+/**
+ * @ingroup customObjectsModule
+ * @defgroup customObjectsKeyboards Keyboards and Keypads
+ * @brief Keyboards and keypads on the GUI.
+ * @{
+ * @details
+ *
+ * \subsubsection customObjectsKeyboards Keyboards and Keypads
  *
  * There are multiple virtual keyboards and keypads on the GUI to input text and digits.
  * For clarification, keypads are only used for inputing numbers or digits, while used to input text with multiple character,
@@ -112,7 +289,52 @@
  *   - <b>Date Keypad:</b> Built-in keypad used to input date.
  *   - <b>PassCode Keypad:</b> Built-in Keypads used for the PassCode pages.
  *
- * ## Page Layouts
+ * @file ContactKeyboard/GeneralContactKeyboard.qml
+ * @brief Keyboard used to enter contact information.
+ *
+ * @file ContactKeyboard/GeneralContactKeypad.qml
+ * @brief Keypad used to enter contact information.
+ *
+ * @file DateDayPad.qml
+ * @brief Keypad used to input the day for date.
+ *
+ * @file DateFebruaryDayPad.qml
+ * @brief Keypad used to input the day for date during February.
+ *
+ * @file DateFebruaryLeapDayPad.qml
+ * @brief Keypad used to input the day for date during February while during a Leap Year.
+ *
+ * @file DateMonthPad.qml
+ * @brief Keypad used to input the month for date.
+ *
+ * @file DateOtherDayPad.qml
+ * @brief Keypad used to input the day for date. The month would only have 30 days.
+ *
+ * @file DateYearPad.qml
+ * @brief Keypad used to input the year for date.
+ *
+ * @file PassCodeKeypad.qml
+ * @brief Keypad used for passcode pages.
+ *
+ * @file ContactKeyboard/ContactKeyboardLayout.qml
+ * @brief Layout used for different state of keyboard used to enter contact information.
+ *
+ * @file Keyboard/KeyboardLayout.qml
+ * @brief Layout for keyboard.
+ *
+ * @file Keyboard/SerialNumberKeyboardLayout.qml
+ * @brief Layout used for keyboard to enter component's serial number.
+ * @}
+ */
+
+/**
+ * @ingroup customObjectsModule
+ * @defgroup customObjectsLayouts Page Layouts
+ * @brief Layouts for other pages.
+ * @{
+ * @details
+ *
+ * \subsubsection customObjectsLayouts Page Layouts
  *
  * Page layouts include:
  * - <b>Adjustment Keypad:</b> The virtual representation for the keypad on the adjustment pages that will include the following
@@ -148,77 +370,8 @@
  *   - Limited O<sub>2</sub> Mode
  *   - Manual Mode
  *
- * @file ContactKeyboard/ContactKeyboardButton.qml
- * @brief Button used for keyboard to enter contact information.
- *
- * @file ContactKeyboard/ContactKeyboardLayout.qml
- * @brief Layout used for different state of keyboard used to enter contact information.
- *
- * @file ContactKeyboard/GeneralContactKeyboard.qml
- * @brief Keyboard used to enter contact information.
- *
- * @file ContactKeyboard/GeneralContactKeypad.qml
- * @brief Keypad used to enter contact information.
- *
- * @file Keyboard/KeyboardButton.qml
- * @brief Button used for keyboard.
- *
- * @file Keyboard/KeyboardLayout.qml
- * @brief Layout for keyboard.
- *
- * @file Keyboard/SerialNumberKeyboardButton.qml
- * @brief Button used for keyboard to enter component's serial number.
- *
- * @file Keyboard/SerialNumberKeyboardLayout.qml
- * @brief Layout used for keyboard to enter component's serial number.
- *
  * @file AdjustmentKeypad.qml
  * @brief Keypad used to adjust pneumatic settings.
- *
- * @file CalibrateButton.qml
- * @brief Button used to initiate calibration, including Sensors, Pressure Regulators, and O2 Calibration.
- *
- * @file CalibrationOptionsButton.qml
- * @brief Button used to begin calibration procedures.
- *
- * @file CancelButton.qml
- * @brief Button used to exit back to previous page.
- *
- * @file CheckListAlarm.qml
- * @brief Icon displayed green or red if criteria is met for calibration procedure.
- *
- * @file CheckListItem.qml
- * @brief Icon used for checklist items on calibration pages.
- *
- * @file ContinueButton.qml
- * @brief Button used to for complete activity on page.
- *
- * @file DateDayPad.qml
- * @brief Keypad used to input the day for date.
- *
- * @file DateFebruaryDayPad.qml
- * @brief Keypad used to input the day for date during February.
- *
- * @file DateFebruaryLeapDayPad.qml
- * @brief Keypad used to input the day for date during February while during a Leap Year.
- *
- * @file DateMonthPad.qml
- * @brief Keypad used to input the month for date.
- *
- * @file DateOtherDayPad.qml
- * @brief Keypad used to input the day for date. The month would only have 30 days.
- *
- * @file DateYearPad.qml
- * @brief Keypad used to input the year for date.
- *
- * @file DialButton.qml
- * @brief Button used to switch between unified and seperate humidity on humidity adjustment page, or used to switch from keypad to dial on ETCO<sub>2</sub> adjustment page.
- *
- * @file DialDisplay.qml
- * @brief Icon large used to display the setting value and unit on the adjustment page. Contains input signal as well.
- *
- * @file EndTidalButton.qml
- * @brief Button used to initiate the ETCO<sub>2</sub> procedure.
  *
  * @file GenericDial.qml
  * @brief Layout used for adjustment pages to display the following: the title, the help icon, the dial display, Vertical Indicator, Cancel Button, Save Button, and Keypad Button. A PIP Disconnection Button will be available on PIP Adjustment Page.
@@ -226,38 +379,11 @@
  * @file GenericDialMini.qml
  * @brief A smaller version of the Generic Dial used for the O<sub>2</sub> Calibration Page.
  *
- * @file Graph.qml
- * @brief Graph used on the home page to display the PIP and SP.
- *
- * @file HamburgerButton.qml
- * @brief Button used to push up the navigational menu.
- *
- * @file HamburgerMenu.qml
- * @brief Menu used to navigate to the follow pages and popups, Home, Presets, Dehumidification, Settings Menu, Screen Lock, and Service Menu.
- *
- * @file HelpIcon.qml
- * @brief Icon used to display the help description.
- *
- * @file HelpIconLabeled.qml
- * @brief Icon used to display the help description and title. Used to for mode buttons on home page.
- *
  * @file HumidityIcon.qml
  * @brief A Pneumatic Icon that will display the humdity on the jet line and the auxiliary line in seperate mode. Constructed from pneumatic icon object.
  *
- * @file IncorrectPassCode.qml
- * @brief Text used for incorrect passcode input with shaking effect.
- *
  * @file Keyboard.qml
  * @brief Keypad with buttons used for the Adjustment Keypad on adjustment pages.
- *
- * @file KeypadButton.qml
- * @brief Button used to switch dial to keypad on ETCO<sub>2</sub> Adjustment pages.
- *
- * @file LineButton.qml
- * @brief Switch used to show or hide the blue line on the graph.
- *
- * @file MenuButton.qml
- * @brief Button used as an option for the navigational menu.
  *
  * @file ModeSettingDial.qml
  * @brief Dial Adjustment Page for adjusting the settings related to modes, such as ETCO<sub>2</sub> settings and Laser-Safe.
@@ -268,35 +394,8 @@
  * @file ModeSwitch.qml
  * @brief Switch used to enable and diable modes.
  *
- * @file NumberButton.qml
- * @brief Button used for keypads.
- *
- * @file PassCodeKeypad.qml
- * @brief Keypad used for passcode pages.
- *
- * @file PneumaticButton.qml
- * @brief Button used to push up adjustment pages and to display the set and measured values for the pneumatic settings.
- *
- * @file PresetIcon.qml
- * @brief Icon used used to display preset values, and push up pages to edit, delete, and implement presets.
- *
- * @file PresetProgressDisplay.qml
- * @brief Spinner Icon used on the Preset Implementation Progress page.
- *
- * @file ProgressDisplay.qml
- * @brief Spinner Icon used for the start up and shutdown progress pages.
- *
- * @file ProgressDisplayMeasureValue.qml
- * @brief Spinner Icon that surround measured value for oxygen concentration on pneumatic button.
- *
- * @file SaveButton.qml
- * @brief Button used to save and confirm pneumatic setting from adjustment pages.
- *
  * @file SelectableDial.qml
  * @brief Dial Icon used for the humidity adjustment pages.
- *
- * @file SettingOptionsButton.qml
- * @brief Button used for menu options and for multiple purposes for different modes.
  *
  * @file SlidingBox.qml
  * @brief Popup window that appears from top of the screen.
@@ -304,28 +403,5 @@
  * @file SlidingBoxReversed.qml
  * @brief Popup window that appears from bottom of the screen.
  *
- * @file StatisticDisplay.qml
- * @brief Displays the measured values for MAP, TV, and MV.
- *
- * @file TimeZoneText.qml
- * @brief Text array storing existing time zone to update the digital clock.
- *
- * @file VerifyButton.qml
- * @brief Button used to confirm that caribration values are accurate on verification pages.
- *
- * @file VerticalIndicator.qml
- * @brief Bar icon to display the set value between the minimum and maximum values.
- *
- * @file WarningBanner.qml
- * @brief Large banner icon at the top of the screen to display all warnings and alarms triggered in the system.
- *
- * @file WarningBannerAlarmIcon.qml
- * @brief Icon that displays one alarm. Pushing down shows and hides up to 3 warnings at once.
- *
- * @file WarningBannerAlarmIcons.qml
- * @brief Icon that displays the number of different alarms. Pushing down shows and hides up to 3 warnings at once.
- *
- * @file WarningBannerModel.qml
- * @brief Layout for each warning on the warning banner, which includes title, color, and built-in troubleshoot and silence buttons.
  * @}
  */

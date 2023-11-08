@@ -2,12 +2,12 @@
 
 /**
  * @ingroup pagesModule
- * @defgroup homePagesModule Home Pages
+ * @defgroup homePagesModule Main Window and its Related Pages
  * @{
  * @brief The home pages where the all activity takes place.
  * @details
  *
- * ## Home Pages and Main Window
+ * \subsubsection homePagesModule Main Window and its Related Pages
  *
  * The <b>Main Window/Home Page</b> is the basis for where all the activity from the Graphical User Interface, including the different menus and popups, take place. When the user powers on the device, the startup page will be displayed to load the main window. After the loading page is cleared, the home page will include different features.<br>
  *
@@ -72,7 +72,7 @@
  * @brief The following pages are used to adjust pneumatic settings.
  * @details
  *
- * ## Pneumatic Settings Adjustment Pages
+ * \subsubsection pneumaticSettingPagesModule Pneumatic Settings Adjustment Pages
  *
  * The <b>Pneumatic Settings</b> are utilized to create ventilation states based on what is required for the patient, and can be adjusted to different states and values.<br>
  *
@@ -107,14 +107,18 @@
  * @file HighSettingConfirmation.qml
  * @brief Pop Up Window that warns the user for setting adjustment greater than the warning threshold, utilized for SP, PIP, and IT.
  *
+ * @}
  *
- *
- * @defgroup humidityAdjustmentModule Humidity Adjustments
+ */
+
+/**
+ * @ingroup pagesModule
+ * @defgroup humidityAdjustmentModule Humidity Adjustment Page
  * @{
  * @brief Requires adjustment to the Jet Line and the Auxiliary Line.
  * @details
  *
- * ## Humidity Adjustment Page
+ * \subsubsection humidityAdjustmentModule Humidity Adjustment Page
  *
  * For \htmlonly Humidity, \endhtmlonly there are two Pneumatic Settings to adjust: \htmlonly Humidity \endhtmlonly on the Jet Line, and the \htmlonly Humidity \endhtmlonly on the Auxiliary Line. There are two modes that the user can switch between to adjust humidity:
  *
@@ -140,8 +144,6 @@
  * @brief Page where user adjusts humidity and humidity auxiliary separately with encoder knob.
  *
  * @}
- *
- * @}
  */
 
 /**
@@ -150,7 +152,8 @@
  * @{
  * @brief The following pages allow the user to save pneumatic settings as presets to be implemented later.
  * @details
- * ## Preset Options
+ *
+ * \subsubsection presetPagesModule Preset Options
  *
  * <b>Presets</b> are saved pneumatic settings created by medical professionals for different purposes and medical procedures. Presets can be created, edited, deleted, or implemented to the system through the “Presets” option on the <b>Navigational Sidebar</b>.  The following will be saved in a preset: Driving Pressure, \htmlonly Rate \endhtmlonly, Inspiratory Time, Stacking Pressure, Oxygen Concentration, Peak Inspiratory Pressure, Auxiliary Flow, and \htmlonly Humidity \endhtmlonly (acting as a unified setting).<br>
  *
@@ -214,32 +217,18 @@
 
 /**
  * @ingroup pagesModule
- * @defgroup jetActiveModule Shutdown Pages and Dehumidification Pages
+ * @defgroup jetActiveModule Shutdown and Dehumidification Pages
  * @{
  * @brief The following pages relate to a popup window that would be display before the Dehumidifcation Procedure and Shutdown Procedure.
  * @details
  *
- * ## Shutdown and Dehumidification Pages
+ * \subsubsection jetActiveModule Shutdown and Dehumidification Pages
  *
  * A Popup window will be displayed based on the different criterias met before Shutting Down or Dehumidifying.
  * - If the Auxiliary Line is Active.
  * - If the Jet and Auxiliary Lines are Active.
  * - If the Manual Mode is Active.
  * - If the Manual Mode and Auxiliary Line is Active.
- *
- * For more information, see @ref dehumidificationModule and @ref shutdownProcedureModule.
- *
- * @file JetActiveConfirmation.qml
- * @brief Popup window will be display before the shutdown procedure if system is still ventilating.
- * @}
- */
-
-/**
- * @ingroup jetActiveModule
- * @defgroup dehumidificationModule Dehumidification Pages
- * @{
- * @brief The following pages allow the user to initiate the dehumidification procedure.
- * @details
  *
  * For the <b>Dehumidification Procedure,</b> and before shutting the system down, it is important for the user to dehumidify the system to ensure the remaining water won't damage or corrode different parts. This is the reason why the option to dehumidify is also available on the <b>Shutdown Procedure Popups</b>, the <b>Navigational Sidebar</b>, and the <b>Humidity Adjustment Page</b>. <b>Dehumidification</b> should only be required if the \htmlonly Humidity \endhtmlonly percentage is greater than or equal to 30% and water is running through the Jet or Auxiliary Lines.
  *
@@ -252,6 +241,11 @@
  * 5. After dehumidification is complete, one of two popups will be displayed:
  *   - The "Dehumidication Success Popup"
  *   - The "Dehumidification Failure Popup" where the user as the option to restart dehumidification.
+ *
+ * For the <b>Shutdown Procedure Popups,</b> if the user presses the power button, a popup window will be displayed with options to continue with shutdown or begin dehumidification before shutdown. The system cannot continue to ventilate while shutting down. If the system is still ventilating, all inputs will be disabled. If the user starts ventilating while on the shutdown popup, the options to continue with shutdown or dehumidification will be disabled, and will be enabled once user stops ventilating. After dehumidification (success or failure), the user will have the option to continue with shutdown or not.
+ *
+ * @file JetActiveConfirmation.qml
+ * @brief Popup window will be display before the shutdown procedure if system is still ventilating.
  *
  * @file DehumidificationDisconnection.qml
  * @brief Popup window to begin the dehumidification procedure.
@@ -267,17 +261,6 @@
  *
  * @file DehumidificationFailure.qml
  * @brief Popup window is displayed when dehumidification is completed but failed.
- * @}
- */
-
-/**
- * @ingroup jetActiveModule
- * @defgroup shutdownProcedureModule Shutdown Procedure Pages
- * @{
- * @brief The following pages will be utilized for the Shutdown Procedure.
- * @details
- *
- * For the <b>Shutdown Procedure Popups,</b> if the user presses the power button, a popup window will be displayed with options to continue with shutdown or begin dehumidification before shutdown. The system cannot continue to ventilate while shutting down. If the system is still ventilating, all inputs will be disabled. If the user starts ventilating while on the shutdown popup, the options to continue with shutdown or dehumidification will be disabled, and will be enabled once user stops ventilating. After dehumidification (success or failure), the user will have the option to continue with shutdown or not.
  *
  * @file ShutdownConfirmation.qml
  * @brief Popup window to confirm the shutdown of the system from the power button. There is also an option to dehumidify before shutting down.
@@ -297,7 +280,7 @@
  * @brief The following pages are utilized for screen lock the display to allow the user to clean screen.
  * @details
  *
- * ## Screen Lock Mode
+ * \subsubsection screenlockModule Screen Lock Mode
  *
  * For maintenance purposes, it is important for the screen and buttons to be cleaned, which is why the option to disable the screen and buttons is available to the user on the <b>Navigational Sidebar</b>. If the system is required to remain running, screen lock mode will be helpful to prevent miss inputs. A Popup Window will be displayed with instructions on how to continue with the cleaning procedure. Continuing will display a transparent overlay over the screen that will prevent the user from pressing any other inputs. If the user presses the screen or the HMI Buttons, the message "Screen lock mode is active. Press the dial to unlock and interact with the screen." will be displayed on screen. Pressing down on the encoder knob will disable Screen Lock Mode and the user will exit from the screen overlay. If touch (water residue or other substances) is detected on the screen or the other HMI Buttons while pressing down on the knob, the message "Moisture detected on panel. Please dry off screen." will be displayed, screen lock will not be disabled.
  *
@@ -316,7 +299,7 @@
  * @brief The following pages to contain help info.
  * @details
  *
- * ## Help Pages
+ * \subsubsection helpPagesModule Help Pages
  *
  * If a <b>Help Icon</b> is available, the user will have the option to push up a popup window <b>(Help Box)</b> with a description of how a certain feature works, including the descriptions of Pneumatic Settings, and Op Modes.
  *
@@ -443,6 +426,19 @@
  *      </td>
  *  </tr>
  * </table>
+ *
+ * @file HelpBox.qml
+ * @brief Popup window to contain information from Help Icon.
+ * @}
+ */
+
+/**
+ * @ingroup pagesModule
+ * @defgroup troubleshootingPagesModule Troubleshooting Steps
+ * @{
+ * @brief The following pages to contain help info.
+ *
+ * \subsubsection troubleshootingPagesModule Troubleshooting Steps
  *
  * For every warning on the warning banner, there is the troubleshooting option <b>(Troubleshooting Box)</b> to push up the popup window with steps on how to fix the reason for warning.
  *
@@ -865,11 +861,10 @@
  *  </tr>
  * </table>
  *
- * @file HelpBox.qml
- * @brief Popup window to contain information from Help Icon.
  *
  * @file Troubleshoot.qml
  * @brief Popup window to contain information on troubleshooting warning.
+ *
  * @}
  */
 
@@ -880,7 +875,7 @@
  * @brief The following pages for the Settings Menu.
  * @details
  *
- * ## Settings Menu
+ * \subsubsection settingsMenuPagesModule Settings Menu
  *
  * The Setting Menu where the user can access multiple pages where the user can update important aspects of the NVENT-Vita.<br>
  *
@@ -894,10 +889,21 @@
  *
  * The <b>\htmlonly PIP \endhtmlonly Disconnection Page</b> is where the user can enable and disable \htmlonly PIP \endhtmlonly Disconnection Mode.<br>
  *
- * The <b>Brightness and \htmlonly Volume\endhtmlonly Page</b> is where the user can adjust the volume of the alarm and the brightness of the screen: see @ref volumeAndBrightnessModule "Brightness and Volume Settings". <br>
+ * The <b>Brightness and \htmlonly Volume\endhtmlonly Page</b> is where the user can adjust the volume of the alarm and the brightness of the screen. The page includes options that allow the user to switch the dial adjustment page for brightness, and the dial adjustment page for volume.
+ * - For adjusting brightness, turning the encoder knob will increase or decrease the brightness of the screen and directly communicate with the brightness manager. To save Brightness, the user will be required to press down on Save Button or the encoder knob.
+ * - For adjusting volume, turning the encoder knob will increase or decrease the volume used for the warning alarms. An alarm sound will be made after every turn indicating what the actual volume will sound like. To save \htmlonly Volume\endhtmlonly, the user will be required to press down on Save Button or the encoder knob.
+ *   - <b>Note:</b> The \htmlonly <b>Volume</b> \endhtmlonly is classified as a Pneumatic Setting for easier communication with the system.
  *
- * The <b>About Page</b> The page displays important system data: @ref aboutModule "About Page".
+ * The <b>About Page</b> page displays important system data, including the following:
+ * - Service and Sales Contact Information.
+ * - Last and Next Service Dates.
+ * - Software Version Numbers for Display, System, and HMI Controller.
+ * - Serial Number for the device.
+ * - IP Address with option to refresh if device needs to reconnect with ethernet cable.
+ * - \htmlonly Switch \endhtmlonly digital clock between Daylight Savings Time and Standard Time
+ * - Option to update passcode: see @ref passcodeModule "Passcode Change."
  *
+ * For passcode changes on the About Page, the passcode store on the system is utilized for adjusting presets. The default passcode will be 0000 and is required to be 4 digits. To change passcodes, the user is required to enter the current passcode first, then the option to change the passcode will become available. Note that the user cannot use the previous passcode for the new one, only the service technician can be able to do that.
  *
  * @file SettingsPage.qml
  * @brief Page that includes options for Settings Menu.
@@ -920,21 +926,6 @@
  * @file Disconnection.qml
  * @brief Page to enable PIP Disconnection Mode.
  *
- *
- *
- *
- * @defgroup volumeAndBrightnessModule Brightness and Volume Settings
- * @{
- * @brief Pages to adjust the brightness and volume.
- * @details
- *
- * The page includes options that allow the user to switch the dial adjustment page for brightness, and the dial adjustment page for volume.
- *
- * - For adjusting brightness, turning the encoder knob will increase or decrease the brightness of the screen and directly communicate with the brightness manager. To save Brightness, the user will be required to press down on Save Button or the encoder knob.
- *
- * - For adjusting volume, turning the encoder knob will increase or decrease the volume used for the warning alarms. An alarm sound will be made after every turn indicating what the actual volume will sound like. To save \htmlonly Volume\endhtmlonly, the user will be required to press down on Save Button or the encoder knob.
- *   - <b>Note:</b> The \htmlonly <b>Volume</b> \endhtmlonly is classified as a Pneumatic Setting for easier communication with the system.
- *
  * @file VolumeAndBrightness.qml
  * @brief Page to adjust the brightness of the screen and the volume of the alarm.
  *
@@ -944,36 +935,8 @@
  * @file Volume.qml
  * @brief Sub Page to adjust volume.
  *
- * @}
- *
- *
- *
- * @defgroup aboutModule About Page
- * @{
- *
- * @brief Page contains information about the device.
- * @details
- *
- * Page that includes the following information:
- * - Service and Sales Contact Information.
- * - Last and Next Service Dates.
- * - Software Version Numbers for Display, System, and HMI Controller.
- * - Serial Number for the device.
- * - IP Address with option to refresh if device needs to reconnect with ethernet cable.
- * - \htmlonly Switch \endhtmlonly digital clock between Daylight Savings Time and Standard Time
- * - Option to update preset passcode: see @ref passcodeModule "Passcode Change."
- *
  * @file About.qml
  * @brief Page where system data is displayed.
- *
- *
- * @defgroup passcodeModule Passcode Change Pages
- * @{
- *
- * @brief Pages to update the passcode used to updating presets.
- * @details
- *
- * For passcode changes on the About Page, the passcode store on the system is utilized for adjusting presets. The default passcode will be 0000 and is required to be 4 digits. To change passcodes, the user is required to enter the current passcode first, then the option to change the passcode will become available. Note that the user cannot use the previous passcode for the new one, only the service technician can be able to do that.
  *
  * @file Settings/PassCode.qml
  * @brief Page to enter current passcode before changing it.
@@ -983,10 +946,6 @@
  *
  * @file Settings/PassCodeConfirm.qml
  * @brief Page to confirm that passcode changed.
- *
- * @}
- *
- * @}
  *
  * @}
  */
@@ -999,7 +958,7 @@
  * @brief The service menu pages will be utilized by service technician.
  * @details
  *
- * ## Service Menu
+ * \subsubsection serviceMenuPagesModule Service Menu
  *
  * The Service Menu is where only the service technician can access multiple pages and update important aspects of the NVENT-VITA.<br>
  *
@@ -1007,17 +966,34 @@
  *
  * The <b>Factory Settings Page</b> where the user can enable the second jet on the system (if available).<br>
  *
- * The <b>Maintenance Page</b> that displays important system data and where the service technician can update said data: see @ref maintenanceModule "Maintenance Page"<br>
+ * The <b>Maintenance Page</b> that displays important system data and where the service technician can update said data. The page will include the following:
+ * - The option to update the contact information for the service company and the sales company. A popup window will be pushed up, which will include a keyboard and text boxes for the following: Company Name, Street Address, City/Town, State, Postal Code, Phone Number, and Email / Website.
+ * - The options to update the date, time, and time zone for the digital clock. A popup window will be pushed up for part of the digital clock to be updated.
+ * - The option to update the last and next service dates, popup windows are also constructed from @ref DatePopup.qml "Date Popup Window".
+ * - Software Version Numbers for Display, System, and HMI Controller.
+ * - Serial Number for the device.
+ * - IP Address with option to refresh if device needs to reconnect with ethernet cable.
  *
- * The <b>Components Page</b> where the service technician can update the part data when replacing parts: see @ref componentsModule "Components Page."<br>
+ * The <b>Components Page</b> where the service technician can update the part data when replacing parts. A table will be displayed with every part that would be replaced on the system. The user can scroll through every part and columns for each part include the name, serial number, installation date, hours of operation, and hours of ventilation. To begin the replacement procedure, the user must press the "Replace" Option. The borders for the part name entries will be highlighted. Selecting the name for a part will begin the following procedure through popup windows:
+ * 1. The user must confirm that they would like to continue with the replacement process for the part selected.
+ * 2. The user must then update the installation date if it is not today.
+ * 3. The user must enter the new serial number (if available) with the pushed up keyboard.
+ * 4. The user must finally confirm replacement, which will reset parts hours of operation and ventilation.
  *
- * The <b>Calibration Page</b> where the service technician conducts sensor and pressure regulator calibration: see @ref calibrationModule "Calibration Page."<br>
+ * The <b>Calibration Page</b> where the service technician conducts sensor and pressure regulator calibration. As the medical professional continues using the device, they need to ensure that the multiple sensors and pressure regulators are producing the most accurate data for the user.
+ * The sensors that need to be calibrated on the page include the <b>Inlet Air Sensor</b>, the <b>Inlet O<sub>2</sub> Sensor</b>, the <b>\htmlonly PIP \endhtmlonly Sensor</b>, and the <b>SP Sensor</b>.
+ * The pressure regulators that need to be calibrated on the page include the <b>Driving Pressure Regulator</b>, the <b>Air Regulator</b>, and the <b>Oxygen Regulator</b>.
+ * The procedures for each will go as followed:
+ * - <b>\htmlonly PIP \endhtmlonly and SP Zeroing and Verifying:</b> the user should not see values greater than 0 if the system isn’t ventilating. The service technician can conduct calibration by zeroing the measured values for \htmlonly PIP \endhtmlonly and SP. Through the pop up window for each, the user can zero with the press of the button. A success or failure icon will be displayed based on the results. For the verification, the user will need to use a verification tool for manually producing values up to 100.
+ * - <b>Inlet Air and Oxygen Zeroing and Verifying:</b> Inlet Air and O<sub>2</sub> refers to the pressure produced from the tanks to the system. The system should not see pressure if tanks are not connected or closed. The service technician can conduct calibration by zeroing the measured values for Inlet Air and Inlet O<sub>2</sub>. Through the pop up window for each, the user can zero with the press of the button. A success or failure icon will be displayed based on the results. For the verification, the user will need to manually adjust tanks to ensure that values can produce pressure greater or less than 30. (Separate Calibration tool will be required.)
+ * - <b>Low and High Driving Pressure Regulator Calibration:</b> Through the pop up window for low, the user will only need to press a button to calibrate. Previous DPR value will be displayed. Through the same pop up window for high calibration, the user will need to ensure that the live feed for DPR will remain a 45. Precise adjustment for Driving Pressure through the encoder knob may be required. Previous DPR value will be displayed.
+ * - <b>Air and Oxygen Regulator Calibration:</b> Through the pop up window for high calibration, the user will need to ensure that the live feed for DPR can hit 48 by pushing down on the encoder knob for the Air Regulator or the Oxygen Regulator.
  *
- * The <b>O<sub>2</sub> Calibration Page</b> to the service technician begins the O<sub>2</sub> Calibration Procedure. He or she can even adjust oxygen concentration with the encoder knob, see a live feed for the O<sub>2</sub> Calibration Voltage, and see a history of the lowest and highest calibration voltages.<br>
+ * The <b>O<sub>2</sub> Calibration Page</b> to the service technician begins the O<sub>2</sub> Calibration Procedure. He or she can even adjust oxygen concentration with the encoder knob, see a live feed for the O2 Calibration Voltage from the Service Notification, and see a history of the lowest and highest calibration voltages; see O2 Calibration Manager for how calibration data is saved and how warning banner timer for O2 Calibration is triggered.
  *
- * The <b>Service Logs Page</b> where the user can export service logs to a USB Stick: see @ref exportModule "Service Logs Page."<br>
+ * The <b>Service Logs Page</b> where the user can export service logs to a USB Stick. Upon opening the page, the user will be required to check, mount, and create directories for the USB stick attached to the back of the device. If the USB stick is detected, then the user will be able to open the pop up to export all service logs to directories <b>NVENT_events</b> and <b>NVENT_warnings</b>. The option to reconnect the USB stick will be available if failed to connect for the first time. The window will display the progress of each file to the USB stick. To ensure that no data is lost due to inappropriate removal of the stick, the disconnection button will unmount the USB stick.
  *
- * The <b>Passcode Page</b> where the user can change the user's passcode and the service technician's passcode: see @ref servicePasscodeModule "Passcode Page."
+ * The <b>Passcode Page</b> where the user can change the user's passcode and the service technician's passcode. The service technician can even forcefully change the user’s passcode.
  *
  * @file ServicePage.qml
  * @brief Page that includes options for the Service Menu.
@@ -1027,19 +1003,6 @@
  *
  * @file FactorySettings.qml
  * @brief Page that includes option to switch between single jets and double jets.
- *
- * @defgroup maintenanceModule Maintenance Page
- * @{
- * @brief Page includes information about the device.
- * @details
- *
- * The page will include the following:
- * - The option to update the contact information for the service company and the sales company. A popup window will be pushed up, which will include a keyboard and text boxes for the following: Company Name, Street Address, City/Town, State, Postal Code, Phone Number, and Email / Website.
- * - The options to update the date, time, and time zone for the digital clock. A popup window will be pushed up for part of the digital clock to be updated.
- * - The option to update the last and next service dates, popup windows are also constructed from @ref DatePopup.qml "Date Popup Window".
- * - Software Version Numbers for Display, System, and HMI Controller.
- * - Serial Number for the device.
- * - IP Address with option to refresh if device needs to reconnect with ethernet cable.
  *
  * @file Maintenance.qml
  * @brief Page similar to the Settings Menu's About Page, but service technician will be able to update service data.
@@ -1055,18 +1018,6 @@
  *
  * @file UpdateTimeZone.qml
  * @brief Popup window to update the time zone of the digital clock.
- * @}
- *
- * @defgroup componentsModule Components Page
- * @{
- * @brief Pages to manage part information.
- * @details
- *
- * A table will be displayed with every part that would be replaced on the system. The user can scroll through every part and columns for each part include the name, serial number, installation date, hours of operation, and hours of ventilation. To begin the replacement procedure, the user must press the "Replace" Option. The borders for the part name entries will be highlighted. Selecting the name for a part will begin the following procedure through popup windows:
- * 1. The user must confirm that they would like to continue with the replacement process for the part selected.
- * 2. The user must then update the installation date if it is not today.
- * 3. The user must enter the new serial number (if available) with the pushed up keyboard.
- * 4. The user must finally confirm replacement, which will reset parts hours of operation and ventilation.
  *
  * @file Components.qml
  * @brief Page to update component information after replacement.
@@ -1085,22 +1036,6 @@
  *
  * @file ComponentsHoursReset.qml
  * @brief Popup window to confirm part replacement, which will reset the parts hours of operation.
- *
- * @}
- *
- * @defgroup calibrationModule Calibration Page
- * @{
- * @brief Pages to manage the multiple calibration procedures.
- * @details
- *
- * As the medical professional continues using the device, they need to ensure that the multiple sensors and pressure regulators are producing the most accurate data for the user.
- * The sensors that need to be calibrated on the page include the <b>Inlet Air Sensor</b>, the <b>Inlet O<sub>2</sub> Sensor</b>, the <b>\htmlonly PIP \endhtmlonly Sensor</b>, and the <b>SP Sensor</b>.
- * The pressure regulators that need to be calibrated on the page include the <b>Driving Pressure Regulator</b>, the <b>Air Regulator</b>, and the <b>Oxygen Regulator</b>.
- * The procedures for each will go as followed:
- * - <b>\htmlonly PIP \endhtmlonly and SP Zeroing and Verifying:</b> the user should not see values greater than 0 if the system isn’t ventilating. The service technician can conduct calibration by zeroing the measured values for \htmlonly PIP \endhtmlonly and SP. Through the pop up window for each, the user can zero with the press of the button. A success or failure icon will be displayed based on the results. For the verification, the user will need to use a verification tool for manually producing values up to 100.
- * - <b>Inlet Air and Oxygen Zeroing and Verifying:</b> Inlet Air and O<sub>2</sub> refers to the pressure produced from the tanks to the system. The system should not see pressure if tanks are not connected or closed. The service technician can conduct calibration by zeroing the measured values for Inlet Air and Inlet O<sub>2</sub>. Through the pop up window for each, the user can zero with the press of the button. A success or failure icon will be displayed based on the results. For the verification, the user will need to manually adjust tanks to ensure that values can produce pressure greater or less than 30. (Separate Calibration tool will be required.)
- * - <b>Low and High Driving Pressure Regulator Calibration:</b> Through the pop up window for low, the user will only need to press a button to calibrate. Previous DPR value will be displayed. Through the same pop up window for high calibration, the user will need to ensure that the live feed for DPR will remain a 45. Precise adjustment for Driving Pressure through the encoder knob may be required. Previous DPR value will be displayed.
- * - <b>Air and Oxygen Regulator Calibration:</b> Through the pop up window for high calibration, the user will need to ensure that the live feed for DPR can hit 48 by pushing down on the encoder knob for the Air Regulator or the Oxygen Regulator.
  *
  * @file Service/Calibration.qml
  * @brief Page with multiple options to calibrate sensors and pressure regulators.
@@ -1122,7 +1057,6 @@
  *
  * @file CalibrationPreRegulators.qml
  * @brief Page to begin calibration procedures for Air Regulator and Oxygen Regulator.
- * @}
  *
  * @file O2Calibration.qml
  * @brief Page to trigger the O<sub>2</sub> Calibration Procedure
@@ -1131,24 +1065,8 @@
  * - Displays the live feed for the O<sub>2</sub> Calibration value.
  * - Include a mini dial with encoder knob functionality to adjust the Oxygen Concentration, and in turn adjust the O<sub>2</sub> calibration value.
  *
- * @defgroup exportModule Service Logs Page
- * @{
- * @brief The Pages to manage the exporting of service logs.
- * @details
- *
- * The <b>Service Logs Page</b> where the user can export service logs to a USB Stick. Upon opening the page, the user will be required to check, mount, and create directories for the USB stick attached to the back of the device. If the USB stick is detected, then the user will be able to open the pop up to export all service logs to directories <b>NVENT_events</b> and <b>NVENT_warnings</b>. The option to reconnect the USB stick will be available if failed to connect for the first time. The window will display the progress of each file to the USB stick. To ensure that no data is lost due to inappropriate removal of the stick, the disconnection button will unmount the USB stick.
- *
  * @file ServiceLogs.qml
  * @brief Page to export service logs to USB Drive and show the progress of exporting service logs to USB Drive.
- *
- * @}
- *
- * @defgroup servicePasscodeModule Passcode Change Page
- * @{
- * @brief Pages to change the passcodes.
- * @details
- *
- * The Passcode Page where the user can change the user's passcode and the service technician's passcode. The service technician can even forcefully change the user’s passcode.
  *
  * @file ChangePasscode.qml
  * @brief Page to change the preset passcode and the service passcode.
@@ -1161,8 +1079,6 @@
  *
  * @file Service/PassCodeConfirm.qml
  * @brief Page to confirm that passcode changed.
- *
- * @}
  *
  * @}
  */

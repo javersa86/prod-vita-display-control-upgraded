@@ -1,37 +1,15 @@
 //Module for custom objects.
 
 /**
- * @ingroup stylingModule
- * @defgroup familyModule Font Family: Roboto
+ * @addtogroup stylingModule
  * @{
- * @brief Font Family utilized for different texts.
  * @details
+ *
+ * Styling refers to the overall design for the Graphical User Interface. Styling includes color of centein objects and pages, the font and sizes for text and titles, and even the positioning and sizes of objects on pages. Styling is significantly important not only to the NVENT-VITA, but to UI Development in general, for it is important to the visual appeal, improving user experience, reinforcing branding and identity, differentiation to other products, and aiding in the communication between user and interface.
  *
  * The Font Family chosen for the display: Roboto.<br>
  *
  * Roboto was chosen for the font family for all texts on the Graphical User Interface for its readability and its modern aesthetic that makes it a suitable choice for contemporary designs. The font family also makes the NVENT-Vita look more professional, especially in the field of medicine. Style variations for the font family include: Black, Black Italic, Bold, Bold Italic, Italic, Light, Light Italic, Medium, Medium Italic, Regular, Thin, and Thin Italic.
- *
- * @file Roboto-Black.ttf
- * @file Roboto-BlackItalic.ttf
- * @file Roboto-Bold.ttf
- * @file Roboto-BoldItalic.ttf
- * @file Roboto-Italic.ttf
- * @file Roboto-Light.ttf
- * @file Roboto-LightItalic.ttf
- * @file Roboto-Medium.ttf
- * @file Roboto-MediumItalic.ttf
- * @file Roboto-Regular.ttf
- * @file Roboto-Thin.ttf
- * @file Roboto-ThinItalic.ttf
- * @}
- */
-
-/**
- * @ingroup stylingModule
- * @defgroup styleModule Styles and Fonts
- * @{
- * @brief Colors and Fonts
- * @details
  *
  * Text on the GUI will be displayed in different style variations of the Roboto Font Family, and sizes. Text and object will be displayed in different sizes, and colors.
  *
@@ -187,8 +165,6 @@
  *  </tr>
  * </table>
  *
- * ## Fonts
- *
  * @htmlonly
  * Font Styles built from the Roboto Font Family, Style Variations, Sizes, and Weights:<br><br>
  * <div style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 96px;">Measured Font</div><br><br><br>
@@ -212,20 +188,6 @@
  * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 12px;">Small Button Font</div>
  * @endhtmlonly
  *
- * @file Style.qml
- * @brief File containing fonts and colors.
- * @}
- */
-
-/**
- * @ingroup stylingModule
- * @defgroup textModule Constant Texts
- * @{
- * @brief String constants for titles and units.
- * @details
- *
- * ## Constant Texts
- *
  * Contant texts used on the GUI for the Pneumatic Setting Titles and Units.
  * Constants included:
  * - \htmlonly PIP \endhtmlonly Title: Peak Insp. Pressure
@@ -246,34 +208,25 @@
  * - TV Unit: TV
  * - MV Unit: MV
  *
+ * @file Roboto-Black.ttf
+ * @file Roboto-BlackItalic.ttf
+ * @file Roboto-Bold.ttf
+ * @file Roboto-BoldItalic.ttf
+ * @file Roboto-Italic.ttf
+ * @file Roboto-Light.ttf
+ * @file Roboto-LightItalic.ttf
+ * @file Roboto-Medium.ttf
+ * @file Roboto-MediumItalic.ttf
+ * @file Roboto-Regular.ttf
+ * @file Roboto-Thin.ttf
+ * @file Roboto-ThinItalic.ttf
+ *
+ * @file Style.qml
+ * @brief File containing fonts and colors.
+ *
  * @file Strings.qml
  * @brief String constants for titles and units.
- * @details
- * Includes the following:
- * - PIP Title: Peak Insp. Pressure
- * - SP Title: Stacking Pressure
- * - Auxiliary Flow Title: Auxiliary
- * - Humidity Title: Humidity
- * - Driving Pressure Title: Driving Pressure
- * - Rate Title: Rate
- * - Inspiratory Time Title: Inspiratory Time
- * - Oxygen Title: Oxygen
- * - cmH<sub>2</sub>O Unit: cmH<sub>2</sub>
- * - lpm Unit: lpm
- * - percent Unit: %
- * - psi Unit: PSI
- * - bpm Unit: BPM
- * - ml Unit: ml
- * - map Unit: MAP
- * - tv Unit: TV
- * - mv Unit: MV
  *
- * @}
- */
-
-/**
- * @addtogroup familyModule
- * @{
  *
                                  Apache License
                            Version 2.0, January 2004
@@ -476,6 +429,5 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-
  * @}
  */
