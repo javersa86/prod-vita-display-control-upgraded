@@ -155,7 +155,7 @@ This page gives detailed information on threading.
 
 \section mainThread_definitions Definitions
 
-<b>Thread</b> - A sequence of software code the application must execute.f
+<b>Thread</b> - A sequence of software code the application must execute.
 
 \section mainThread_background Background
 
