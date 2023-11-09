@@ -24,7 +24,7 @@
  * - Prevent conversion of newline  to carriage return/line feed
  * - Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
  *
- * When the API Cycle reads from the Serial Port, The Comm Objects reads to the file descriptor and stores the available bytes to an array buffer of at most 512 bytes. The API Cycle will then process the array buffer by reading the array by index until bytes are no longer available. A message from the array is structured as followed:
+ * When the \htmlonly API \endhtmlonly Cycle reads from the Serial Port, The \htmlonly Comm \endhtmlonly Objects reads to the file descriptor and stores the available bytes to an array buffer of at most 512 bytes. The \htmlonly API \endhtmlonly Cycle will then process the array buffer by reading the array by index until bytes are no longer available. A message from the array is structured as followed:
  * - <b>Start Charactor (255):</b> the beginning byte for all requests and responses.
  * - <b>Op Code:</b> The Byte to represent the type of request or response.
  * - <b>Body:</b> the number bytes representing the parameters for message if available. The body will also have different lengths.
@@ -50,7 +50,7 @@
  * - <b>The CRC Byte:</b> The character representing the end of the message, and is a unique character used to represent the message.
  * - <b>TX Size:</b> The size or length of the message within the array buffer. The size will always include the Start Character, the Op Code
  *
- * The <b>\htmlonly Message \endhtmlonly Queue</b> is built from a QQueue object and stores all Message objects. While the backend and the rest of the application are enqueuing messages to the queue, up to 5 messages will be dequeued from the queue at the end of the \htmlonly API \endhtmlonly cycle. To ensure that no repeated messages are pushed to the queue before being sent to the system controller, the queue also tracks the unique crc bytes to an unordered set and checks if a new message contains an existing CRC byte before being pushed to the queue.
+ * The <b>\htmlonly Message \endhtmlonly Queue</b> is built from a QQueue object and stores all \htmlonly Message \endhtmlonly objects. While the backend and the rest of the application are enqueuing messages to the queue, up to 5 messages will be dequeued from the queue at the end of the \htmlonly API \endhtmlonly cycle. To ensure that no repeated messages are pushed to the queue before being sent to the system controller, the queue also tracks the unique crc bytes to an unordered set and checks if a new message contains an existing CRC byte before being pushed to the queue.
  * @}
  */
 
@@ -462,7 +462,7 @@
  *
  * \section devicesModule Devices Object
  *
- * The device object tracks the connection between the system controller and display controller by tracking the number of devices mounted to the display controller via USB. On an API Cycle, if the system controller is disconnected, then the display will no longer receive notifications or other requests and responses, and the warning manager will raise "Display and System Disconnected!" itself. It is important to note that if the system controller is disconnected, there should only be 2 USB devices mounted, the Linux Foundation 2.0 root hub and Standard Microsystems Corp. USB 2.0 Hub. It is also important to note that when the system controller does get disconnected, the Portname will flip between "ttyUSB0" and "ttyUSB1". Because of this, and when the System Controller and the Display Controller is reconnected via USB and the devices object to 3 mounted devices, the serial port will be reopened and reconfigured.
+ * The device object tracks the connection between the system controller and display controller by tracking the number of devices mounted to the display controller via USB. On an \htmlonly API \endhtmlonly Cycle, if the system controller is disconnected, then the display will no longer receive notifications or other requests and responses, and the warning manager will raise "Display and System Disconnected!" itself. It is important to note that if the system controller is disconnected, there should only be 2 USB devices mounted, the Linux Foundation 2.0 root hub and Standard Microsystems Corp. USB 2.0 Hub. It is also important to note that when the system controller does get disconnected, the Portname will flip between "ttyUSB0" and "ttyUSB1". Because of this, and when the System Controller and the Display Controller is reconnected via USB and the devices object to 3 mounted devices, the serial port will be reopened and reconfigured.
  *
  * @}
  */

@@ -101,7 +101,7 @@
  *
  * \section o2CalManagerModule O2 Calibration Manager
  *
- * Logs the dates and times of the lowest and highest O<sub>2</sub> Calibration Values and Voltages onto a CSV file. The manager will save up to 5 entries and will delete the oldest entry when adding a new one. Updates Log Manager for when entries are added or deleted. The manager is also tasked with running the timer for the Warning Banner's O<sub>2</sub> Calibration 1 minute progress time and is triggered when related warnings are active..
+ * Logs the dates and times of the lowest and highest O<sub>2</sub> Calibration Values and Voltages onto a CSV file. The manager will save up to 5 entries and will delete the oldest entry when adding a new one. Updates Log Manager for when entries are added or deleted. The manager is also tasked with running the timer for the \htmlonly Warning \endhtmlonly Banner's O<sub>2</sub> Calibration 1 minute progress time and is triggered when related warnings are active..
  * @}
  */
 

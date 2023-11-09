@@ -145,18 +145,8 @@
  *      <th>\htmlonly Warning \endhtmlonly Threshold</th>
  *  </tr>
  *  <tr>
- *      <th>Driving Pressure 1</th>
- *      <td>0</td>
- *      <td>PSI</td>
- *      <td>5</td>
- *      <td>50</td>
- *      <td>1</td>
- *      <td>5</td>
- *      <td>51</td>
- *  </tr>
- *  <tr>
- *      <th>Driving Pressure 2</th>
- *      <td>1</td>
+ *      <th>Driving Pressure</th>
+ *      <td>0<br>1</td>
  *      <td>PSI</td>
  *      <td>5</td>
  *      <td>50</td>
@@ -166,7 +156,7 @@
  *  </tr>
  *  <tr>
  *      <th>\htmlonly Rate \endhtmlonly 1</th>
- *      <td>2</td>
+ *      <td>2<br>3</td>
  *      <td>BPM</td>
  *      <td>5</td>
  *      <td>150</td>
@@ -175,18 +165,8 @@
  *      <td>151</td>
  *  </tr>
  *  <tr>
- *      <th>\htmlonly Rate \endhtmlonly 2</th>
- *      <td>3</td>
- *      <td>BPM</td>
- *      <td>5</td>
- *      <td>150</td>
- *      <td>5</td>
- *      <td>5</td>
- *      <td>151</td>
- *  </tr>
- *  <tr>
- *      <th>Inspiratory Time 1</th>
- *      <td>4</td>
+ *      <th>Inspiratory Time</th>
+ *      <td>4<br>5</td>
  *      <td>%</td>
  *      <td>20</td>
  *      <td>70</td>
@@ -195,28 +175,8 @@
  *      <td>60</td>
  *  </tr>
  *  <tr>
- *      <th>Inspiratory Time 2</th>
- *      <td>5</td>
- *      <td>%</td>
- *      <td>20</td>
- *      <td>70</td>
- *      <td>5</td>
- *      <td>20</td>
- *      <td>60</td>
- *  </tr>
- *  <tr>
- *      <th>Stacking Pressure 1</th>
- *      <td>6</td>
- *      <td>cmH<sub>2</sub>O</td>
- *      <td>1</td>
- *      <td>100</td>
- *      <td>1</td>
- *      <td>1</td>
- *      <td>41</td>
- *  </tr>
- *  <tr>
- *      <th>Stacking Pressure 2</th>
- *      <td>7</td>
+ *      <th>Stacking Pressure</th>
+ *      <td>6<br>7</td>
  *      <td>cmH<sub>2</sub>O</td>
  *      <td>1</td>
  *      <td>100</td>
@@ -255,18 +215,8 @@
  *      <td>66</td>
  *  </tr>
  *  <tr>
- *      <th>\htmlonly Humidity \endhtmlonly 1</th>
- *      <td>11</td>
- *      <td>level</td>
- *      <td>0</td>
- *      <td>4</td>
- *      <td>1</td>
- *      <td>0</td>
- *      <td>5</td>
- *  </tr>
- *  <tr>
- *      <th>\htmlonly Humidity \endhtmlonly 2</th>
- *      <td>12</td>
+ *      <th>\htmlonly Humidity \endhtmlonly</th>
+ *      <td>11<br>12</td>
  *      <td>level</td>
  *      <td>0</td>
  *      <td>4</td>
