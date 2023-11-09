@@ -9,13 +9,14 @@
  *
  * Styling refers to the overall design for the Graphical User Interface. Styling includes color of centein objects and pages, the font and sizes for text and titles, and even the positioning and sizes of objects on pages. Styling is significantly important not only to the NVENT-VITA, but to UI Development in general, for it is important to the visual appeal, improving user experience, reinforcing branding and identity, differentiation to other products, and aiding in the communication between user and interface.
  *
- * The Font Family chosen for the display: <div style="font-family: 'Roboto Bold', sans-serif;">Roboto.<br>
+ * The Font Family chosen for the display: <b>Roboto</b>.<br>
  *
  * Roboto was chosen for the font family for all texts on the Graphical User Interface for its readability and its modern aesthetic that makes it a suitable choice for contemporary designs. The font family also makes the NVENT-Vita look more professional, especially in the field of medicine. Style variations for the font family include: Black, Black Italic, Bold, Bold Italic, Italic, Light, Light Italic, Medium, Medium Italic, Regular, Thin, and Thin Italic.
  *
- * Text on the GUI will be displayed in different style variations of the Roboto Font Family, and sizes. Text and object will be displayed in different sizes, and colors.
+ * Text on the GUI will be displayed in different style variations of the Roboto Font Family, and sizes. Text and object will be displayed in different sizes, and colors. <br><br>
  *
  * For the Hex Code representing colors (some color are meant to be transparent and utilized as a alpha layer):
+ *
  * <table>
  *  <tr>
  *      <th>Color Name</th>
@@ -165,10 +166,10 @@
  *      <th>General Set Display Selected</th>
  *      <td>@htmlonly <font color="#8C4A90E2">#8C4A90E2</font> @endhtmlonly</td>
  *  </tr>
- * </table>
+ * </table><br>
  *
+ * Font Styles built from the Roboto Font Family, Style Variations, Sizes, and Weights:<br>
  *
- * Font Styles built from the Roboto Font Family, Style Variations, Sizes, and Weights:<br><br>
  * <table>
  *  <tr>
  *      <th>Font</th>
