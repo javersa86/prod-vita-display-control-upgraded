@@ -3,7 +3,7 @@
 /**
  * @ingroup customObjectsModule
  * @defgroup customObjectsGraph Graph
- * @brief Object for graph used on the home page to display the PIP and SP.
+ * @brief Object for graph used on the home page to display the \htmlonly PIP \endhtmlonly and SP.
  * @{
  * @details
  *
@@ -45,7 +45,7 @@
 /**
  * @ingroup customObjectsModule
  * @defgroup customObjectsWarningBanner Warning Banner
- * @brief Objects for the Warning Banner.
+ * @brief Objects for the \htmlonly Warning \endhtmlonly Banner.
  * @{
  * @details
  *
