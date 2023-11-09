@@ -5,9 +5,11 @@
  * @{
  * @details
  *
+ * \section stylingModule Styling
+ *
  * Styling refers to the overall design for the Graphical User Interface. Styling includes color of centein objects and pages, the font and sizes for text and titles, and even the positioning and sizes of objects on pages. Styling is significantly important not only to the NVENT-VITA, but to UI Development in general, for it is important to the visual appeal, improving user experience, reinforcing branding and identity, differentiation to other products, and aiding in the communication between user and interface.
  *
- * The Font Family chosen for the display: Roboto.<br>
+ * The Font Family chosen for the display: <div style="font-family: 'Roboto Bold', sans-serif;">Roboto.<br>
  *
  * Roboto was chosen for the font family for all texts on the Graphical User Interface for its readability and its modern aesthetic that makes it a suitable choice for contemporary designs. The font family also makes the NVENT-Vita look more professional, especially in the field of medicine. Style variations for the font family include: Black, Black Italic, Bold, Bold Italic, Italic, Light, Light Italic, Medium, Medium Italic, Regular, Thin, and Thin Italic.
  *
@@ -165,28 +167,32 @@
  *  </tr>
  * </table>
  *
- * @htmlonly
+ *
  * Font Styles built from the Roboto Font Family, Style Variations, Sizes, and Weights:<br><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 96px;">Measured Font</div><br><br><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 72px;">Loading Text Font</div><br><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 36px;">Page Title Font</div><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-size: 34px;">Statistic Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 32px;">Set Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 32px;">Numeric UI Display Font</div><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-size: 30px;">Statistic Font (Small Version)</div><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-size: 24px;">Warning Flag Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 24px;">Warning Title Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 24px;">Number Button Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 24px;">Setting Page Title</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">Title Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">Unit Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">Min and Max Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 18px;"><u>Cancel Font</u></div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">Warning Description Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 17px;">Button Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 17px;"><u>Button Font Underlined</u></div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 12px;">Small Button Font</div>
- * @endhtmlonly
+ * <table>
+ *  <tr>
+ *      <th>Font</th>
+ *  </tr>
+ *  <tr><td style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 96px; word-wrap: break-word;"><br><br>Measured Font <br><br><br></tr>
+ *  <tr><td style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 72px; word-wrap: break-word;"><br><br>Loading Text Font <br><br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 36px; word-wrap: break-word;"><br><br>Page Title Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Black', sans-serif; font-size: 34px; word-wrap: break-word;"><br><br>Statistic Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 32px; word-wrap: break-word;"><br><br>Set Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 32px; word-wrap: break-word;"><br><br> Numeric UI Display Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Black', sans-serif; font-size: 30px; word-wrap: break-word;"><br><br> Statistic Font (Small Version) <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Black', sans-serif; font-size: 24px; word-wrap: break-word;"><br>Warning Flag Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 24px; word-wrap: break-word;"><br>Warning Title Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 24px; word-wrap: break-word;"><br>Number Button Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 24px; word-wrap: break-word;"><br>Setting Page Title <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 18px; word-wrap: break-word;"><br>Title Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 18px; word-wrap: break-word;"><br>Unit Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 18px; word-wrap: break-word;"><br>Min and Max Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 18px; word-wrap: break-word;"><br><u>Cancel Font <br><br></u></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 18px; word-wrap: break-word;"><br>Warning Description Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 17px; word-wrap: break-word;"><br>Button Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 17px; word-wrap: break-word;"><br><u>Button Font Underlined <br><br></u></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 12px; word-wrap: break-word;"><br>Small Button Font <br><br></td></tr>
+ * </table><br><br>
  *
  * Contant texts used on the GUI for the Pneumatic Setting Titles and Units.
  * Constants included:

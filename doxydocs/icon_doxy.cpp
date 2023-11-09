@@ -4,7 +4,7 @@
  *
  * @details
  *
- * ## Iconography
+ * \section iconographyModule Iconography
  *
  * Iconography displayed on different objects and pages are built from transparent svg files.
  *

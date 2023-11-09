@@ -9,7 +9,7 @@
 /**
  * @ingroup frontendModule
  * @defgroup customObjectsModule Custom Objects
- * @brief  The QML Custom Objects are utilized on multiple pages across the Graphical User Interface. Custom Objects include buttons, switches, keyboards, keypads, icons, page layouts, and even major components to the software.
+ * @brief  The QML Custom Objects are utilized on multiple pages across the Graphical User Interface, including buttons, switches, keyboards, keypads, icons, page layouts, and even major components to the software.
  */
 
 /**

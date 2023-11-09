@@ -7,7 +7,7 @@
  * @brief The home pages where the all activity takes place.
  * @details
  *
- * \subsubsection homePagesModule Main Window and its Related Pages
+ * \section homePagesModule Main Window and its Related Pages
  *
  * The <b>Main Window/Home Page</b> is the basis for where all the activity from the Graphical User Interface, including the different menus and popups, take place. When the user powers on the device, the startup page will be displayed to load the main window. After the loading page is cleared, the home page will include different features.<br>
  *
@@ -72,7 +72,7 @@
  * @brief The following pages are used to adjust pneumatic settings.
  * @details
  *
- * \subsubsection pneumaticSettingPagesModule Pneumatic Settings Adjustment Pages
+ * \section pneumaticSettingPagesModule Pneumatic Settings Adjustment Pages
  *
  * The <b>Pneumatic Settings</b> are utilized to create ventilation states based on what is required for the patient, and can be adjusted to different states and values.<br>
  *
@@ -118,7 +118,7 @@
  * @brief Requires adjustment to the Jet Line and the Auxiliary Line.
  * @details
  *
- * \subsubsection humidityAdjustmentModule Humidity Adjustment Page
+ * \section humidityAdjustmentModule Humidity Adjustment Page
  *
  * For \htmlonly Humidity, \endhtmlonly there are two Pneumatic Settings to adjust: \htmlonly Humidity \endhtmlonly on the Jet Line, and the \htmlonly Humidity \endhtmlonly on the Auxiliary Line. There are two modes that the user can switch between to adjust humidity:
  *
@@ -153,7 +153,7 @@
  * @brief The following pages allow the user to save pneumatic settings as presets to be implemented later.
  * @details
  *
- * \subsubsection presetPagesModule Preset Options
+ * \section presetPagesModule Preset Options
  *
  * <b>Presets</b> are saved pneumatic settings created by medical professionals for different purposes and medical procedures. Presets can be created, edited, deleted, or implemented to the system through the “Presets” option on the <b>Navigational Sidebar</b>.  The following will be saved in a preset: Driving Pressure, \htmlonly Rate \endhtmlonly, Inspiratory Time, Stacking Pressure, Oxygen Concentration, Peak Inspiratory Pressure, Auxiliary Flow, and \htmlonly Humidity \endhtmlonly (acting as a unified setting).<br>
  *
@@ -222,7 +222,7 @@
  * @brief The following pages relate to a popup window that would be display before the Dehumidifcation Procedure and Shutdown Procedure.
  * @details
  *
- * \subsubsection jetActiveModule Shutdown and Dehumidification Pages
+ * \section jetActiveModule Shutdown and Dehumidification Pages
  *
  * A Popup window will be displayed based on the different criterias met before Shutting Down or Dehumidifying.
  * - If the Auxiliary Line is Active.
@@ -280,7 +280,7 @@
  * @brief The following pages are utilized for screen lock the display to allow the user to clean screen.
  * @details
  *
- * \subsubsection screenlockModule Screen Lock Mode
+ * \section screenlockModule Screen Lock Mode
  *
  * For maintenance purposes, it is important for the screen and buttons to be cleaned, which is why the option to disable the screen and buttons is available to the user on the <b>Navigational Sidebar</b>. If the system is required to remain running, screen lock mode will be helpful to prevent miss inputs. A Popup Window will be displayed with instructions on how to continue with the cleaning procedure. Continuing will display a transparent overlay over the screen that will prevent the user from pressing any other inputs. If the user presses the screen or the HMI Buttons, the message "Screen lock mode is active. Press the dial to unlock and interact with the screen." will be displayed on screen. Pressing down on the encoder knob will disable Screen Lock Mode and the user will exit from the screen overlay. If touch (water residue or other substances) is detected on the screen or the other HMI Buttons while pressing down on the knob, the message "Moisture detected on panel. Please dry off screen." will be displayed, screen lock will not be disabled.
  *
@@ -299,7 +299,7 @@
  * @brief The following pages to contain help info.
  * @details
  *
- * \subsubsection helpPagesModule Help Pages
+ * \section helpPagesModule Help Pages
  *
  * If a <b>Help Icon</b> is available, the user will have the option to push up a popup window <b>(Help Box)</b> with a description of how a certain feature works, including the descriptions of Pneumatic Settings, and Op Modes.
  *
@@ -438,7 +438,7 @@
  * @{
  * @brief The following pages to contain help info.
  *
- * \subsubsection troubleshootingPagesModule Troubleshooting Steps
+ * \section troubleshootingPagesModule Troubleshooting Steps
  *
  * For every warning on the warning banner, there is the troubleshooting option <b>(Troubleshooting Box)</b> to push up the popup window with steps on how to fix the reason for warning.
  *
@@ -875,7 +875,7 @@
  * @brief The following pages for the Settings Menu.
  * @details
  *
- * \subsubsection settingsMenuPagesModule Settings Menu
+ * \section settingsMenuPagesModule Settings Menu
  *
  * The Setting Menu where the user can access multiple pages where the user can update important aspects of the NVENT-Vita.<br>
  *
@@ -901,7 +901,7 @@
  * - Serial Number for the device.
  * - IP Address with option to refresh if device needs to reconnect with ethernet cable.
  * - \htmlonly Switch \endhtmlonly digital clock between Daylight Savings Time and Standard Time
- * - Option to update passcode: see @ref passcodeModule "Passcode Change."
+ * - Option to update passcode.
  *
  * For passcode changes on the About Page, the passcode store on the system is utilized for adjusting presets. The default passcode will be 0000 and is required to be 4 digits. To change passcodes, the user is required to enter the current passcode first, then the option to change the passcode will become available. Note that the user cannot use the previous passcode for the new one, only the service technician can be able to do that.
  *
@@ -958,7 +958,7 @@
  * @brief The service menu pages will be utilized by service technician.
  * @details
  *
- * \subsubsection serviceMenuPagesModule Service Menu
+ * \section serviceMenuPagesModule Service Menu
  *
  * The Service Menu is where only the service technician can access multiple pages and update important aspects of the NVENT-VITA.<br>
  *

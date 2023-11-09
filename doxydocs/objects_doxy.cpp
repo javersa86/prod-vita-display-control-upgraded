@@ -7,7 +7,7 @@
  * @{
  * @details
  *
- * \subsubsection customObjectsGraph Graph
+ * \section customObjectsGraph Graph
  *
  * The graph is arguably the most important object on the NVENT-Vita, for it displays the measured output for Peak Inspiratory Pressure (RED) and Stacking Pressure (BLUE) in a visual style. The graph will be updated every 30 milliseconds with new PIP and SP measured values retrieved from the notifications. There will be two dashed lines that will be displayed. Two dash lines will display the set values for each pneumatic setting. There will also be solid lines that display the measured values.
  *
@@ -24,7 +24,7 @@
  * @{
  * @details
  *
- * \subsubsection customObjectsNavigation Navigational Sidebar and Inputs
+ * \section customObjectsNavigation Navigational Sidebar and Inputs
  *
  * The navigational sidebar will allow the user to navigate between pages and menus, and push popups for different procedures, including the following:
  * - Home Option to redirect back to Home Page.
@@ -49,7 +49,7 @@
  * @{
  * @details
  *
- * \subsubsection customObjectsWarningBanner Warning Banner
+ * \section customObjectsWarningBanner Warning Banner
  *
  * The banner that will always be displayed at the top of the screen will display all the warnings on the system.
  *
@@ -82,7 +82,7 @@
  * @{
  * @details
  *
- * \subsubsection customObjectsOtherObjects Other Objects
+ * \section customObjectsOtherObjects Other Objects
  *
  * Other are also significant to the Graphical User interface:
  * - <b>Checklist Alarm Icon:</b> Changes red to green based on the pressure for verifying values for Inlet Air and Inlet O<sub>2</sub>.
@@ -140,7 +140,7 @@
  * @{
  * @details
  *
- * \subsubsection customObjectsInputs Buttons and Other Inputs
+ * \section customObjectsInputs Buttons and Other Inputs
  *
  * Mutliple Buttons will trigger different actions from multiple pages. All buttons and inputs will have a press and hold signal where the user will require to push down on screen for at least 50 milliseconds.
  *
@@ -235,7 +235,7 @@
  * @{
  * @details
  *
- * \subsubsection customObjectsSwitches Switches
+ * \section customObjectsSwitches Switches
  *
  * Switches work differently from buttons and inputs, in that it does not reset or disappear after input.
  * Mostly utilized for different modes on the display and the system.
@@ -266,7 +266,7 @@
  * @{
  * @details
  *
- * \subsubsection customObjectsKeyboards Keyboards and Keypads
+ * \section customObjectsKeyboards Keyboards and Keypads
  *
  * There are multiple virtual keyboards and keypads on the GUI to input text and digits.
  * For clarification, keypads are only used for inputing numbers or digits, while used to input text with multiple character,
@@ -334,7 +334,7 @@
  * @{
  * @details
  *
- * \subsubsection customObjectsLayouts Page Layouts
+ * \section customObjectsLayouts Page Layouts
  *
  * Page layouts include:
  * - <b>Adjustment Keypad:</b> The virtual representation for the keypad on the adjustment pages that will include the following

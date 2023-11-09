@@ -19,7 +19,7 @@
 #include "message_queue.h"
 
 /**
- * @addtogroup apiModule
+ * @addtogroup communicationModule
  * @{
  */
 
@@ -49,7 +49,7 @@
 class API : public QThread
 {
     /**
-     * @addtogroup apiModule
+     * @addtogroup communicationModule
      * @{
      */
 
@@ -600,7 +600,7 @@ class API : public QThread
 
         /**
          * @brief Queues zero sensor request into TX Buffer.
-         * @param sensorId
+         * @param values
          * @callergraph
          */
         void zeroSensor(QVector<float> values);

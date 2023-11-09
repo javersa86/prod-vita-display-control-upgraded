@@ -5,54 +5,104 @@ This page is the main introduction page that will outline all major design param
 
 This manual is divided in the following sections:
 1. \subpage introduction "Introduction" <br>
-        &emsp;1.1 \subpage introduction_background "Background" <br>
-        &emsp;1.2 \subpage introduction_tech_used "Technologies Used" <br>
-        &emsp;1.3 \subpage introduction_directory_structure "Directory Structure" <br>
+        &emsp;&emsp;1.1 \subpage introduction_background "Background" <br>
+        &emsp;&emsp;1.2 \subpage introduction_tech_used "Technologies Used" <br>
+        &emsp;&emsp;1.3 \subpage introduction_directory_structure "Directory Structure" <br>
 2. \subpage mainThread   "Threading Architecture" <br>
-        &emsp;2.1 \subpage mainThread_definitions "Definitions" <br>
-        &emsp;2.2 \subpage mainThread_background "Background" <br>
-        &emsp;2.3 \subpage thread_list "List of Threads" <br>
-                &emsp;&emsp;2.3.1 \subpage thread1 "API Thread" <br>
-                        &emsp;&emsp;&emsp;2.3.1.1 \subpage thread1_background "Background" <br>
-                        &emsp;&emsp;&emsp;2.3.1.2 \subpage thread1_sequence "Sequence of Events" <br>
-                        &emsp;&emsp;&emsp;2.3.1.3 \subpage thread1_references "Module References" <br>
-                &emsp;&emsp;2.3.2 \subpage thread2 "Encoder Knob Thread" <br>
-                        &emsp;&emsp;&emsp;2.3.2.1 \subpage thread2_background "Background" <br>
-                        &emsp;&emsp;&emsp;2.3.2.2 \subpage thread2_sequence "Sequence of Events" <br>
-                        &emsp;&emsp;&emsp;2.3.2.3 \subpage thread2_references "Module References" <br>
+        &emsp;&emsp;2.1 \subpage mainThread_definitions "Definitions" <br>
+        &emsp;&emsp;2.2 \subpage mainThread_background "Background" <br>
+        &emsp;&emsp;2.3 \subpage thread_list "List of Threads" <br>
+                &emsp;&emsp;&emsp;&emsp;2.3.1 \subpage thread1 "API Thread" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.1.1 \subpage thread1_background "Background" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.1.2 \subpage thread1_sequence "Sequence of Events" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.1.3 \subpage thread1_references "Module References" <br>
+                &emsp;&emsp;&emsp;&emsp;2.3.2 \subpage thread2 "Encoder Knob Thread" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.2.1 \subpage thread2_background "Background" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.2.2 \subpage thread2_sequence "Sequence of Events" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.2.3 \subpage thread2_references "Module References" <br>
 3. \subpage modules "Modules" <br>
-        &emsp;3.1 \subpage moduleDefinitions "Definitions" <br>
-        &emsp;3.2 \subpage main "Main Application" <br>
-        &emsp;3.3 \subpage frontendModule "Frontend Module (GUI)" <br>
-                &emsp;&emsp;3.3.1 \subpage frontendModule_background "GUI Background" <br>
-                &emsp;&emsp;3.3.2 \subpage frontendModule_technologies "GUI Technologies Used" <br>
-                &emsp;&emsp;3.3.3 \subpage frontendModule_directory "GUI Directory Structure" <br>
-                &emsp;&emsp;3.3.4 \subpage frontendModule_page_description "Page Description" <br>
-                &emsp;&emsp;3.3.5 \subpage frontendModule_page_stacks "Page StackViews" <br>
-                &emsp;&emsp;3.3.6 \subpage pagesModule "Pages" <br>
-                        &emsp;&emsp;&emsp;3.3.6.1 \subpage homePagesModule "Main Window and its Related Pages" <br>
-                        &emsp;&emsp;&emsp;3.3.6.2 \subpage pneumaticSettingPagesModule "Pneumatic Settings Adjustment Pages" <br>
-                        &emsp;&emsp;&emsp;3.3.6.3 \subpage humidityAdjustmentModule "Humidity Adjustment Page" <br>
-                        &emsp;&emsp;&emsp;3.3.6.4 \subpage presetPagesModule "Preset Options" <br>
-                        &emsp;&emsp;&emsp;3.3.6.5 \subpage jetActiveModule "Shutdown and Dehumidification Pages" <br>
-                        &emsp;&emsp;&emsp;3.3.6.6 \subpage screenlockModule "Screen Lock Mode" <br>
-                        &emsp;&emsp;&emsp;3.3.6.7 \subpage helpPagesModule "Help Pages" <br>
-                        &emsp;&emsp;&emsp;3.3.6.8 \subpage troubleshootingPagesModule "Troubleshooting Steps" <br>
-                        &emsp;&emsp;&emsp;3.3.6.9 \subpage settingsMenuPagesModule "Settings Menu" <br>
-                        &emsp;&emsp;&emsp;3.3.6.10 \subpage serviceMenuPagesModule "Service Menu" <br>
-                &emsp;&emsp;3.3.7 \subpage customObjectsModule "Custom Objects" <br>
-                        &emsp;&emsp;&emsp;3.3.7.1 \subpage customObjectsGraph "Graph" <br>
-                        &emsp;&emsp;&emsp;3.3.7.2 \subpage customObjectsNavigation "Navigational Sidebar and Inputs" <br>
-                        &emsp;&emsp;&emsp;3.3.7.3 \subpage customObjectsModule "Warning Banner" <br>
-                        &emsp;&emsp;&emsp;3.3.7.4 \subpage customObjectsOtherObjects "Other Objects" <br>
-                        &emsp;&emsp;&emsp;3.3.7.5 \subpage customObjectsInputs "Buttons and Other Inputs" <br>
-                        &emsp;&emsp;&emsp;3.3.7.6 \subpage customObjectsSwitches "Switches" <br>
-                        &emsp;&emsp;&emsp;3.3.7.7 \subpage customObjectsKeyboards "Keyboards and Keypads" <br>
-                        &emsp;&emsp;&emsp;3.3.7.8 \subpage customObjectsLayouts "Page Layouts" <br>
-                &emsp;&emsp;3.3.8 \subpage stylingModule "Styling" <br>
-                &emsp;&emsp;3.3.9 \subpage iconographyModule "Iconography" <br>
-        &emsp;3.4 \subpage 
-                
+        &emsp;&emsp;3.1 \subpage moduleDefinitions "Definitions" <br>
+        &emsp;&emsp;3.2 \subpage main "Main Application" <br>
+        &emsp;&emsp;3.3 \subpage frontendModule "Frontend Module (GUI)" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.1 \subpage frontendModule_background "GUI Background" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.2 \subpage frontendModule_technologies "GUI Technologies Used" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.3 \subpage frontendModule_directory "GUI Directory Structure" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.4 \subpage frontendModule_page_description "Page Description" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.5 \subpage frontendModule_page_stacks "Page StackViews" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.6 \subpage pagesModule "Pages" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.1 \subpage homePagesModule "Main Window and its Related Pages" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.2 \subpage pneumaticSettingPagesModule "Pneumatic Settings Adjustment Pages" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.3 \subpage humidityAdjustmentModule "Humidity Adjustment Page" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.4 \subpage presetPagesModule "Preset Options" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.5 \subpage jetActiveModule "Shutdown and Dehumidification Pages" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.6 \subpage screenlockModule "Screen Lock Mode" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.7 \subpage helpPagesModule "Help Pages" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.8 \subpage troubleshootingPagesModule "Troubleshooting Steps" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.9 \subpage settingsMenuPagesModule "Settings Menu" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.10 \subpage serviceMenuPagesModule "Service Menu" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.7 \subpage customObjectsModule "Custom Objects" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.1 \subpage customObjectsGraph "Graph" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.2 \subpage customObjectsNavigation "Navigational Sidebar and Inputs" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.3 \subpage customObjectsWarningBanner "Warning Banner" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.4 \subpage customObjectsOtherObjects "Other Objects" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.5 \subpage customObjectsInputs "Buttons and Other Inputs" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.6 \subpage customObjectsSwitches "Switches" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.7 \subpage customObjectsKeyboards "Keyboards and Keypads" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.8 \subpage customObjectsLayouts "Page Layouts" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.8 \subpage stylingModule "Styling" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.9 \subpage iconographyModule "Iconography" <br>
+        &emsp;&emsp;3.4 \subpage backendModule "Backend Module (Backend Controller)" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.1 \subpage backendModule_background "Backend Background" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.2 \subpage backendModule_technologies "Backend Technologies Used" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.3 \subpage backendModule_directory "Backend Directory Structure" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.4 \subpage backendModule_modes "Operational Modes" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.5 \subpage backendController "Backend Controller" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.5.1 \subpage backendController_description "Backend Description" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.5.2 \subpage backendController_request_function "Backend Request Function" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.5.3 \subpage backendController_startup_requests "Backend Startup Requests" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.5.4 \subpage backendController_requests "Backend Requests" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.5.5 \subpage backendController_functions "Other Backend Functions" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.6 \subpage stateManager "State Manager" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.7 \subpage warningsModule "Warnings and Warning Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.7.1 \subpage warningsModule_classes "Warning Classes" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.7.2 \subpage warningsModule_clear_behavior "Warning Clear Behavior" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.7.3 \subpage warningsParent "List of Warnings" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.7.4 \subpage warningsManager "Warning Manager" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.8 \subpage modelsModule "Models" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.8.1 \subpage opModeModels "Op Mode IDs" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.8.2 \subpage hmiModels "HMI Input IDs" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.8.3 \subpage settingsModels "Pneumatic Settings Models" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.8.4 \subpage notificationModels "Notifications" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.8.5 \subpage serviceNotificationModels "Service Notifications" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.9 \subpage loggerModule "Log Manager and other Managers" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.1 \subpage csvManagerModule "CSV Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.2 \subpage logManagerModule "Log Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.3 \subpage brightnessManagerModule "Brightness Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.4 \subpage contactManagerModule "Contact Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.5 \subpage dprManagerModule "DPR Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.6 \subpage maintenanceManagerModule "Maintenance Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.7 \subpage o2CalManagerModule "O2 Calibration Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.8 \subpage partManagerModule "Part Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.9 \subpage passcodeManagerModule "Passcode Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.10 \subpage presetManagerModule "Preset Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.11 \subpage timeManagerModule "Time Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.12 \subpage versionManagerModule "Version Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.13 \subpage zeroManagerModule "Zero Manager" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.10 \subpage gpioModule "Knob Controller and other GPIO Components" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.10.1 \subpage knobModule "Knob Controller" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.10.2 \subpage gpioModule_calc "Calculating Pin Numbers" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.10.3 \subpage switchModule "Switch" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.10.4 \subpage encoderModule "Encoder" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.10.5 \subpage gpioMainModule "GPIO" <br>
+        &emsp;&emsp;3.5 \subpage communicationModule "Communication Module (API Controller)" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.1 \subpage communicationModule_background "API Background" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.2 \subpage communicationModule_technologies "API Technologies Used" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.3 \subpage communicationModule_directory "API Directory Structure" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.4 \subpage serialModule "Serial Port Communication (Comm Object)" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.5 \subpage messageModule "Message Object and Message Queue" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.6 \subpage apiModule "API Requests and Responses" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.7 \subpage devicesModule "Devices Object" <br>
+                        
         
         
 
@@ -188,6 +238,7 @@ Activities available on the NVENT-VITA include adjusting pneumatic settings in t
 
 @defgroup moduleDefinitions Definitions
 @brief Definitions available for all modules.
+@{
 @details
 
 <b>Module</b> - Any of a number of distinct but interrelated units from which a program may be built up or into which a complex activity may be analyzed.<br>
@@ -201,7 +252,7 @@ Activities available on the NVENT-VITA include adjusting pneumatic settings in t
 <b>Queue</b> - A data structure that follows the First-In-First-Out (FIFO) Principle, where the element added first will be the first to be removed. Elements are added to the "tail" of the queue, and removed from the "head" of the queue.<br>
 <b>Enqueue</b> - The operation of adding (pushing) an element to the rear end of a queue.<br>
 <b>Dequeue</b> - The operation of removing (popping) an element from the front end of a queue.<br>
-
+@}
 
 
 
@@ -211,6 +262,7 @@ Activities available on the NVENT-VITA include adjusting pneumatic settings in t
 
 @defgroup frontendModule Frontend Module (GUI)
 @brief Documentation for all QML files.
+@{
 @details
 
 \section frontendModule Frontend Module (GUI)
@@ -273,7 +325,7 @@ The <b>Adjustment Page</b> Stacks are utilized for adjustment pages where the us
 The <b>Service Popup Stack</b> is specifically for the popup windows available on the Service Menu.
 
 The <b>Settings Stacks</b> are used to contain menu pages for the Settings Menu and the Service Menu.
-
+@}
 
 
 
@@ -281,6 +333,7 @@ The <b>Settings Stacks</b> are used to contain menu pages for the Settings Menu 
 
 @defgroup backendModule Backend Module (Backend Controller)
 @brief Documentation for backend functions and features.
+@{
 @details 
 
 \section backendModule Backend Module (Backend Controller)
@@ -335,7 +388,7 @@ The Operational Modes (Op Modes) are the distinct settings in which user input p
     <tr><td>Service Calibration</td><td>Mode only active when the Service Menu is accessed. The Notifications will be disabled, and the Service Notifications will be enabled. The measurements required for calibration will be available and displayed in the Service Menu Calibration page.</td></tr>
     <tr><td>Screen Lock Touched</td><td>Temporary mode that is triggered when Screen Lock Mode is enabled and the user touches the screen or other HMI Inputs.</td></tr>
 </table>
-
+@}
 
 
 
@@ -346,11 +399,13 @@ The Operational Modes (Op Modes) are the distinct settings in which user input p
 @brief Documentation for how the Display Controller and the System Controller communication between each other.
 @details
 
-## API Background
+\section communicationModule Communication Module (API Controller)
+
+\subsection communicationModule_background API Background
 
 The \htmlonly API \endhtmlonly software works separately from the backend and frontend module, for its single tasked requesting and responding to messages from the system controller. The Communication Module is composed of the main \htmlonly API \endhtmlonly Controller that runs on a looping thread, the Serial Port object, and other components to make commuication more structured.
 
-## API Technologies Used
+\subsection communicationModule_technologies API Technologies Used
 The api, like the backend, is built using C++ classes, which consists of header files and source files. It utilizes the following QT  5 libraries:
 * QObject
 * QThread
@@ -382,447 +437,8 @@ The api also utilizes C++ standard libraries:
 <b>Libusb</b> is a C library that provides generic access to USB devices is utilized for devices object.
 Link: <a href="https://libusb.info/">Libusb Documentation</a>
 
-## API Directory Structure
+\subsection communicationModule_directory API Directory Structure
+
 The api code is organized as followed:
 * <b>/src/communication:</b> Header source directory for the api controller that handles all tasks, the serial port object that send input buffer messages to system, 
 queue to send message objects storing input buffers, and the devices object to ensure that there is a usb connection between the display controller and the system controller.
-
-## Functionality
-The api consists of the following:
-* <b>\htmlonly API \endhtmlonly Controller:</b> the main thread that runs on a repeating loop that reads and writes messages to the serial port object. See @ref thread1 "API Thread"
-* <b>\htmlonly API \endhtmlonly Constants:</b> Objects that contain the Transmitted and Received \htmlonly Message \endhtmlonly ID and \htmlonly Message \endhtmlonly Lengths for the type of messages that will be sent.
-* <b>Communication Object:</b> Reads and writes the messages created from buffer objects from a file descriptor.
-* <b>\htmlonly Message \endhtmlonly Queue and \htmlonly Message \endhtmlonly:</b> Queue that will be utilized to sends a request or a response to the serial port for every loop.
-* <b>Devices Object:</b> Checks to see if USB is connected between system and display controllers.
-
-## Serial Port Communication (Comm Object)
-
-The <b>\htmlonly Comm \endhtmlonly Object</b> is the UART Serial Port between the Display Controller and the System Controller. The specified port from the Port Name and Baud Rate opens and reads the file descriptor to read and write bytes. After reading the existing settings and handling errors, it constructs the tty settings structure to raise the following port settings:
-- Clears parity bit, disabling parity (most common)
-- Clears stop field, only one stop bit used in communication (most common)
-- Clear all bits that set the data size
-- 8 bits per byte (most common)
-- Disable RTS/CTS hardware flow control (most common)
-- Turn on READ & ignore ctrl lines (CLOCAL = 1)
-- Disable echo
-- Disable erasure
-- Disable new-line echo
-- Disable interpretation of INTR, QUI and SUSP
-- Turn off s/w flow ctrl
-- Disable any special handling of received bytes
-- Prevent special interpretation of output bytes (e.g. newline chars)
-- Prevent conversion of newline  to carriage return/line feed
-- Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
-
-When the API Cycle reads from the Serial Port, The Comm Objects reads to the file descriptor and stores the available bytes to an array buffer of at most 512 bytes. The API Cycle will then process the array buffer by reading the array by index until bytes are no longer available. A message from the array is structured as followed:
-- <b>Start Charactor (255):</b> the beginning byte for all requests and responses.
-- <b>Op Code:</b> The Byte to represent the type of request or response.
-- <b>Body:</b> the number bytes representing the parameters for message if available. The body will also have different lengths.
-- <b>CRC:</b> Byte to represent the ending of the message.
-
-Messages written to the file descriptor's are stored on an array buffer as well and are structured the same way.
-
-## Message Object and Message Queue
-
-A <b>\htmlonly Message \endhtmlonly object</b> for sending requests and responses to the system controller contains the following parameters:
-- <b>The Input Buffer Array:</b> The array at the size of 512 bytes that store the bytes representing the request or response to the serial port. All input buffers will always include the following bytes:
-  - The <b>Start Character,</b> the first byte of the message to indicate the beginning of the message, which will always be 255.
-  - The <b>Op Code</b> that represents the message sent or received.
-- <b>The CRC Byte:</b> The character representing the end of the message, and is a unique character used to represent the message.
-- <b>TX Size:</b> The size or length of the message within the array buffer. The size will always include the Start Character, the Op Code
-
-The <b>\htmlonly Message \endhtmlonly Queue</b> is built from a QQueue object and stores all Message objects. While the backend and the rest of the application are enqueuing messages to the queue, up to 5 messages will be dequeued from the queue at the end of the \htmlonly API \endhtmlonly cycle. To ensure that no repeated messages are pushed to the queue before being sent to the system controller, the queue also tracks the unique crc bytes to an unordered set and checks if a new message contains an existing CRC byte before being pushed to the queue.
-
-## API Requests and Responses
-
-There are multiple requests and responses that need to be sent between the display controller and system controller. 
-
-### API Message Exchanges
-
-<table>
-    <tr>
-        <th style="background-color: #202531; border-color: #202531"> Messages </th>
-        <th style="background-color: #202531; border-color: #202531"> Description </th>
-    </tr>
-    <tr>
-        <th> Power On </th>
-        <td> The System Controller sends a request to confirm with a response that the Display Controller is powered on alongside the System controller. </td>
-    </tr>
-    <tr>
-        <th> Get Settings </th>
-        <td> On startup, the Display Controller's \htmlonly Backend \endhtmlonly Controller will send a request for all pneumatic settings stored on the system and will receive a response with setting values. </td>
-    </tr>
-    <tr>
-        <th>Enable Notification</th>
-        <td>On startup, the Display Controller's \htmlonly Backend \endhtmlonly Controller will send a request to receive notifications from the system and will receive a response to confirm it.</td>
-    </tr>
-    <tr>
-        <th>Get Op Modes</th>
-        <td>On startup, the Display Controller's \htmlonly Backend \endhtmlonly Controller will send a request for all modes enabled and disabled on the system and will receive a response with mode states.</td>
-    </tr>
-    <tr>
-        <th>Get Subsystem States</th>
-        <td>On startup, the Display Controller's \htmlonly Backend \endhtmlonly Controller will send a request for all subsystems active on the system and will receive a response with subsystem status.</td>
-    </tr>
-    <tr>
-        <th>Get System Version</th>
-        <td>On startup, the Display Controller's \htmlonly Backend \endhtmlonly Controller will send a request for the system controller's version number and will receive a response with version number.</td>
-    </tr>
-    <tr>
-        <th>Set Settings</th>
-        <td>The Display's \htmlonly Backend \endhtmlonly will send a request to update the pneumatic settings to the system and will receive a response to confirm that the update succeeded.</td>
-    </tr>
-    <tr>
-        <th>Get Measured</th>
-        <td>The Display's \htmlonly Backend \endhtmlonly will request a measurement running on the system and will receive a response with the measured value.</td>
-    </tr>
-    <tr>
-        <th>Clear \htmlonly Warning \endhtmlonly </th>
-        <td>The Display's \htmlonly Backend \endhtmlonly will send a request to clear a warning running on the system and will receive a response with the warning id to clear the warning from the warning banner.</td>
-    </tr>
-    <tr>
-        <th>Enable Op Mode from Display to System</th>
-        <td>The Display's \htmlonly Backend \endhtmlonly will send a request to enable or disable an op mode and will receive a response confirming that mode was enabled or disabled.</td>
-    </tr>
-    <tr>
-        <th>Enable Op Mode from System to Display</th>
-        <td>The System will send a message that mode was enabled or disabled and the display will send a response to confirm that message was received.</td>
-    </tr>
-    <tr>
-        <th>Notifications</th>
-        <td>The System will send the constant measurments for Stacking Pressure, Oxygen, Peak Inspiratory Pressure, Auxiliary Flow, Tidal \htmlonly Volume\endhtmlonly, Mean Average Pressure, states of all warnings, and Alarm Silence Time. Display will send response message after every 10 updates.</td>
-    </tr>
-    <tr>
-        <th>Subsystem Status</th>
-        <td>The System sends changed states for subsystem states, and Display confirms received subsystem state change and saves new subsystem states.</td>
-    </tr>
-    <tr>
-        <th>Ventilation Status</th>
-        <td>The System sends the state of ventilation, and the Display confirms and saves the received ventilation state.</td>
-    </tr>
-    <tr>
-        <th>HMI Button Pushed</th>
-        <td>The System sends which HMI Button was pressed and the Display confirms which HMI Button was pushed.</td>
-    </tr>
-    <tr>
-        <th>Shutdown</th>
-        <td>The System sends request (triggered from user input of power button) to initiate the shutdown procedure, and the display confirms and will begin procedure.</td>
-    </tr>
-    <tr>
-        <th>Shutdown Confirm or Cancel</th>
-        <td>The Display sends a request to confirm or cancel the shutdown, and the system responses back.</td>
-    </tr>
-    <tr>
-        <th>Set DPR Calibration Value</th>
-        <td>The Display sends a request for the state of pressure regulator calibration, and system sends a response that calibration state is active.</td>
-    </tr>
-    <tr>
-        <th>Enable Pressure Sensor Zero</th>
-        <td>The Display sends a request for sensor calibration, and system sends a response that completes the calibration completely.</td>
-    </tr>
-    <tr>
-        <th>Service Notifications</th>
-        <td>For when the Service Menu is accessed, the Service Calibration Op Mode will be enabled from the Display, and the System will send the constant measurments for SP Average Data, SP Instant Data, \htmlonly PIP \endhtmlonly Average Data, \htmlonly PIP \endhtmlonly Instant Data, and O<sub>2</sub> Calibration Voltage.</td>
-    </tr>
-    <tr>
-        <th>Service Calibration</th>
-        <td>The System sends a request to the display for calibration data for verification purposes. Data includes SP Zero Value, \htmlonly PIP \endhtmlonly Zero Value, lowest O<sub>2</sub> Calibration Voltage, highest O<sub>2</sub> Calibration Voltage, and other values.</td>
-    </tr>
-</table>
-
-### Display Messages
-
-<table>
-    <tr>
-        <th style="background-color: #202531; border-color: #202531"> Display \htmlonly Message \endhtmlonly </th>
-        <th style="background-color: #202531; border-color: #202531"> Display Op Code </th>
-        <th style="background-color: #202531; border-color: #202531"> Display Bytes </th>
-        <th style="background-color: #202531; border-color: #202531"> Display Length </th>
-    </tr>
-    <tr>
-        <th> Power On Received </th>
-        <td> 0 </td>
-        <td></td>
-        <td> 3 </td>
-    </tr>
-    <tr>
-        <th>Get Settings Request</th>
-        <td>1</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Enable Notification Request</th>
-        <td>2</td>
-        <td>Enable or Disable State</td>
-        <td>4</td>
-    </tr>
-    <tr>
-        <th>Get Op Modes Request</th>
-        <td>3</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Get Subsystem States Request</th>
-        <td>4</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Get System Version Request</th>
-        <td>5</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Set Settings Request</th>
-        <td>6</td>
-        <td>All 20 Pneumatic Settings, with each setting stored as 4 bytes (4 * 20 = 80).</td>
-        <td>83</td>
-    </tr>
-    <tr>
-        <th>Get Measured Request</th>
-        <td>7</td>
-        <td>Requested Measurement ID</td>
-        <td>4</td>
-    </tr>
-    <tr>
-        <th>Clear \htmlonly Warning \endhtmlonly Request</th>
-        <td>8</td>
-        <td>Requested \htmlonly Warning \endhtmlonly ID</td>
-        <td>4</td>
-    </tr>
-    <tr>
-        <th>Enable Op Mode Display Request</th>
-        <td>9</td>
-        <td>
-        - Requested Op Mode ID
-        - Enable or Disable State
-        - Success State
-        </td>
-        <td>6</td>
-    </tr>
-    <tr>
-        <th>Enable Op Mode Display Response</th>
-        <td>10</td>
-        <td>
-        - Requested Op Mode ID
-        - Enable or Disable State
-        </td>
-        <td>5</td>
-    </tr>
-    <tr>
-        <th>Notification Received Response</th>
-        <td>11</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Subsystem Status Received</th>
-        <td>12</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Ventilation Status Received</th>
-        <td>13</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>HMI Button Pushed Received</th>
-        <td>14</td>
-        <td>HMI Button ID</td>
-        <td>4</td>
-    </tr>
-    <tr>
-        <th>Shutdown Received</th>
-        <td>15</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Shutdown Confirm or Cancel Request</th>
-        <td>16</td>
-        <td>Confirm or Cancel State</td>
-        <td>4</td>
-    </tr>
-    <tr>
-        <th>Set DPR Calibration Value Request</th>
-        <td>18</td>
-        <td>Pressure Regulator Calibration State</td>
-        <td>4</td>
-    </tr>
-    <tr>
-        <th>Enable Pressure Sensor Zero Request</th>
-        <td>20</td>
-        <td>Sensor Calibration ID </td>
-        <td>8</td>
-    </tr>
-    <tr>
-        <th>Service Calibration Response</th>
-        <td>22</td>
-        <td>All 8 calibration values, with each calibration value stored as 4 bytes (4 * 8 = 32 Bytes).</td>
-        <td>35</td>
-    </tr>
-</table>
-
-### System Messages
-
-<table>
-    <tr>
-        <th style="background-color: #202531; border-color: #202531"> System \htmlonly Message \endhtmlonly </th>
-        <th style="background-color: #202531; border-color: #202531"> System Op Code </th>
-        <th style="background-color: #202531; border-color: #202531"> System Bytes </th>
-        <th style="background-color: #202531; border-color: #202531"> System Length </th>
-    </tr>
-    <tr>
-        <th> Power On Send </th>
-        <td> 100 </td>
-        <td></td>
-        <td> 3 </td>
-    </tr>
-    <tr>
-        <th>Get Settings Response</th>
-        <td>101</td>
-        <td>All 20 Pneumatic Settings, with settings stored as 4 bytes (4 * 20 = 80). Bytes representing settings are converted to float values.</td>
-        <td>83</td>
-    </tr>
-    <tr>
-        <th>Enable Notification Response</th>
-        <td>102</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Get Op Modes Response</th>
-        <td>103</td>
-        <td>All 15 Op Mode States</td>
-        <td>18</td>
-    </tr>
-    <tr>
-        <th>Get Subsystem States Response</th>
-        <td>104</td>
-        <td>All 7 Subsystem States</td>
-        <td>10</td>
-    </tr>
-    <tr>
-        <th>Get System Version Response</th>
-        <td>105</td>
-        <td>
-        - Major Version Part of the Version Number
-        - Minor Version Part of the Version Number
-        - Patch Part of the Version Number
-        </td>
-        <td>6</td>
-    </tr>
-    <tr>
-        <th>Set Settings Response</th>
-        <td>106</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Get Measured Response</th>
-        <td>107</td>
-        <td>
-        - Requested Measurement ID
-        - Measurement Float Value represented as 4 Bytes
-        </td>
-        <td>8</td>
-    </tr>
-    <tr>
-        <th>Clear \htmlonly Warning \endhtmlonly Response</th>
-        <td>108</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Enable Op Mode System Response</th>
-        <td>109</td>
-        <td>
-        - Requested Op Mode ID
-        - Enable or Disable State
-        </td>
-        <td>5</td>
-    </tr>
-    <tr>
-        <th>Enable Op Mode System Request</th>
-        <td>110</td>
-        <td>
-        - Requested Op Mode ID
-        - Enable or Disable State
-        - Success State
-        </td>
-        <td>6</td>
-    </tr>
-    <tr>
-        <th>Notification Received</th>
-        <td>111</td>
-        <td>
-        - All 8 measurements, with each measurement stored as 4 bytes (4 * 8 = 32 Bytes)
-        - 9 Bytes of warnings states, where each bit represents all 70 warning states
-        - The Silence Button Time that would be displayed on the Silence Button
-        </td>
-        <td>45</td>
-    </tr>
-    <tr>
-        <th>Subsystem Status Update</th>
-        <td>112</td>
-        <td>All 7 Subsystem States</td>
-        <td>10</td>
-    </tr>
-    <tr>
-        <th>Ventilation Status Update</th>
-        <td>113</td>
-        <td>Ventilation State</td>
-        <td>4</td>
-    </tr>
-    <tr>
-        <th>HMI Button Pushed Update</th>
-        <td>114</td>
-        <td>HMI Button ID</td>
-        <td>4</td>
-    </tr>
-    <tr>
-        <th>Shutdown Request</th>
-        <td>115</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Shutdown Confirm Received</th>
-        <td>116</td>
-        <td>Confirm or Cancel State</td>
-        <td>4</td>
-    </tr>
-    <tr>
-        <th>Set DPR Calibration Value Response</th>
-        <td>118</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <th>Enable Pressure Sensor Zero Response</th>
-        <td>120</td>
-        <td>Success or Failure Value</td>
-        <td>5</td>
-    </tr>
-    <tr>
-        <th>Service Notification Received Response</th>
-        <td>121</td>
-        <td>All 5 measurements, with each measurement stored as 4 bytes (4 * 5 = 20 Bytes).</td>
-        <td>23</td>
-    </tr>
-    <tr>
-        <th>Service Calibration Request</th>
-        <td>122</td>
-        <td></td>
-        <td>3</td>
-    </tr>
-</table>
-
-## Devices Object
-
-The device object tracks the connection between the system controller and display controller by tracking the number of devices mounted to the display controller via USB. On an API Cycle, if the system controller is disconnected, then the display will no longer receive notifications or other requests and responses, and the warning manager will raise "Display and System Disconnected!" itself. It is important to note that if the system controller is disconnected, there should only be 2 USB devices mounted, the Linux Foundation 2.0 root hub and Standard Microsystems Corp. USB 2.0 Hub. It is also important to note that when the system controller does get disconnected, the Portname will flip between "ttyUSB0" and "ttyUSB1". Because of this, and when the System Controller and the Display Controller is reconnected via USB and the devices object to 3 mounted devices, the serial port will be reopened and reconfigured.
