@@ -197,6 +197,11 @@ void StateManager::setMode(unsigned char modeID, unsigned char value, unsigned c
     m_modes[modeID] = value;
     m_modes_success[modeID] = success;
     emit modeChanged();
+
+    if (modeID == (int)ModeIDs::LASER_MODE)
+    {
+        emit limitedO2State(success);
+    }
 }
 
 unsigned char StateManager::o2CalSuccess()
@@ -212,6 +217,11 @@ unsigned char StateManager::dehumidifySuccess()
 unsigned char StateManager::etco2Success()
 {
     return m_modes_success[(int)ModeIDs::ETCO2_MODE];
+}
+
+unsigned char StateManager::limitedO2Success()
+{
+    return m_modes_success[(int)ModeIDs::LASER_MODE];
 }
 
 /*---Subsystems---------------------------------------------*/
@@ -694,12 +704,6 @@ QVector<double> StateManager::getServiceNotificationVector()
     return service_notification_vector;
 }
 
-void StateManager::resetLimitedO2()
-{
-    m_limited_o2_min_reached = 0;
-    m_limited_o2_set_reached = 0;
-}
-
 void StateManager::adjustOxygen()
 {
     bool state_measured;
@@ -726,34 +730,6 @@ void StateManager::adjustOxygen()
         {
             m_oxygen_adjusting = 0;
             emit oxygenAdjustmentSignal(0);
-        }
-    }
-
-    if (laserMode())
-    {
-        if (state_measured)
-        {
-            if (o2Setting() <= 22)
-            {
-                m_limited_o2_set_reached = 1;
-                m_limited_o2_min_reached = 1;
-                emit limitedO2State(1);
-            }
-            else if (m_limited_o2_min_reached)
-            {
-                m_limited_o2_set_reached = 1;
-                emit limitedO2State(1);
-            }
-        }
-        else if (!state_measured)
-        {
-            if (m_limited_o2_min_reached && m_limited_o2_set_reached) return;
-
-            if (notification_vector.at(2) < 22)
-            {
-                emit limitedO2State(0);
-                m_limited_o2_min_reached = 1;
-            }
         }
     }
 }
