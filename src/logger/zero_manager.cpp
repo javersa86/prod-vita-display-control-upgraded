@@ -18,7 +18,7 @@ ZeroManager::ZeroManager(QObject *parent) :
     std::vector<std::string> tColumns = {"TYPE", "TIME"};
     m_timeCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/time.csv", &tColumns[0],2);
 
-    if (!QFileInfo("/media/NVENT_FILES/calibration").exists())
+    if (!QFileInfo::exists("/media/NVENT_FILES/calibration"))
     {
         QDir().mkdir("/media/NVENT_FILES/calibration");
     }

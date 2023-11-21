@@ -19,8 +19,6 @@ PresetManager::PresetManager(QObject *parent) :
     m_preset_names = QVector<QString>( MAX_PRESETS );
 
     updatePresets();
-
-    emit presetsChanged();
 }
 
 int PresetManager::getNumPresets()

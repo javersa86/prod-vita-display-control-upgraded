@@ -77,10 +77,9 @@ int GPIO::exportPin(){
 }
 
 void GPIO::openFd(){
-    int len;
     char buf[MAX_BUF];
 
-    len = qsnprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", _pinNumber);
+    qsnprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", _pinNumber);
 
     if( 0 <= _ioFd ) close(_ioFd );
 
@@ -100,10 +99,10 @@ int GPIO::getFD()
 }
 
 int GPIO::setDirection(bool out){
-    int fd, len;
+    int fd;
     char buf[MAX_BUF];
 
-    len = qsnprintf(buf, sizeof(buf), SYSFS_GPIO_DIR  "/gpio%d/direction", _pinNumber);
+    qsnprintf(buf, sizeof(buf), SYSFS_GPIO_DIR  "/gpio%d/direction", _pinNumber);
 
     fd = open(buf, O_WRONLY);
     if( fd < 0 ){
@@ -125,10 +124,10 @@ int GPIO::setDirection(bool out){
 }
 
 int GPIO::setEdge(char *edge){
-    int fd, len;
+    int fd;
     char buf[MAX_BUF];
 
-    len = qsnprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/edge", _pinNumber);
+    qsnprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/edge", _pinNumber);
 
     fd = open(buf, O_WRONLY);
     if( fd < 0 ){

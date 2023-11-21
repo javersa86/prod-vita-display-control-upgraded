@@ -18,7 +18,6 @@ Message::Message(unsigned char* data, unsigned char crc, int tx_size)
     }
 
     m_message[index] = crc;
-    index = index + 1;
 
     m_crc = crc;
     m_tx_size = tx_size + 2;

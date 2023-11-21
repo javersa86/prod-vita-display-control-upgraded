@@ -99,17 +99,17 @@ void Backend::saveLogsToDrive()
     if (!exportDirectory("/media/NVENT_FILES/NV_Vita_events",serviceDirName))
     {
         //Sends signal to QML if service logs failed to be exported.
-        saveLogStatusSignal(0);
+        emit saveLogStatusSignal(0);
         return;
     }
     if (!exportDirectory("/media/NVENT_FILES/NV_Vita_warnings",warningDirName))
     {
         //Sends signal to QML if warning logs failed to be exported.
-        saveLogStatusSignal(0);
+        emit saveLogStatusSignal(0);
         return;
     }
     //Sends signal to QML if service logs and warning logs were exported successfully.
-    saveLogStatusSignal(1);
+    emit saveLogStatusSignal(1);
 }
 
 void Backend::driveConnected()
@@ -119,11 +119,11 @@ void Backend::driveConnected()
     if (dirName == "")
     {
         //Sends signal to QML if USB drive is not mounted.
-        driveConnection(0);
+        emit driveConnection(0);
         return;
     }
     //Sends signal to QML if USB Drive is mounted and if directories exist.
-    driveConnection(1);
+    emit driveConnection(1);
 }
 
 void Backend::driveDisconnected()
@@ -859,7 +859,7 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
     QString temp = "";
     if(modeID == (unsigned char)ModeIDs::LISTENING_KNOB)
     {
-        emit(listenToKnob(value));
+        emit listenToKnob(value);
     }
     //If laser mode need to be changed
     else if (modeID == (unsigned char) ModeIDs::LASER_MODE && value)

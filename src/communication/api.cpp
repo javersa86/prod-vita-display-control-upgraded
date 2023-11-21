@@ -49,7 +49,6 @@ void API::run()
         return;
     }
     success = serial.configurePort();
-    int n;
 
     while (!isInterruptionRequested())  //(!stopThread)
     {
@@ -57,7 +56,7 @@ void API::run()
         if (success) break;
 
 
-        n = serial.readIncoming(); // read messages from serial port
+        serial.readIncoming(); // read messages from serial port
         process(); // returns number of bytes read
 
         if (!notification_request_confirmed)
