@@ -86,7 +86,7 @@ void serviceState(bool);
  * @param path
  * @return bool
  */
-bool directoryExists(QString path);
+bool directoryExists(const QString &path);
 
 /**
  * @brief Method loops through list of currently active log files and deletes the oldest.
@@ -147,7 +147,7 @@ bool findCurrentEventFile();
  * @param fileAbsolutePath
  * @return float
  */
-float fileSize(QString fileAbsolutePath);
+float fileSize(const QString &fileAbsolutePath);
 
 /**
  * @brief Initiate the log manager and all required variables
@@ -215,7 +215,7 @@ void log(QtMsgType type, const QMessageLogContext &context, const QString &msg);
  * @param event
  * @note Will only record onto warings file if type reads "WARNING".
  */
-void logEvent(QString event);
+void logEvent(const QString &msg);
 /**
  * @brief Vector that stores Titles for Service Log files.
  */

@@ -16,7 +16,7 @@ DPRManager::DPRManager(QObject * parent) :
 
 void DPRManager::updateDPRVals()
 {
-    QRegExp re("\\d*");
+    QRegExp re(QString::fromStdString("\\d*"));
 
     m_numDPRVals = m_dprCsvManager.getNumEntries();
 
@@ -32,12 +32,12 @@ void DPRManager::updateDPRVals()
     for(; i< m_numDPRVals; i++)
     {
         std::vector<std::string> tmp =  m_dprCsvManager.readRecord(i);
-        m_timeStamps[i] = "";
+        m_timeStamps[i] = QString::fromStdString("");
         m_dprVals[i] = -1;
         //The length of the row must be 4
         if (tmp.size() != 2)
         {
-            m_timeStamps[i] = "";
+            m_timeStamps[i] = QString::fromStdString("");
             m_dprVals[i] = -1;
         }
         else {
@@ -64,11 +64,11 @@ void DPRManager::updateDPRVals()
 
     for(;i < MAX_O2_VALS; i++)
     {
-        m_timeStamps[i] = "";
+        m_timeStamps[i] = QString::fromStdString("");
         m_dprVals[i] = -1;
     }
 
-    emit dprValsChanged();
+    Q_EMIT dprValsChanged();
 }
 
 void DPRManager::addDPRVal(int value)
@@ -97,9 +97,9 @@ void DPRManager::deleteOldestDPRVal()
 
 int DPRManager::getDPRCalVal()
 {
-    if( m_numDPRVals )
+    if(!m_dprVals.isEmpty() && m_numDPRVals > 0)
     {
-        return m_dprVals[m_numDPRVals - 1];
+        return m_dprVals.at(m_numDPRVals - 1);
     }
-    else return -1;
+    return -1;
 }

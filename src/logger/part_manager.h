@@ -304,13 +304,13 @@ class PartManager : public QObject
          * @param name
          * @callergraph
          */
-        void setTempName(QString);
+        void setTempName(const QString &name);
         /**
          * @brief Added digit to end of user generated serial number.
          * @param input
          * @callergraph
          */
-        void addDigit(QString);
+        void addDigit(const QString &input);
         /**
          * @brief Removes end digit to user generated serial number.
          * @callergraph
@@ -321,26 +321,26 @@ class PartManager : public QObject
          * @param number
          * @callergraph
          */
-        void setTempSerial(QString);
+        void setTempSerial(const QString &number);
         /**
          * @brief Sets installation date for part that needs to be replaced.
          * @param date
          * @callergraph
          */
-        void setTempDate(QString);
+        void setTempDate(const QString &date);
 
         /**
          * @brief Sets serial number, installation date, hours operating, and hours ventilating for replacement part.
          * @callergraph
          */
-        void setNewPart(QString);
+        void setNewPart(const QString &newTime);
 
         /**
          * @brief Sets index of part that was replaced.
          * @param index
          * @callergraph
          */
-        void setPartIndex(unsigned char);
+        void setPartIndex(unsigned char index);
 
     signals:
         /**

@@ -163,7 +163,7 @@ class Backend : public QObject
          * @return bool
          * @callergraph
          */
-        bool exportDirectory(QString,QString);
+        bool exportDirectory(const QString &src, const QString &dst);
 
         /**
          * @brief Reads directories and saves the total amount of files.
@@ -264,7 +264,7 @@ class Backend : public QObject
          * @param modes
          * @callergraph
          */
-        void receiveModes(QVector<int>);
+        void receiveModes(QVector<int> modes);
 
         /*--Get Subsystem Status----------------------------------------------------------*/
 
@@ -287,7 +287,7 @@ class Backend : public QObject
          * @param states
          * @callergraph
          */
-        void receiveSubsystemStates(QVector<unsigned char>);
+        void receiveSubsystemStates(const QVector<unsigned char> &states);
 
         /*--System Version----------------------------------------------------------------*/
 
@@ -320,7 +320,7 @@ class Backend : public QObject
          * @param  settings
          * @callergraph
          */
-        void setPneumaticSettings(QVector<int>);
+        void setPneumaticSettings(const QVector<int> &settings);
 
         /**
          * @brief      Receive settings update from the qml pages.
@@ -456,7 +456,7 @@ class Backend : public QObject
          * @param notification
          * @callergraph
          */
-        void notificationUpdateSlot(QVector<float> notification);
+        void notificationUpdateSlot(const QVector<float> &notification);
 
         //Slot to receive warning updates from API. warning_id: most severe active warning id, num_active_warnings: number of active warnings
         /**
@@ -593,7 +593,7 @@ class Backend : public QObject
          * @brief Lowers flag to disable sensor calibration.
          * @callergraph
          */
-        void receiveSensorZeroed(QVector<unsigned char>);
+        void receiveSensorZeroed(const QVector<unsigned char> &values);
 
 
         /**
@@ -602,7 +602,7 @@ class Backend : public QObject
          * @param notification
          * @callergraph
          */
-        void serviceNotificationUpdateSlot(QVector<float> notification);
+        void serviceNotificationUpdateSlot(const QVector<float> &notification);
 
     signals:
 
@@ -933,6 +933,8 @@ class Backend : public QObject
         float m_DPRs[2]{0};
 
         unsigned char m_sp_line_hidden = 0;
+
+        void setIntervalInSeconds(QTimer* timer, int seconds);
 
         /**
          * @brief Initializes functions array to store each send messeage function

@@ -14,8 +14,10 @@ O2CalManager::O2CalManager(QObject *parent) :
     m_volts = QVector<QVector<QString>>( MAX_O2_VALS );
     updateO2Vals();
 
+    constexpr int INTERVAL_ONE_SECOND = 1000;
+
     m_calibration_progress_timer = new QTimer(this);
-    m_calibration_progress_timer->setInterval(1000);
+    m_calibration_progress_timer->setInterval(INTERVAL_ONE_SECOND);
     m_calibration_progress_timer->setSingleShot(false);
     connect(m_calibration_progress_timer, &QTimer::timeout, this, &O2CalManager::incrementCalibrationProgress);
 
@@ -23,8 +25,8 @@ O2CalManager::O2CalManager(QObject *parent) :
 
 void O2CalManager::updateO2Vals()
 {
-    QRegExp re("\\d*");
-    QRegExp re1("[+-]?([0-9]*[.])?[0-9]+");
+    QRegExp re(QString::fromStdString("\\d*"));
+    QRegExp re1(QString::fromStdString("[+-]?([0-9]*[.])?[0-9]+"));
 
     m_numO2Vals = m_o2CsvManager.getNumEntries();
 
@@ -41,15 +43,15 @@ void O2CalManager::updateO2Vals()
     for(; i< m_numO2Vals; i++)
     {
         std::vector<std::string> tmp =  m_o2CsvManager.readRecord(i);
-        m_timeStamps[i] = "";
+        m_timeStamps[i] = QString::fromStdString("");
         m_o2Vals[i].resize(2);
         m_volts[i].resize(2);
         //The length of the row must be 7
         if (tmp.size() != 5)
         {
-            m_timeStamps[i] = "";
+            m_timeStamps[i] = QString::fromStdString("");
             m_o2Vals[i] = QVector<int>(2).fill(-1);
-            m_volts[i] = QVector<QString>(2).fill("-1");
+            m_volts[i] = QVector<QString>(2).fill(QString::fromStdString("-1"));
         }
         else
         {
@@ -92,7 +94,7 @@ void O2CalManager::updateO2Vals()
                     //If value is not a float
                     else
                     {
-                        m_volts[i][0] = "-1";
+                        m_volts[i][0] = QString::fromStdString("-1");
                     }
                 }
                 else if (j == 4)
@@ -104,7 +106,7 @@ void O2CalManager::updateO2Vals()
                     //If value is not a float
                     else
                     {
-                        m_volts[i][1] = "-1";
+                        m_volts[i][1] = QString::fromStdString("-1");
                     }
                 }
             }
@@ -113,12 +115,12 @@ void O2CalManager::updateO2Vals()
 
     for(;i < MAX_O2_VALS; i++)
     {
-        m_timeStamps[i] = "";
+        m_timeStamps[i] = QString::fromStdString("");
         m_o2Vals[i] = QVector<int>(2).fill(-1);
-        m_volts[i] = QVector<QString>(2).fill("-1");
+        m_volts[i] = QVector<QString>(2).fill(QString::fromStdString("-1"));
     }
 
-    emit o2ValsChanged();
+    Q_EMIT o2ValsChanged();
 }
 
 int O2CalManager::getNumO2CalVals()
@@ -147,7 +149,16 @@ void O2CalManager::addO2CalVals(int low, int high, float lowVolt, float highVolt
     m_o2CsvManager.createRecord(&tmp[0]);
     updateO2Vals();
 
-    qInfo() << "NVENT" << "," << "O2 CALIBRATION" << "," << "Save O2 Calibration values: Low Calibration " + QString::number(low) + "; High Calibration " + QString::number(high) + "; Low Voltage " + QString::number(lowVolt) + "; High Voltage " + QString::number(highVolt);
+    qInfo() << "NVENT"
+            << ","
+            << "O2 CALIBRATION"
+            << ","
+            << "Save O2 Calibration values: Low Calibration " +
+               QString::number(low) + "; High Calibration " +
+               QString::number(high) + "; Low Voltage " +
+               QString::number(lowVolt) +
+               "; High Voltage " +
+               QString::number(highVolt);
 }
 
 void O2CalManager::deleteOldestO2CalVal()
@@ -160,40 +171,40 @@ void O2CalManager::deleteOldestO2CalVal()
 
 QString O2CalManager::getMostRecentTimeStamp()
 {
-    if (m_numO2Vals)
+    if (!m_timeStamps.isEmpty() && m_numO2Vals > 0)
     {
-        return m_timeStamps[m_numO2Vals - 1];
+        return m_timeStamps.at(m_numO2Vals - 1);
     }
-    else return "";
+    return QString::fromStdString("");
 }
 
 QString O2CalManager::getLastTimeStamp()
 {
     if (m_numO2Vals >= 2)
     {
-        return m_timeStamps[m_numO2Vals - 2];
+        return m_timeStamps.at(m_numO2Vals - 2);
     }
     else if (m_numO2Vals == 1)
     {
-        return m_timeStamps[0];
+        return m_timeStamps.at(0);
     }
-    else return "";
+    return QString::fromStdString("");
 }
 
 QVector<int> O2CalManager::getMostRecentO2CalVal()
 {
-    if (m_numO2Vals )
+    if (m_numO2Vals > 0)
     {
-        return m_o2Vals[m_numO2Vals - 1];
+        return m_o2Vals.at(m_numO2Vals - 1);
     }
-    else return QVector<int>(2);
+    return QVector<int>(2);
 }
 
 QVector<QString> O2CalManager::getMostRecentVoltVal()
 {
-    if (m_numO2Vals )
+    if (m_numO2Vals > 0)
     {
-        return m_volts[m_numO2Vals - 1];
+        return m_volts.at(m_numO2Vals - 1);
     }
     else return QVector<QString>(2);
 }
@@ -202,11 +213,11 @@ QVector<QString> O2CalManager::getLastVoltVal()
 {
     if (m_numO2Vals >= 2)
     {
-        return m_volts[m_numO2Vals - 2];
+        return m_volts.at(m_numO2Vals - 2);
     }
     else if (m_numO2Vals == 1)
     {
-        return m_volts[0];
+        return m_volts.at(0);
     }
     else return QVector<QString>(2);
 }
@@ -217,9 +228,9 @@ void O2CalManager::calibrationState()
     {
         return;
     }
-    m_calibration_text = "01:00";
+    m_calibration_text = QString::fromStdString("01:00");
     m_calibration_seconds = 60;
-    emit calibrationProgressSignal();
+    Q_EMIT calibrationProgressSignal();
     m_calibration_progress_timer->start();
 }
 
@@ -229,12 +240,12 @@ void O2CalManager::incrementCalibrationProgress()
     int minutes = seconds / 60;
     m_calibration_text = prependZero(int(minutes % 60)) + ":" + prependZero(int(seconds % 60));
     m_calibration_seconds = m_calibration_seconds - 1;
-    emit calibrationProgressSignal();
+    Q_EMIT calibrationProgressSignal();
 
     if (m_calibration_seconds == -1)
     {
         m_calibration_progress_timer->stop();
-        m_calibration_text = "01:00";
+        m_calibration_text = QString::fromStdString("01:00");
     }
 }
 
@@ -255,6 +266,6 @@ QString O2CalManager::getCalibrationProgressTime()
 void O2CalManager::resetCalibration()
 {
     m_calibration_progress_timer->stop();
-    m_calibration_text = "01:00";
+    m_calibration_text = QString::fromStdString("01:00");
     m_calibration_seconds = 60;
 }

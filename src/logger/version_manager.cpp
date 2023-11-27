@@ -13,8 +13,8 @@ void VersionManager::updateVersions()
 {
     if (m_versionCsvManager.getNumEntries() == 0)
     {
-        m_hmiVersion = "v2.0.0";
-        m_serialNumber = "LTN0001";
+        m_hmiVersion = QString::fromStdString("v2.0.0");
+        m_serialNumber = QString::fromStdString("LTN0001");
 
         std::vector<std::string> vector1 = {HMI,m_hmiVersion.toStdString()};
         std::vector<std::string> vector2 = {SERIAL_NUMBER,m_serialNumber.toStdString()};
@@ -22,14 +22,14 @@ void VersionManager::updateVersions()
         m_versionCsvManager.createRecord(&vector1[0]);
         m_versionCsvManager.createRecord(&vector2[0]);
 
-        emit versionChanged();
+        Q_EMIT versionChanged();
         return;
     }
 
     m_hmiVersion = QString::fromStdString(m_versionCsvManager.readRecord(0).at(1));
     m_serialNumber = QString::fromStdString(m_versionCsvManager.readRecord(1).at(1));
 
-    emit versionChanged();
+    Q_EMIT versionChanged();
 }
 
 QString VersionManager::getHmiVersion()

@@ -35,7 +35,7 @@ void serviceState(bool state)
     m_service_state = state;
 }
 
-bool directoryExists(QString path) {
+bool directoryExists(const QString &path) {
     QFileInfo check_file(path);
     if (check_file.exists() && check_file.isDir()) {
         return true;
@@ -62,7 +62,7 @@ bool deleteOldestEventFile()
                 //Extracts how old file is from file name.
                 QString fileName = file.fileName();
                 fileName = fileName.mid(5,19);
-                QDateTime fileDT = QDateTime::fromString(fileName,"dd-MM-yyyy_HH_mm_ss");
+                QDateTime fileDT = QDateTime::fromString(fileName,QString::fromStdString("dd-MM-yyyy_HH_mm_ss"));
                 QDateTime now = QDateTime::currentDateTime();
 
                 qint64 tempTime = fileDT.secsTo(now);
@@ -116,7 +116,7 @@ void deleteOldestServiceLogs()
                 //Extracts how old file is from file name.
                 QString fileName = file.fileName();
                 fileName = fileName.mid(6,22);
-                QDateTime fileDT = QDateTime::fromString(fileName,"MM-dd-yyyy.hh.mm.ss_AP");
+                QDateTime fileDT = QDateTime::fromString(fileName,QString::fromStdString("MM-dd-yyyy.hh.mm.ss_AP"));
                 QDateTime now = QDateTime::currentDateTime().addSecs(-5 * 3600);
 
                 qint64 tempTime = fileDT.secsTo(now);
@@ -154,7 +154,7 @@ void deleteOldestWarningLogs()
                 //Extracts how old file is from file name.
                 QString fileName = file.fileName();
                 fileName = fileName.mid(6,22);
-                QDateTime fileDT = QDateTime::fromString(fileName,"MM-dd-yyyy.hh.mm.ss_AP");
+                QDateTime fileDT = QDateTime::fromString(fileName,QString::fromStdString("MM-dd-yyyy.hh.mm.ss_AP"));
                 QDateTime now = QDateTime::currentDateTime().addSecs(-5 * 3600);
 
                 qint64 tempTime = fileDT.secsTo(now);
@@ -180,40 +180,40 @@ void generateNewEventFile()
 {
     //Gets current date and time.
     QString tmpName = QString::fromStdString(m_csvManager_Time.readRecord(0).at(1));
-    QString myCurrentDateTime = QDateTime::fromString(tmpName,"MM/dd/yyyy hh:mm:ss AP").toString("_MM-dd-yyyy_hh.mm.ss_AP");
+    QString myCurrentDateTime = QDateTime::fromString(tmpName,QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")).toString(QString::fromStdString("_MM-dd-yyyy_hh.mm.ss_AP"));
     //Gets name of log events file.
-    QString fileName = QString(ROOT_FOLDER) + QString(EVENT_FOLDER) +  QString(EVENT_FILE_ROOT) + myCurrentDateTime;
+    QString fileName = QString::fromStdString(ROOT_FOLDER) + QString::fromStdString(EVENT_FOLDER) +  QString::fromStdString(EVENT_FILE_ROOT) + myCurrentDateTime;
     //Gets name of warnings file.
-    QString fileName1 = QString(ROOT_FOLDER) + QString(WARNINGS_FOLDER) +  QString(EVENT_FILE_ROOT) + myCurrentDateTime;
+    QString fileName1 = QString::fromStdString(ROOT_FOLDER) + QString::fromStdString(WARNINGS_FOLDER) +  QString::fromStdString(EVENT_FILE_ROOT) + myCurrentDateTime;
 
     //Checks if log events file exists, if so, creates another file with an incremented name.
-    QFileInfo checkFile(fileName + QString(CSV));
+    QFileInfo checkFile(fileName + QString::fromStdString(CSV));
     int v = 1;
     while(checkFile.exists())
     {
-        fileName = QString(ROOT_FOLDER) + QString(EVENT_FOLDER) +  QString(EVENT_FILE_ROOT) + myCurrentDateTime +
+        fileName = QString::fromStdString(ROOT_FOLDER) + QString::fromStdString(EVENT_FOLDER) +  QString::fromStdString(EVENT_FILE_ROOT) + myCurrentDateTime +
                 "-" + QString::number(v);
         v++;
-        checkFile = QFileInfo(fileName+ QString(CSV));
+        checkFile = QFileInfo(fileName+ QString::fromStdString(CSV));
     }
 
     //Checks if warnings file exists, if so, creates another file with an incremented name.
-    QFileInfo checkFile1(fileName1 + QString(CSV));
+    QFileInfo checkFile1(fileName1 + QString::fromStdString(CSV));
     v = 1;
     while(checkFile1.exists())
     {
-        fileName1 = QString(ROOT_FOLDER) + QString(WARNINGS_FOLDER) +  QString(EVENT_FILE_ROOT) + myCurrentDateTime +
+        fileName1 = QString::fromStdString(ROOT_FOLDER) + QString::fromStdString(WARNINGS_FOLDER) +  QString::fromStdString(EVENT_FILE_ROOT) + myCurrentDateTime +
                    "-" + QString::number(v);
         v++;
-        checkFile1 = QFileInfo(fileName1+ QString(CSV));
+        checkFile1 = QFileInfo(fileName1+ QString::fromStdString(CSV));
     }
 
     //Creates the log event and warnings files that will be currently appended to and saved as active.
-    m_csvManager.create((fileName+ QString(CSV)).toStdString(), &m_columnTitles[0]);
-    m_csvManager_Warnings.create((fileName1+ QString(CSV)).toStdString(), &m_columnTitles[0]);
+    m_csvManager.create((fileName+ QString::fromStdString(CSV)).toStdString(), &m_columnTitles[0]);
+    m_csvManager_Warnings.create((fileName1+ QString::fromStdString(CSV)).toStdString(), &m_columnTitles[0]);
 
-    m_currentEventFile = fileName + QString(CSV);
-    m_currentEventFileWarnings = fileName1 + QString(CSV);
+    m_currentEventFile = fileName + QString::fromStdString(CSV);
+    m_currentEventFileWarnings = fileName1 + QString::fromStdString(CSV);
 
     m_activeFiles.append(m_currentEventFile);
     m_activeWarningFiles.append(m_currentEventFileWarnings);
@@ -235,7 +235,7 @@ bool findCurrentEventFile()
     return true;
 }
 
-float fileSize(QString fileAbsolutePath)
+float fileSize(const QString &fileAbsolutePath)
 {
     QFileInfo file(fileAbsolutePath);
     float result = (float)file.size() / (1e3);
@@ -275,7 +275,7 @@ void initLogger()
     while(iterator.hasNext())
     {
         QFileInfo file(iterator.next());
-        if(file.fileName() != "." && file.fileName() != "..")
+        if(file.fileName() != QString::fromStdString(".") && file.fileName() != QString::fromStdString(".."))
             m_activeFiles.append(file.filePath());
     }
 
@@ -284,7 +284,7 @@ void initLogger()
     while(iterator1.hasNext())
     {
         QFileInfo file(iterator1.next());
-        if(file.fileName() != "." && file.fileName() != "..")
+        if(file.fileName() != QString::fromStdString(".") && file.fileName() != QString::fromStdString(".."))
             m_activeWarningFiles.append(file.filePath());
     }
     m_logInitiated = success;
@@ -319,10 +319,10 @@ QString getLogDateTime()
     return QString::fromStdString(m_csvManager_Time.readRecord(0).at(1)) + " - " + QString::fromStdString(m_csvManager_Time.readRecord(1).at(1));
 }
 
-void logEvent(QString msg)
+void logEvent(const QString &msg)
 {
     //Creates a list of column values by seperating ','.
-    QStringList messageList = msg.split(",");
+    QStringList messageList = msg.split(QString::fromStdString(","));
     QString event, type;
     //FORMAT: NVENT,TYPE,EVENT
     //The first "NVENT" tells us that the log is created by our application
@@ -335,13 +335,13 @@ void logEvent(QString msg)
     }
 
     //If the log has been initiated, and the first entry in the msg list is NVENT, add the event to the current event file
-    if(m_logInitiated && messageList.at(0).contains("NVENT"))
+    if(m_logInitiated && messageList.at(0).contains(QString::fromStdString("NVENT")))
     {
-        if (type == " SERVICE " && event == " Service Events Activated.")
+        if (type == QString::fromStdString(" SERVICE ") && event == QString::fromStdString(" Service Events Activated."))
         {
             serviceState(true);
         }
-        else if (type == " SERVICE " && event == " Service Events Deactivated.")
+        else if (type == QString::fromStdString(" SERVICE ") && event == QString::fromStdString(" Service Events Deactivated."))
         {
             serviceState(false);
             type = type + "(SERVICE) ";
@@ -356,7 +356,7 @@ void logEvent(QString msg)
         m_csvManager.createRecord(&vector[0]);
 
         //Will only record onto warnings file if type reads " WARNING ".
-        if (type == " WARNING " || type == " WARNING (SERVICE) "){
+        if (type == QString::fromStdString(" WARNING ") || type == QString::fromStdString(" WARNING (SERVICE) ")){
             m_csvManager_Warnings.createRecord(&vector[0]);
         }
     }
@@ -388,7 +388,7 @@ void log(QtMsgType type, const QMessageLogContext &context, const QString &msg)
         }
         case QtInfoMsg:
         {
-            logEvent(localMsg.constData());
+            logEvent(QString::fromStdString(localMsg.constData()));
             break;
         }
         case QtWarningMsg:

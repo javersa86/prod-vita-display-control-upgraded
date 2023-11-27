@@ -66,11 +66,11 @@ class MaintenanceManager : public QObject
     /**
      * @brief lastTodayDate
      */
-    Q_PROPERTY(QString lastTodayDate READ updateLastTodayDate NOTIFY dateChanged);
+    Q_PROPERTY(QString lastTodayDate READ updateLastTodayDate NOTIFY dateChanged)
     /**
      * @brief nextTwelveMonthDate
      */
-    Q_PROPERTY(QString nextTwelveMonthDate READ updateNextTwelveMonthDate NOTIFY dateChanged);
+    Q_PROPERTY(QString nextTwelveMonthDate READ updateNextTwelveMonthDate NOTIFY dateChanged)
 
     public:
         /**
@@ -131,15 +131,15 @@ class MaintenanceManager : public QObject
          * @param newDate
          * @callergraph
          */
-        void setLastServiceDate(QString);
+        void setLastServiceDate(const QString &newDate);
         /**
          * @brief Sets next service date.
          * @param newDate
          * @callergraph
          */
-        void setNextServiceDate(QString);
+        void setNextServiceDate(const QString &newDate);
 
-        void isValid(QString, QString, QString);
+        void isValid(const QString &month, const QString &day, const QString &year);
 
         void startTimer();
 

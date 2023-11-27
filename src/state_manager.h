@@ -440,7 +440,7 @@ class StateManager : public QObject
         * @brief Sets version number for system controller.
         * @param version
         */
-        void setSystemVersion(QString version);
+        void setSystemVersion(const QString &version);
 
         //START UP GETTER
         /**
@@ -619,7 +619,7 @@ class StateManager : public QObject
         * @brief Sets subsystem states.
         * @param states
         */
-        void setSubsystemStates(QVector<unsigned char> states);
+        void setSubsystemStates(const QVector<unsigned char> &states);
 
         //SETTING GETTERS AND SETTERS
         /**
@@ -856,12 +856,12 @@ class StateManager : public QObject
         * @note  Saves O2 Settings seperately for when Laser-Safe O2 Setting is set.
         * @param settings
         */
-        void setSettings(QVector<int>);
+        void setSettings(const QVector<int> &settings);
         /**
         * @brief Sets Pneumatic Settings and emits signal for it.
         * @param settings
         */
-        void setPneumaticSettings(QVector<int>);
+        void setPneumaticSettings(const QVector<int> &settings);
 
         //IP ADDRESS GETTER
         /**
@@ -1068,6 +1068,8 @@ class StateManager : public QObject
          * @param val
          */
         void setVerifySP(float);
+
+        void settingsCompleteTriggered();
 
     signals:
 

@@ -302,7 +302,15 @@ class ContactManager: public QObject
          * @param phoneNumber
          * @callergraph
          */
-        void setService(QString,QString,QString,QString,QString,QString,QString);
+        void setService(
+                const QString &name,
+                const QString &street,
+                const QString &city,
+                const QString &state,
+                const QString &postalCode,
+                const QString &email,
+                const QString &phoneNumber
+                );
 
         /**
          * @brief ContactManager::setSales
@@ -318,7 +326,15 @@ class ContactManager: public QObject
          * Sets all contact information for Sales Company.
          * .csv file need to be recreated each time.
          */
-        void setSales(QString,QString,QString,QString,QString,QString,QString);
+        void setSales(
+                const QString &name,
+                const QString &street,
+                const QString &city,
+                const QString &state,
+                const QString &postalCode,
+                const QString &email,
+                const QString &phoneNumber
+                );
 
     signals:
         /**

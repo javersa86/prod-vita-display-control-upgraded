@@ -42,8 +42,8 @@ void PasscodeManager::updatePasscode()
     //Also, it will record default passcodes onto .csv file.
     if (m_passcodeCsvManager.getNumEntries() == 0)
     {
-        m_service_passcode = "0000";
-        m_preset_passcode = "0000";
+        m_service_passcode = QString::fromStdString("0000");
+        m_preset_passcode = QString::fromStdString("0000");
 
         std::vector<std::string> vector1 = {"SERVICE",m_service_passcode.toStdString()};
         std::vector<std::string> vector2 = {"PRESET",m_preset_passcode.toStdString()};
@@ -51,21 +51,21 @@ void PasscodeManager::updatePasscode()
         m_passcodeCsvManager.createRecord(&vector1[0]);
         m_passcodeCsvManager.createRecord(&vector2[0]);
 
-        emit passcodeChanged();
+        Q_EMIT passcodeChanged();
 
         return;
     }
     std::vector<std::string> service_row = m_passcodeCsvManager.readRecord(0);
     std::vector<std::string> preset_row = m_passcodeCsvManager.readRecord(1);
 
-    QRegExp re("\\d{4}$");
+    QRegExp re(QString::fromStdString("\\d{4}$"));
     if (service_row.size() == 2 && re.exactMatch(QString::fromStdString(service_row.at(1))))
     {
         m_service_passcode = QString::fromStdString(service_row.at(1));
     }
     else
     {
-        m_service_passcode = "0000";
+        m_service_passcode = QString::fromStdString("0000");
         std::vector<std::string> vector1 = {"SERVICE",m_service_passcode.toStdString()};
         m_passcodeCsvManager.updateRecord(0,&vector1[0]);
     }
@@ -75,15 +75,15 @@ void PasscodeManager::updatePasscode()
     }
     else
     {
-        m_preset_passcode = "0000";
+        m_preset_passcode = QString::fromStdString("0000");
         std::vector<std::string> vector2 = {"PRESET",m_preset_passcode.toStdString()};
         m_passcodeCsvManager.updateRecord(1,&vector2[0]);
     }
 
-    emit passcodeChanged();
+    Q_EMIT passcodeChanged();
 }
 
-void PasscodeManager::editServicePasscode(QString newPasscode)
+void PasscodeManager::editServicePasscode(const QString &newPasscode)
 {
     //System will not change new passcode if old one was entered.
     if (newPasscode == m_service_passcode)
@@ -110,7 +110,7 @@ void PasscodeManager::editServicePasscode(QString newPasscode)
     updatePasscode();
 }
 
-void PasscodeManager::editPresetPasscode(QString newPasscode)
+void PasscodeManager::editPresetPasscode(const QString &newPasscode)
 {
     //System will not change new passcode if old one was entered.
     if (newPasscode == m_preset_passcode)
@@ -136,7 +136,7 @@ void PasscodeManager::editPresetPasscode(QString newPasscode)
     updatePasscode();
 }
 
-void PasscodeManager::editPresetPasscodeManual(QString newPasscode)
+void PasscodeManager::editPresetPasscodeManual(const QString &newPasscode)
 {
     //Passcode still needs to be 4 digits.
     if (newPasscode.size() < 4 || 4 < newPasscode.size())

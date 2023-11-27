@@ -131,7 +131,7 @@ class PasscodeManager : public QObject
          * @param newPasscode
          * @callergraph
          */
-        void editServicePasscode(QString);
+        void editServicePasscode(const QString &newPasscode);
         /**
          * @brief Changes preset page passcode.
          * @details The system will not change new passcode if old one was entered.
@@ -141,7 +141,7 @@ class PasscodeManager : public QObject
          * @param newPasscode
          * @callergraph
          */
-        void editPresetPasscode(QString);
+        void editPresetPasscode(const QString &newPasscode);
         /**
          * @brief Changes preset page passcode.
          * @details Called when technician is requested to change passcode throught the service page.
@@ -152,7 +152,7 @@ class PasscodeManager : public QObject
          * @param newPasscode
          * @callergraph
          */
-        void editPresetPasscodeManual(QString);
+        void editPresetPasscodeManual(const QString &newPasscode);
 
     signals:
         /**

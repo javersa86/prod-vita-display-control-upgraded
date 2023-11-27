@@ -40,7 +40,7 @@ int Message::getSize()
 
 QString Message::toString()
 {
-    QString tmp = "";
+    QString tmp = QString::fromStdString("");
     int i = 0;
     for (i = 0; i < m_tx_size; i++)
     {

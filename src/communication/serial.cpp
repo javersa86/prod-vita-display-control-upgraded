@@ -97,7 +97,7 @@ QString Comm::getPortname() const
     return _portname;
 }
 
-void Comm::setPortname(QString portname)
+void Comm::setPortname(const QString &portname)
 {
     _portname = portname;
 }

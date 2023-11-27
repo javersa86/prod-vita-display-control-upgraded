@@ -25,16 +25,18 @@ PartManager::PartManager(QObject *parent) :
     m_hoursVentilatingCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/" + std::string(PART_VENTILATING_FILE), &columns2[0], 2);
     updateHoursVentilating();
 
+    constexpr int INTERVAL_ONE_SECOND = 1000;
+
     //Timer that increments the hours of operation for parts per second.
     m_hours_operating_timer = new QTimer(this);
-    m_hours_operating_timer->setInterval(1000);
+    m_hours_operating_timer->setInterval(INTERVAL_ONE_SECOND);
     m_hours_operating_timer->setSingleShot(false);
     connect(m_hours_operating_timer, &QTimer::timeout, this, &PartManager::incrementHoursOperating);
     m_hours_operating_timer->start();
 
     //Timer that increments the hours of ventilation for parts per second.
     m_hours_ventilating_timer = new QTimer(this);
-    m_hours_ventilating_timer->setInterval(1000);
+    m_hours_ventilating_timer->setInterval(INTERVAL_ONE_SECOND);
     m_hours_ventilating_timer->setSingleShot(false);
     connect(m_hours_ventilating_timer, &QTimer::timeout, this, &PartManager::incrementHoursVentilating);
     m_hours_ventilating_timer->start();
@@ -64,16 +66,16 @@ void PartManager::updatePart()
     std::vector<std::string> row = m_partCsvManager.readRecord(m_row_index);
     if (row.size() == 0)
     {
-        m_partName = "";
-        m_partNumber = "";
-        m_partDateTime = "";
-        emit partChanged();
+        m_partName = QString::fromStdString("");
+        m_partNumber = QString::fromStdString("");
+        m_partDateTime = QString::fromStdString("");
+        Q_EMIT partChanged();
         return;
     }
     m_partName = QString::fromStdString(row.at(0));
     m_partNumber = QString::fromStdString(row.at(1));
     m_partDateTime = QString::fromStdString(row.at(2));
-    emit partChanged();
+    Q_EMIT partChanged();
 }
 
 void PartManager::createComponents()
@@ -84,7 +86,7 @@ void PartManager::createComponents()
         std::vector<std::string> vector = {
             componentNameMap.at(i),
             "N/A",
-            temp.toString("MM/dd/yyyy hh:mm:ss").toStdString()
+            temp.toString(QString::fromStdString("MM/dd/yyyy hh:mm:ss")).toStdString()
         };
         m_partCsvManager.createRecord(&vector[0]);
     }
@@ -113,11 +115,11 @@ void PartManager::updateHoursOperating()
     if (row.size() == 0)
     {
         m_hoursOperating = -1;
-        emit partOpChanged();
+        Q_EMIT partOpChanged();
         return;
     }
     m_hoursOperating = stoi(row.at(1));
-    emit partOpChanged();
+    Q_EMIT partOpChanged();
 }
 
 void PartManager::createHoursOperating()
@@ -174,11 +176,11 @@ void PartManager::updateHoursVentilating()
     if (row.size() == 0)
     {
         m_hoursVentilating = -1;
-        emit partVentChanged();
+        Q_EMIT partVentChanged();
         return;
     }
     m_hoursVentilating = stoi(row.at(1));
-    emit partVentChanged();
+    Q_EMIT partVentChanged();
 }
 
 void PartManager::createHoursVentilating()
@@ -263,15 +265,15 @@ void PartManager::setTempIndex(int index)
     m_temp_row_index = index;
 }
 
-void PartManager::setTempName(QString name)
+void PartManager::setTempName(const QString &name)
 {
     m_temp_name = name;
 }
 
-void PartManager::addDigit(QString input)
+void PartManager::addDigit(const QString &input)
 {
     m_temp_serial_number = m_temp_serial_number + input;
-    emit serialChanged();
+    Q_EMIT serialChanged();
 }
 
 void PartManager::removeDigit()
@@ -279,11 +281,11 @@ void PartManager::removeDigit()
     if (m_temp_serial_number.size() > 0)
     {
         m_temp_serial_number = m_temp_serial_number.left(m_temp_serial_number.size() - 1);
-        emit serialChanged();
+        Q_EMIT serialChanged();
     }
 }
 
-void PartManager::setTempSerial(QString number)
+void PartManager::setTempSerial(const QString &number)
 {
     m_temp_serial_number = number;
 }
@@ -298,14 +300,14 @@ QString PartManager::getSerialNumber()
     return m_temp_serial_number;
 }
 
-void PartManager::setTempDate(QString date)
+void PartManager::setTempDate(const QString &date)
 {
     m_temp_date = date;
 }
 
-void PartManager::setNewPart(QString newTime)
+void PartManager::setNewPart(const QString &newTime)
 {
-    m_temp_date = m_temp_date + " " + QDateTime::fromString(newTime,"MM/dd/yyyy hh:mm:ss AP").toString("hh:mm:ss AP");
+    m_temp_date = m_temp_date + " " + QDateTime::fromString(newTime,QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")).toString(QString::fromStdString("hh:mm:ss AP"));
     //Updates serial number and installation date.
     std::vector<std::string> vector = {
         m_temp_name.toStdString(),
@@ -339,10 +341,10 @@ void PartManager::setNewPart(QString newTime)
     qInfo() << "NVENT" << "," << "COMPONENTS" << "," << m_temp_name + " installed on " + m_temp_date + " with the following serial number: " + m_temp_serial_number + ".";
 
     m_temp_row_index = -1;
-    m_temp_name = "";
-    m_temp_serial_number = "";
-    m_temp_date = "";
-    emit serialChanged();
+    m_temp_name = QString::fromStdString("");
+    m_temp_serial_number = QString::fromStdString("");
+    m_temp_date = QString::fromStdString("");
+    Q_EMIT serialChanged();
 }
 
 void PartManager::setPartIndex(unsigned char index)

@@ -17,9 +17,7 @@ Message MessageQueue::pop()
         return Message();
     }
 
-    Message m = m_queue.head();
-
-    m_queue.dequeue();
+    Message m = m_queue.dequeue();
     m_crc_set.erase(m.getCRC());
 
     return m;

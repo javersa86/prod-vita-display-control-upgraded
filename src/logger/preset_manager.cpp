@@ -28,66 +28,66 @@ int PresetManager::getNumPresets()
 
 QVector<int> PresetManager::getPreset1()
 {
-    return m_presets[0];
+    return m_presets.at(0);
 }
 
 QVector<int> PresetManager::getPreset2()
 {
-    return m_presets[1];
+    return m_presets.at(1);
 }
 
 QVector<int> PresetManager::getPreset3()
 {
-    return m_presets[2];
+    return m_presets.at(2);
 }
 
 QVector<int> PresetManager::getPreset4()
 {
-    return m_presets[3];
+    return m_presets.at(3);
 }
 
 QVector<int> PresetManager::getPreset5()
 {
-    return m_presets[4];
+    return m_presets.at(4);
 }
 
 QVector<int> PresetManager::getPreset6()
 {
-    return m_presets[5];
+    return m_presets.at(5);
 }
 
 QVector<int> PresetManager::getPreset7()
 {
-    return m_presets[6];
+    return m_presets.at(6);
 }
 
 QVector<int> PresetManager::getPreset8()
 {
-    return m_presets[7];
+    return m_presets.at(7);
 }
 
 QVector<int> PresetManager::getPreset9()
 {
-    return m_presets[8];
+    return m_presets.at(8);
 }
 
 QVector<int> PresetManager::getPreset10()
 {
-    return m_presets[9];
+    return m_presets.at(9);
 }
 
 
 QVector<int> PresetManager::getPreset11()
 {
-    return m_presets[10];
+    return m_presets.at(10);
 }
 
 QVector<int> PresetManager::getPreset12()
 {
-    return m_presets[11];
+    return m_presets.at(11);
 }
 
-void PresetManager::createPreset(QVector<int> preset)
+void PresetManager::createPreset(const QVector<int> &preset)
 {
     std::vector<std::string> tmp(NUM_PNEUMATIC_SETTINGS);
 
@@ -111,7 +111,7 @@ void PresetManager::deletePreset(int id)
     updatePresets();
 
 }
-void PresetManager::updatePreset(int id, QVector<int> preset)
+void PresetManager::updatePreset(int id, const QVector<int> &preset)
 {
     std::vector<std::string> tmp(NUM_PNEUMATIC_SETTINGS);
 
@@ -160,7 +160,7 @@ void PresetManager::updatePresets()
     {
         m_presets[i].resize(NUM_PNEUMATIC_SETTINGS);
         std::vector<std::string> tmp =  m_presetCsvManager.readRecord(i);
-        QRegExp re("\\d*");
+        QRegExp re(QString::fromStdString("\\d*"));
         //Length of the row must be 14
         if (tmp.size() != NUM_PNEUMATIC_SETTINGS)
         {
@@ -189,7 +189,7 @@ void PresetManager::updatePresets()
 
     m_preset_name = m_preset_names[m_preset_name_index];
 
-    emit presetsChanged();
+    Q_EMIT presetsChanged();
 
 }
 
@@ -204,19 +204,19 @@ QString PresetManager::getPresetName()
     return m_preset_name;
 }
 
-void PresetManager::setPresetName(QString name)
+void PresetManager::setPresetName(const QString &name)
 {
     m_preset_name = name;
-    emit presetNameChanged();
+    Q_EMIT presetNameChanged();
 }
 
 void PresetManager::deletePresetName()
 {
-    m_preset_name = "";
-    emit presetNameChanged();
+    m_preset_name = QString::fromStdString("");
+    Q_EMIT presetNameChanged();
 }
 
-void PresetManager::addPresetName(QString input)
+void PresetManager::addPresetName(const QString &input)
 {
     if (m_preset_name.size() < 20)
     {
@@ -227,7 +227,7 @@ void PresetManager::addPresetName(QString input)
             updateKeyboardState(1);
         }
         m_preset_name = m_preset_name + input;
-        emit presetNameChanged();
+        Q_EMIT presetNameChanged();
     }
 }
 
@@ -236,7 +236,7 @@ void PresetManager::backspacePresetName()
     if (m_preset_name.size() > 0)
     {
         m_preset_name = m_preset_name.left(m_preset_name.size() - 1);
-        emit presetNameChanged();
+        Q_EMIT presetNameChanged();
     }
 }
 
@@ -268,8 +268,8 @@ void PresetManager::updateKeyboardState(unsigned char id)
         m_keyboard_state = id;
         all_caps_state = 0;
     }
-    emit presetAllCapChanged();
-    emit presetKeyboardStateChanged();
+    Q_EMIT presetAllCapChanged();
+    Q_EMIT presetKeyboardStateChanged();
 }
 
 unsigned char PresetManager::getKeyboardState()

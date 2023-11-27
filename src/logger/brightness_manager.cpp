@@ -4,7 +4,7 @@
 BrightnessManager::BrightnessManager(QObject *parent)
     : QObject(parent)
 {
-    m_file = "/sys/class/backlight/backlight/brightness";
+    m_file = QString::fromStdString("/sys/class/backlight/backlight/brightness");
 
     int max = getMax();
     if( max > 0 )
@@ -16,10 +16,10 @@ BrightnessManager::BrightnessManager(QObject *parent)
 
 int BrightnessManager::getMax()
 {
-    QFile maxFile("/sys/class/backlight/backlight/max_brightness");
+    QFile maxFile(QString::fromStdString("/sys/class/backlight/backlight/max_brightness"));
     if (maxFile.open(QIODevice::ReadOnly))
     {
-        QString line = maxFile.readAll();
+        QString line = QString::fromLatin1(maxFile.readAll());
         if (!line.isNull())
         {
             return line.toInt();
@@ -58,7 +58,7 @@ double BrightnessManager::getBrightness()
     QFile maxFile(m_file);
     if (maxFile.open(QIODevice::ReadOnly))
     {
-        QString line = maxFile.readAll();
+        QString line = QString::fromLatin1(maxFile.readAll());
         if (!line.isNull())
         {
             return line.toInt() / m_max * 100;

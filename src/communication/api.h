@@ -75,7 +75,7 @@ class API : public QThread
          * @param portname
          * @param baudrate
          */
-        API( QString portname, int baudrate );
+        API(const QString &portname, int baudrate);
 
         /**
          * @brief Gets the serial portname.
@@ -513,7 +513,7 @@ class API : public QThread
          * @brief Queues set setting request into the TX Buffer.
          * @callergraph
          */
-        void sendSettingsSlot(QVector<int>);//backend telling to set settings
+        void sendSettingsSlot(const QVector<int> &settings);//backend telling to set settings
 
         /* get measured */
 

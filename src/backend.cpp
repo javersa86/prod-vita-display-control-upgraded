@@ -1,6 +1,7 @@
 #include <QtDebug>
 
 #include "backend.h"
+#include <chrono>
 #include <stdio.h>
 #include <QDebug>
 #include <QFile>
@@ -21,12 +22,17 @@ Backend::Backend(StateManager* stateManager, WarningManager* warningManager, O2C
     m_partManager = partManager;
     m_dprManager = dprManager;
 
+    // Set the dehumidification timer interval to 1 second (1000 milliseconds)
     m_dehumidication_timer = new QTimer(this);
-    m_dehumidication_timer->setInterval(1000);
+    setIntervalInSeconds(m_dehumidication_timer,1000); // Consider using a time unit comment here (1s).
     m_dehumidication_timer->setSingleShot(false);
     connect(m_dehumidication_timer, &QTimer::timeout, this, &Backend::sendDehumidityValue);
 }
 
+void Backend::setIntervalInSeconds(QTimer *timer, int seconds)
+{
+    timer->setInterval(seconds * 1000);
+}
 void Backend::initResendFunctionPointers()
 {
     m_resend_functions[(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST] = &Backend::getSettings;
@@ -96,48 +102,54 @@ void Backend::saveLogsToDrive()
     QString serviceDirName = dirName + "/NVENT_FILES/NV_Vita_events";
     QString warningDirName = dirName + "/NVENT_FILES/NV_Vita_warnings";
 
-    if (!exportDirectory("/media/NVENT_FILES/NV_Vita_events",serviceDirName))
+    if (!exportDirectory(QString::fromStdString("/media/NVENT_FILES/NV_Vita_events"),serviceDirName))
     {
         //Sends signal to QML if service logs failed to be exported.
-        emit saveLogStatusSignal(0);
+        Q_EMIT saveLogStatusSignal(0);
         return;
     }
-    if (!exportDirectory("/media/NVENT_FILES/NV_Vita_warnings",warningDirName))
+    if (!exportDirectory(QString::fromStdString("/media/NVENT_FILES/NV_Vita_warnings"),warningDirName))
     {
         //Sends signal to QML if warning logs failed to be exported.
-        emit saveLogStatusSignal(0);
+        Q_EMIT saveLogStatusSignal(0);
         return;
     }
     //Sends signal to QML if service logs and warning logs were exported successfully.
-    emit saveLogStatusSignal(1);
+    Q_EMIT saveLogStatusSignal(1);
 }
 
 void Backend::driveConnected()
 {
     msdelay(100);
     dirName = findPort();
-    if (dirName == "")
+    if (dirName == QString::fromStdString(""))
     {
         //Sends signal to QML if USB drive is not mounted.
-        emit driveConnection(0);
+        Q_EMIT driveConnection(0);
         return;
     }
     //Sends signal to QML if USB Drive is mounted and if directories exist.
-    emit driveConnection(1);
+    Q_EMIT driveConnection(1);
 }
 
 void Backend::driveDisconnected()
 {
     msdelay(100);
-    emit driveDisconnection(!system(m_eject_command_line.toStdString().c_str()));
+    Q_EMIT driveDisconnection(!system(m_eject_command_line.toStdString().c_str()));
 }
 
 QString Backend::findPort()
 {
-    QDirIterator it("/run/media", QDirIterator::Subdirectories);
+    QDirIterator it(QString::fromStdString("/run/media"), QDirIterator::Subdirectories);
     while (it.hasNext())
     {
-        if (it.fileName() != "" && it.fileName() != "." && it.fileName() != ".." && it.fileName() != "mmcblk0p1" && it.fileName() != "mmcblk0p2" && it.fileName() != "mmcblk1p1")
+        if (
+                it.fileName() != QString::fromStdString("") &&
+                it.fileName() != QString::fromStdString(".") &&
+                it.fileName() != QString::fromStdString("..") &&
+                it.fileName() != QString::fromStdString("mmcblk0p1") &&
+                it.fileName() != QString::fromStdString("mmcblk0p2") &&
+                it.fileName() != QString::fromStdString("mmcblk1p1"))
         {
             if (QDir("/run/media/" + it.fileName()).exists() && QFile("/dev/" + it.fileName()).exists())
             {
@@ -147,20 +159,20 @@ QString Backend::findPort()
         }
         it.next();
     }
-    return "";
+    return QString::fromStdString("");
 }
 
-bool Backend::exportDirectory(QString src, QString dst)
+bool Backend::exportDirectory(const QString &src, const QString &dst)
 {
     QDir sourceDir(src);
     QDir destDir(dst);
 
     if (!destDir.exists())
-        destDir.mkpath(".");
+        destDir.mkpath(QString::fromStdString("."));
 
     QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::NoDot | QDir::NoDotAndDotDot);
 
-    foreach (const QString& fileName, fileNames) {
+    for (QString& fileName : fileNames) {
 
                 if (copyProgressing)
                 {
@@ -192,8 +204,8 @@ bool Backend::exportDirectory(QString src, QString dst)
 
 void Backend::updateFileCount()
 {
-    QDir serviceDir("/media/NVENT_FILES/NV_Vita_events");
-    QDir warningDir("/media/NVENT_FILES/NV_Vita_warnings");
+    QDir serviceDir(QString::fromStdString("/media/NVENT_FILES/NV_Vita_events"));
+    QDir warningDir(QString::fromStdString("/media/NVENT_FILES/NV_Vita_warnings"));
 
     m_stateManager->setTotalFiles(serviceDir.count() + warningDir.count() - 6);
     m_stateManager->setSaveDataProgress(0);
@@ -234,7 +246,7 @@ void Backend::initDehumidification(unsigned char val)
 void Backend::sendDehumidityValue()
 {
     if (m_dehumidification_seconds > 0) m_dehumidification_seconds = m_dehumidification_seconds - 1;
-    emit dehumidificationTime(m_dehumidification_seconds);
+    Q_EMIT dehumidificationTime(m_dehumidification_seconds);
 }
 
 void Backend::serviceAlarmSlot(unsigned char state)
@@ -258,7 +270,7 @@ void Backend::checkStartupComplete()
 
 void Backend::getSettings()
 {
-    emit sendGetSettingsSignal();
+    Q_EMIT sendGetSettingsSignal();
 }
 
 void Backend::initGetSettings()
@@ -278,7 +290,7 @@ void Backend::receiveGetSettingsSlot(QVector<int> setting_vals)
     {
         m_message_flags[(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST] = 0;
 
-        QString logData = "";
+        QString logData = QString::fromStdString("");
         for (int i = 0; i < NUM_SETTINGS - 1; i++)
         {
             logData.append(QString::fromStdString( settingNameMap.at(i) ) + " " + QString::number(setting_vals.at(i)) + " ; ");
@@ -338,7 +350,7 @@ void Backend::initEnableNotifications()
 
 void Backend::enableNotifications()
 {
-    emit sendNotificationEnableSignal(1);
+    Q_EMIT sendNotificationEnableSignal(1);
 }
 
 void Backend::enableNotificationsSlot()
@@ -382,7 +394,7 @@ void Backend::receiveModes(QVector<int> modes)
         m_message_flags[(int)txOpCodes::DISPLAY_GET_OP_MODES_REQUEST] = 0;
 
         //Logs which modes were restored in event files
-        QString logData = "";
+        QString logData = QString::fromStdString("");
         for (int i = 0; i < NUM_MODES - 1; i++)
         {
             logData.append(QString::fromStdString( modeNameMap.at(i) ) + " " + QString::number(modes.at(i)) + " ; ");
@@ -394,7 +406,7 @@ void Backend::receiveModes(QVector<int> modes)
 
 void Backend::getModes()
 {
-    emit getModesSignal();
+    Q_EMIT getModesSignal();
 }
 
 /*------------------------GET SUBSYSTEM STATUS PATHWAY-----------------*/
@@ -405,7 +417,7 @@ void Backend::initGetSubsystemStates()
     m_message_flags[(int)txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST] = 1;
 }
 
-void Backend::receiveSubsystemStates(QVector<unsigned char> states)
+void Backend::receiveSubsystemStates(const QVector<unsigned char> &states)
 {
     m_stateManager->setSubsystemStates(states);
     if (!states.at(0) && !m_stateManager->getEtco2ButtonState() && et_button_on_startup)
@@ -418,7 +430,7 @@ void Backend::receiveSubsystemStates(QVector<unsigned char> states)
 
 void Backend::sendGetSubsystems()
 {
-    emit getSubsystemStates();
+    Q_EMIT getSubsystemStates();
 }
 
 /*------------------------SYSTEM VERSION PATHWAY------------------------*/
@@ -431,7 +443,7 @@ void Backend::initGetSystemVersion()
 
 void Backend::sendGetSystemVersion()
 {
-    emit getSystemVersionFromSC();
+    Q_EMIT getSystemVersionFromSC();
 }
 
 void Backend::receiveSystemVersion(unsigned char major, unsigned char minor, unsigned char patch)
@@ -445,7 +457,7 @@ void Backend::receiveSystemVersion(unsigned char major, unsigned char minor, uns
 
 /*------------------------SET SETTINGS PATHWAY------------------------*/
 
-void Backend::setPneumaticSettings(QVector<int> settings)
+void Backend::setPneumaticSettings(const QVector<int> &settings)
 {
     //Starts screen lock mode
     m_stateManager->setPresetComplete(0);
@@ -470,7 +482,7 @@ void Backend::setPneumaticSettings(QVector<int> settings)
     }
 
     //Writes string for service log
-    QString msg = "";
+    QString msg = QString::fromStdString("");
     for (int i = 0; i< NUM_SETTINGS - 1; i ++)
     {
         msg += QString::fromStdString(settingNameMap.at(i)) + " ";
@@ -542,7 +554,7 @@ void Backend::settingsConfirmed()
     {
         m_stateManager->setPresetComplete(1);
         setScreenLockModes(0);
-        emit m_stateManager->settingsComplete();
+        m_stateManager->settingsCompleteTriggered();
     }
 
     if(m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST])
@@ -555,7 +567,7 @@ void Backend::settingsConfirmed()
 
 void Backend::sendSettingsUpdate()
 {
-    emit sendSettingSignal(settingsVector);
+    Q_EMIT sendSettingSignal(settingsVector);
 }
 
 void Backend::separateHumidity(unsigned char separate, int hum_value, int hum_aux_value)
@@ -742,7 +754,7 @@ void Backend::sendGetMeasured()
     {
         if(m_get_sensors[i])
         {
-            emit sendGetSensorMeasurementSignal(i);
+            Q_EMIT sendGetSensorMeasurementSignal(i);
         }
     }
 }
@@ -775,7 +787,7 @@ void Backend::initClearAlarm(int warning_id)
 
 void Backend::sendClearAlarm()
 {
-    emit warningClearSignal(m_warning_to_clear);
+    Q_EMIT warningClearSignal(m_warning_to_clear);
 }
 
 void Backend::clearAlarmSlot(int warning_id)
@@ -856,10 +868,10 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
     m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] = 1;
 
     //Emits signal from knob to change mode
-    QString temp = "";
+    QString temp = QString::fromStdString("");
     if(modeID == (unsigned char)ModeIDs::LISTENING_KNOB)
     {
-        emit listenToKnob(value);
+        Q_EMIT listenToKnob(value);
     }
     //If laser mode need to be changed
     else if (modeID == (unsigned char) ModeIDs::LASER_MODE && value)
@@ -891,7 +903,7 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
         m_warningManager->pauseDisconnection(value);
         m_stateManager->setDisplayWarnings(0);
         m_stateManager->setSavedDP(m_stateManager->dp1Setting());
-        emit signalCalibrationMessages(value);
+        Q_EMIT signalCalibrationMessages(value);
 
         m_dpr = 4;
         sendDPRValue();
@@ -904,7 +916,7 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
         m_warningManager->pauseDisconnection(value);
         receiveSettingsUpdate(0,m_stateManager->getSavedDP());
         m_stateManager->setDisplayWarnings(1);
-        emit signalCalibrationMessages(value);
+        Q_EMIT signalCalibrationMessages(value);
     }
     else if (modeID == (unsigned char) ModeIDs::HUMIDITY_PRIMING_RESET_AVAILABLE && !value)
     {
@@ -940,7 +952,7 @@ void Backend::sendModeCommand()
     {
         if (m_send_modes[i])
         {
-            emit setModeSignal(i, m_stateManager->getModeEnabled(i));
+            Q_EMIT setModeSignal(i, m_stateManager->getModeEnabled(i));
         }
     }
 }
@@ -949,7 +961,7 @@ void Backend::modeConfirmed(unsigned char modeID, unsigned char value)
 {
     //check if the mode needs to be set
 
-    QString temp = "";
+    QString temp = QString::fromStdString("");
     if(m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] && m_send_modes[modeID])
     {
         //check that mode was set to correct value
@@ -1005,7 +1017,7 @@ void Backend::modeRequested(unsigned char modeID, unsigned char value, unsigned 
 
 /*------------------------NOTIFICATION PATHWAY--------------------------------------------*/
 
-void Backend::notificationUpdateSlot(QVector<float> notification)
+void Backend::notificationUpdateSlot(const QVector<float> &notification)
 {
     m_stateManager->updateNotificationVector(notification);
 
@@ -1035,24 +1047,24 @@ void Backend::receiveHMIButtonPress(unsigned char id)
     switch(id)
     {
     case POWER:
-        bName = "POWER";
+        bName = QString::fromStdString("POWER");
         break;
     case START_STOP:
-        bName = "VENT START/STOP";
+        bName = QString::fromStdString("VENT START/STOP");
         break;
     case ALARM_MUTE:
-        bName = "ALARM SILENCE";
+        bName = QString::fromStdString("ALARM SILENCE");
         break;
     case DIAL_PUSH:
-        bName = "DIAL PUSH";
+        bName = QString::fromStdString("DIAL PUSH");
         break;
     default:
-        bName = "UNDEFINED";
+        bName = QString::fromStdString("UNDEFINED");
         break;
     }
 
     qInfo() << "NVENT" << "," << "HMI BUTTON" << "," << "PRESS" << bName;
-    emit hmiButtonPressed(id);
+    Q_EMIT hmiButtonPressed(id);
 }
 
 /*------------------------SHUTDOWN PATHWAY-----------------------------------------------*/
@@ -1085,7 +1097,7 @@ void Backend::initiatePowerdown(unsigned char powerdown)
 
 void Backend::sendPowerdownCommand()
 {
-    emit powerDownCommand(m_stateManager -> powerdownFlag());
+    Q_EMIT powerDownCommand(m_stateManager -> powerdownFlag());
 }
 
 void Backend::powerdownConfirmed()
@@ -1110,7 +1122,7 @@ void Backend::serviceCalibrationSlot()
     data.append(0);
     data.append(0);
     data.append(0);
-    emit signalServiceCalibrations(data);
+    Q_EMIT signalServiceCalibrations(data);
 
 }
 
@@ -1118,15 +1130,15 @@ void Backend::serviceCalibrationSlot()
 
 void Backend::updateDPRStates(unsigned char val)
 {
-    QString temp = "";
+    QString temp = QString::fromStdString("");
     if (val == 0)
     {
-        temp = "Low Driving Pressure Regulator";
+        temp = QString::fromStdString("Low Driving Pressure Regulator");
         receiveSettingsUpdate(0,0);
     }
     else if (val == 1)
     {
-        temp = "High Driving Pressure Regulator";
+        temp = QString::fromStdString("High Driving Pressure Regulator");
         setMode((unsigned char) ModeIDs::LISTENING_KNOB,1);
         receiveSettingsUpdate(0,45);
     }
@@ -1134,11 +1146,11 @@ void Backend::updateDPRStates(unsigned char val)
     {
         if (val == 2)
         {
-            temp = "Air Regulator";
+            temp = QString::fromStdString("Air Regulator");
         }
         else if (val == 3)
         {
-            temp = "O2 Regulator";
+            temp = QString::fromStdString("O2 Regulator");
         }
         setMode((int)ModeIDs::LISTENING_KNOB,1);
         receiveSettingsUpdate(0,48);
@@ -1168,14 +1180,14 @@ void Backend::highDPRConfirmation(int flag, float value)
     if (flag == 1)
     {
         //Sends signal float to API
-        emit signalTempDP(flag,value);
+        Q_EMIT signalTempDP(flag,value);
 
         sendSettingsUpdate();
         m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
     }
     else if (flag == 2)
     {
-        emit signalTempDP(0,value);
+        Q_EMIT signalTempDP(0,value);
         m_dprManager->addDPRVal(m_stateManager->currentDPR());
 
         setMode((unsigned char) ModeIDs::LISTENING_KNOB, 0);
@@ -1187,7 +1199,7 @@ void Backend::highDPRConfirmation(int flag, float value)
     }
     else if (flag == 0)
     {
-        emit signalTempDP(flag,value);
+        Q_EMIT signalTempDP(flag,value);
 
 
         setMode((unsigned char) ModeIDs::LISTENING_KNOB, 0);
@@ -1222,7 +1234,7 @@ void Backend::regulatorConfirmation(unsigned char val,unsigned char id)
 
 void Backend::sendDPRValue()
 {
-    emit signalDPRValue(m_dpr);
+    Q_EMIT signalDPRValue(m_dpr);
 }
 
 void Backend::slotDPRValue()
@@ -1236,7 +1248,7 @@ void Backend::slotDPRValue()
     if (m_dpr == 0)
     {
         lowDPRConfirmation(1);
-        emit lowDPRFinished();
+        Q_EMIT lowDPRFinished();
     }
 }
 
@@ -1255,20 +1267,20 @@ void Backend::endDPRCalibration()
 void Backend::initZeroSensor(unsigned char id, float value)
 {
     m_zeroSensor = id;
-    QString temp = "";
+    QString temp = QString::fromStdString("");
 
     m_zero_values = {};
     m_zero_values.append((float) id);
 
     if (id == 0)
     {
-        temp = " (PIP)";
+        temp = QString::fromStdString(" (PIP)");
         m_stateManager->setVerifyPIP(value);
         m_zero_values.append(m_stateManager->zeroPIP());
     }
     else if (id == 1)
     {
-        temp = " (SP)";
+        temp = QString::fromStdString(" (SP)");
         m_stateManager->setVerifySP(value);
         m_zero_values.append(m_stateManager->zeroSP());
     }
@@ -1281,17 +1293,17 @@ void Backend::initZeroSensor(unsigned char id, float value)
 
 void Backend::sendZeroSensor()
 {
-    emit zeroSensor(m_zero_values);
+    Q_EMIT zeroSensor(m_zero_values);
 }
 
-void Backend::receiveSensorZeroed(QVector<unsigned char> values)
+void Backend::receiveSensorZeroed(const QVector<unsigned char> &values)
 {
-    QString temp = "";
+    QString temp = QString::fromStdString("");
     unsigned char result = 0;
 
     if (m_zeroSensor == 0 && values.at(0) == 0)
     {
-        temp = "PIP ";
+        temp = QString::fromStdString("PIP ");
         result = values.at(1) ? 1 : 0;
         if (result)
         {
@@ -1301,7 +1313,7 @@ void Backend::receiveSensorZeroed(QVector<unsigned char> values)
     }
     else if (m_zeroSensor == 1 && values.at(0) == 1)
     {
-        temp = "SP ";
+        temp = QString::fromStdString("SP ");
         result = values.at(1) ? 1 : 0;
         if (result)
         {
@@ -1317,13 +1329,13 @@ void Backend::receiveSensorZeroed(QVector<unsigned char> values)
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << temp + "Sensor Zeroed";
     }
 
-    emit zeroFinished(result);
+    Q_EMIT zeroFinished(result);
 }
 
 /*------------------------SERVICE NOTIFICATION PATHWAY------------------------------------*/
 
 
-void Backend::serviceNotificationUpdateSlot(QVector<float> notification)
+void Backend::serviceNotificationUpdateSlot(const QVector<float> &notification)
 {
     m_stateManager->updateServiceNotificationVector(notification);
 }

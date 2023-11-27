@@ -18,9 +18,9 @@ ZeroManager::ZeroManager(QObject *parent) :
     std::vector<std::string> tColumns = {"TYPE", "TIME"};
     m_timeCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/time.csv", &tColumns[0],2);
 
-    if (!QFileInfo::exists("/media/NVENT_FILES/calibration"))
+    if (!QFileInfo::exists(QString::fromStdString("/media/NVENT_FILES/calibration")))
     {
-        QDir().mkdir("/media/NVENT_FILES/calibration");
+        QDir().mkdir(QString::fromStdString("/media/NVENT_FILES/calibration"));
     }
 
     m_pipCsvManager = CSVManager(PIP_FILE, &zeroColumns[0], 2);
@@ -68,7 +68,7 @@ void ZeroManager::updateZeroVals()
     updateVerifiedInletAir();
     updateVerifiedInletO2();
 
-    emit zeroChanged();
+    Q_EMIT zeroChanged();
 }
 
 void ZeroManager::deleteOldestPipVal()
@@ -80,7 +80,7 @@ void ZeroManager::deleteOldestPipVal()
 
 void ZeroManager::updatePipVals()
 {
-    QRegExp re(R"(-?\d+(?:\.\d+)?)");
+    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numPipVals = m_pipCsvManager.getNumEntries();
 
@@ -98,7 +98,7 @@ void ZeroManager::updatePipVals()
         std::vector<std::string> tmp = m_pipCsvManager.readRecord(i);
         if (tmp.size() != 2)
         {
-            m_pip_timestamps[i] = "";
+            m_pip_timestamps[i] = QString::fromStdString("");
             m_pipVals[i] = -1;
         }
         else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
@@ -106,14 +106,14 @@ void ZeroManager::updatePipVals()
             m_pipVals[i] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_pip_timestamps[i] = "";
+            m_pip_timestamps[i] = QString::fromStdString("");
             m_pipVals[i] = -1;
         }
     }
 
     for(; i < MAX_ZERO_VALS; i++)
     {
-        m_pip_timestamps[i] = "";
+        m_pip_timestamps[i] = QString::fromStdString("");
         m_pipVals[i] = -1;
     }
 }
@@ -127,7 +127,7 @@ void ZeroManager::deleteOldestSpVal()
 
 void ZeroManager::updateSpVals()
 {
-    QRegExp re(R"(-?\d+(?:\.\d+)?)");
+    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numSpVals = m_spCsvManager.getNumEntries();
 
@@ -147,7 +147,7 @@ void ZeroManager::updateSpVals()
         //Length of row must be 4
         if (tmp.size() != 2)
         {
-            m_sp_timestamps[i] = "";
+            m_sp_timestamps[i] = QString::fromStdString("");
             m_spVals[i] = -1;
         }
         else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
@@ -155,14 +155,14 @@ void ZeroManager::updateSpVals()
             m_spVals[i] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_sp_timestamps[i] = "";
+            m_sp_timestamps[i] = QString::fromStdString("");
             m_spVals[i] = -1;
         }
     }
 
     for(; i < MAX_ZERO_VALS; i++)
     {
-        m_sp_timestamps[i] = "";
+        m_sp_timestamps[i] = QString::fromStdString("");
         m_spVals[i] = -1;
     }
 }
@@ -176,7 +176,7 @@ void ZeroManager::deleteOldestInletAirVal()
 
 void ZeroManager::updateInletAirVals()
 {
-    QRegExp re(R"(-?\d+(?:\.\d+)?)");
+    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numAirVals = m_airCsvManager.getNumEntries();
 
@@ -194,7 +194,7 @@ void ZeroManager::updateInletAirVals()
         std::vector<std::string> tmp = m_airCsvManager.readRecord(i);
         if (tmp.size() != 4)
         {
-            m_air_timestamps[i] = "";
+            m_air_timestamps[i] = QString::fromStdString("");
             m_airVals[i] = -1;
         }
         else if (re.exactMatch(QString::fromStdString(tmp[1])))
@@ -203,14 +203,14 @@ void ZeroManager::updateInletAirVals()
             m_pipVals[i] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_air_timestamps[i] = "";
+            m_air_timestamps[i] = QString::fromStdString("");
             m_airVals[i] = -1;
         }
     }
 
     for(; i < MAX_ZERO_VALS; i++)
     {
-        m_air_timestamps[i] = "";
+        m_air_timestamps[i] = QString::fromStdString("");
         m_airVals[i] = -1;
     }
 }
@@ -224,7 +224,7 @@ void ZeroManager::deleteOldestInletO2Val()
 
 void ZeroManager::updateInletO2Vals()
 {
-    QRegExp re(R"(-?\d+(?:\.\d+)?)");
+    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numO2Vals = m_o2CsvManager.getNumEntries();
 
@@ -242,7 +242,7 @@ void ZeroManager::updateInletO2Vals()
         std::vector<std::string> tmp = m_o2CsvManager.readRecord(i);
         if(tmp.size() != 2)
         {
-            m_o2_timestamps[i] = "";
+            m_o2_timestamps[i] = QString::fromStdString("");
             m_o2Vals[i] = -1;
         }
         else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
@@ -250,14 +250,14 @@ void ZeroManager::updateInletO2Vals()
             m_o2Vals[i] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_o2_timestamps[i] = "";
+            m_o2_timestamps[i] = QString::fromStdString("");
             m_o2Vals[i] = -1;
         }
     }
 
     for(; i < MAX_ZERO_VALS; i++)
     {
-        m_o2_timestamps[i] = "";
+        m_o2_timestamps[i] = QString::fromStdString("");
         m_o2Vals[i] = -1;
     }
 }
@@ -271,7 +271,7 @@ void ZeroManager::deleteOldestVerifiedPipVal()
 
 void ZeroManager::updateVerifiedPipVals()
 {
-    QRegExp re(R"(-?\d+(?:\.\d+)?)");
+    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numVerifiedPipVals = m_verifiedPipCsvManager.getNumEntries();
 
@@ -289,7 +289,7 @@ void ZeroManager::updateVerifiedPipVals()
         std::vector<std::string> tmp = m_verifiedPipCsvManager.readRecord(i);
         if(tmp.size() != 2)
         {
-            m_verified_pip_timestamps[i] = "";
+            m_verified_pip_timestamps[i] = QString::fromStdString("");
             m_verifiedPipVals[i] = -1;
         }
         else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
@@ -297,14 +297,14 @@ void ZeroManager::updateVerifiedPipVals()
             m_verifiedPipVals[i] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_verified_pip_timestamps[i] = "";
+            m_verified_pip_timestamps[i] = QString::fromStdString("");
             m_verifiedPipVals[i] = -1;
         }
     }
 
     for(; i < MAX_ZERO_VALS; i++)
     {
-        m_verified_pip_timestamps[i] = "";
+        m_verified_pip_timestamps[i] = QString::fromStdString("");
         m_verifiedPipVals[i] = -1;
     }
 }
@@ -318,7 +318,7 @@ void ZeroManager::deleteOldestVerifiedSpVal()
 
 void ZeroManager::updateVerifiedSpVals()
 {
-    QRegExp re(R"(-?\d+(?:\.\d+)?)");
+    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numVerifiedSpVals = m_verifiedSpCsvManager.getNumEntries();
 
@@ -336,7 +336,7 @@ void ZeroManager::updateVerifiedSpVals()
         std::vector<std::string> tmp = m_verifiedSpCsvManager.readRecord(i);
         if(tmp.size() != 2)
         {
-            m_verified_sp_timestamps[i] = "";
+            m_verified_sp_timestamps[i] = QString::fromStdString("");
             m_verifiedSpVals[i] = -1;
         }
         else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
@@ -344,14 +344,14 @@ void ZeroManager::updateVerifiedSpVals()
             m_verifiedSpVals[i] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_verified_sp_timestamps[i] = "";
+            m_verified_sp_timestamps[i] = QString::fromStdString("");
             m_verifiedSpVals[i] = -1;
         }
     }
 
     for(; i < MAX_ZERO_VALS; i++)
     {
-        m_verified_sp_timestamps[i] = "";
+        m_verified_sp_timestamps[i] = QString::fromStdString("");
         m_verifiedSpVals[i] = -1;
     }
 }
@@ -365,7 +365,7 @@ void ZeroManager::deleteOldestVerifiedInletAirVal()
 
 void ZeroManager::updateVerifiedInletAir()
 {
-    QRegExp re(R"(-?\d+(?:\.\d+)?)");
+    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numVerifiedAirVals = m_verifiedInletAirCsvManager.getNumEntries();
 
@@ -383,7 +383,7 @@ void ZeroManager::updateVerifiedInletAir()
         std::vector<std::string> tmp = m_verifiedInletAirCsvManager.readRecord(i);
         if(tmp.size() != 2)
         {
-            m_verified_air_timestamps[i] = "";
+            m_verified_air_timestamps[i] = QString::fromStdString("");
             m_verifiedAirVals[i] = -1;
         }
         else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
@@ -391,14 +391,14 @@ void ZeroManager::updateVerifiedInletAir()
             m_verifiedAirVals[i] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_verified_air_timestamps[i] = "";
+            m_verified_air_timestamps[i] = QString::fromStdString("");
             m_verifiedAirVals[i] = -1;
         }
     }
 
     for(; i < MAX_ZERO_VALS; i++)
     {
-        m_verified_air_timestamps[i] = "";
+        m_verified_air_timestamps[i] = QString::fromStdString("");
         m_verifiedAirVals[i] = -1;
     }
 }
@@ -412,7 +412,7 @@ void ZeroManager::deleteOldestVerifiedInletO2Val()
 
 void ZeroManager::updateVerifiedInletO2()
 {
-    QRegExp re(R"(-?\d+(?:\.\d+)?)");
+    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numVerifiedO2Vals = m_verifiedInletO2CsvManager.getNumEntries();
 
@@ -430,7 +430,7 @@ void ZeroManager::updateVerifiedInletO2()
         std::vector<std::string> tmp = m_verifiedInletO2CsvManager.readRecord(i);
         if(tmp.size() != 2)
         {
-            m_verified_o2_timestamps[i] = "";
+            m_verified_o2_timestamps[i] = QString::fromStdString("");
             m_verifiedO2Vals[i] = -1;
         }
         else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
@@ -438,14 +438,14 @@ void ZeroManager::updateVerifiedInletO2()
             m_verifiedO2Vals[i] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_verified_o2_timestamps[i] = "";
+            m_verified_o2_timestamps[i] = QString::fromStdString("");
             m_verifiedO2Vals[i] = -1;
         }
     }
 
     for(; i < MAX_ZERO_VALS; i++)
     {
-        m_verified_o2_timestamps[i] = "";
+        m_verified_o2_timestamps[i] = QString::fromStdString("");
         m_verifiedO2Vals[i] = -1;
     }
 }
@@ -575,72 +575,72 @@ void ZeroManager::addVerifiedValue(int id, float value)
 
 float ZeroManager::getZeroPIP()
 {
-    if ( m_numPipVals )
+    if (m_numPipVals > 0)
     {
-        return m_pipVals[m_numPipVals - 1];
+        return m_pipVals.at(m_numPipVals - 1);
     }
-    else return -1;
+    return -1;
 }
 
 float ZeroManager::getZeroSP()
 {
-    if ( m_numSpVals )
+    if (m_numSpVals > 0)
     {
-        return m_spVals[m_numSpVals - 1];
+        return m_spVals.at(m_numSpVals - 1);
     }
-    else return -1;
+    return -1;
 }
 
 float ZeroManager::getInletAir()
 {
-    if ( m_numAirVals )
+    if (m_numAirVals > 0)
     {
-        return m_airVals[m_numAirVals - 1];
+        return m_airVals.at(m_numAirVals - 1);
     }
-    else return -1;
+    return -1;
 }
 
 float ZeroManager::getInletO2()
 {
-    if ( m_numO2Vals )
+    if (m_numO2Vals > 0)
     {
-        return m_o2Vals[m_numO2Vals - 1];
+        return m_o2Vals.at(m_numO2Vals - 1);
     }
-    else return -1;
+    return -1;
 }
 
 float ZeroManager::getVerifiedZeroPIP()
 {
-    if ( m_numVerifiedPipVals )
+    if (m_numVerifiedPipVals > 0)
     {
-        return m_verifiedPipVals[m_numVerifiedPipVals - 1];
+        return m_verifiedPipVals.at(m_numVerifiedPipVals - 1);
     }
-    else return -1;
+    return -1;
 }
 
 float ZeroManager::getVerifiedZeroSP()
 {
-    if ( m_numVerifiedSpVals )
+    if (m_numVerifiedSpVals > 0)
     {
-        return m_verifiedSpVals[m_numVerifiedSpVals - 1];
+        return m_verifiedSpVals.at(m_numVerifiedSpVals - 1);
     }
-    else return -1;
+    return -1;
 }
 
 float ZeroManager::getVerifiedInletAir()
 {
-    if ( m_numVerifiedAirVals )
+    if (m_numVerifiedAirVals > 0)
     {
-        return m_verifiedAirVals[m_numVerifiedAirVals - 1];
+        return m_verifiedAirVals.at(m_numVerifiedAirVals - 1);
     }
-    else return -1;
+    return -1;
 }
 
 float ZeroManager::getVerifiedInletO2()
 {
-    if ( m_numVerifiedO2Vals )
+    if (m_numVerifiedO2Vals > 0)
     {
-        return m_verifiedO2Vals[m_numVerifiedO2Vals - 1];
+        return m_verifiedO2Vals.at(m_numVerifiedO2Vals - 1);
     }
-    else return -1;
+    return -1;
 }

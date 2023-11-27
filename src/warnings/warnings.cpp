@@ -5,7 +5,16 @@ Warning::Warning()
 
 }
 
-Warning::Warning(const int id, const QVector<QString> troubleshooting_steps, const QString title, const int warning_class, const QString desc, const unsigned char clearingBehavior, QString color, QString clearText)
+Warning::Warning(
+        const int id,
+        const QVector<QString> &troubleshooting_steps,
+        const QString &title,
+        const int warning_class,
+        const QString &desc,
+        const unsigned char
+        clearingBehavior,
+        const QString &color,
+        const QString &clearText)
     :
       m_id(id),
       m_title(title),
@@ -18,17 +27,32 @@ Warning::Warning(const int id, const QVector<QString> troubleshooting_steps, con
 {
 }
 
-PatientWarning::PatientWarning(const int &id, const QString &title, const QVector<QString> &troubleshooting_steps, unsigned char clearingBehavior, QString color)
+PatientWarning::PatientWarning(
+        int id,
+        const QString &title,
+        const QVector<QString> &troubleshooting_steps,
+        unsigned char clearingBehavior,
+        const QString &color)
     :Warning(id, troubleshooting_steps, title, 0, QStringLiteral("Alert!"), clearingBehavior, color)
 {
 }
 
-SystemWarning::SystemWarning(const int &id, const QString &title, const QVector<QString> &troubleshooting_steps, unsigned char clearingBehavior, QString color)
+SystemWarning::SystemWarning(
+        int id,
+        const QString &title,
+        const QVector<QString> &troubleshooting_steps,
+        unsigned char clearingBehavior,
+        const QString &color)
     :Warning(id, troubleshooting_steps, title, 1, QStringLiteral("Alert!"), clearingBehavior, color)
 {
 }
 
-Notice::Notice(const int &id, const QString &title, const QVector<QString> &troubleshooting_steps, unsigned char clearingBehavior, QString color)
+Notice::Notice(
+        int id,
+        const QString &title,
+        const QVector<QString> &troubleshooting_steps,
+        unsigned char clearingBehavior,
+        const QString &color)
     :Warning(id, troubleshooting_steps, title, 2, QStringLiteral("Alert!"), clearingBehavior, color)
 {
 }
@@ -58,7 +82,7 @@ QString Warning::clearText() const
     return m_clear;
 }
 
-void Warning::setClearText(QString text)
+void Warning::setClearText(const QString &text)
 {
     m_clear = text;
 }
@@ -80,385 +104,385 @@ QString Warning::color() const
 
 /*~Following are all of the specific warnings. All fields are filled except the ID, meaning to instantiate them, one must only call the constructor and pass the ID~*/
 
-StackingPressureHigh::StackingPressureHigh(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+StackingPressureHigh::StackingPressureHigh(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     PatientWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-PIPHigh::PIPHigh(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+PIPHigh::PIPHigh(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     PatientWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-PIPDisconnected::PIPDisconnected(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+PIPDisconnected::PIPDisconnected(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     PatientWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-NoWaterJet::NoWaterJet(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+NoWaterJet::NoWaterJet(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     PatientWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
-    setClearText("PRIME");
+    setClearText(QStringLiteral("PRIME"));
 }
 
-NoWaterAux::NoWaterAux(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+NoWaterAux::NoWaterAux(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     PatientWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
-    setClearText("PRIME");
+    setClearText(QStringLiteral("PRIME"));
 }
 
-NoWaterPrime::NoWaterPrime(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+NoWaterPrime::NoWaterPrime(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     PatientWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
-    setClearText("PRIME");
+    setClearText(QStringLiteral("PRIME"));
 }
 
-JetSwitchError::JetSwitchError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+JetSwitchError::JetSwitchError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-StackingPressureSensorDefective::StackingPressureSensorDefective(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+StackingPressureSensorDefective::StackingPressureSensorDefective(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-StackingPressureSensorDefectiveDouble::StackingPressureSensorDefectiveDouble(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+StackingPressureSensorDefectiveDouble::StackingPressureSensorDefectiveDouble(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-StackingPressureDisconnected::StackingPressureDisconnected(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+StackingPressureDisconnected::StackingPressureDisconnected(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-InappropriateOxygenSensor::InappropriateOxygenSensor(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+InappropriateOxygenSensor::InappropriateOxygenSensor(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-AuxSwitchError::AuxSwitchError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AuxSwitchError::AuxSwitchError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-AuxProportionalValveError::AuxProportionalValveError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AuxProportionalValveError::AuxProportionalValveError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-AuxFlowSensorError::AuxFlowSensorError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AuxFlowSensorError::AuxFlowSensorError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-AirProportionalValveError::AirProportionalValveError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AirProportionalValveError::AirProportionalValveError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-AirProportionalValveErrorNoLaser::AirProportionalValveErrorNoLaser(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AirProportionalValveErrorNoLaser::AirProportionalValveErrorNoLaser(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-O2ProportionalValveError::O2ProportionalValveError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+O2ProportionalValveError::O2ProportionalValveError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-AirInletPressureSensorError::AirInletPressureSensorError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AirInletPressureSensorError::AirInletPressureSensorError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-AirInletPressureSensorErrorNoLaser::AirInletPressureSensorErrorNoLaser(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AirInletPressureSensorErrorNoLaser::AirInletPressureSensorErrorNoLaser(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-O2InletPressureSensorError::O2InletPressureSensorError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+O2InletPressureSensorError::O2InletPressureSensorError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-LowAirSupply::LowAirSupply(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+LowAirSupply::LowAirSupply(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-LowAirSupplyNoLaser::LowAirSupplyNoLaser(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+LowAirSupplyNoLaser::LowAirSupplyNoLaser(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-LowOxygenSupply::LowOxygenSupply(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+LowOxygenSupply::LowOxygenSupply(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-SpeakerDefect::SpeakerDefect(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+SpeakerDefect::SpeakerDefect(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-HeaterFailure::HeaterFailure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+HeaterFailure::HeaterFailure(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-TemperatureMeasuringError::TemperatureMeasuringError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+TemperatureMeasuringError::TemperatureMeasuringError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-JetFlowSensorError::JetFlowSensorError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+JetFlowSensorError::JetFlowSensorError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-JetHumiditySensorError::JetHumiditySensorError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+JetHumiditySensorError::JetHumiditySensorError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-AuxHumiditySensorError::AuxHumiditySensorError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AuxHumiditySensorError::AuxHumiditySensorError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-RTCError::RTCError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+RTCError::RTCError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-ExhaustFanError::ExhaustFanError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+ExhaustFanError::ExhaustFanError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-DrivingPressureRegulatorError::DrivingPressureRegulatorError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+DrivingPressureRegulatorError::DrivingPressureRegulatorError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-PIPSensorError::PIPSensorError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+PIPSensorError::PIPSensorError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-FiO2Failure::FiO2Failure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+FiO2Failure::FiO2Failure(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-O2CalFailure::O2CalFailure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+O2CalFailure::O2CalFailure(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-NoComm::NoComm(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+NoComm::NoComm(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-AuxWaterPumpError::AuxWaterPumpError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AuxWaterPumpError::AuxWaterPumpError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-JetWaterPumpError::JetWaterPumpError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+JetWaterPumpError::JetWaterPumpError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-DehumidificationFailed::DehumidificationFailed(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+DehumidificationFailed::DehumidificationFailed(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-FlashError::FlashError(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+FlashError::FlashError(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-BreathTimingFailure::BreathTimingFailure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+BreathTimingFailure::BreathTimingFailure(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-JetWaterSensorFailure::JetWaterSensorFailure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+JetWaterSensorFailure::JetWaterSensorFailure(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-AuxWaterSensorFailure::AuxWaterSensorFailure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AuxWaterSensorFailure::AuxWaterSensorFailure(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-AmbientTempSensorDefect::AmbientTempSensorDefect(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AmbientTempSensorDefect::AmbientTempSensorDefect(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-InternalTempHigh::InternalTempHigh(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+InternalTempHigh::InternalTempHigh(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     SystemWarning(id, title, troubleshooting_steps, CLEAR_AFTER_RESOLVED)
 {
 
 }
 
-LaserOK::LaserOK(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+LaserOK::LaserOK(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY, QStringLiteral("#6FCC68"))
 {
 
 }
 
-LaserPrepping::LaserPrepping(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+LaserPrepping::LaserPrepping(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
 
-LowStaticAirPressure::LowStaticAirPressure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+LowStaticAirPressure::LowStaticAirPressure(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
 
-LowStaticO2Pressure::LowStaticO2Pressure(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+LowStaticO2Pressure::LowStaticO2Pressure(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
 
-ManualModePIPMonitoringRecommended::ManualModePIPMonitoringRecommended(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+ManualModePIPMonitoringRecommended::ManualModePIPMonitoringRecommended(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-PIPMonitoringRecommended::PIPMonitoringRecommended(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+PIPMonitoringRecommended::PIPMonitoringRecommended(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-ETCO2Active::ETCO2Active(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+ETCO2Active::ETCO2Active(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
 
-ServiceDue::ServiceDue(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+ServiceDue::ServiceDue(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-BatteryReplacement::BatteryReplacement(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+BatteryReplacement::BatteryReplacement(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-HeaterHumidiferOff::HeaterHumidiferOff(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+HeaterHumidiferOff::HeaterHumidiferOff(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
 
-HumidificationDeactivated::HumidificationDeactivated(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+HumidificationDeactivated::HumidificationDeactivated(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
 
-JetHumidificationOff::JetHumidificationOff(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+JetHumidificationOff::JetHumidificationOff(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
 
-AuxHumidificationOff::AuxHumidificationOff(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AuxHumidificationOff::AuxHumidificationOff(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
 
-AuxFlowDeactivated::AuxFlowDeactivated(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+AuxFlowDeactivated::AuxFlowDeactivated(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
 
-DistilledWater::DistilledWater(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+DistilledWater::DistilledWater(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-PumpsPriming::PumpsPriming(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+PumpsPriming::PumpsPriming(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
 
-HumidityReminder::HumidityReminder(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+HumidityReminder::HumidityReminder(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_ON_DEMAND)
 {
 
 }
 
-O2CalInProgress::O2CalInProgress(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+O2CalInProgress::O2CalInProgress(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 
 }
 
-O2CalInProgressNoLaser::O2CalInProgressNoLaser(const int &id, const QVector<QString> &troubleshooting_steps, const QString &title) :
+O2CalInProgressNoLaser::O2CalInProgressNoLaser(int id, const QVector<QString> &troubleshooting_steps, const QString &title) :
     Notice(id, title, troubleshooting_steps, CLEAR_AUTONOMOUSLY)
 {
 

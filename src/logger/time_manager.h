@@ -163,12 +163,12 @@ class TimeManager : public QObject
          * @brief Gets the time different between current date and time and internal date and time.
          * @return qint64
          */
-        qint64 getTimeDifference(QString);
+        qint64 getTimeDifference(const QString &temp);
 
         /**
          * @brief Updates time when time zone is updated.
          */
-        void getTimeZoneDifference(QString,QString);
+        void getTimeZoneDifference(const QString &oldZone, const QString &newZone);
 
     public slots:
 
@@ -177,7 +177,7 @@ class TimeManager : public QObject
          * @param temp
          * @callergraph
          */
-        void setCurrentDate(QString);
+        void setCurrentDate(const QString &temp);
 
         /**
          * @brief Sets the current time.
@@ -186,14 +186,14 @@ class TimeManager : public QObject
          * @param shift
          * @callergraph
          */
-        void setCurrentTime(QString,QString,QString);
+        void setCurrentTime(const QString &hours, const QString &minutes, const QString &shift);
 
         /**
          * @brief Sets current time zone.
          * @param temp
          * @callergraph
          */
-        void setTimeZone(QString);
+        void setTimeZone(const QString &temp);
 
         /**
          * @brief Increments the current date and time, and the internal date and time by 1 second.

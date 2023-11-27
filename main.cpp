@@ -65,7 +65,8 @@ int main(int argc, char *argv[])
     //Warning Manager holds the warnings to display.
     WarningManager warningManager;
     //API acts as the middle man between the system controller and the display controller.
-    API api(QString("/dev/ttyUSB0"), 115200);
+    API api(QString::fromStdString("/dev/ttyUSB0"), 115200);
+
     //O2 Calibration Manager manages the o2 calibration values. It passes the most recent O2 cal vals to the QML, and saves cal vals to a csv file.
     O2CalManager o2CalManager;
     //DPR Manager manages the dpr values. It passes the most recent DPR vals (high or low), and saves DPR vals to a csv file.
@@ -76,6 +77,7 @@ int main(int argc, char *argv[])
     PartManager partManager;
     //The backend acts as the middle man between the QML and the calibration manager, the state manager, the warning manager, and zero manager. It also sends and recieves signals from the API
     Backend backend(&stateManager, &warningManager, &o2CalManager, &zeroManager, &partManager, &dprManager);
+
     //The preset manager manages the presets. It passes presets to the QML, and saves presets to a CSV file.
     PresetManager presetManager;
     //The brightness manager manages the brightness of the display. Brightness in Linux is represented by a brightness file in the file system
@@ -119,12 +121,12 @@ int main(int argc, char *argv[])
     //SET
     //This connects the setting request from the QML to the API to send the setting to the system controller
     QObject::connect(&backend, &Backend::sendSettingSignal,
-            &api, &API::sendSettingsSlot,
+                     &api, &API::sendSettingsSlot,
                      Qt::QueuedConnection);
     //This connects the setting confirmation from the API to the backend to stop sending setting requests
     QObject::connect(&api, &API::settingsConfirmed,
                      &backend, &Backend::settingsConfirmed,
-                              Qt::QueuedConnection);
+                     Qt::QueuedConnection);
 
     //MODES
     //Modes set by user
@@ -150,18 +152,19 @@ int main(int argc, char *argv[])
                      Qt::QueuedConnection);
     //This connects the API get mode response to the backed to complete getting the modes from the system controller. This is used during start up
     QObject::connect(&api,&API::sendModesSignal,
-                     &backend, &Backend::receiveModes);
+                     &backend, &Backend::receiveModes,
+                     Qt::QueuedConnection);
 
 
     // GET SETTINGS
     //This connects the backend setting request to the API to initiate getting the settings from the system controller. This is used during start up.
     QObject::connect(&backend, &Backend::sendGetSettingsSignal,
-            &api, &API::sendGetSettingsSlot,
+                     &api, &API::sendGetSettingsSlot,
                      Qt::QueuedConnection);
     //This connects the API get setting response to complete setting all settings from the system controller. This is used during start up.
     QObject::connect(&api, &API::updateSettingsSignal,
-            &backend, &Backend::receiveGetSettingsSlot,
-                Qt::QueuedConnection);
+                     &backend, &Backend::receiveGetSettingsSlot,
+                     Qt::QueuedConnection);
 
     //GET MEASUREMENTS
     //This is used to initiate getting sensor measurements from the system controller
@@ -195,7 +198,7 @@ int main(int argc, char *argv[])
     // NOTIFICATIONS
     //This is used to request notifications from the system controller
     QObject::connect(&backend, &Backend::sendNotificationEnableSignal,
-            &api, &API::sendNotificationSlot,
+                     &api, &API::sendNotificationSlot,
                      Qt::QueuedConnection);
     QObject::connect(&api, &API::enableNotificationSignal,
                      &backend, &Backend::enableNotificationsSlot,
@@ -203,8 +206,8 @@ int main(int argc, char *argv[])
 
     //This is used to handle notifications from the system controller
     QObject::connect(&api, &API::notificationUpdateSignal,
-            &backend, &Backend::notificationUpdateSlot,
-            Qt::QueuedConnection);
+                     &backend, &Backend::notificationUpdateSlot,
+                     Qt::QueuedConnection);
 
     //WARNINGS
     //This is used to send notifications from the API to the backend object
@@ -305,23 +308,29 @@ int main(int argc, char *argv[])
     //SHUTDOWN
     //This initiates the powerdown process when the signal is sent to the API. It is used to request user confirmation of shutdown
     QObject::connect(&api, &API::initPowerdown,
-                     &backend, &Backend::powerdownInitiated);
+                     &backend, &Backend::powerdownInitiated,
+                     Qt::QueuedConnection);
     //This is used to confirm or cancel shutdown based on user input
     QObject::connect(&backend, &Backend::powerDownCommand,
-                     &api, &API::confirmPowerdown);
+                     &api, &API::confirmPowerdown,
+                     Qt::QueuedConnection);
     //This is used to stop sending shutdown requests to the system controller, and to initiate a shutdown of the display
     QObject::connect(&api, &API::powerdownConfirmed,
-                     &backend, &Backend::powerdownConfirmed);
+                     &backend, &Backend::powerdownConfirmed,
+                     Qt::QueuedConnection);
 
     //This is used to listen to the knob or not. (used when the display controller is using the knob to adjust some parameter)
     QObject::connect(&backend, &Backend::listenToKnob,
-                     &knob, &Knob::listen);
+                     &knob, &Knob::listen,
+                     Qt::QueuedConnection);
     //This is used to change the saved ventilation state. This is generally used to disallow functions that cannot be used while the system is ventilating.
     QObject::connect(&api, &API::ventilationStateChangeReceived,
-                     &backend, &Backend::receiveVentilationStateChange);
+                     &backend, &Backend::receiveVentilationStateChange,
+                     Qt::QueuedConnection);
 
     QObject::connect(&warningManager, &WarningManager::o2CalibrationSignal,
-                     &o2CalManager, &O2CalManager::calibrationState);
+                     &o2CalManager, &O2CalManager::calibrationState,
+                     Qt::QueuedConnection);
 
     //These are used to expose certain enum classes to the QML
     //This is the setting IDs and Mode Ids
@@ -334,48 +343,48 @@ int main(int argc, char *argv[])
     SettingIndex::declareQML();
 
     //These connect the various objects used to communicate with the QML to the QML
-    engine.rootContext()->setContextProperty("backend", &backend);
-    engine.rootContext()->setContextProperty("state_manager", &stateManager);
-    engine.rootContext()->setContextProperty("warning_manager", &warningManager);
-    engine.rootContext()->setContextProperty("preset_manager", &presetManager);
-    engine.rootContext()->setContextProperty("brightness_manager", &brightnessManager);
-    engine.rootContext()->setContextProperty("o2CalManager", &o2CalManager);
-    engine.rootContext()->setContextProperty("dprManager", &dprManager);
-    engine.rootContext()->setContextProperty("zero_manager", &zeroManager);
-    engine.rootContext()->setContextProperty("passcode_manager", &passcodeManager);
-    engine.rootContext()->setContextProperty("part_manager", &partManager);
-    engine.rootContext()->setContextProperty("time_manager", &timeManager);
-    engine.rootContext()->setContextProperty("maintenance_manager", &maintenanceManager);
-    engine.rootContext()->setContextProperty("contact_manager", &contactManager);
-    engine.rootContext()->setContextProperty("version_manager", &versionManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("backend"), &backend);
+    engine.rootContext()->setContextProperty(QString::fromStdString("state_manager"), &stateManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("warning_manager"), &warningManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("preset_manager"), &presetManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("brightness_manager"), &brightnessManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("o2CalManager"), &o2CalManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("dprManager"), &dprManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("zero_manager"), &zeroManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("passcode_manager"), &passcodeManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("part_manager"), &partManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("time_manager"), &timeManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("maintenance_manager"), &maintenanceManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("contact_manager"), &contactManager);
+    engine.rootContext()->setContextProperty(QString::fromStdString("version_manager"), &versionManager);
 
-    engine.rootContext()->setContextProperty("driving_pressure_1", &dp1);
-    engine.rootContext()->setContextProperty("driving_pressure_2", &dp2);
-    engine.rootContext()->setContextProperty("rate_1", &rate1);
-    engine.rootContext()->setContextProperty("rate_2", &rate2);
-    engine.rootContext()->setContextProperty("inspiratory_time_1", &it1);
-    engine.rootContext()->setContextProperty("inspiratory_time_2", &it2);
-    engine.rootContext()->setContextProperty("stacking_pressure_1", &sp1);
-    engine.rootContext()->setContextProperty("stacking_pressure_2", &sp2);
-    engine.rootContext()->setContextProperty("oxygen", &o2);
-    engine.rootContext()->setContextProperty("pip", &pip);
-    engine.rootContext()->setContextProperty("aux_flow", &aux);
-    engine.rootContext()->setContextProperty("humidity_1", &hum1);
-    engine.rootContext()->setContextProperty("humidity_2", &hum2);
-    engine.rootContext()->setContextProperty("humidity_aux", &humaux);
-    engine.rootContext()->setContextProperty("etco2_rate", &etco2Rate);
-    engine.rootContext()->setContextProperty("etco2_inpiratory_time", &etco2IT);
-    engine.rootContext()->setContextProperty("etco2_num_breaths", &etco2Breaths);
-    engine.rootContext()->setContextProperty("laser_o2", &laserO2);
-    engine.rootContext()->setContextProperty("etco2_driving_pressure", &etco2DP);
-    engine.rootContext()->setContextProperty("volume", &volume);
+    engine.rootContext()->setContextProperty(QString::fromStdString("driving_pressure_1"), &dp1);
+    engine.rootContext()->setContextProperty(QString::fromStdString("driving_pressure_2"), &dp2);
+    engine.rootContext()->setContextProperty(QString::fromStdString("rate_1"), &rate1);
+    engine.rootContext()->setContextProperty(QString::fromStdString("rate_2"), &rate2);
+    engine.rootContext()->setContextProperty(QString::fromStdString("inspiratory_time_1"), &it1);
+    engine.rootContext()->setContextProperty(QString::fromStdString("inspiratory_time_2"), &it2);
+    engine.rootContext()->setContextProperty(QString::fromStdString("stacking_pressure_1"), &sp1);
+    engine.rootContext()->setContextProperty(QString::fromStdString("stacking_pressure_2"), &sp2);
+    engine.rootContext()->setContextProperty(QString::fromStdString("oxygen"), &o2);
+    engine.rootContext()->setContextProperty(QString::fromStdString("pip"), &pip);
+    engine.rootContext()->setContextProperty(QString::fromStdString("aux_flow"), &aux);
+    engine.rootContext()->setContextProperty(QString::fromStdString("humidity_1"), &hum1);
+    engine.rootContext()->setContextProperty(QString::fromStdString("humidity_2"), &hum2);
+    engine.rootContext()->setContextProperty(QString::fromStdString("humidity_aux"), &humaux);
+    engine.rootContext()->setContextProperty(QString::fromStdString("etco2_rate"), &etco2Rate);
+    engine.rootContext()->setContextProperty(QString::fromStdString("etco2_inpiratory_time"), &etco2IT);
+    engine.rootContext()->setContextProperty(QString::fromStdString("etco2_num_breaths"), &etco2Breaths);
+    engine.rootContext()->setContextProperty(QString::fromStdString("laser_o2"), &laserO2);
+    engine.rootContext()->setContextProperty(QString::fromStdString("etco2_driving_pressure"), &etco2DP);
+    engine.rootContext()->setContextProperty(QString::fromStdString("volume"), &volume);
 
-    engine.rootContext()->setContextProperty("knob", &knob);
+    engine.rootContext()->setContextProperty(QString::fromStdString("knob"), &knob);
 
     backend.init();
 
     //This loads the application, startin from the home window
-    engine.load(QUrl("qrc:/qml/HomeWindow.qml"));
+    engine.load(QUrl(QString::fromStdString("qrc:/qml/HomeWindow.qml")));
 
     //This starts the API thread
     api.start();

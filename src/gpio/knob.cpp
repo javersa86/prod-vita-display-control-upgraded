@@ -25,7 +25,7 @@ Knob::Knob(uint pin_a, uint pin_b, uint pin_switch)
 
     connect(button,&Switch::push,
             this, &Knob::onButtonPush);
-};
+}
 
 void Knob::run()
 {
@@ -124,10 +124,10 @@ void Knob::listen(unsigned char listen)
 
 void Knob::onButtonPush()
 {
-    if(m_running) emit buttonPush();
-};
+    if(m_running) Q_EMIT buttonPush();
+}
 
 void Knob::onEncoderIncrement(unsigned char value)
 {
-    if (m_running) emit encoderIncrement((int)(value * 2) - 1);
-};
+    if (m_running) Q_EMIT encoderIncrement((int)(value * 2) - 1);
+}

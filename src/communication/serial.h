@@ -99,7 +99,7 @@ class Comm
          * @brief Sets the serial communication port's portname.
          * @param portname
          */
-        void setPortname(QString);
+        void setPortname(const QString &portname);
         /**
          * @brief  Gets the serial communication port's portname.
          * @return QString

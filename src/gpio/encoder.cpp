@@ -3,7 +3,7 @@
 #include <QDebug>
 
 /**
- * This class encapsulates the rotary knob behavior. It listens for changes on the A pin and the B pin and emits signals
+ * This class encapsulates the rotary knob behavior. It listens for changes on the A pin and the B pin and Q_EMITs signals
  * when the knob is turned.
  */
 
@@ -42,12 +42,12 @@ void Encoder::updateEncoder()
     {
         if (m_sum_0 == -1)
         {
-            emit encoderIncrement(0);
+            Q_EMIT encoderIncrement(0);
             m_sum_0 = sum;
         }
         else if (sum != m_sum_0)
         {
-            emit encoderIncrement(0); //emit 0 for -1
+            Q_EMIT encoderIncrement(0); //Q_EMIT 0 for -1
             m_sum_0 = sum;
         }
     }
@@ -55,12 +55,12 @@ void Encoder::updateEncoder()
     {
         if (m_sum_1 == -1)
         {
-            emit encoderIncrement(1);
+            Q_EMIT encoderIncrement(1);
             m_sum_1 = sum;
         }
         else if (sum != m_sum_1)
         {
-            emit encoderIncrement(1); //emit 1 for +1
+            Q_EMIT encoderIncrement(1); //Q_EMIT 1 for +1
             m_sum_1 = sum;
         }
     }

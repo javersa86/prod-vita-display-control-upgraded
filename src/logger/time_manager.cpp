@@ -17,9 +17,11 @@ TimeManager::TimeManager(QObject *parent) :
 
     updateTime();
 
+    constexpr int INTERVAL_ONE_SECOND = 1000;
+
     //Backend timer the increments the current date and time per second.
     m_increment_time = new QTimer(this);
-    m_increment_time->setInterval(1000);
+    m_increment_time->setInterval(INTERVAL_ONE_SECOND);
     m_increment_time->setSingleShot(false);
     connect(m_increment_time, &QTimer::timeout, this, &TimeManager::setTime);
     m_increment_time->start();
@@ -33,7 +35,7 @@ void TimeManager::updateTime()
         std::vector<std::string> tColumns = {"TYPE             ", "TIME"};
         m_timeCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/" + std::string(TIME_FILE), &tColumns[0],2);
 
-        m_time_zone = "EDT";
+        m_time_zone = QString::fromStdString("EDT");
         m_current_date_time = QDateTime::currentDateTime().addSecs(timeZoneValues.at(m_time_zone) * 3600);
         m_internal = QDateTime::currentDateTime().addSecs(timeZoneValues.at(m_time_zone) * 3600);
 
@@ -43,9 +45,9 @@ void TimeManager::updateTime()
 
         m_daylight_savings_state = 1;
 
-        std::vector<std::string> vector1 = {DATE_TIME, m_current_date_time.toString("MM/dd/yyyy hh:mm:ss AP").toStdString()};
+        std::vector<std::string> vector1 = {DATE_TIME, m_current_date_time.toString(QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")).toStdString()};
         std::vector<std::string> vector2 = {TIME_ZONE, m_time_zone.toStdString()};
-        std::vector<std::string> vector3 = {INTERNAL, m_internal.toString("MM/dd/yyyy hh:mm:ss AP").toStdString()};
+        std::vector<std::string> vector3 = {INTERNAL, m_internal.toString(QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")).toStdString()};
         std::vector<std::string> vector4 = {DAYLIGHT_SAVINGS, std::to_string(m_daylight_savings_state)};
 
         m_timeCsvManager.createRecord(&vector1[0]);
@@ -53,7 +55,7 @@ void TimeManager::updateTime()
         m_timeCsvManager.createRecord(&vector3[0]);
         m_timeCsvManager.createRecord(&vector4[0]);
 
-        emit timeChanged();
+        Q_EMIT timeChanged();
         return;
     }
     std::vector<std::string> date_time_row = m_timeCsvManager.readRecord(0);
@@ -67,12 +69,15 @@ void TimeManager::updateTime()
     }
     else
     {
-        m_time_zone = "EST";
+        m_time_zone = QString::fromStdString("EST");
     }
 
     if (date_time_row.size() == 2 && internal_row.size() == 2)
     {
-        m_current_date_time = QDateTime::fromString(QString::fromStdString(date_time_row.at(1)), "MM/dd/yyyy hh:mm:ss AP").addMSecs(getTimeDifference(QString::fromStdString(internal_row.at(1))));
+        m_current_date_time = QDateTime::fromString(
+                    QString::fromStdString(date_time_row.at(1)),
+                    QString::fromStdString("MM/dd/yyyy hh:mm:ss AP"))
+                .addMSecs(getTimeDifference(QString::fromStdString(internal_row.at(1))));
     }
     else
     {
@@ -86,39 +91,51 @@ void TimeManager::updateTime()
     m_temp_time = m_current_date_time.time();
     getTimeZoneDifference(m_time_zone,m_time_zone);
 
-    std::vector<std::string> vector1 = {DATE_TIME, m_current_date_time.toString("MM/dd/yyyy hh:mm:ss AP").toStdString()};
+    std::vector<std::string> vector1 = {DATE_TIME, m_current_date_time.toString(QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")).toStdString()};
     m_timeCsvManager.updateRecord(0,&vector1[0]);
     std::vector<std::string> vector2 = {TIME_ZONE, m_time_zone.toStdString()};
     m_timeCsvManager.updateRecord(1,&vector2[0]);
-    std::vector<std::string> vector3 = {INTERNAL, m_internal.toString("MM/dd/yyyy hh:mm:ss AP").toStdString()};
+    std::vector<std::string> vector3 = {INTERNAL, m_internal.toString(QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")).toStdString()};
     m_timeCsvManager.updateRecord(2,&vector3[0]);
     std::vector<std::string> vector4 = {DAYLIGHT_SAVINGS, std::to_string(m_daylight_savings_state)};
     m_timeCsvManager.updateRecord(3,&vector4[0]);
 
-    emit timeChanged();
+    Q_EMIT timeChanged();
 }
 
 QString TimeManager::getCurrentDateTime()
 {
-    return m_current_date_time.toString("MM/dd/yyyy hh:mm:ss AP") + " - " + m_time_zone;
+    return m_current_date_time.toString(QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")) + " - " + m_time_zone;
 }
 
-void TimeManager::setCurrentDate(QString temp)
+void TimeManager::setCurrentDate(const QString &temp)
 {
-    m_temp_date = QDate::fromString(temp, "MM/dd/yyyy");
+    m_temp_date = QDate::fromString(temp, QString::fromStdString("MM/dd/yyyy"));
     m_date_state = 1;
-    qInfo() << "NVENT" << "," << "TIME" << "," << "Updated current date to " + m_temp_date.toString("MM/dd/yyyy") + ".";
+    qInfo() << "NVENT"
+            << ","
+            << "TIME"
+            << ","
+            << "Updated current date to " +
+               m_temp_date.toString(QString::fromStdString("MM/dd/yyyy")) +
+               ".";
 }
 
-void TimeManager::setCurrentTime(QString hours, QString minutes, QString shift)
+void TimeManager::setCurrentTime(const QString &hours, const QString &minutes, const QString &shift)
 {
     QString temp = hours + ":" + minutes + ":" + QString::number(m_current_date_time.time().second()) + " " + shift;
-    m_temp_time = QTime::fromString(temp, "hh:mm:ss AP");
+    m_temp_time = QTime::fromString(temp, QString::fromStdString("hh:mm:ss AP"));
     m_time_state = 1;
-    qInfo() << "NVENT" << "," << "TIME" << "," << "Updated current time to " + m_temp_time.toString("hh:mm:ss AP") + ".";
+    qInfo() << "NVENT"
+            << ","
+            << "TIME"
+            << ","
+            << "Updated current time to " +
+               m_temp_time.toString(QString::fromStdString("hh:mm:ss AP")) +
+               ".";
 }
 
-void TimeManager::setTimeZone(QString temp)
+void TimeManager::setTimeZone(const QString &temp)
 {
     getTimeZoneDifference(m_time_zone,temp);
     m_time_zone = temp;
@@ -153,21 +170,30 @@ void TimeManager::setTime()
     m_current_date_time = m_current_date_time.addSecs(1);
     m_internal = m_internal.addSecs(1);
 
-    std::vector<std::string> vector = {DATE_TIME,m_current_date_time.toString("MM/dd/yyyy hh:mm:ss AP").toStdString()};
+    std::vector<std::string> vector = {
+        DATE_TIME,
+        m_current_date_time.toString(QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")).toStdString()
+    };
     m_timeCsvManager.updateRecord(0,&vector[0]);
 
-    std::vector<std::string> vector1 = {INTERNAL,m_internal.toString("MM/dd/yyyy hh:mm:ss AP").toStdString()};
+    std::vector<std::string> vector1 = {
+        INTERNAL,
+        m_internal.toString(QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")).toStdString()
+    };
     m_timeCsvManager.updateRecord(2,&vector1[0]);
 
-    emit timeChanged();
+    Q_EMIT timeChanged();
 }
 
-qint64 TimeManager::getTimeDifference(QString temp)
+qint64 TimeManager::getTimeDifference(const QString &temp)
 {
-    return QDateTime::fromString(temp,"MM/dd/yyyy hh:mm:ss AP").msecsTo(QDateTime::currentDateTime().addSecs(timeZoneValues.at(m_time_zone) * 3600));
+    return QDateTime::fromString(
+                temp,
+                QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")
+                ).msecsTo(QDateTime::currentDateTime().addSecs(timeZoneValues.at(m_time_zone) * 3600));
 }
 
-void TimeManager::getTimeZoneDifference(QString oldZone, QString newZone){
+void TimeManager::getTimeZoneDifference(const QString &oldZone, const QString &newZone){
     m_temp_time_zone = -1 * (timeZoneValues.at(oldZone) - timeZoneValues.at(newZone));
 }
 
@@ -181,7 +207,7 @@ void TimeManager::updateDaylightSavings()
     m_daylight_savings_state = !m_daylight_savings_state;
     std::vector<std::string> vector4 = {DAYLIGHT_SAVINGS, std::to_string(m_daylight_savings_state)};
     m_timeCsvManager.updateRecord(3,&vector4[0]);
-    emit daylightChanged();
+    Q_EMIT daylightChanged();
 
     if (m_daylight_savings_state)
     {
@@ -206,5 +232,5 @@ void TimeManager::updateDalyightSavingsForced(unsigned char value)
     m_daylight_savings_state = value;
     std::vector<std::string> vector4 = {DAYLIGHT_SAVINGS, std::to_string(m_daylight_savings_state)};
     m_timeCsvManager.updateRecord(3,&vector4[0]);
-    emit daylightChanged();
+    Q_EMIT daylightChanged();
 }

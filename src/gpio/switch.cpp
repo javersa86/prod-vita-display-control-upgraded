@@ -10,7 +10,7 @@ void Switch::onPinChange(unsigned char value)
 {
     if(!value && m_state && !m_ignore)
     {
-        emit push();
+        Q_EMIT push();
     }
     m_ignore = 0;
     m_state = value;

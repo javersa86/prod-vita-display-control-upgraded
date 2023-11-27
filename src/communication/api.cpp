@@ -1,7 +1,7 @@
 #include "api.h"
 #include <QtDebug>
 
-API::API ( QString portname, int baudrate) : QThread()
+API::API (const QString &portname, int baudrate) : QThread()
 {
     myPortName = portname;
     serial.setPortname(portname);
@@ -61,7 +61,7 @@ void API::run()
 
         if (!notification_request_confirmed)
         {
-            emit resendNotificationSignal();
+            Q_EMIT resendNotificationSignal();
         }
 
         if (!request_queue.empty())
@@ -446,7 +446,7 @@ void API::handleGetSettingsResponse(unsigned char* buffer)
     {
         data[i] = bytesToFloat(buffer);
     }
-    emit updateSettingsSignal(settings_data);
+    Q_EMIT updateSettingsSignal(settings_data);
 }
 
 /*ENABLE NOTIFICATION PATHWAY*/
@@ -480,7 +480,7 @@ void API::handleEnabledNotifications()
     {
         notification_request_confirmed=1;
     }
-    emit enableNotificationSignal();
+    Q_EMIT enableNotificationSignal();
 }
 
 /*GET OP MODES PATHWAY*/
@@ -499,12 +499,13 @@ void API::handleGetModesResponse(unsigned char* buffer)
 {
     buffer ++;
     QVector<int> modes;
+    modes.reserve(NUM_MODES);
     for (int i = 0; i < NUM_MODES; i++)
     {
         modes.append(*buffer);
         buffer++;
     }
-    emit sendModesSignal(modes);
+    Q_EMIT sendModesSignal(modes);
 }
 
 /*GET SUBSYSTEM STATUS PATHWAY*/
@@ -529,7 +530,7 @@ void API::handleGetSubsystemStates(unsigned char *buffer)
     {
         data[i] = *buffer;
     }
-    emit subsystemStatesChangeReceived(result);
+    Q_EMIT subsystemStatesChangeReceived(result);
 }
 
 /* SYSTEM VERSION PATHWAY */
@@ -539,7 +540,7 @@ void API::handleSystemVersionResponse(unsigned char* buffer)
     unsigned char major = *(++buffer);
     unsigned char minor = *(++buffer);
     unsigned char patch = *(++buffer);
-    emit systemVersion(major,minor,patch);
+    Q_EMIT systemVersion(major,minor,patch);
 }
 
 void API::queryVersion()
@@ -554,7 +555,7 @@ void API::queryVersion()
 
 /*SET SETTINGS PATHWAY*/
 
-void API::sendSettingsSlot(QVector<int> settings)
+void API::sendSettingsSlot(const QVector<int> &settings)
 {
     setSettings(settings);
     settings_set=0;
@@ -562,7 +563,7 @@ void API::sendSettingsSlot(QVector<int> settings)
 
 void API::handleSetResponse()
 {
-    emit settingsConfirmed();
+    Q_EMIT settingsConfirmed();
 }
 
 void API::setSettings(QVector<int> settings)
@@ -612,18 +613,18 @@ void API::handleGetSensorMeasurementResponse(unsigned char *buffer)
     if (id == 17)
     {
         unsigned char value = bytesToFloat(buffer);
-        emit receiveWaterSensorValue(id,value);
+        Q_EMIT receiveWaterSensorValue(id,value);
         return;
     }
 
     if (id == 32 || id == 33)
     {
-        emit receiveVoltValue(id,bytesToFloat(buffer));
+        Q_EMIT receiveVoltValue(id,bytesToFloat(buffer));
         return;
     }
 
     unsigned char value = bytesToFloat(buffer);
-    emit receiveMeasuredValue(id, value);
+    Q_EMIT receiveMeasuredValue(id, value);
 }
 
 /*CLEAR WARNING PATHWAY*/
@@ -632,7 +633,7 @@ void API::handleClearWarning(unsigned char* buffer)
 {
     buffer++;
     int warning_id = buffer[0];
-    emit clearWarningSignal(warning_id);
+    Q_EMIT clearWarningSignal(warning_id);
 }
 
 void API::clearWarningSlot(int warning_id)
@@ -655,7 +656,7 @@ void API::handleModeResponse(unsigned char* buffer)
     buffer ++;
     unsigned char enabled = *buffer;
 
-    emit modeSetSignal(modeID, enabled);
+    Q_EMIT modeSetSignal(modeID, enabled);
 }
 
 void API::sendModeSlot(unsigned char id, unsigned char enable)
@@ -684,7 +685,7 @@ void API::handleModeRequest(unsigned char* buffer)
 
     queueModeResponse(modeID, enabled);
 
-    emit setModeSignal(modeID, enabled, success);
+    Q_EMIT setModeSignal(modeID, enabled, success);
 }
 
 void API::queueModeResponse(unsigned char modeID, unsigned char value)
@@ -715,7 +716,7 @@ void API::handleNotification(unsigned char* buffer)
 
     if (m_num_of_notifications > 60)
     {
-        emit resendMessagesSignal();
+        Q_EMIT resendMessagesSignal();
         m_num_of_notifications = -1;
     }
     m_num_of_notifications++;
@@ -734,7 +735,7 @@ void API::handleNotification(unsigned char* buffer)
     buffer += NUM_WARNINGS_BYTES;
     notification[NUM_SETTINGS_NOTIFICATIONS+NUM_CALCULATIONS_NOTIFICATIONS] = *buffer;
 
-    emit notificationUpdateSignal(notification);
+    Q_EMIT notificationUpdateSignal(notification);
 }
 
 void API::handleWarnings(unsigned char* buffer)
@@ -749,7 +750,7 @@ void API::handleWarnings(unsigned char* buffer)
         warnings_data[k] = (buffer[bitIndex / 8] >> (bitIndex % 8)) & 1;
         bitIndex++;
     }
-    emit warningUpdateSignal(warnings);
+    Q_EMIT warningUpdateSignal(warnings);
 }
 
 void API::queueNotificationResponse()
@@ -789,7 +790,7 @@ void API::queueSubsystemStateChangedResponse()
 void API::handleVentilationStatusUpdate(unsigned char *buffer)
 {
     queueVentilationStatusResponse();
-    emit ventilationStateChangeReceived(*++buffer);
+    Q_EMIT ventilationStateChangeReceived(*++buffer);
 }
 
 void API::queueVentilationStatusResponse()
@@ -805,7 +806,7 @@ void API::handleHMIButtonPush(unsigned char *buffer)
 {
     ++buffer;
     queueHMIButtonPushResponse(*buffer);
-    emit HMIButtonPushReceived(*buffer);
+    Q_EMIT HMIButtonPushReceived(*buffer);
 }
 
 void API::queueHMIButtonPushResponse(unsigned char id)
@@ -830,7 +831,7 @@ void API::queueInitPowerdownOk()
 
 void API::handleInitPowerdown()
 {
-    emit initPowerdown();
+    Q_EMIT initPowerdown();
     queueInitPowerdownOk();
 }
 
@@ -851,7 +852,7 @@ void API::confirmPowerdown(unsigned char powerdown)
 void API::handleInitPowerdownCommandOK(unsigned char* buffer)
 {
     buffer++;
-    emit powerdownConfirmed(*buffer);
+    Q_EMIT powerdownConfirmed(*buffer);
 }
 
 /*SERVICE CALIBRATION VALUES*/
@@ -878,7 +879,7 @@ void API::slotServiceCalibrationResponse(QVector<float> calibration_data)
 
 void API::handleServiceCalibrationRequest()
 {
-    emit serviceCalibrationSignal();
+    Q_EMIT serviceCalibrationSignal();
 }
 
 /*DRIVING PRESSURE REGULATOR SET CAL VAL*/
@@ -891,7 +892,7 @@ void API::slotDPR(unsigned char enable_disabled)
 void API::handleDPRValSetResponse(unsigned char *buffer)
 {
     //qDebug() << "DPR VAL SET";
-    emit signalDPRValue();
+    Q_EMIT signalDPRValue();
 }
 
 void API::slotDPRValue(unsigned char value) //, unsigned char regAirValue, unsigned char regO2Value, float setValue)
@@ -926,7 +927,7 @@ void API::handleSensorZeroResponse(unsigned char *buffer)
     response[0] = *buffer;
     buffer++;
     response[1] = *buffer;
-    emit sensorZeroed(response);
+    Q_EMIT sensorZeroed(response);
 }
 
 void API::zeroSensor(QVector<float> values)
@@ -950,7 +951,7 @@ void API::handleServiceNotifications(unsigned char *buffer)
 
     if (m_num_of_notifications > 60)
     {
-        emit resendMessagesSignal();
+        Q_EMIT resendMessagesSignal();
         m_num_of_notifications = -1;
     }
     m_num_of_notifications++;
@@ -966,5 +967,5 @@ void API::handleServiceNotifications(unsigned char *buffer)
         //qDebug() << "Service ID: " + QString::number(i) + ", value: " + QString::number(data[i]);
     }
 
-    emit serviceNotificationUpdateSignal(notification);
+    Q_EMIT serviceNotificationUpdateSignal(notification);
 }

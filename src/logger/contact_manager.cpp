@@ -25,7 +25,15 @@ void ContactManager::updateServiceContact()
 {
     if (m_serviceCsvManager.getNumEntries() != 7)
     {
-        setService("Susquehanna Micro Inc.","198 West Beaver Street","Hallam","PA","17406","susquemicro.com","(888)730-5463");
+        setService(
+                    QString::fromStdString("Susquehanna Micro Inc."),
+                    QString::fromStdString("198 West Beaver Street"),
+                    QString::fromStdString("Hallam"),
+                    QString::fromStdString("PA"),
+                    QString::fromStdString("17406"),
+                    QString::fromStdString("susquemicro.com"),
+                    QString::fromStdString("(888)730-5463")
+                    );
         return;
     }
 
@@ -87,14 +95,22 @@ void ContactManager::updateServiceContact()
     m_service_email = getFullString(vector6);
     m_service_phone_number = QString::fromStdString(vector7.at(1));
 
-    emit contactChanged();
+    Q_EMIT contactChanged();
 }
 
 void ContactManager::updateSalesContact()
 {
     if (m_salesCsvManager.getNumEntries() != 7)
     {
-        setSales("Lantern Medical, LLC","21525 Ridgetop Circle, Suite 180","Sterling","VA","20166","info@lantern-medical.com","(571)308-2773");
+        setSales(
+                    QString::fromStdString("Lantern Medical, LLC"),
+                    QString::fromStdString("21525 Ridgetop Circle, Suite 180"),
+                    QString::fromStdString("Sterling"),
+                    QString::fromStdString("VA"),
+                    QString::fromStdString("20166"),
+                    QString::fromStdString("info@lantern-medical.com"),
+                    QString::fromStdString("(571)308-2773")
+                    );
         return;
     }
 
@@ -156,12 +172,12 @@ void ContactManager::updateSalesContact()
     m_sales_email = getFullString(vector6);
     m_sales_phone_number = QString::fromStdString(vector7.at(1));
 
-    emit contactChanged();
+    Q_EMIT contactChanged();
 }
 
 QString ContactManager::getFullString(std::vector<std::string> vector)
 {
-    QString temp = "";
+    QString temp = QString::fromStdString("");
     for (int i = 1; i < vector.size(); i++)
     {
         temp = temp  + QString::fromStdString(vector.at(i));
@@ -243,7 +259,15 @@ QString ContactManager::getSalesPhoneNumber()
     return m_sales_phone_number;
 }
 
-void ContactManager::setService(QString name, QString street, QString city, QString state, QString postalCode, QString email, QString phoneNumber)
+void ContactManager::setService(
+        const QString &name,
+        const QString &street,
+        const QString &city,
+        const QString &state,
+        const QString &postalCode,
+        const QString &email,
+        const QString &phoneNumber
+        )
 {
     if (m_serviceCsvManager.getNumEntries() > 0)
     {
@@ -276,12 +300,38 @@ void ContactManager::setService(QString name, QString street, QString city, QStr
     m_serviceCsvManager.createRecord(&vector5[0]);
     m_serviceCsvManager.createRecord(&vector6[0]);
     m_serviceCsvManager.createRecord(&vector7[0]);
-    emit contactChanged();
+    Q_EMIT contactChanged();
 
-    qInfo() << "NVENT" << "," << "CONTACTS" << "," << "Service Contact Information: " + m_service_company_name.replace(",", ";") + "; " + m_service_street.replace(",", ";") + "; " + m_service_city.replace(",", ";") + "; " + m_service_state + "; " + m_service_postal_code + "; " + m_service_email.replace(",", ";") + "; " + m_service_phone_number + ".";
+    qInfo() << "NVENT"
+            << ","
+            << "CONTACTS"
+            << ","
+            << "Service Contact Information: " +
+               m_service_company_name.replace(QString::fromStdString(","), QString::fromStdString(";")) +
+               "; " +
+               m_service_street.replace(QString::fromStdString(","), QString::fromStdString(";")) +
+               "; " +
+               m_service_city.replace(QString::fromStdString(","), QString::fromStdString(";")) +
+               "; " +
+               m_service_state +
+               "; " +
+               m_service_postal_code +
+               "; " +
+               m_service_email.replace(QString::fromStdString(","), QString::fromStdString(";")) +
+               "; " +
+               m_service_phone_number +
+               ".";
 }
 
-void ContactManager::setSales(QString name, QString street, QString city, QString state, QString postalCode, QString email, QString phoneNumber)
+void ContactManager::setSales(
+        const QString &name,
+        const QString &street,
+        const QString &city,
+        const QString &state,
+        const QString &postalCode,
+        const QString &email,
+        const QString &phoneNumber
+        )
 {
     if (m_salesCsvManager.getNumEntries() > 0)
     {
@@ -315,9 +365,27 @@ void ContactManager::setSales(QString name, QString street, QString city, QStrin
     m_salesCsvManager.createRecord(&vector6[0]);
     m_salesCsvManager.createRecord(&vector7[0]);
 
-    emit contactChanged();
+    Q_EMIT contactChanged();
 
-    qInfo() << "NVENT" << "," << "CONTACTS" << "," << "Sales Contact Information: " + m_sales_company_name.replace(",", ";") + "; " + m_sales_street.replace(",", ";") + "; " + m_sales_city.replace(",", ";") + "; " + m_sales_state + "; " + m_sales_postal_code + "; " + m_sales_email.replace(",", ";") + "; " + m_sales_phone_number + ".";
+    qInfo() << "NVENT"
+            << ","
+            << "CONTACTS"
+            << ","
+            << "Sales Contact Information: " +
+               m_sales_company_name.replace(QString::fromStdString(","), QString::fromStdString(";")) +
+               "; " +
+               m_sales_street.replace(QString::fromStdString(","), QString::fromStdString(";")) +
+               "; " +
+               m_sales_city.replace(QString::fromStdString(","), QString::fromStdString(";")) +
+               "; " +
+               m_sales_state +
+               "; " +
+               m_sales_postal_code +
+               "; " +
+               m_sales_email.replace(QString::fromStdString(","), QString::fromStdString(";")) +
+               "; " +
+               m_sales_phone_number +
+               ".";
 }
 
 

@@ -243,14 +243,14 @@ class PresetManager : public QObject
          * @param preset
          * @callergraph
          */
-        void updatePreset(int id, QVector<int>);
+        void updatePreset(int id, const QVector<int> &preset);
 
         /**
          * @brief Adds character at end of preset name.
          * @param input
          * @callergraph
          */
-        void addPresetName(QString input);
+        void addPresetName(const QString &input);
         /**
          * @brief Removes last character from preset name.
          * @callergraph
@@ -273,7 +273,7 @@ class PresetManager : public QObject
          * @param name
          * @callergraph
          */
-        void setPresetName(QString name);
+        void setPresetName(const QString &name);
 
         /**
          * @brief   Updates the current state of the preset name change page.
@@ -316,7 +316,7 @@ class PresetManager : public QObject
          * @brief Creates a new preset if there are fewer than 6 presets.
          * @param preset
          */
-        void createPreset(QVector<int>);
+        void createPreset(const QVector<int> &preset);
 
         CSVManager m_presetNameCsvManager;
         QVector<QString> m_preset_names;
