@@ -68,7 +68,7 @@ void DPRManager::updateDPRVals()
         m_dprVals[i] = -1;
     }
 
-    Q_EMIT dprValsChanged();
+    emit dprValsChanged();
 }
 
 void DPRManager::addDPRVal(int value)

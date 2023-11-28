@@ -68,7 +68,7 @@ void ZeroManager::updateZeroVals()
     updateVerifiedInletAir();
     updateVerifiedInletO2();
 
-    Q_EMIT zeroChanged();
+    emit zeroChanged();
 }
 
 void ZeroManager::deleteOldestPipVal()

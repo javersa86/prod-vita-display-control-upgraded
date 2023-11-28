@@ -61,7 +61,7 @@ void API::run()
 
         if (!notification_request_confirmed)
         {
-            Q_EMIT resendNotificationSignal();
+            emit resendNotificationSignal();
         }
 
         if (!request_queue.empty())
@@ -446,7 +446,7 @@ void API::handleGetSettingsResponse(unsigned char* buffer)
     {
         data[i] = bytesToFloat(buffer);
     }
-    Q_EMIT updateSettingsSignal(settings_data);
+    emit updateSettingsSignal(settings_data);
 }
 
 /*ENABLE NOTIFICATION PATHWAY*/
@@ -480,7 +480,7 @@ void API::handleEnabledNotifications()
     {
         notification_request_confirmed=1;
     }
-    Q_EMIT enableNotificationSignal();
+    emit enableNotificationSignal();
 }
 
 /*GET OP MODES PATHWAY*/
@@ -505,7 +505,7 @@ void API::handleGetModesResponse(unsigned char* buffer)
         modes.append(*buffer);
         buffer++;
     }
-    Q_EMIT sendModesSignal(modes);
+    emit sendModesSignal(modes);
 }
 
 /*GET SUBSYSTEM STATUS PATHWAY*/
@@ -530,7 +530,7 @@ void API::handleGetSubsystemStates(unsigned char *buffer)
     {
         data[i] = *buffer;
     }
-    Q_EMIT subsystemStatesChangeReceived(result);
+    emit subsystemStatesChangeReceived(result);
 }
 
 /* SYSTEM VERSION PATHWAY */
@@ -540,7 +540,7 @@ void API::handleSystemVersionResponse(unsigned char* buffer)
     unsigned char major = *(++buffer);
     unsigned char minor = *(++buffer);
     unsigned char patch = *(++buffer);
-    Q_EMIT systemVersion(major,minor,patch);
+    emit systemVersion(major,minor,patch);
 }
 
 void API::queryVersion()
@@ -563,7 +563,7 @@ void API::sendSettingsSlot(const QVector<int> &settings)
 
 void API::handleSetResponse()
 {
-    Q_EMIT settingsConfirmed();
+    emit settingsConfirmed();
 }
 
 void API::setSettings(QVector<int> settings)
@@ -613,18 +613,18 @@ void API::handleGetSensorMeasurementResponse(unsigned char *buffer)
     if (id == 17)
     {
         unsigned char value = bytesToFloat(buffer);
-        Q_EMIT receiveWaterSensorValue(id,value);
+        emit receiveWaterSensorValue(id,value);
         return;
     }
 
     if (id == 32 || id == 33)
     {
-        Q_EMIT receiveVoltValue(id,bytesToFloat(buffer));
+        emit receiveVoltValue(id,bytesToFloat(buffer));
         return;
     }
 
     unsigned char value = bytesToFloat(buffer);
-    Q_EMIT receiveMeasuredValue(id, value);
+    emit receiveMeasuredValue(id, value);
 }
 
 /*CLEAR WARNING PATHWAY*/
@@ -633,7 +633,7 @@ void API::handleClearWarning(unsigned char* buffer)
 {
     buffer++;
     int warning_id = buffer[0];
-    Q_EMIT clearWarningSignal(warning_id);
+    emit clearWarningSignal(warning_id);
 }
 
 void API::clearWarningSlot(int warning_id)
@@ -656,7 +656,7 @@ void API::handleModeResponse(unsigned char* buffer)
     buffer ++;
     unsigned char enabled = *buffer;
 
-    Q_EMIT modeSetSignal(modeID, enabled);
+    emit modeSetSignal(modeID, enabled);
 }
 
 void API::sendModeSlot(unsigned char id, unsigned char enable)
@@ -685,7 +685,7 @@ void API::handleModeRequest(unsigned char* buffer)
 
     queueModeResponse(modeID, enabled);
 
-    Q_EMIT setModeSignal(modeID, enabled, success);
+    emit setModeSignal(modeID, enabled, success);
 }
 
 void API::queueModeResponse(unsigned char modeID, unsigned char value)
@@ -716,7 +716,7 @@ void API::handleNotification(unsigned char* buffer)
 
     if (m_num_of_notifications > 60)
     {
-        Q_EMIT resendMessagesSignal();
+        emit resendMessagesSignal();
         m_num_of_notifications = -1;
     }
     m_num_of_notifications++;
@@ -735,7 +735,7 @@ void API::handleNotification(unsigned char* buffer)
     buffer += NUM_WARNINGS_BYTES;
     notification[NUM_SETTINGS_NOTIFICATIONS+NUM_CALCULATIONS_NOTIFICATIONS] = *buffer;
 
-    Q_EMIT notificationUpdateSignal(notification);
+    emit notificationUpdateSignal(notification);
 }
 
 void API::handleWarnings(unsigned char* buffer)
@@ -750,7 +750,7 @@ void API::handleWarnings(unsigned char* buffer)
         warnings_data[k] = (buffer[bitIndex / 8] >> (bitIndex % 8)) & 1;
         bitIndex++;
     }
-    Q_EMIT warningUpdateSignal(warnings);
+    emit warningUpdateSignal(warnings);
 }
 
 void API::queueNotificationResponse()
@@ -790,7 +790,7 @@ void API::queueSubsystemStateChangedResponse()
 void API::handleVentilationStatusUpdate(unsigned char *buffer)
 {
     queueVentilationStatusResponse();
-    Q_EMIT ventilationStateChangeReceived(*++buffer);
+    emit ventilationStateChangeReceived(*++buffer);
 }
 
 void API::queueVentilationStatusResponse()
@@ -806,7 +806,7 @@ void API::handleHMIButtonPush(unsigned char *buffer)
 {
     ++buffer;
     queueHMIButtonPushResponse(*buffer);
-    Q_EMIT HMIButtonPushReceived(*buffer);
+    emit HMIButtonPushReceived(*buffer);
 }
 
 void API::queueHMIButtonPushResponse(unsigned char id)
@@ -831,7 +831,7 @@ void API::queueInitPowerdownOk()
 
 void API::handleInitPowerdown()
 {
-    Q_EMIT initPowerdown();
+    emit initPowerdown();
     queueInitPowerdownOk();
 }
 
@@ -852,7 +852,7 @@ void API::confirmPowerdown(unsigned char powerdown)
 void API::handleInitPowerdownCommandOK(unsigned char* buffer)
 {
     buffer++;
-    Q_EMIT powerdownConfirmed(*buffer);
+    emit powerdownConfirmed(*buffer);
 }
 
 /*SERVICE CALIBRATION VALUES*/
@@ -879,7 +879,7 @@ void API::slotServiceCalibrationResponse(QVector<float> calibration_data)
 
 void API::handleServiceCalibrationRequest()
 {
-    Q_EMIT serviceCalibrationSignal();
+    emit serviceCalibrationSignal();
 }
 
 /*DRIVING PRESSURE REGULATOR SET CAL VAL*/
@@ -892,7 +892,7 @@ void API::slotDPR(unsigned char enable_disabled)
 void API::handleDPRValSetResponse(unsigned char *buffer)
 {
     //qDebug() << "DPR VAL SET";
-    Q_EMIT signalDPRValue();
+    emit signalDPRValue();
 }
 
 void API::slotDPRValue(unsigned char value) //, unsigned char regAirValue, unsigned char regO2Value, float setValue)
@@ -927,7 +927,7 @@ void API::handleSensorZeroResponse(unsigned char *buffer)
     response[0] = *buffer;
     buffer++;
     response[1] = *buffer;
-    Q_EMIT sensorZeroed(response);
+    emit sensorZeroed(response);
 }
 
 void API::zeroSensor(QVector<float> values)
@@ -951,7 +951,7 @@ void API::handleServiceNotifications(unsigned char *buffer)
 
     if (m_num_of_notifications > 60)
     {
-        Q_EMIT resendMessagesSignal();
+        emit resendMessagesSignal();
         m_num_of_notifications = -1;
     }
     m_num_of_notifications++;
@@ -967,5 +967,5 @@ void API::handleServiceNotifications(unsigned char *buffer)
         //qDebug() << "Service ID: " + QString::number(i) + ", value: " + QString::number(data[i]);
     }
 
-    Q_EMIT serviceNotificationUpdateSignal(notification);
+    emit serviceNotificationUpdateSignal(notification);
 }

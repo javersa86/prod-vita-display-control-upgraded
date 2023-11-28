@@ -95,7 +95,7 @@ void ContactManager::updateServiceContact()
     m_service_email = getFullString(vector6);
     m_service_phone_number = QString::fromStdString(vector7.at(1));
 
-    Q_EMIT contactChanged();
+    emit contactChanged();
 }
 
 void ContactManager::updateSalesContact()
@@ -172,7 +172,7 @@ void ContactManager::updateSalesContact()
     m_sales_email = getFullString(vector6);
     m_sales_phone_number = QString::fromStdString(vector7.at(1));
 
-    Q_EMIT contactChanged();
+    emit contactChanged();
 }
 
 QString ContactManager::getFullString(std::vector<std::string> vector)
@@ -300,7 +300,7 @@ void ContactManager::setService(
     m_serviceCsvManager.createRecord(&vector5[0]);
     m_serviceCsvManager.createRecord(&vector6[0]);
     m_serviceCsvManager.createRecord(&vector7[0]);
-    Q_EMIT contactChanged();
+    emit contactChanged();
 
     qInfo() << "NVENT"
             << ","
@@ -365,7 +365,7 @@ void ContactManager::setSales(
     m_salesCsvManager.createRecord(&vector6[0]);
     m_salesCsvManager.createRecord(&vector7[0]);
 
-    Q_EMIT contactChanged();
+    emit contactChanged();
 
     qInfo() << "NVENT"
             << ","

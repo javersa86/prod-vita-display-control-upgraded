@@ -95,7 +95,7 @@ void WarningManager::setActiveWarnings(QVector<unsigned char> *warnings )
                 //Signals to qml if SP High is raised and shows blue lines.
                 if (i == 1 && m_active_warnings.at(i))
                 {
-                    Q_EMIT spWarning();
+                    emit spWarning();
                 }
             }
         }
@@ -140,7 +140,7 @@ void WarningManager::setActiveWarnings(QVector<unsigned char> *warnings )
 
         if(changed)
         {
-            Q_EMIT warningChanged();
+            emit warningChanged();
             int num = getNumActiveWarnings();
             num++;
         }
@@ -154,7 +154,7 @@ void WarningManager::setCalibrationProgress(int o2_index)
     {
         if (m_notices.at(o2_index) == 1 && m_o2_calibration_flag == 0)
         {
-            Q_EMIT o2CalibrationSignal();
+            emit o2CalibrationSignal();
             m_o2_calibration_flag = 1;
         }
         else if (m_notices.at(o2_index) == 0 && m_o2_calibration_flag == 1)
@@ -166,7 +166,7 @@ void WarningManager::setCalibrationProgress(int o2_index)
     {
         if (m_notices.at(o2_index) == 1 && m_o2_laser_in_progress_calibration_flag == 0)
         {
-            Q_EMIT o2CalibrationSignal();
+            emit o2CalibrationSignal();
             m_o2_laser_in_progress_calibration_flag = 1;
         }
         else if (m_notices.at(o2_index) == 0 && m_o2_laser_in_progress_calibration_flag == 1)
@@ -203,7 +203,7 @@ void WarningManager::clearWarning(unsigned char id)
         if(!(m_active_warnings.at(id)))
         {
             m_inactive_by_occurance.removeAll(id);
-            Q_EMIT warningChanged();
+            emit warningChanged();
         }
     }
 }

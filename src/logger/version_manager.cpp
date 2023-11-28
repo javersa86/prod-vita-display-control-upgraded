@@ -22,14 +22,14 @@ void VersionManager::updateVersions()
         m_versionCsvManager.createRecord(&vector1[0]);
         m_versionCsvManager.createRecord(&vector2[0]);
 
-        Q_EMIT versionChanged();
+        emit versionChanged();
         return;
     }
 
     m_hmiVersion = QString::fromStdString(m_versionCsvManager.readRecord(0).at(1));
     m_serialNumber = QString::fromStdString(m_versionCsvManager.readRecord(1).at(1));
 
-    Q_EMIT versionChanged();
+    emit versionChanged();
 }
 
 QString VersionManager::getHmiVersion()

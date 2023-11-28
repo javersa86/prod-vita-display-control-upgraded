@@ -189,7 +189,7 @@ void PresetManager::updatePresets()
 
     m_preset_name = m_preset_names[m_preset_name_index];
 
-    Q_EMIT presetsChanged();
+    emit presetsChanged();
 
 }
 
@@ -207,13 +207,13 @@ QString PresetManager::getPresetName()
 void PresetManager::setPresetName(const QString &name)
 {
     m_preset_name = name;
-    Q_EMIT presetNameChanged();
+    emit presetNameChanged();
 }
 
 void PresetManager::deletePresetName()
 {
     m_preset_name = QString::fromStdString("");
-    Q_EMIT presetNameChanged();
+    emit presetNameChanged();
 }
 
 void PresetManager::addPresetName(const QString &input)
@@ -227,7 +227,7 @@ void PresetManager::addPresetName(const QString &input)
             updateKeyboardState(1);
         }
         m_preset_name = m_preset_name + input;
-        Q_EMIT presetNameChanged();
+        emit presetNameChanged();
     }
 }
 
@@ -236,7 +236,7 @@ void PresetManager::backspacePresetName()
     if (m_preset_name.size() > 0)
     {
         m_preset_name = m_preset_name.left(m_preset_name.size() - 1);
-        Q_EMIT presetNameChanged();
+        emit presetNameChanged();
     }
 }
 
@@ -268,8 +268,8 @@ void PresetManager::updateKeyboardState(unsigned char id)
         m_keyboard_state = id;
         all_caps_state = 0;
     }
-    Q_EMIT presetAllCapChanged();
-    Q_EMIT presetKeyboardStateChanged();
+    emit presetAllCapChanged();
+    emit presetKeyboardStateChanged();
 }
 
 unsigned char PresetManager::getKeyboardState()

@@ -55,7 +55,7 @@ void TimeManager::updateTime()
         m_timeCsvManager.createRecord(&vector3[0]);
         m_timeCsvManager.createRecord(&vector4[0]);
 
-        Q_EMIT timeChanged();
+        emit timeChanged();
         return;
     }
     std::vector<std::string> date_time_row = m_timeCsvManager.readRecord(0);
@@ -100,7 +100,7 @@ void TimeManager::updateTime()
     std::vector<std::string> vector4 = {DAYLIGHT_SAVINGS, std::to_string(m_daylight_savings_state)};
     m_timeCsvManager.updateRecord(3,&vector4[0]);
 
-    Q_EMIT timeChanged();
+    emit timeChanged();
 }
 
 QString TimeManager::getCurrentDateTime()
@@ -182,7 +182,7 @@ void TimeManager::setTime()
     };
     m_timeCsvManager.updateRecord(2,&vector1[0]);
 
-    Q_EMIT timeChanged();
+    emit timeChanged();
 }
 
 qint64 TimeManager::getTimeDifference(const QString &temp)
@@ -207,7 +207,7 @@ void TimeManager::updateDaylightSavings()
     m_daylight_savings_state = !m_daylight_savings_state;
     std::vector<std::string> vector4 = {DAYLIGHT_SAVINGS, std::to_string(m_daylight_savings_state)};
     m_timeCsvManager.updateRecord(3,&vector4[0]);
-    Q_EMIT daylightChanged();
+    emit daylightChanged();
 
     if (m_daylight_savings_state)
     {
@@ -232,5 +232,5 @@ void TimeManager::updateDalyightSavingsForced(unsigned char value)
     m_daylight_savings_state = value;
     std::vector<std::string> vector4 = {DAYLIGHT_SAVINGS, std::to_string(m_daylight_savings_state)};
     m_timeCsvManager.updateRecord(3,&vector4[0]);
-    Q_EMIT daylightChanged();
+    emit daylightChanged();
 }

@@ -42,7 +42,7 @@ void MaintenanceManager::updateServiceDates()
         m_maintenanceCsvManager.createRecord(&vector1[0]);
         m_maintenanceCsvManager.createRecord(&vector2[0]);
 
-        Q_EMIT dateChanged();
+        emit dateChanged();
 
         return;
     }
@@ -73,7 +73,7 @@ void MaintenanceManager::updateServiceDates()
         m_maintenanceCsvManager.updateRecord(1,&vector2[0]);
     }
 
-    Q_EMIT dateChanged();
+    emit dateChanged();
 }
 
 QString MaintenanceManager::getLastServiceDate()
@@ -127,7 +127,7 @@ void MaintenanceManager::setNextServiceDate(const QString &newDate)
 void MaintenanceManager::isValid(const QString &month, const QString &day, const QString &year)
 {
 
-    Q_EMIT validation(
+    emit validation(
                 QDate::fromString(
                     month +
                     QString::fromStdString("/") +
@@ -155,14 +155,14 @@ void MaintenanceManager::raiseAlarm()
     {
         if (!m_alarm_state) {
             m_alarm_state = 1;
-            Q_EMIT alarmSignal(m_alarm_state);
+            emit alarmSignal(m_alarm_state);
         }
     }
     else if (tmp > 0)
     {
         if (m_alarm_state) {
             m_alarm_state = 0;
-            Q_EMIT alarmSignal(m_alarm_state);
+            emit alarmSignal(m_alarm_state);
         }
     }
 }

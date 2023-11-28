@@ -69,13 +69,13 @@ void PartManager::updatePart()
         m_partName = QString::fromStdString("");
         m_partNumber = QString::fromStdString("");
         m_partDateTime = QString::fromStdString("");
-        Q_EMIT partChanged();
+        emit partChanged();
         return;
     }
     m_partName = QString::fromStdString(row.at(0));
     m_partNumber = QString::fromStdString(row.at(1));
     m_partDateTime = QString::fromStdString(row.at(2));
-    Q_EMIT partChanged();
+    emit partChanged();
 }
 
 void PartManager::createComponents()
@@ -115,11 +115,11 @@ void PartManager::updateHoursOperating()
     if (row.size() == 0)
     {
         m_hoursOperating = -1;
-        Q_EMIT partOpChanged();
+        emit partOpChanged();
         return;
     }
     m_hoursOperating = stoi(row.at(1));
-    Q_EMIT partOpChanged();
+    emit partOpChanged();
 }
 
 void PartManager::createHoursOperating()
@@ -176,11 +176,11 @@ void PartManager::updateHoursVentilating()
     if (row.size() == 0)
     {
         m_hoursVentilating = -1;
-        Q_EMIT partVentChanged();
+        emit partVentChanged();
         return;
     }
     m_hoursVentilating = stoi(row.at(1));
-    Q_EMIT partVentChanged();
+    emit partVentChanged();
 }
 
 void PartManager::createHoursVentilating()
@@ -273,7 +273,7 @@ void PartManager::setTempName(const QString &name)
 void PartManager::addDigit(const QString &input)
 {
     m_temp_serial_number = m_temp_serial_number + input;
-    Q_EMIT serialChanged();
+    emit serialChanged();
 }
 
 void PartManager::removeDigit()
@@ -281,7 +281,7 @@ void PartManager::removeDigit()
     if (m_temp_serial_number.size() > 0)
     {
         m_temp_serial_number = m_temp_serial_number.left(m_temp_serial_number.size() - 1);
-        Q_EMIT serialChanged();
+        emit serialChanged();
     }
 }
 
@@ -344,7 +344,7 @@ void PartManager::setNewPart(const QString &newTime)
     m_temp_name = QString::fromStdString("");
     m_temp_serial_number = QString::fromStdString("");
     m_temp_date = QString::fromStdString("");
-    Q_EMIT serialChanged();
+    emit serialChanged();
 }
 
 void PartManager::setPartIndex(unsigned char index)

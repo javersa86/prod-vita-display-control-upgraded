@@ -51,7 +51,7 @@ void PasscodeManager::updatePasscode()
         m_passcodeCsvManager.createRecord(&vector1[0]);
         m_passcodeCsvManager.createRecord(&vector2[0]);
 
-        Q_EMIT passcodeChanged();
+        emit passcodeChanged();
 
         return;
     }
@@ -80,7 +80,7 @@ void PasscodeManager::updatePasscode()
         m_passcodeCsvManager.updateRecord(1,&vector2[0]);
     }
 
-    Q_EMIT passcodeChanged();
+    emit passcodeChanged();
 }
 
 void PasscodeManager::editServicePasscode(const QString &newPasscode)

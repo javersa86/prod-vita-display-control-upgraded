@@ -105,17 +105,17 @@ void Backend::saveLogsToDrive()
     if (!exportDirectory(QString::fromStdString("/media/NVENT_FILES/NV_Vita_events"),serviceDirName))
     {
         //Sends signal to QML if service logs failed to be exported.
-        Q_EMIT saveLogStatusSignal(0);
+        emit saveLogStatusSignal(0);
         return;
     }
     if (!exportDirectory(QString::fromStdString("/media/NVENT_FILES/NV_Vita_warnings"),warningDirName))
     {
         //Sends signal to QML if warning logs failed to be exported.
-        Q_EMIT saveLogStatusSignal(0);
+        emit saveLogStatusSignal(0);
         return;
     }
     //Sends signal to QML if service logs and warning logs were exported successfully.
-    Q_EMIT saveLogStatusSignal(1);
+    emit saveLogStatusSignal(1);
 }
 
 void Backend::driveConnected()
@@ -125,17 +125,17 @@ void Backend::driveConnected()
     if (dirName == QString::fromStdString(""))
     {
         //Sends signal to QML if USB drive is not mounted.
-        Q_EMIT driveConnection(0);
+        emit driveConnection(0);
         return;
     }
     //Sends signal to QML if USB Drive is mounted and if directories exist.
-    Q_EMIT driveConnection(1);
+    emit driveConnection(1);
 }
 
 void Backend::driveDisconnected()
 {
     msdelay(100);
-    Q_EMIT driveDisconnection(!system(m_eject_command_line.toStdString().c_str()));
+    emit driveDisconnection(!system(m_eject_command_line.toStdString().c_str()));
 }
 
 QString Backend::findPort()
@@ -246,7 +246,7 @@ void Backend::initDehumidification(unsigned char val)
 void Backend::sendDehumidityValue()
 {
     if (m_dehumidification_seconds > 0) m_dehumidification_seconds = m_dehumidification_seconds - 1;
-    Q_EMIT dehumidificationTime(m_dehumidification_seconds);
+    emit dehumidificationTime(m_dehumidification_seconds);
 }
 
 void Backend::serviceAlarmSlot(unsigned char state)
@@ -270,7 +270,7 @@ void Backend::checkStartupComplete()
 
 void Backend::getSettings()
 {
-    Q_EMIT sendGetSettingsSignal();
+    emit sendGetSettingsSignal();
 }
 
 void Backend::initGetSettings()
@@ -350,7 +350,7 @@ void Backend::initEnableNotifications()
 
 void Backend::enableNotifications()
 {
-    Q_EMIT sendNotificationEnableSignal(1);
+    emit sendNotificationEnableSignal(1);
 }
 
 void Backend::enableNotificationsSlot()
@@ -406,7 +406,7 @@ void Backend::receiveModes(QVector<int> modes)
 
 void Backend::getModes()
 {
-    Q_EMIT getModesSignal();
+    emit getModesSignal();
 }
 
 /*------------------------GET SUBSYSTEM STATUS PATHWAY-----------------*/
@@ -430,7 +430,7 @@ void Backend::receiveSubsystemStates(const QVector<unsigned char> &states)
 
 void Backend::sendGetSubsystems()
 {
-    Q_EMIT getSubsystemStates();
+    emit getSubsystemStates();
 }
 
 /*------------------------SYSTEM VERSION PATHWAY------------------------*/
@@ -443,7 +443,7 @@ void Backend::initGetSystemVersion()
 
 void Backend::sendGetSystemVersion()
 {
-    Q_EMIT getSystemVersionFromSC();
+    emit getSystemVersionFromSC();
 }
 
 void Backend::receiveSystemVersion(unsigned char major, unsigned char minor, unsigned char patch)
@@ -567,7 +567,7 @@ void Backend::settingsConfirmed()
 
 void Backend::sendSettingsUpdate()
 {
-    Q_EMIT sendSettingSignal(settingsVector);
+    emit sendSettingSignal(settingsVector);
 }
 
 void Backend::separateHumidity(unsigned char separate, int hum_value, int hum_aux_value)
@@ -754,7 +754,7 @@ void Backend::sendGetMeasured()
     {
         if(m_get_sensors[i])
         {
-            Q_EMIT sendGetSensorMeasurementSignal(i);
+            emit sendGetSensorMeasurementSignal(i);
         }
     }
 }
@@ -787,7 +787,7 @@ void Backend::initClearAlarm(int warning_id)
 
 void Backend::sendClearAlarm()
 {
-    Q_EMIT warningClearSignal(m_warning_to_clear);
+    emit warningClearSignal(m_warning_to_clear);
 }
 
 void Backend::clearAlarmSlot(int warning_id)
@@ -871,7 +871,7 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
     QString temp = QString::fromStdString("");
     if(modeID == (unsigned char)ModeIDs::LISTENING_KNOB)
     {
-        Q_EMIT listenToKnob(value);
+        emit listenToKnob(value);
     }
     //If laser mode need to be changed
     else if (modeID == (unsigned char) ModeIDs::LASER_MODE && value)
@@ -903,7 +903,7 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
         m_warningManager->pauseDisconnection(value);
         m_stateManager->setDisplayWarnings(0);
         m_stateManager->setSavedDP(m_stateManager->dp1Setting());
-        Q_EMIT signalCalibrationMessages(value);
+        emit signalCalibrationMessages(value);
 
         m_dpr = 4;
         sendDPRValue();
@@ -916,7 +916,7 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
         m_warningManager->pauseDisconnection(value);
         receiveSettingsUpdate(0,m_stateManager->getSavedDP());
         m_stateManager->setDisplayWarnings(1);
-        Q_EMIT signalCalibrationMessages(value);
+        emit signalCalibrationMessages(value);
     }
     else if (modeID == (unsigned char) ModeIDs::HUMIDITY_PRIMING_RESET_AVAILABLE && !value)
     {
@@ -952,7 +952,7 @@ void Backend::sendModeCommand()
     {
         if (m_send_modes[i])
         {
-            Q_EMIT setModeSignal(i, m_stateManager->getModeEnabled(i));
+            emit setModeSignal(i, m_stateManager->getModeEnabled(i));
         }
     }
 }
@@ -1064,7 +1064,7 @@ void Backend::receiveHMIButtonPress(unsigned char id)
     }
 
     qInfo() << "NVENT" << "," << "HMI BUTTON" << "," << "PRESS" << bName;
-    Q_EMIT hmiButtonPressed(id);
+    emit hmiButtonPressed(id);
 }
 
 /*------------------------SHUTDOWN PATHWAY-----------------------------------------------*/
@@ -1097,7 +1097,7 @@ void Backend::initiatePowerdown(unsigned char powerdown)
 
 void Backend::sendPowerdownCommand()
 {
-    Q_EMIT powerDownCommand(m_stateManager -> powerdownFlag());
+    emit powerDownCommand(m_stateManager -> powerdownFlag());
 }
 
 void Backend::powerdownConfirmed()
@@ -1122,7 +1122,7 @@ void Backend::serviceCalibrationSlot()
     data.append(0);
     data.append(0);
     data.append(0);
-    Q_EMIT signalServiceCalibrations(data);
+    emit signalServiceCalibrations(data);
 
 }
 
@@ -1180,14 +1180,14 @@ void Backend::highDPRConfirmation(int flag, float value)
     if (flag == 1)
     {
         //Sends signal float to API
-        Q_EMIT signalTempDP(flag,value);
+        emit signalTempDP(flag,value);
 
         sendSettingsUpdate();
         m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
     }
     else if (flag == 2)
     {
-        Q_EMIT signalTempDP(0,value);
+        emit signalTempDP(0,value);
         m_dprManager->addDPRVal(m_stateManager->currentDPR());
 
         setMode((unsigned char) ModeIDs::LISTENING_KNOB, 0);
@@ -1199,7 +1199,7 @@ void Backend::highDPRConfirmation(int flag, float value)
     }
     else if (flag == 0)
     {
-        Q_EMIT signalTempDP(flag,value);
+        emit signalTempDP(flag,value);
 
 
         setMode((unsigned char) ModeIDs::LISTENING_KNOB, 0);
@@ -1234,7 +1234,7 @@ void Backend::regulatorConfirmation(unsigned char val,unsigned char id)
 
 void Backend::sendDPRValue()
 {
-    Q_EMIT signalDPRValue(m_dpr);
+    emit signalDPRValue(m_dpr);
 }
 
 void Backend::slotDPRValue()
@@ -1248,7 +1248,7 @@ void Backend::slotDPRValue()
     if (m_dpr == 0)
     {
         lowDPRConfirmation(1);
-        Q_EMIT lowDPRFinished();
+        emit lowDPRFinished();
     }
 }
 
@@ -1293,7 +1293,7 @@ void Backend::initZeroSensor(unsigned char id, float value)
 
 void Backend::sendZeroSensor()
 {
-    Q_EMIT zeroSensor(m_zero_values);
+    emit zeroSensor(m_zero_values);
 }
 
 void Backend::receiveSensorZeroed(const QVector<unsigned char> &values)
@@ -1329,7 +1329,7 @@ void Backend::receiveSensorZeroed(const QVector<unsigned char> &values)
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << temp + "Sensor Zeroed";
     }
 
-    Q_EMIT zeroFinished(result);
+    emit zeroFinished(result);
 }
 
 /*------------------------SERVICE NOTIFICATION PATHWAY------------------------------------*/
