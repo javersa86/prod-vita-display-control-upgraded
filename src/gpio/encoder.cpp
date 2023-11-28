@@ -3,7 +3,7 @@
 #include <QDebug>
 
 /**
- * This class encapsulates the rotary knob behavior. It listens for changes on the A pin and the B pin and Q_EMITs signals
+ * This class encapsulates the rotary knob behavior. It listens for changes on the A pin and the B pin and emits signals
  * when the knob is turned.
  */
 
