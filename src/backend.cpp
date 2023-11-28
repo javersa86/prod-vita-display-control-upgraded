@@ -290,10 +290,10 @@ void Backend::receiveGetSettingsSlot(QVector<int> setting_vals)
         QString logData = QString::fromStdString("");
         for (int i = 0; i < NUM_SETTINGS - 1; i++)
         {
-            logData.append(QString::fromStdString( settingNameMap.at(i) ) + ": " + QString::number(setting_vals.at(i)) + "; ");
+            logData.append(QString::fromStdString( settingNameMap.at(i)) + ": " + QString::number(setting_vals.at(i)) + "; ");
         }
 
-        logData.append(QString::fromStdString( settingNameMap.at(NUM_SETTINGS - 1) ) + ": " + QString::number(setting_vals.at(NUM_SETTINGS - 1)));
+        logData.append(QString::fromStdString( settingNameMap.at(NUM_SETTINGS - 1)) + ": " + QString::number(setting_vals.at(NUM_SETTINGS - 1)));
         qInfo() << "NVENT" << "," << "RESTORE SETTINGS" << "," << logData;
     }
 
@@ -485,8 +485,8 @@ void Backend::setPneumaticSettings(const QVector<int> &settings)
         msg += QString::fromStdString(settingNameMap.at(i)) + ": ";
         msg += QString::number(m_stateManager->getSettingValue(i)) + "; ";
     }
-    msg += QString::fromStdString(settingNameMap.at(NUM_PNEUMATIC_SETTINGS - 1 )) + ": ";
-    msg += QString::number(m_stateManager->getSettingValue(NUM_PNEUMATIC_SETTINGS - 1 ));
+    msg += QString::fromStdString(settingNameMap.at(NUM_PNEUMATIC_SETTINGS - 1)) + ": ";
+    msg += QString::number(m_stateManager->getSettingValue(NUM_PNEUMATIC_SETTINGS - 1));
 
     sendSettingsUpdate();
     m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
