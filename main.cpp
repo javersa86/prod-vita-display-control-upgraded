@@ -66,7 +66,6 @@ int main(int argc, char *argv[])
     WarningManager warningManager;
     //API acts as the middle man between the system controller and the display controller.
     API api(QString::fromStdString("/dev/ttyUSB0"), 115200);
-
     //O2 Calibration Manager manages the o2 calibration values. It passes the most recent O2 cal vals to the QML, and saves cal vals to a csv file.
     O2CalManager o2CalManager;
     //DPR Manager manages the dpr values. It passes the most recent DPR vals (high or low), and saves DPR vals to a csv file.
@@ -77,7 +76,6 @@ int main(int argc, char *argv[])
     PartManager partManager;
     //The backend acts as the middle man between the QML and the calibration manager, the state manager, the warning manager, and zero manager. It also sends and recieves signals from the API
     Backend backend(&stateManager, &warningManager, &o2CalManager, &zeroManager, &partManager, &dprManager);
-
     //The preset manager manages the presets. It passes presets to the QML, and saves presets to a CSV file.
     PresetManager presetManager;
     //The brightness manager manages the brightness of the display. Brightness in Linux is represented by a brightness file in the file system
@@ -152,8 +150,7 @@ int main(int argc, char *argv[])
                      Qt::QueuedConnection);
     //This connects the API get mode response to the backed to complete getting the modes from the system controller. This is used during start up
     QObject::connect(&api,&API::sendModesSignal,
-                     &backend, &Backend::receiveModes,
-                     Qt::QueuedConnection);
+                     &backend, &Backend::receiveModes);
 
 
     // GET SETTINGS
@@ -308,29 +305,23 @@ int main(int argc, char *argv[])
     //SHUTDOWN
     //This initiates the powerdown process when the signal is sent to the API. It is used to request user confirmation of shutdown
     QObject::connect(&api, &API::initPowerdown,
-                     &backend, &Backend::powerdownInitiated,
-                     Qt::QueuedConnection);
+                     &backend, &Backend::powerdownInitiated);
     //This is used to confirm or cancel shutdown based on user input
     QObject::connect(&backend, &Backend::powerDownCommand,
-                     &api, &API::confirmPowerdown,
-                     Qt::QueuedConnection);
+                     &api, &API::confirmPowerdown);
     //This is used to stop sending shutdown requests to the system controller, and to initiate a shutdown of the display
     QObject::connect(&api, &API::powerdownConfirmed,
-                     &backend, &Backend::powerdownConfirmed,
-                     Qt::QueuedConnection);
+                     &backend, &Backend::powerdownConfirmed);
 
     //This is used to listen to the knob or not. (used when the display controller is using the knob to adjust some parameter)
     QObject::connect(&backend, &Backend::listenToKnob,
-                     &knob, &Knob::listen,
-                     Qt::QueuedConnection);
+                     &knob, &Knob::listen);
     //This is used to change the saved ventilation state. This is generally used to disallow functions that cannot be used while the system is ventilating.
     QObject::connect(&api, &API::ventilationStateChangeReceived,
-                     &backend, &Backend::receiveVentilationStateChange,
-                     Qt::QueuedConnection);
+                     &backend, &Backend::receiveVentilationStateChange);
 
     QObject::connect(&warningManager, &WarningManager::o2CalibrationSignal,
-                     &o2CalManager, &O2CalManager::calibrationState,
-                     Qt::QueuedConnection);
+                     &o2CalManager, &O2CalManager::calibrationState);
 
     //These are used to expose certain enum classes to the QML
     //This is the setting IDs and Mode Ids

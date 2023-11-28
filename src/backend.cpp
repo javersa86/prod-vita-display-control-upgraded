@@ -1,7 +1,6 @@
 #include <QtDebug>
 
 #include "backend.h"
-#include <chrono>
 #include <stdio.h>
 #include <QDebug>
 #include <QFile>
@@ -22,17 +21,15 @@ Backend::Backend(StateManager* stateManager, WarningManager* warningManager, O2C
     m_partManager = partManager;
     m_dprManager = dprManager;
 
+    constexpr int INTERVAL_ONE_SECOND = 1000;
+
     // Set the dehumidification timer interval to 1 second (1000 milliseconds)
     m_dehumidication_timer = new QTimer(this);
-    setIntervalInSeconds(m_dehumidication_timer,1000); // Consider using a time unit comment here (1s).
+    m_dehumidication_timer->setInterval(INTERVAL_ONE_SECOND);
     m_dehumidication_timer->setSingleShot(false);
     connect(m_dehumidication_timer, &QTimer::timeout, this, &Backend::sendDehumidityValue);
 }
 
-void Backend::setIntervalInSeconds(QTimer *timer, int seconds)
-{
-    timer->setInterval(seconds * 1000);
-}
 void Backend::initResendFunctionPointers()
 {
     m_resend_functions[(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST] = &Backend::getSettings;

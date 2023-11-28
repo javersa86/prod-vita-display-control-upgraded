@@ -934,8 +934,6 @@ class Backend : public QObject
 
         unsigned char m_sp_line_hidden = 0;
 
-        void setIntervalInSeconds(QTimer* timer, int seconds);
-
         /**
          * @brief Initializes functions array to store each send messeage function
          * @note Indexes for array are based on OpCodes in api_consts.h
