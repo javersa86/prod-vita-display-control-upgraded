@@ -829,7 +829,7 @@ class StateManager : public QObject
         *          - Alarm Time
         * @param   notification
         */
-        void updateNotificationVector(QVector<float>);
+        void updateNotificationVector(const QVector<float> &notification);
 
         //SENSOR MEASUREMENTS
         /**
@@ -1019,7 +1019,7 @@ class StateManager : public QObject
         *          - Peak Inspiratory Pressure Raw Data
         * @param   notification
         */
-        void updateServiceNotificationVector(QVector<float> notification);
+        void updateServiceNotificationVector(const QVector<float> &notification);
 
         /**
          * @brief Sets calibration value Inlet Air and emits signal for it.

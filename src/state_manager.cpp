@@ -78,20 +78,23 @@ unsigned char StateManager::separatedHumidity()
 
 /*---Notifications------------------------------------------*/
 
-void StateManager::updateNotificationVector(QVector<float> notification)
+void StateManager::updateNotificationVector(const QVector<float> &notification)
 {
     if (notification.size() == NUM_SETTINGS_NOTIFICATIONS + NUM_CALCULATIONS_NOTIFICATIONS + 1)
     {
-        float *_data = notification.data();
-        QVector<double> notification_vector_copy = notification_vector;
-        double *notifications_data = notification_vector_copy.data();
-        for(int i = 0; i < notification.size(); i++){
+        QVector<double> temp(notification.size());
+        const float *_data = notification.constData();
+        double *notifications_data = temp.data();
+
+        for (int i = 0; i < notification.size(); ++i) {
             notifications_data[i] = _data[i];
         }
-    }
-    emit notificationVectorChanged();
 
-    adjustOxygen();
+        notification_vector = std::move(temp);
+
+        emit notificationVectorChanged();
+        adjustOxygen();
+    }
 }
 
 QVector<double> StateManager::getNotificationVector()
@@ -686,19 +689,23 @@ void StateManager::forceManualOff()
     emit forceManualOffSignal();
 }
 
-void StateManager::updateServiceNotificationVector(QVector<float> notification)
+void StateManager::updateServiceNotificationVector(const QVector<float> &notification)
 {
     if (notification.size() == NUM_SERVICE_NOTIFICATIONS)
     {
-        float *_data = notification.data();
-        QVector<double> service_notification_vector_copy = notification_vector;
-        double *notifications_data = service_notification_vector_copy.data();
+        QVector<double> temp(notification.size());
+        const float *_data = notification.constData();
+        double *notifications_data = temp.data();
+
         for (int i = 0; i < notification.size(); i++)
         {
             notifications_data[i] = _data[i];
         }
+
+        service_notification_vector = std::move(temp);
+
+        emit notificationVectorChanged();
     }
-    emit notificationVectorChanged();
 }
 
 QVector<double> StateManager::getServiceNotificationVector()

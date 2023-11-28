@@ -729,7 +729,6 @@ void API::handleNotification(unsigned char* buffer)
     for (int i=0;i<NUM_SETTINGS_NOTIFICATIONS+NUM_CALCULATIONS_NOTIFICATIONS;i++,buffer+=4)
     {
         data[i] = bytesToFloat(buffer);
-        qDebug() << "ID: " + QString::number(i) + ", data: " + QString::number(data[i]);
     }
 
     handleWarnings(buffer);
