@@ -86,7 +86,8 @@ void StateManager::updateNotificationVector(const QVector<float> &notification)
         const float *_data = notification.constData();
         double *notifications_data = temp.data();
 
-        for (int i = 0; i < notification.size(); ++i) {
+        for (int i = 0; i < notification.size(); ++i)
+        {
             notifications_data[i] = _data[i];
         }
 
