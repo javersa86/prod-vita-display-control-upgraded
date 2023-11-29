@@ -2,7 +2,6 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QObject>
 #include <QVector>
 
 #include "src/backend.h"
@@ -44,7 +43,7 @@
  * @param argv
  * @return
  */
-int main(int argc, char *argv[])
+auto main(int argc, char *argv[]) -> int
 {
     //This initiates the logging of qDebug messages to a file.
     //Note the file /home/root/logs does not exist, logs will not be saved.
@@ -65,7 +64,8 @@ int main(int argc, char *argv[])
     //Warning Manager holds the warnings to display.
     WarningManager warningManager;
     //API acts as the middle man between the system controller and the display controller.
-    API api(QString::fromStdString("/dev/ttyUSB0"), 115200);
+    const int baudrate = 115200;
+    API api(QString::fromStdString("/dev/ttyUSB0"), baudrate);
     //O2 Calibration Manager manages the o2 calibration values. It passes the most recent O2 cal vals to the QML, and saves cal vals to a csv file.
     O2CalManager o2CalManager;
     //DPR Manager manages the dpr values. It passes the most recent DPR vals (high or low), and saves DPR vals to a csv file.
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
     InspiratoryTime it2((int)SettingIds::INSPIRATORY_TIME_2);
     StackingPressure sp1((int)SettingIds::STACKING_PRESSURE_1);
     StackingPressure sp2((int)SettingIds::STACKING_PRESSURE_2);
-    O2 o2((int)SettingIds::O2);
+    O2 oxygen((int)SettingIds::O2);
     PIP pip((int)SettingIds::PIP);
     AuxFlow aux((int)SettingIds::AUX_FLOW);
     Humidity hum1((int)SettingIds::HUM_1);
@@ -288,7 +288,10 @@ int main(int argc, char *argv[])
 
     //GPIO
     //The knob sends increments(+/-1) and button push signals. This is used directly by the API.
-    Knob knob{9, 57, 55};\
+    const int pinA = 9;
+    const int pinB = 57;
+    const int pinSwitch = 55;
+    Knob knob{pinA, pinB, pinSwitch};\
 // These are the calculations for figuring out what the pin numbers are.
 // There's further description of how the knob works in the knob related files
 //   (b-1) * 32 + nn
@@ -357,7 +360,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty(QString::fromStdString("inspiratory_time_2"), &it2);
     engine.rootContext()->setContextProperty(QString::fromStdString("stacking_pressure_1"), &sp1);
     engine.rootContext()->setContextProperty(QString::fromStdString("stacking_pressure_2"), &sp2);
-    engine.rootContext()->setContextProperty(QString::fromStdString("oxygen"), &o2);
+    engine.rootContext()->setContextProperty(QString::fromStdString("oxygen"), &oxygen);
     engine.rootContext()->setContextProperty(QString::fromStdString("pip"), &pip);
     engine.rootContext()->setContextProperty(QString::fromStdString("aux_flow"), &aux);
     engine.rootContext()->setContextProperty(QString::fromStdString("humidity_1"), &hum1);
@@ -380,7 +383,7 @@ int main(int argc, char *argv[])
     //This starts the API thread
     api.start();
 
-    return app.exec();
+    return QApplication::exec();
 }
 
 /** @} */

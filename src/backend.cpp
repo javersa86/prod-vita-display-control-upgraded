@@ -1,7 +1,9 @@
+#include <QVector>
 #include <QtDebug>
+#include <qvector.h>
 
 #include "backend.h"
-#include <stdio.h>
+#include <cstdio>
 #include <QDebug>
 #include <QFile>
 #include <QTime>
@@ -10,21 +12,13 @@
 
 
 Backend::Backend(StateManager* stateManager, WarningManager* warningManager, O2CalManager* o2CalManager, ZeroManager* zeroManager, PartManager* partManager, DPRManager* dprManager, QObject *parent)
-    : QObject(parent)
+    : QObject(parent), m_stateManager(stateManager), m_warningManager(warningManager), m_o2CalManager(o2CalManager), m_zeroManager(zeroManager), m_partManager(partManager), m_dprManager(dprManager), m_dehumidication_timer(new QTimer(this))
 {
     initResendFunctionPointers();
-
-    m_stateManager = stateManager;
-    m_warningManager = warningManager;
-    m_o2CalManager = o2CalManager;
-    m_zeroManager = zeroManager;
-    m_partManager = partManager;
-    m_dprManager = dprManager;
 
     constexpr int INTERVAL_ONE_SECOND = 1000;
 
     // Set the dehumidification timer interval to 1 second (1000 milliseconds)
-    m_dehumidication_timer = new QTimer(this);
     m_dehumidication_timer->setInterval(INTERVAL_ONE_SECOND);
     m_dehumidication_timer->setSingleShot(false);
     connect(m_dehumidication_timer, &QTimer::timeout, this, &Backend::sendDehumidityValue);
@@ -86,15 +80,16 @@ void Backend::setUpIpAddress(){
 inline void msdelay(int millisecondsWait)
 {
     QEventLoop loop;
-    QTimer t;
-    t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
-    t.start(millisecondsWait);
+    QTimer timer;
+    QTimer::connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+    timer.start(millisecondsWait);
     loop.exec();
 }
 
 void Backend::saveLogsToDrive()
 {
-    msdelay(60);
+    const int milliseconds = 60;
+    msdelay(milliseconds);
 
     QString serviceDirName = dirName + "/NVENT_FILES/NV_Vita_events";
     QString warningDirName = dirName + "/NVENT_FILES/NV_Vita_warnings";
@@ -117,7 +112,9 @@ void Backend::saveLogsToDrive()
 
 void Backend::driveConnected()
 {
-    msdelay(100);
+    const int milliseconds = 100;
+    msdelay(milliseconds);
+
     dirName = findPort();
     if (dirName == QString::fromStdString(""))
     {
@@ -131,71 +128,75 @@ void Backend::driveConnected()
 
 void Backend::driveDisconnected()
 {
-    msdelay(100);
-    emit driveDisconnection(!system(m_eject_command_line.toStdString().c_str()));
+    const int milliseconds = 100;
+    msdelay(milliseconds);
+    emit driveDisconnection(static_cast<int>(system(m_eject_command_line.toStdString().c_str()) == 0));
 }
 
-QString Backend::findPort()
+auto Backend::findPort() -> QString
 {
-    QDirIterator it(QString::fromStdString("/run/media"), QDirIterator::Subdirectories);
-    while (it.hasNext())
+    QDirIterator iterator(QString::fromStdString("/run/media"), QDirIterator::Subdirectories);
+    while (iterator.hasNext())
     {
         if (
-                it.fileName() != QString::fromStdString("") &&
-                it.fileName() != QString::fromStdString(".") &&
-                it.fileName() != QString::fromStdString("..") &&
-                it.fileName() != QString::fromStdString("mmcblk0p1") &&
-                it.fileName() != QString::fromStdString("mmcblk0p2") &&
-                it.fileName() != QString::fromStdString("mmcblk1p1"))
+                iterator.fileName() != QString::fromStdString("") &&
+                iterator.fileName() != QString::fromStdString(".") &&
+                iterator.fileName() != QString::fromStdString("..") &&
+                iterator.fileName() != QString::fromStdString("mmcblk0p1") &&
+                iterator.fileName() != QString::fromStdString("mmcblk0p2") &&
+                iterator.fileName() != QString::fromStdString("mmcblk1p1"))
         {
-            if (QDir("/run/media/" + it.fileName()).exists() && QFile("/dev/" + it.fileName()).exists())
+            if (QDir("/run/media/" + iterator.fileName()).exists() && QFile("/dev/" + iterator.fileName()).exists())
             {
-                m_eject_command_line = "eject /dev/" + it.fileName();
-                return "/run/media/" + it.fileName();
+                m_eject_command_line = "eject /dev/" + iterator.fileName();
+                return "/run/media/" + iterator.fileName();
             }
         }
-        it.next();
+        iterator.next();
     }
     return QString::fromStdString("");
 }
 
-bool Backend::exportDirectory(const QString &src, const QString &dst)
+auto Backend::exportDirectory(const QString &src, const QString &dst) -> bool
 {
     QDir sourceDir(src);
     QDir destDir(dst);
 
     if (!destDir.exists())
+    {
         destDir.mkpath(QString::fromStdString("."));
+    }
 
     QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::NoDot | QDir::NoDotAndDotDot);
 
-    for (QString& fileName : fileNames) {
+    for (QString& fileName : fileNames)
+    {
+        if (copyProgressing == 1)
+        {
+            copyProgressing = 0;
+            return false;
+        }
 
-                if (copyProgressing)
-                {
-                    copyProgressing = 0;
-                    return false;
-                }
+        QString srcFilePath = sourceDir.filePath(fileName);
+        QString destFilePath = destDir.filePath(fileName);
 
-                QString srcFilePath = sourceDir.filePath(fileName);
-                QString destFilePath = destDir.filePath(fileName);
-
-                if (!QFile::exists(destFilePath))
-                {
-                    if (QFile::copy(srcFilePath, destFilePath)) {
-                        m_stateManager->incrementSaveDataProgress();
-                        msdelay(5);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    m_stateManager->incrementSaveDataProgress();
-                }
+        if (!QFile::exists(destFilePath))
+        {
+            if (QFile::copy(srcFilePath, destFilePath)) {
+                m_stateManager->incrementSaveDataProgress();
+                const int milliseconds = 5;
+                msdelay(milliseconds);
             }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            m_stateManager->incrementSaveDataProgress();
+        }
+    }
     return true;
 }
 
@@ -204,7 +205,10 @@ void Backend::updateFileCount()
     QDir serviceDir(QString::fromStdString("/media/NVENT_FILES/NV_Vita_events"));
     QDir warningDir(QString::fromStdString("/media/NVENT_FILES/NV_Vita_warnings"));
 
-    m_stateManager->setTotalFiles(serviceDir.count() + warningDir.count() - 6);
+    const int extraFileCount = 6;
+    int fileCount = static_cast<int>(serviceDir.count()) + static_cast<int>(warningDir.count()) - extraFileCount;
+
+    m_stateManager->setTotalFiles(fileCount);
     m_stateManager->setSaveDataProgress(0);
 }
 
@@ -229,8 +233,9 @@ void Backend::stopProgress()
 
 void Backend::initDehumidification(unsigned char val)
 {
-    m_dehumidification_seconds = 120; //0;
-    if (val)
+    const int seconds = 120;
+    m_dehumidification_seconds = seconds; //0;
+    if (val == 1)
     {
         m_dehumidication_timer->start();
     }
@@ -242,7 +247,9 @@ void Backend::initDehumidification(unsigned char val)
 
 void Backend::sendDehumidityValue()
 {
-    if (m_dehumidification_seconds > 0) m_dehumidification_seconds = m_dehumidification_seconds - 1;
+    if (m_dehumidification_seconds > 0) {
+        m_dehumidification_seconds = m_dehumidification_seconds - 1;
+    }
     emit dehumidificationTime(m_dehumidification_seconds);
 }
 
@@ -256,11 +263,15 @@ void Backend::serviceAlarmSlot(unsigned char state)
 void Backend::checkStartupComplete()
 {
     unsigned char startupInProgress = 0;
-    for(int i = 0; i< NUM_API; i++)
+    for(unsigned char m_message_flag : m_message_flags)
     {
-        startupInProgress = startupInProgress | m_message_flags[i];
+        startupInProgress = startupInProgress | m_message_flag;
     }
-    if(! startupInProgress) m_stateManager->setStartupComplete();
+
+    if(startupInProgress == 0)
+    {
+        m_stateManager->setStartupComplete();
+    }
 }
 
 /*------------------------GET SETTINGS PATHWAY----------------------*/
@@ -283,7 +294,7 @@ void Backend::receiveGetSettingsSlot(QVector<int> setting_vals)
     m_stateManager->setSettings(setting_vals);
     m_warningManager->setStateValues(setting_vals);
 
-    if(m_message_flags[(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST])
+    if(m_message_flags[(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST] == 1)
     {
         m_message_flags[(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST] = 0;
 
@@ -303,7 +314,7 @@ void Backend::receiveGetSettingsSlot(QVector<int> setting_vals)
     }
 }
 
-QVector<int> Backend::updateVectorHumidity(QVector<int> setting_vals)
+auto Backend::updateVectorHumidity(QVector<int> setting_vals) -> QVector<int>
 {
     for (int i = 0; i < setting_vals.size(); i++)
     {
@@ -315,25 +326,35 @@ QVector<int> Backend::updateVectorHumidity(QVector<int> setting_vals)
     return setting_vals;
 }
 
-int Backend::getHumidityLevel(int value)
+auto Backend::getHumidityLevel(int value) -> int
 {
-    if (value == 100)
+    int level = -1;
+    const int percent_level_4 = 100;
+    const int percent_level_3 = 70;
+    const int percent_level_2 = 50;
+    const int percent_level_1 = 30;
+
+    if (value == percent_level_4)
     {
-        return 4;
+        level = 4;
     }
-    else if (value == 70)
+    else if (value == percent_level_3)
     {
-        return 3;
+        level = 3;
     }
-    else if (value == 50)
+    else if (value == percent_level_2)
     {
-        return 2;
+        level = 2;
     }
-    else if (value == 30)
+    else if (value == percent_level_1)
     {
-        return 1;
+        level = 1;
     }
-    return 0;
+    else
+    {
+        level = 0;
+    }
+    return level;
 
 }
 
@@ -365,7 +386,7 @@ void Backend::initGetModes()
 
 void Backend::receiveModes(QVector<int> modes)
 {
-    if (modes.length() == NUM_MODES && m_message_flags[(int)txOpCodes::DISPLAY_GET_OP_MODES_REQUEST])
+    if (modes.length() == NUM_MODES && m_message_flags[(int)txOpCodes::DISPLAY_GET_OP_MODES_REQUEST] == 1)
     {
         for (int i = 0; i < NUM_MODES; i ++)
         {
@@ -417,7 +438,8 @@ void Backend::initGetSubsystemStates()
 void Backend::receiveSubsystemStates(const QVector<unsigned char> &states)
 {
     m_stateManager->setSubsystemStates(states);
-    if (!states.at(0) && !m_stateManager->getEtco2ButtonState() && et_button_on_startup)
+    unsigned char state = states.at(0);
+    if (state == 0 && m_stateManager->getEtco2ButtonState() == 0 && et_button_on_startup == 1)
     {
         et_button_on_startup = 0;
         receiveVentilationStateChange(1);
@@ -505,18 +527,31 @@ void Backend::setScreenLockModes(unsigned char value)
     sendModeCommand();
     m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] = 1;
 
-    qInfo() << "NVENT" << "," << "MODE" << "," << "REQUEST" << QString::fromStdString(modeNameMap.at((unsigned char) ModeIDs::SCREEN_LOCK_MODE)) << (value ? "ENABLED" : "DISABLED");
-    qInfo() << "NVENT" << "," << "MODE" << "," << "REQUEST" << QString::fromStdString(modeNameMap.at((unsigned char) ModeIDs::SCREEN_LOCK_TOUCHED_MODE)) << (value ? "ENABLED" : "DISABLED");
+    qInfo() << "NVENT"
+            << ","
+            << "MODE"
+            << ","
+            << "REQUEST"
+            << QString::fromStdString(modeNameMap.at((unsigned char) ModeIDs::SCREEN_LOCK_MODE))
+            << (value == 1 ? "ENABLED" : "DISABLED");
+
+    qInfo() << "NVENT"
+            << ","
+            << "MODE"
+            << ","
+            << "REQUEST"
+            << QString::fromStdString(modeNameMap.at((unsigned char) ModeIDs::SCREEN_LOCK_TOUCHED_MODE))
+            << (value == 1 ? "ENABLED" : "DISABLED");
 }
 
-void Backend::receiveSettingsUpdate(int id, int value)
+void Backend::receiveSettingsUpdate(int setting_id, int value)
 {
     //Save to state machine
-    m_stateManager->setSetting(id, value);
-    m_warningManager->setStateValue(id,value);
+    m_stateManager->setSetting(setting_id, value);
+    m_warningManager->setStateValue(setting_id,value);
 
     //Updates o2 if in laser safe mode and if o2 is greater that laser o2 setting
-    if(id == (int)SettingIds::LASER_O2 && value < m_stateManager->o2Setting() && m_stateManager->laserMode())
+    if(setting_id == (int)SettingIds::LASER_O2 && value < m_stateManager->o2Setting() && m_stateManager->laserMode() == 1)
     {
         int o2_val = m_stateManager->getSetO2Val();
         m_stateManager->setSetting((int)SettingIds::O2, value);
@@ -542,20 +577,20 @@ void Backend::receiveSettingsUpdate(int id, int value)
     sendSettingsUpdate();
     m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
 
-    qInfo() << "NVENT " << "," << "SETTING" << "," << "REQUEST" << QString::fromStdString(settingNameMap.at(id)) << value;
+    qInfo() << "NVENT " << "," << "SETTING" << "," << "REQUEST" << QString::fromStdString(settingNameMap.at(setting_id)) << value;
 }
 
 void Backend::settingsConfirmed()
 {
     //Sends signal to preset implementation progress page to end.
-    if (!m_stateManager->getPresetComplete())
+    if (m_stateManager->getPresetComplete() == 0)
     {
         m_stateManager->setPresetComplete(1);
         setScreenLockModes(0);
         m_stateManager->settingsCompleteTriggered();
     }
 
-    if(m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST])
+    if(m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] == 1)
     {
         m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 0;
 
@@ -599,25 +634,39 @@ void Backend::separateHumidity(unsigned char separate, int hum_value, int hum_au
 
 }
 
-int Backend::getHumidityPercentage(int value)
+auto Backend::getHumidityPercentage(int value) -> int
 {
-    if (value == 4)
+    int percent = -1;
+    const int level_percent_100 = 4;
+    const int level_percent_70 = 3;
+    const int level_percent_50 = 2;
+    const int level_percent_30 = 1;
+    const int percent_level_4 = 100;
+    const int percent_level_3 = 70;
+    const int percent_level_2 = 50;
+    const int percent_level_1 = 30;
+
+    if (value == level_percent_100)
     {
-        return 100;
+        percent = percent_level_4;
     }
-    else if (value == 3)
+    else if (value == level_percent_70)
     {
-        return 70;
+        percent = percent_level_3;
     }
-    else if (value == 2)
+    else if (value == level_percent_50)
     {
-        return 50;
+        percent = percent_level_2;
     }
-    else if (value == 1)
+    else if (value == level_percent_30)
     {
-        return 30;
+        percent = percent_level_1;
     }
-    return 0;
+    else
+    {
+        percent = 0;
+    }
+    return percent;
 }
 
 void Backend::receiveDehumidifySettingsUpdate()
@@ -648,37 +697,38 @@ void Backend::receiveDehumidifySettingsUpdate()
 
 /*------------------------GET MEASURED PATHWAY----------------------*/
 
-void Backend::receiveSensorMeasurements(unsigned char id, unsigned char value)
+void Backend::receiveSensorMeasurements(unsigned char setting_id, unsigned char value)
 {
-    m_get_sensors[id] = 0;
-    m_stateManager->setSensorMeasurement(id, value);
+    m_get_sensors[setting_id] = 0;
+    m_stateManager->setSensorMeasurement(setting_id, value);
     checkSensorsReceived();
 
-    if(m_getO2CalsFlag)
+    if(m_getO2CalsFlag == 1)
     {
-        handleO2CalVals(id, value);
+        handleO2CalVals(setting_id, value);
     }
 }
 
-void Backend::receiveVolt(unsigned char id, float value)
+void Backend::receiveVolt(unsigned char setting_id, float value)
 {
-    m_get_sensors[id] = 0;
-    m_stateManager->setSensorMeasurement(id,value);
+    m_get_sensors[setting_id] = 0;
+    m_stateManager->setSensorMeasurement(setting_id,static_cast<int>(value));
     checkSensorsReceived();
 
-    if(m_getO2CalsFlag)
+    if(m_getO2CalsFlag == 1)
     {
-        handleVoltVals(id, value);
+        handleVoltVals(setting_id, value);
     }
 }
 
-void Backend::receiveWaterSensor(unsigned char id, unsigned char value)
+void Backend::receiveWaterSensor(unsigned char setting_id, unsigned char value)
 {
-    m_get_sensors[id] = 0;
-    m_stateManager->setSensorMeasurement(id, value);
+    m_get_sensors[setting_id] = 0;
+    m_stateManager->setSensorMeasurement(setting_id, value);
     checkSensorsReceived();
 
-    if (id == 17)
+    const unsigned char aux_id = 17;
+    if (setting_id == aux_id)
     {
         m_get_sensors[(int)MeasuredIDs::WATER_SENSOR_AUX] = 1;
 
@@ -687,9 +737,9 @@ void Backend::receiveWaterSensor(unsigned char id, unsigned char value)
     }
 }
 
-void Backend::handleO2CalVals(unsigned char id, unsigned char value)
+void Backend::handleO2CalVals(unsigned char setting_id, unsigned char value)
 {
-    if (id == (int)MeasuredIDs::O2_LOWER_CAL_VAL)
+    if (setting_id == (int)MeasuredIDs::O2_LOWER_CAL_VAL)
     {
         m_O2Vals[0] = value;
         m_get_sensors[(int)MeasuredIDs::O2_UPPER_CAL_VAL] = 1;
@@ -698,7 +748,7 @@ void Backend::handleO2CalVals(unsigned char id, unsigned char value)
         m_message_flags[(int)txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
     }
 
-    else if (id == (int)MeasuredIDs::O2_UPPER_CAL_VAL)
+    else if (setting_id == (int)MeasuredIDs::O2_UPPER_CAL_VAL)
     {
         m_O2Vals[1] = value;
         m_get_sensors[(int)MeasuredIDs::O2_LOWER_BOUND] = 1;
@@ -708,9 +758,9 @@ void Backend::handleO2CalVals(unsigned char id, unsigned char value)
     }
 }
 
-void Backend::handleVoltVals(unsigned char id, float value)
+void Backend::handleVoltVals(unsigned char setting_id, float value)
 {
-    if (id == (int)MeasuredIDs::O2_LOWER_BOUND)
+    if (setting_id == (int)MeasuredIDs::O2_LOWER_BOUND)
     {
         m_Volts[0] = value;
         m_get_sensors[(int)MeasuredIDs::O2_UPPER_BOUND] = 1;
@@ -718,13 +768,16 @@ void Backend::handleVoltVals(unsigned char id, float value)
         sendGetMeasured();
         m_message_flags[(int)txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
     }
-    else if (id == (int)MeasuredIDs::O2_UPPER_BOUND)
+    else if (setting_id == (int)MeasuredIDs::O2_UPPER_BOUND)
     {
         m_Volts[1] = value;
 
         //If calibration values and voltage were never set, create new calibration values and voltage.
-        if (!m_get_sensors[(int)MeasuredIDs::O2_LOWER_CAL_VAL] && !m_get_sensors[(int)MeasuredIDs::O2_UPPER_CAL_VAL]
-            && !m_get_sensors[(int)MeasuredIDs::O2_LOWER_BOUND] && !m_get_sensors[(int)MeasuredIDs::O2_UPPER_BOUND])
+        if (
+                m_get_sensors[(int)MeasuredIDs::O2_LOWER_CAL_VAL] == 0 &&
+                m_get_sensors[(int)MeasuredIDs::O2_UPPER_CAL_VAL] == 0 &&
+                m_get_sensors[(int)MeasuredIDs::O2_LOWER_BOUND] == 0 &&
+                m_get_sensors[(int)MeasuredIDs::O2_UPPER_BOUND] == 0)
         {
             m_o2CalManager->addO2CalVals(m_O2Vals[0], m_O2Vals[1], m_Volts[0], m_Volts[1]);
             m_getO2CalsFlag = 0;
@@ -734,9 +787,9 @@ void Backend::handleVoltVals(unsigned char id, float value)
 
 void Backend::checkSensorsReceived()
 {
-    for (int i = 0; i < NUM_MEASURED_SENSORS; i++)
+    for (unsigned char m_get_sensor : m_get_sensors)
     {
-        if (m_get_sensors[i])
+        if (m_get_sensor == 1)
         {
             m_message_flags[(int)txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
             return;
@@ -750,7 +803,7 @@ void Backend::sendGetMeasured()
 {
     for (int i = 0; i < NUM_MEASURED_SENSORS; i++)
     {
-        if(m_get_sensors[i])
+        if(m_get_sensors[i] == 1)
         {
             emit sendGetSensorMeasurementSignal(i);
         }
@@ -772,7 +825,8 @@ void Backend::initClearAlarm(int warning_id)
 {
     m_warningManager->clearWarning(warning_id);
 
-    if (warning_id == 59)
+    const int alarm_id = 59;
+    if (warning_id == alarm_id)
     {
         m_warningManager->updateServiceAlarm(0);
         return;
@@ -790,7 +844,7 @@ void Backend::sendClearAlarm()
 
 void Backend::clearAlarmSlot(int warning_id)
 {
-    if (m_message_flags[(int)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST])
+    if (m_message_flags[(int)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST] == 1)
     {
         m_message_flags[(int)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST] = 0;
     }
@@ -801,9 +855,9 @@ void Backend::clearAlarmSlot(int warning_id)
 
 void Backend::modesSet()
 {
-    for (int i = 0; i < NUM_MODES; i++)
+    for (unsigned char m_send_mode : m_send_modes)
     {
-        if (m_send_modes[i])
+        if (m_send_mode == 1)
         {
             m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] = 1;
             return;
@@ -814,45 +868,17 @@ void Backend::modesSet()
 
 void Backend::setMode(unsigned char modeID, unsigned char value)
 {
-    //Section of code that prevents modes from being enabled.
-    //ETCO2 Mode can't be enabled if system is ventilating and Manual Mode is active.
-    if (modeID == (unsigned char) ModeIDs::ETCO2_MODE)
+    if (modeConditions(modeID,value))
     {
-        if (!m_stateManager->ventilating() || m_stateManager->manualMode())
-        {
-            return;
-        }
+        return;
     }
-    //Manual Mode can't be enabled if ETCO2 Mode is enabled.
-    else if (modeID == (unsigned char) ModeIDs::MANUAL_MODE)
-    {
-        if (m_stateManager->etCO2Mode())
-        {
-            return;
-        }
 
-        if (value && !m_stateManager->getSPLineState())
-        {
-            m_stateManager->setSPLineState(1);
-            m_sp_line_hidden = 0;
-        }
-        else if (value && m_stateManager->getSPLineState())
-        {
-            m_stateManager->setSPLineState(1);
-            m_sp_line_hidden = 1;
-        }
-        else if (!value)
-        {
-            m_stateManager->setSPLineState(m_sp_line_hidden);
-        }
-
-    }
     unsigned char tmp_success = 2;
-    if (modeID == (unsigned char)ModeIDs::LASER_MODE && value)
+    if (modeID == (unsigned char)ModeIDs::LASER_MODE && value == 1)
     {
         tmp_success = 1;
     }
-    else if (modeID == (unsigned char)ModeIDs::LASER_MODE && !value)
+    else if (modeID == (unsigned char)ModeIDs::LASER_MODE && value == 0)
     {
         tmp_success = 0;
     }
@@ -872,7 +898,7 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
         emit listenToKnob(value);
     }
     //If laser mode need to be changed
-    else if (modeID == (unsigned char) ModeIDs::LASER_MODE && value)
+    else if (modeID == (unsigned char) ModeIDs::LASER_MODE && value == 1)
     {
         //If oxygen setting value is greater than oxygen setting value when laser mode is enabled
         if (m_stateManager->o2Setting() > m_stateManager->laserO2Setting())
@@ -884,7 +910,7 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
         }
     }
     //If laser mode does not need to be changed
-    else if (modeID == (unsigned char) ModeIDs::LASER_MODE && !value)
+    else if (modeID == (unsigned char) ModeIDs::LASER_MODE && value == 0)
     {
         //O2 value changes
         receiveSettingsUpdate((unsigned char) SettingIds::O2, m_stateManager->getSetO2Val());
@@ -896,7 +922,7 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
         QVector<int> calvals = m_o2CalManager->getMostRecentO2CalVal();
         temp = "; Low Calibration value: " + QString::number(calvals.at(0)) + "; High Calibration value: " + QString::number(calvals.at(1));
     }
-    else if (modeID == (unsigned char) ModeIDs::CALIBRATION_MODE && value)
+    else if (modeID == (unsigned char) ModeIDs::CALIBRATION_MODE && value == 1)
     {
         m_warningManager->pauseDisconnection(value);
         m_stateManager->setDisplayWarnings(0);
@@ -909,14 +935,14 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
 
         qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Change Pressure Regulator State: Default";
     }
-    else if (modeID == (unsigned char) ModeIDs::CALIBRATION_MODE && !value)
+    else if (modeID == (unsigned char) ModeIDs::CALIBRATION_MODE && value == 0)
     {
         m_warningManager->pauseDisconnection(value);
         receiveSettingsUpdate(0,m_stateManager->getSavedDP());
         m_stateManager->setDisplayWarnings(1);
         emit signalCalibrationMessages(value);
     }
-    else if (modeID == (unsigned char) ModeIDs::HUMIDITY_PRIMING_RESET_AVAILABLE && !value)
+    else if (modeID == (unsigned char) ModeIDs::HUMIDITY_PRIMING_RESET_AVAILABLE && value == 0)
     {
 
         m_stateManager->setSetting((int)SettingIds::HUM_1,0);
@@ -934,21 +960,65 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
         sendSettingsUpdate();
         m_message_flags[(int) txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
     }
-    else if (modeID == (unsigned char) ModeIDs::DEHUMIDIFY_MODE && !value)
+    else if (modeID == (unsigned char) ModeIDs::DEHUMIDIFY_MODE && value == 0)
     {
         initDehumidification(0);
     }
 
     //Logs mode enabled/disabled
-    qInfo() << "NVENT" << "," << "MODE" << "," << "REQUEST" << QString::fromStdString(modeNameMap.at(modeID)) + temp << (value ? "ENABLED" : "DISABLED");
+    qInfo() << "NVENT"
+            << ","
+            << "MODE"
+            << ","
+            << "REQUEST"
+            << QString::fromStdString(modeNameMap.at(modeID)) + temp
+            << (value == 1 ? "ENABLED" : "DISABLED");
 
+}
+
+auto Backend::modeConditions(unsigned char modeID, unsigned char value) -> bool
+{
+    //Section of code that prevents modes from being enabled.
+    //ETCO2 Mode can't be enabled if system is ventilating and Manual Mode is active.
+    if (modeID == (unsigned char) ModeIDs::ETCO2_MODE)
+    {
+        if (m_stateManager->ventilating() == 0 || m_stateManager->manualMode() == 1)
+        {
+            return true;
+        }
+    }
+    //Manual Mode can't be enabled if ETCO2 Mode is enabled.
+    else if (modeID == (unsigned char) ModeIDs::MANUAL_MODE)
+    {
+        if (m_stateManager->etCO2Mode() == 1)
+        {
+            return true;
+        }
+
+        if (value == 1 && m_stateManager->getSPLineState() == 0)
+        {
+            m_stateManager->setSPLineState(1);
+            m_sp_line_hidden = 0;
+        }
+        else if (value == 1 && m_stateManager->getSPLineState() == 1)
+        {
+            m_stateManager->setSPLineState(1);
+            m_sp_line_hidden = 1;
+        }
+        else if (value == 0)
+        {
+            m_stateManager->setSPLineState(m_sp_line_hidden);
+        }
+
+    }
+    return false;
 }
 
 void Backend::sendModeCommand()
 {
     for(int i = 0; i < NUM_MODES; i++)
     {
-        if (m_send_modes[i])
+        if (m_send_modes[i] == 1)
         {
             emit setModeSignal(i, m_stateManager->getModeEnabled(i));
         }
@@ -960,13 +1030,13 @@ void Backend::modeConfirmed(unsigned char modeID, unsigned char value)
     //check if the mode needs to be set
 
     QString temp = QString::fromStdString("");
-    if(m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] && m_send_modes[modeID])
+    if(m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] == 1 && m_send_modes[modeID] == 1)
     {
         //check that mode was set to correct value
         if(m_stateManager->getModeEnabled(modeID) == value)
         {
             m_send_modes[modeID] = 0;
-            if (value)
+            if (value == 1)
             {
                 m_stateManager->setMode(modeID,value, 2);
             }
@@ -991,7 +1061,14 @@ void Backend::modeRequested(unsigned char modeID, unsigned char value, unsigned 
     modesSet();
     m_stateManager->setMode(modeID, value, success);
 
-    qInfo() << "NVENT" << "," << "MODE" << "," << "AUTOMATED CHANGE" << QString::fromStdString(modeNameMap.at(modeID)) << (value ? "ENABLED" : "DISABLED") << (success ? "SUCCESSFUL" : "UNSUCCESSFUL");
+    qInfo() << "NVENT"
+            << ","
+            << "MODE"
+            << ","
+            << "AUTOMATED CHANGE"
+            << QString::fromStdString(modeNameMap.at(modeID))
+            << (value == 1 ? "ENABLED" : "DISABLED")
+            << (success == 1 ? "SUCCESSFUL" : "UNSUCCESSFUL");
 
     //Updates humidity values
     if(modeID == (unsigned char)ModeIDs::DEHUMIDIFY_MODE)
@@ -1008,7 +1085,11 @@ void Backend::modeRequested(unsigned char modeID, unsigned char value, unsigned 
         }
         else
         {
-            qInfo() << "NVENT" << "," << "O2 CALIBRATION" << "," << "Oxygen Calibration failed and no new values were saved.";
+            qInfo() << "NVENT"
+                    << ","
+                    << "O2 CALIBRATION"
+                    << ","
+                    << "Oxygen Calibration failed and no new values were saved.";
         }
     }
 }
@@ -1039,10 +1120,10 @@ void Backend::receiveVentilationStateChange(unsigned char state)
 
 /*------------------------HMI BUTTON PUSH PATHWAY-----------------------------------------*/
 
-void Backend::receiveHMIButtonPress(unsigned char id)
+void Backend::receiveHMIButtonPress(unsigned char hmi_id)
 {
     QString bName;
-    switch(id)
+    switch(hmi_id)
     {
     case POWER:
         bName = QString::fromStdString("POWER");
@@ -1062,14 +1143,14 @@ void Backend::receiveHMIButtonPress(unsigned char id)
     }
 
     qInfo() << "NVENT" << "," << "HMI BUTTON" << "," << "PRESS" << bName;
-    emit hmiButtonPressed(id);
+    emit hmiButtonPressed(hmi_id);
 }
 
 /*------------------------SHUTDOWN PATHWAY-----------------------------------------------*/
 
 void Backend::powerdownInitiated()
 {
-    if (not m_stateManager->powerdownFlag()){
+    if (m_stateManager->powerdownFlag() == 0){
         m_stateManager->setPowerdownFlag(1);
     }
 
@@ -1083,7 +1164,7 @@ void Backend::powerdownInitiated()
 
 void Backend::initiatePowerdown(unsigned char powerdown)
 {
-    if (powerdown)
+    if (powerdown == 1)
     {
         qInfo() << "NVENT" << "," << "SHUTDOWN" << "," << "Power down confirmed.";
     }
@@ -1101,7 +1182,7 @@ void Backend::sendPowerdownCommand()
 void Backend::powerdownConfirmed()
 {
     m_message_flags[(int)txOpCodes::DISPLAY_SHUTDOWN_CONFIRM_SEND] = 0;
-    if(m_stateManager->powerdownFlag())
+    if(m_stateManager->powerdownFlag() == 1)
     {
         system("shutdown -h now");
     }
@@ -1138,7 +1219,8 @@ void Backend::updateDPRStates(unsigned char val)
     {
         temp = QString::fromStdString("High Driving Pressure Regulator");
         setMode((unsigned char) ModeIDs::LISTENING_KNOB,1);
-        receiveSettingsUpdate(0,45);
+        const int dp_setting = 45;
+        receiveSettingsUpdate(0,dp_setting);
     }
     else if (val == 2 || val == 3)
     {
@@ -1151,7 +1233,8 @@ void Backend::updateDPRStates(unsigned char val)
             temp = QString::fromStdString("O2 Regulator");
         }
         setMode((int)ModeIDs::LISTENING_KNOB,1);
-        receiveSettingsUpdate(0,48);
+        const int dp_setting = 48;
+        receiveSettingsUpdate(0,dp_setting);
     }
     m_dpr = val;
     sendDPRValue();
@@ -1163,7 +1246,7 @@ void Backend::updateDPRStates(unsigned char val)
 void Backend::lowDPRConfirmation(unsigned char value)
 {
     //Saves Actual value if Calibration is done, not cancelled
-    if (value)
+    if (value == 1)
     {
         m_dprManager->addDPRVal(m_stateManager->currentDPR());
     }
@@ -1209,15 +1292,15 @@ void Backend::highDPRConfirmation(int flag, float value)
     }
 }
 
-void Backend::regulatorConfirmation(unsigned char val,unsigned char id)
+void Backend::regulatorConfirmation(unsigned char val,unsigned char regulator_id)
 {
-    if (val)
+    if (val == 1)
     {
-        if (id == 2)
+        if (regulator_id == 2)
         {
             qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Confirm Calibration for Air Regulator Calibration.";
         }
-        if (id == 3)
+        if (regulator_id == 3)
         {
             qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Confirm Calibration for Oxygen Regulator Calibration.";
         }
@@ -1237,7 +1320,7 @@ void Backend::sendDPRValue()
 
 void Backend::slotDPRValue()
 {
-    if (m_message_flags[(int)txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST])
+    if (m_message_flags[(int)txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] == 1)
     {
         m_message_flags[(int)txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 0;
         qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Pressure Regulator State Change Confirmed";
@@ -1262,21 +1345,21 @@ void Backend::endDPRCalibration()
 
 /*------------------------ZERO PRESSURE SENSOR PATHWAY--------------------------------------------*/
 
-void Backend::initZeroSensor(unsigned char id, float value)
+void Backend::initZeroSensor(unsigned char sensor_id, float value)
 {
-    m_zeroSensor = id;
+    m_zeroSensor = sensor_id;
     QString temp = QString::fromStdString("");
 
     m_zero_values = {};
-    m_zero_values.append((float) id);
+    m_zero_values.append((float) sensor_id);
 
-    if (id == 0)
+    if (sensor_id == 0)
     {
         temp = QString::fromStdString(" (PIP)");
         m_stateManager->setVerifyPIP(value);
         m_zero_values.append(m_stateManager->zeroPIP());
     }
-    else if (id == 1)
+    else if (sensor_id == 1)
     {
         temp = QString::fromStdString(" (SP)");
         m_stateManager->setVerifySP(value);
@@ -1286,7 +1369,7 @@ void Backend::initZeroSensor(unsigned char id, float value)
     sendZeroSensor();
     m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = 1;
 
-    qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Zero Sensor: " + QString::number(id) + temp;
+    qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Zero Sensor: " + QString::number(sensor_id) + temp;
 }
 
 void Backend::sendZeroSensor()
@@ -1302,8 +1385,8 @@ void Backend::receiveSensorZeroed(const QVector<unsigned char> &values)
     if (m_zeroSensor == 0 && values.at(0) == 0)
     {
         temp = QString::fromStdString("PIP ");
-        result = values.at(1) ? 1 : 0;
-        if (result)
+        result = values.at(1) >= 1 ? 1 : 0;
+        if (result == 1)
         {
             m_zeroManager->addZeroValue(0, m_stateManager->zeroPIP());
             m_zeroManager->addVerifiedValue(0, m_stateManager->verifyPIP());
@@ -1312,15 +1395,15 @@ void Backend::receiveSensorZeroed(const QVector<unsigned char> &values)
     else if (m_zeroSensor == 1 && values.at(0) == 1)
     {
         temp = QString::fromStdString("SP ");
-        result = values.at(1) ? 1 : 0;
-        if (result)
+        result = values.at(1) >= 1 ? 1 : 0;
+        if (result == 1)
         {
             m_zeroManager->addZeroValue(1, m_stateManager->zeroSP());
             m_zeroManager->addVerifiedValue(1, m_stateManager->verifySP());
         }
     }
 
-    if (m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST])
+    if (m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] == 1)
     {
         m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = 0;
 

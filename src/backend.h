@@ -176,7 +176,7 @@ class Backend : public QObject
          * @param value
          * @callergraph
          */
-        void logsState(bool);
+        static void logsState(bool);
 
         void stopProgress();
 
@@ -331,7 +331,7 @@ class Backend : public QObject
          * @param value
          * @callergraph
          */
-        void receiveSettingsUpdate(int id, int value);
+        void receiveSettingsUpdate(int setting_id, int value);
 
         /**
          * @brief Receives message from API that settings are set.
@@ -482,7 +482,7 @@ class Backend : public QObject
          * @param id
          * @callergraph
          */
-        void receiveHMIButtonPress(unsigned char);
+        void receiveHMIButtonPress(unsigned char hmi_id);
 
         /*--Shutdown----------------------------------------------------------------------*/
 
@@ -586,7 +586,7 @@ class Backend : public QObject
          * @param value
          * @callergraph
          */
-        void initZeroSensor(unsigned char id, float value);
+        void initZeroSensor(unsigned char sensor_id, float value);
 
         //From API
         /**
@@ -866,6 +866,7 @@ class Backend : public QObject
          * @brief Variable to track the current directory name for a USB drive.
          */
         QString dirName = "";
+
         /**
          * @brief Variable to track the current directory to eject USB drive.
          */
@@ -1011,6 +1012,8 @@ class Backend : public QObject
          */
         void modesSet();
 
+        bool modeConditions(unsigned char modeID, unsigned char value);
+
         /**
          * @brief      Gets high or low O2 calibration values.
          * @param  id
@@ -1035,19 +1038,19 @@ class Backend : public QObject
          * @param value
          * @return int
          */
-        int getHumidityPercentage(int value);
+        static int getHumidityPercentage(int value);
         /**
          * @brief Switches humidity levels to percentages.
          * @param value
          * @return int
          */
-        int getHumidityLevel(int value);
+        static int getHumidityLevel(int value);
 
         /**
          * @brief Updates humidity percentages from get settings response to levels.
          * @return QVector<int>
          */
-        QVector<int> updateVectorHumidity(QVector<int>);
+        static QVector<int> updateVectorHumidity(QVector<int>);
         /** @} */
 };
 /** @} */
