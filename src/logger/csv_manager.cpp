@@ -2,19 +2,15 @@
 
 #include <sys/stat.h>
 
-CSVManager::CSVManager(std::string filePath, std::string *buffer, int numArgs)
+CSVManager::CSVManager(std::string filePath, std::string *buffer, int numArgs) : m_filePath(filePath), m_numArgs(numArgs)
 {
-    m_filePath = filePath;
-    m_numArgs = numArgs;
-    if(!exists(filePath)) create(filePath, buffer);
-};
-
-CSVManager::CSVManager()
-{
-
+    if(!exists(filePath))
+    {
+        create(filePath, buffer);
+    }
 }
 
-int CSVManager::getNumEntries()
+auto CSVManager::getNumEntries() -> int
 {
     std::fstream fin;
     fin.open(m_filePath,std::ios::in);
@@ -22,17 +18,21 @@ int CSVManager::getNumEntries()
     std::getline(fin, line); //skip title row
     int numLines = 0;
     if(!fin.eof())
+    {
         while(std::getline(fin,line))
+        {
             numLines++;
+        }
+    }
     fin.close();
     return numLines;
 }
 
-bool CSVManager::exists(std::string &filePath)
+auto CSVManager::exists(std::string &filePath) -> bool
 {
     struct stat buffer;
     return (stat(filePath.c_str(), &buffer) == 0);
-};
+}
 
 void CSVManager::create(std::string filePath, std::string *buffer)
 {
@@ -53,7 +53,7 @@ void CSVManager::create(std::string filePath, std::string *buffer)
         fout << "\n";
         fout.close();
     }
-};
+}
 
 void CSVManager::createRecord(std::string *buffer)
 {
@@ -66,9 +66,9 @@ void CSVManager::createRecord(std::string *buffer)
     };
     fout << *buffer << "\n";
     fout.close();
-};
+}
 
-std::vector<std::string> CSVManager::readRecord(int rowIndex)
+auto CSVManager::readRecord(int rowIndex) -> std::vector<std::string>
 {
     // File pointer
     std::fstream fin;
@@ -78,21 +78,26 @@ std::vector<std::string> CSVManager::readRecord(int rowIndex)
     // Read the Data from the file
     // as String Vector
     std::vector<std::string> row;
-    std::string line, element, temp;
+    std::string line;
+    std::string element;
 
     // read an entire row and
     // store it in a string variable 'line'
     for(int i = 0; i < rowIndex + 1; ++i) // skip first n rows (including title column)
+    {
         std::getline(fin, line);
+    }
 
     std::getline(fin, line);
-    std::stringstream s(line);
-    while (std::getline(s, element,',')) {
+    std::stringstream str_line(line);
+
+    while (std::getline(str_line, element,','))
+    {
         row.push_back(element);
     }
     fin.close();
     return row;
-};
+}
 
 void CSVManager::updateRecord(int rowIndex, std::string *buffer)
 {
@@ -103,8 +108,8 @@ void CSVManager::updateRecord(int rowIndex, std::string *buffer)
     fin.open(m_filePath,std::ios::in);
     fout.open(newFile,std::ios::out | std::ios::app);
 
-    int i;
-    std::string line, element;
+    std::string line;
+    std::string element;
     std::vector<std::string> row;
 
     // Traverse the file
@@ -114,14 +119,18 @@ void CSVManager::updateRecord(int rowIndex, std::string *buffer)
         std::getline(fin, line);
         if (!fin.eof())
         {
-            std::stringstream s(line);
-            while (std::getline(s, element,',')) {
+            std::stringstream str_line(line);
+
+            while (std::getline(str_line, element,','))
+            {
                 row.push_back(element);
             }
+
             for(int i = 0; i < m_numArgs - 1; i++)
             {
                 fout << row[i] << ",";
             }
+
             fout << row[m_numArgs - 1] << "\n";
             row.clear();
             line.clear();
@@ -131,7 +140,7 @@ void CSVManager::updateRecord(int rowIndex, std::string *buffer)
     //Enter the new entry
     if (!fin.eof()) {
 
-        for (i = 0; i < m_numArgs - 1; i++) {
+        for (int i = 0; i < m_numArgs - 1; i++) {
             fout << *buffer << ",";
             buffer++;
         }
@@ -152,14 +161,17 @@ void CSVManager::updateRecord(int rowIndex, std::string *buffer)
         std::getline(fin, line);
         if(!fin.eof())
         {
-            std::stringstream s(line);
-            while (std::getline(s, element,',')) {
+            std::stringstream str_line(line);
+            while (std::getline(str_line, element,','))
+            {
                 row.push_back(element);
             }
+
             for(int i = 0; i < m_numArgs - 1 && i < row.size(); i++)
             {
                 fout << row[i] << ",";
             }
+
             std::string last = row[m_numArgs - 1];
             fout << last << "\n";
         }
@@ -183,8 +195,8 @@ void CSVManager::deleteRecord(int rowIndex)
     fin.open(m_filePath,std::ios::in);
     fout.open(newFile,std::ios::out | std::ios::app);
 
-    int i;
-    std::string line, element;
+    std::string line;
+    std::string element;
     std::vector<std::string> row;
 
     //Traverse the file
@@ -192,10 +204,12 @@ void CSVManager::deleteRecord(int rowIndex)
     for(int j = 0; j < rowIndex + 1; ++j) // skip first n rows (including title column)
     {
         std::getline(fin, line);
+
         if (!fin.eof())
         {
-            std::stringstream s(line);
-            while (std::getline(s, element,',')) {
+            std::stringstream str_line(line);
+            while (std::getline(str_line, element,','))
+            {
                 row.push_back(element);
             }
             for(int i = 0; i < m_numArgs - 1; i++)
@@ -222,8 +236,10 @@ void CSVManager::deleteRecord(int rowIndex)
         std::getline(fin, line);
         if(!fin.eof())
         {
-            std::stringstream s(line);
-            while (std::getline(s, element,',')) {
+            std::stringstream str_line(line);
+
+            while (std::getline(str_line, element,','))
+            {
                 row.push_back(element);
             }
             for(int i = 0; i < m_numArgs - 1 && i < row.size(); i++)

@@ -6,9 +6,9 @@ DPRManager::DPRManager(QObject * parent) :
 {
     //Retrive Time Stamp from time manager CSV file
     std::vector<std::string> tColumns = {"TYPE", "TIME"};
-    m_timeManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/time.csv", &tColumns[0],2);
+    m_timeManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/time.csv", tColumns.data(), 2);
 
-    m_dprCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(DPR_FILE),&dprColumns[0], 2);
+    m_dprCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(DPR_FILE), dprColumns.data(), 2);
     m_timeStamps = QVector<QString>( MAX_O2_VALS );
     m_dprVals = QVector<int>( MAX_O2_VALS );
     updateDPRVals();
@@ -16,7 +16,7 @@ DPRManager::DPRManager(QObject * parent) :
 
 void DPRManager::updateDPRVals()
 {
-    QRegExp re(QString::fromStdString("\\d*"));
+    QRegExp regular_expression(QString::fromStdString("\\d*"));
 
     m_numDPRVals = m_dprCsvManager.getNumEntries();
 
@@ -24,48 +24,52 @@ void DPRManager::updateDPRVals()
     if (m_numDPRVals > MAX_O2_VALS)
     {
         system("rm /media/NVENT_FILES/dpr_vals.csv");
-        m_dprCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(DPR_FILE),&dprColumns[0], 2);
+        m_dprCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(DPR_FILE), dprColumns.data(), 2);
         m_numDPRVals = m_dprCsvManager.getNumEntries();
         qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "DPR Calibration Manager reset do to corruption.";
     }
-    int i = 0;
-    for(; i< m_numDPRVals; i++)
+
+    int index = 0;
+    for(; index < m_numDPRVals; index++)
     {
-        std::vector<std::string> tmp =  m_dprCsvManager.readRecord(i);
-        m_timeStamps[i] = QString::fromStdString("");
-        m_dprVals[i] = -1;
+        std::vector<std::string> tmp =  m_dprCsvManager.readRecord(index);
+        m_timeStamps[index] = QString::fromStdString("");
+        m_dprVals[index] = -1;
+
         //The length of the row must be 4
         if (tmp.size() != 2)
         {
-            m_timeStamps[i] = QString::fromStdString("");
-            m_dprVals[i] = -1;
+            m_timeStamps[index] = QString::fromStdString("");
+            m_dprVals[index] = -1;
         }
-        else {
+        else
+        {
             for (int j = 0; j < 2; j++)
             {
                 if(j == 0)
                 {
-                    m_timeStamps[i] = QString::fromStdString(tmp[j]);
+                    m_timeStamps[index] = QString::fromStdString(tmp[j]);
                 }
-                else if(j == 1){
-                    if (re.exactMatch(QString::fromStdString(tmp[j])))
+                else if(j == 1)
+                {
+                    if (regular_expression.exactMatch(QString::fromStdString(tmp[index])))
                     {
-                        m_dprVals[i] = QString::fromStdString(tmp[j]).toInt();
+                        m_dprVals[index] = QString::fromStdString(tmp[j]).toInt();
                     }
                     //If value is not a digit
                     else
                     {
-                        m_dprVals[i] = -1;
+                        m_dprVals[index] = -1;
                     }
                 }
             }
         }
     }
 
-    for(;i < MAX_O2_VALS; i++)
+    for(;index < MAX_O2_VALS; index++)
     {
-        m_timeStamps[i] = QString::fromStdString("");
-        m_dprVals[i] = -1;
+        m_timeStamps[index] = QString::fromStdString("");
+        m_dprVals[index] = -1;
     }
 
     emit dprValsChanged();
@@ -73,7 +77,7 @@ void DPRManager::updateDPRVals()
 
 void DPRManager::addDPRVal(int value)
 {
-    while(m_numDPRVals >= 5)
+    while(m_numDPRVals >= MAX_O2_VALS)
     {
         deleteOldestDPRVal();
     }
@@ -81,7 +85,7 @@ void DPRManager::addDPRVal(int value)
     std::string timeStamp = m_timeManager.readRecord(0).at(1) + " - " + m_timeManager.readRecord(1).at(1);
     std::vector<std::string> tmp = {timeStamp,std::to_string(value)};
 
-    m_dprCsvManager.createRecord(&tmp[0]);
+    m_dprCsvManager.createRecord(tmp.data());
     updateDPRVals();
 
     qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Confirm Calibration for Driving Pressure Regulator Calibration: " + QString::number(value);
@@ -95,7 +99,7 @@ void DPRManager::deleteOldestDPRVal()
     qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Delete Oldest Calibration value.";
 }
 
-int DPRManager::getDPRCalVal()
+auto DPRManager::getDPRCalVal() -> int
 {
     if(!m_dprVals.isEmpty() && m_numDPRVals > 0)
     {

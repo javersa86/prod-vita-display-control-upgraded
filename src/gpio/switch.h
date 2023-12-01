@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QObject>
+#include <QDebug>
+
 #include "gpio.h"
 
 /**
@@ -36,7 +38,7 @@ class Switch : public QObject
          * @note  Switch includes path to thee switch pin value file.
          * @param pin_path
          */
-        Switch();
+        Switch() = default;
 
     private:
         uint m_state;

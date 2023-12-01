@@ -13,7 +13,7 @@
 /**
  * @brief Number of buttons tracked.
  */
-#define NUM_BUTTONS 3
+constexpr int NUM_BUTTONS = 3;
 
 /**
  * @brief The Enumerations for HMI Buttons.

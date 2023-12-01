@@ -408,7 +408,7 @@ class StateManager : public QObject
         * @brief Gets state of powerdown status.
         * @return int
         */
-        int powerdownFlag();
+        int powerdownFlag() const;
         /**
         * @brief Sets state of powerdown status and emits signal for it.
         * @param flag
@@ -423,14 +423,14 @@ class StateManager : public QObject
         * @brief Gets state of ventilation.
         * @return unsigned char
         */
-        unsigned char ventilating();
+        unsigned char ventilating() const;
 
         //SOFTWARE VERSIONS
         /**
         * @brief Gets version number for display controller.
         * @return QString
         */
-        QString getDisplaySoftwareVersion();
+        static QString getDisplaySoftwareVersion();
         /**
         * @brief Gets version number for system controller.
         * @return QString
@@ -447,7 +447,7 @@ class StateManager : public QObject
         * @brief  Gets state for the startup sequence.
         * @return int
         */
-        int startupFlag();
+        int startupFlag() const;
         /**
         * @brief Sets state for when startup is complete and emits signal for it.
         */
@@ -534,7 +534,7 @@ class StateManager : public QObject
         * @brief Gets state for when humidity and humidity aux are unified or separated.
         * @return unsigned char
         */
-        unsigned char separatedHumidity();
+        unsigned char separatedHumidity() const;
         /**
         * @brief Sets state for when humidity and humidity aux needs to be unified or separated and emits signal for it.
         * @param value
@@ -727,7 +727,7 @@ class StateManager : public QObject
         * @brief Gets O2 value for Laser-Safe Mode.
         * @return unsigned char
         */
-        unsigned char getSetO2Val();
+        unsigned char getSetO2Val() const;
         /**
         * @brief Sets O2 value for Laser-Safe Mode.
         * @param val
@@ -739,7 +739,7 @@ class StateManager : public QObject
         * @brief Gets DPR Calibration value.
         * @return int
         */
-        int currentDPR();
+        int currentDPR() const;
         /**
         * @brief Sets DPR Calibration value and emits signal for it.
         * @param val
@@ -801,7 +801,7 @@ class StateManager : public QObject
         * @brief Gets saved Driving Pressure setting value for when Service Calibration Mode is enabled.
         * @return unsigned char
         */
-        unsigned char getSavedDP();
+        unsigned char getSavedDP() const;
         /**
         * @brief Sets saved Driving Pressure setting value for when Service Calibration Mode is enabled.
         * @param val
@@ -842,7 +842,7 @@ class StateManager : public QObject
         * @param id
         * @param value
         */
-        void setSensorMeasurement(unsigned char id, int value);
+        void setSensorMeasurement(unsigned char sensor_id, int value);
 
         /**
         * @brief Sets Setting by id and emits signal for it.
@@ -875,7 +875,7 @@ class StateManager : public QObject
         * @brief Gets state of preset implementation progress.
         * @return unsigned char
         */
-        unsigned char getPresetComplete();
+        unsigned char getPresetComplete() const;
         /**
         * @brief Sets state of preset implementation progress and emits signal for it.
         * @param val
@@ -888,7 +888,7 @@ class StateManager : public QObject
         * @note  Function utilizied for service menu calibration page.
         * @return unsigned char
         */
-        unsigned char getDisplayWarnings();
+        unsigned char getDisplayWarnings() const;
         /**
         * @brief Sets state of warnings banner visibility
         * @note  Function utilized for  service menu calibration page.
@@ -901,7 +901,7 @@ class StateManager : public QObject
         * @brief Gets state for when preset edit page is opened, so that page won't timeout.
         * @return unsigned char
         */
-        unsigned char getPresetCreateActive();
+        unsigned char getPresetCreateActive() const;
         /**
         * @brief Sets state for when preset edit page is opened, so that page won't timeout and emits signal for it.
         * @param val
@@ -912,14 +912,14 @@ class StateManager : public QObject
          * @brief Gets state of visibility for SP Line on the graph.
          * @return unsigned char
          */
-        unsigned char getSPLineState();
+        unsigned char getSPLineState() const;
 
         //ETCO2 BUTTON STATE
         /**
          * @brief Gets the state of the functionality of the ETCO2 Button.
          * @return unsigned char
          */
-        unsigned char getEtco2ButtonState();
+        unsigned char getEtco2ButtonState() const;
 
         //SAVE DATA
         /**
@@ -932,7 +932,7 @@ class StateManager : public QObject
          * @brief Gets total service log files and warning log files.
          * @return int
          */
-        int getTotalFiles();
+        int getTotalFiles() const;
 
         /**
          * @brief Sets progress for exporting files to USB Drive.
@@ -949,7 +949,7 @@ class StateManager : public QObject
          * @brief Gets progress for exporting files to USB Drive.
          * @return int
          */
-        int getSaveDataProgress();
+        int getSaveDataProgress() const;
 
         /**
          * @brief Get measured values from service notifications.
@@ -991,7 +991,7 @@ class StateManager : public QObject
         * @param  id
         * @return unsigned char
         */
-        int getZeroValue(unsigned char);
+        float getZeroValue(unsigned char);
 
         /**
          * @brief Sets the state of visibility for SP Line on the graph.

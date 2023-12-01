@@ -55,14 +55,14 @@ class WarningManager : public QObject
     Q_PROPERTY(int laserWarning READ getLaserWarning NOTIFY warningChanged)
 
     private:
-        int m_top_warning;
-        int m_num_active_warnings_flag;
+        int m_top_warning = NO_WARNINGS;
+        int m_num_active_warnings_flag = NO_WARNINGS;
 
-        QVector<int> m_active_warnings;
-        QVector<int> m_notices;
-        QVector<int> m_inactive_by_occurance;
-        QVector<int> m_autoclearing_warnings;
-        QVector<int> m_currentStateValues;
+        QVector<int> m_active_warnings = QVector<int>(NUM_WARNINGS);
+        QVector<int> m_notices = QVector<int>(NUM_WARNINGS - BEGIN_NOTICE_INDEX);
+        QVector<int> m_inactive_by_occurance = QVector<int>();
+        QVector<int> m_autoclearing_warnings = QVector<int>(NUM_WARNINGS);
+        QVector<int> m_currentStateValues = QVector<int>();
 
         QTimer *m_disconnectTimer;
         
@@ -72,6 +72,11 @@ class WarningManager : public QObject
         unsigned char m_service_state = 0;
 
         unsigned char m_service_due_state = 0;
+
+        const int SERVICE_ID = 59;
+        const int SERVICE_NOTICE_ID = 7;
+        const int CALIBRATION_ID = 19;
+        const int CALIBRATION_LIMITED_ID = 20;
 
         /**
         * @brief Raise a "No Comm" warning if warnings are not updated.
@@ -89,6 +94,9 @@ class WarningManager : public QObject
         * @param warnings
         */
         void setActiveWarnings(QVector<unsigned char> *);
+
+        unsigned char setActiveAlarms(unsigned char, QVector<unsigned char> *);
+        unsigned char setActiveNotices(unsigned char, QVector<unsigned char> *);
 
         /**
         * @brief      Sets the vector for which warnings are autoclearing or not.
@@ -239,7 +247,7 @@ class WarningManager : public QObject
         * @param id
         * @callergraph
         */
-        void clearWarning(unsigned char id);
+        void clearWarning(unsigned char clear_id);
         /**
         * @brief Returns if warning ID is active, false if warning ID is inactive.
         * @param i

@@ -20,7 +20,7 @@ PasscodeManager::PasscodeManager(QObject *parent) :
     pcColumns[1] = "PASSCODE";
 
     //Creates new passcode csv files if one wasn't created already.
-    m_passcodeCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(PASSCODE_FILE), &pcColumns[0],2);
+    m_passcodeCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(PASSCODE_FILE), pcColumns.data(),2);
 
     updatePasscode();
 }
@@ -33,7 +33,7 @@ void PasscodeManager::updatePasscode()
         std::vector<std::string> pcColumns(2);
         pcColumns[0] = "ROOT";
         pcColumns[1] = "PASSCODE";
-        m_passcodeCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(PASSCODE_FILE), &pcColumns[0],2);
+        m_passcodeCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(PASSCODE_FILE), pcColumns.data(),2);
         
         qInfo() << "NVENT" << "," << "PASSCODE" << "," << "Pass Code Manager reset do to corruption.";
     }
@@ -48,8 +48,8 @@ void PasscodeManager::updatePasscode()
         std::vector<std::string> vector1 = {"SERVICE",m_service_passcode.toStdString()};
         std::vector<std::string> vector2 = {"PRESET",m_preset_passcode.toStdString()};
 
-        m_passcodeCsvManager.createRecord(&vector1[0]);
-        m_passcodeCsvManager.createRecord(&vector2[0]);
+        m_passcodeCsvManager.createRecord(vector1.data());
+        m_passcodeCsvManager.createRecord(vector2.data());
 
         emit passcodeChanged();
 
@@ -58,8 +58,8 @@ void PasscodeManager::updatePasscode()
     std::vector<std::string> service_row = m_passcodeCsvManager.readRecord(0);
     std::vector<std::string> preset_row = m_passcodeCsvManager.readRecord(1);
 
-    QRegExp re(QString::fromStdString("\\d{4}$"));
-    if (service_row.size() == 2 && re.exactMatch(QString::fromStdString(service_row.at(1))))
+    QRegExp regularExpression(QString::fromStdString("\\d{4}$"));
+    if (service_row.size() == 2 && regularExpression.exactMatch(QString::fromStdString(service_row.at(1))))
     {
         m_service_passcode = QString::fromStdString(service_row.at(1));
     }
@@ -67,9 +67,9 @@ void PasscodeManager::updatePasscode()
     {
         m_service_passcode = QString::fromStdString("0000");
         std::vector<std::string> vector1 = {"SERVICE",m_service_passcode.toStdString()};
-        m_passcodeCsvManager.updateRecord(0,&vector1[0]);
+        m_passcodeCsvManager.updateRecord(0,vector1.data());
     }
-    if (preset_row.size() == 2  && re.exactMatch(QString::fromStdString(preset_row.at(1))))
+    if (preset_row.size() == 2  && regularExpression.exactMatch(QString::fromStdString(preset_row.at(1))))
     {
         m_preset_passcode = QString::fromStdString(preset_row.at(1));
     }
@@ -77,7 +77,7 @@ void PasscodeManager::updatePasscode()
     {
         m_preset_passcode = QString::fromStdString("0000");
         std::vector<std::string> vector2 = {"PRESET",m_preset_passcode.toStdString()};
-        m_passcodeCsvManager.updateRecord(1,&vector2[0]);
+        m_passcodeCsvManager.updateRecord(1,vector2.data());
     }
 
     emit passcodeChanged();
@@ -93,7 +93,7 @@ void PasscodeManager::editServicePasscode(const QString &newPasscode)
         return;
     }
     //Passcode is required to be 4 digits.
-    else if (newPasscode.size() < 4 || 4 < newPasscode.size())
+    if (newPasscode.size() < 4 || 4 < newPasscode.size())
     {
         qInfo() << "NVENT" << "," << "PASSCODE" << "," << "Passcode length is incorrect.";
         m_signal_change_value = 2;
@@ -101,7 +101,7 @@ void PasscodeManager::editServicePasscode(const QString &newPasscode)
     }
     //Records new passcode onto .csv file.
     std::vector<std::string> service_row = {"SERVICE",newPasscode.toStdString()};
-    m_passcodeCsvManager.updateRecord(0, &service_row[0]);
+    m_passcodeCsvManager.updateRecord(0, service_row.data());
     m_signal_change_value = 0;
 
     //Records log entry for passcode change.
@@ -120,7 +120,7 @@ void PasscodeManager::editPresetPasscode(const QString &newPasscode)
         return;
     }
     //Passcode is required to be 4 digits.
-    else if (newPasscode.size() < 4 || 4 < newPasscode.size())
+    if (newPasscode.size() < 4 || 4 < newPasscode.size())
     {
         qInfo() << "NVENT" << "," << "PASSCODE" << "," << "Passcode length is incorrect.";
         m_signal_change_value = 2;
@@ -128,7 +128,7 @@ void PasscodeManager::editPresetPasscode(const QString &newPasscode)
     }
     //Records new passcode onto .csv file.
     std::vector<std::string> preset_row = {"PRESET",newPasscode.toStdString()};
-    m_passcodeCsvManager.updateRecord(1, &preset_row[0]);
+    m_passcodeCsvManager.updateRecord(1, preset_row.data());
     m_signal_change_value = 0;
 
     //Records log entry for passcode change.
@@ -147,7 +147,7 @@ void PasscodeManager::editPresetPasscodeManual(const QString &newPasscode)
     }
     //Records new passcode onto .csv file.
     std::vector<std::string> preset_row = {"PRESET",newPasscode.toStdString()};
-    m_passcodeCsvManager.updateRecord(1, &preset_row[0]);
+    m_passcodeCsvManager.updateRecord(1, preset_row.data());
     m_signal_change_value = 0;
 
     //Records log entry for passcode change.
@@ -155,22 +155,22 @@ void PasscodeManager::editPresetPasscodeManual(const QString &newPasscode)
     updatePasscode();
 }
 
-QString PasscodeManager::getServicePasscode()
+auto PasscodeManager::getServicePasscode() -> QString
 {
     return m_service_passcode;
 }
 
-QString PasscodeManager::getPresetPasscode()
+auto PasscodeManager::getPresetPasscode() -> QString
 {
     return m_preset_passcode;
 }
 
-int PasscodeManager::getChangedValue()
+auto PasscodeManager::getChangedValue() const -> int
 {
     return m_signal_change_value;
 }
 
-QString PasscodeManager::getPresetPasscodeManual()
+auto PasscodeManager::getPresetPasscodeManual() -> QString
 {
     return m_preset_passcode;
 }

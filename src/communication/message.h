@@ -52,7 +52,7 @@ class Message
         /**
          * @brief Empty Constructor
          */
-        Message();
+        Message() = default;
 
         /**
          * @brief Contructs the unsigned char array representing the TX Message.
@@ -61,13 +61,13 @@ class Message
          * @param crc
          * @param tx_size
          */
-        Message(unsigned char* data, unsigned char crc, int tx_size);
+        Message(const unsigned char* data, unsigned char crc, int tx_size);
 
         /**
          * @brief Gets the CRC character of the message.
          * @return unsigned char
          */
-        unsigned char getCRC();
+        unsigned char getCRC() const;
 
         /**
          * @brief Gets the unsigned char array representing the TX Buffer of the message.
@@ -79,7 +79,7 @@ class Message
          * @brief Gets the size of the TX Buffer.
          * @return int
          */
-        int getSize();
+        int getSize() const;
 
         /**
          * @brief Returns a string representation of the TX Buffer.

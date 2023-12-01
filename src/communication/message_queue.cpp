@@ -1,6 +1,6 @@
 #include "message_queue.h"
 
-void MessageQueue::push(Message message)
+void MessageQueue::push(const Message &message)
 {
     QMutexLocker lock(&m_mutex);
     if (m_crc_set.find(message.getCRC()) == m_crc_set.end()) {
@@ -10,26 +10,26 @@ void MessageQueue::push(Message message)
     m_dataAvailable.wakeAll();
 }
 
-Message MessageQueue::pop()
+auto MessageQueue::pop() -> Message
 {
     if (m_queue.isEmpty())
     {
-        return Message();
+        return {};
     }
 
-    Message m = m_queue.dequeue();
-    m_crc_set.erase(m.getCRC());
+    Message message = m_queue.dequeue();
+    m_crc_set.erase(message.getCRC());
 
-    return m;
+    return message;
 }
 
-bool MessageQueue::empty() const
+auto MessageQueue::empty() const -> bool
 {
     return m_queue.isEmpty();
 }
 
 
-int MessageQueue::size() const
+auto MessageQueue::size() const -> int
 {
     return m_queue.size();
 }

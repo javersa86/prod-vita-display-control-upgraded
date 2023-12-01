@@ -51,7 +51,7 @@ class MessageQueue
          * @note If the message already exists and has the safe CRC, it will not be pushed.
          * @param message
          */
-        void push(Message message);
+        void push(const Message &message);
 
         /**
          * @brief Pops and returns a message from the queue.

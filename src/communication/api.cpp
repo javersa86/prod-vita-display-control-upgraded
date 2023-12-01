@@ -1,40 +1,19 @@
 #include "api.h"
-#include <QtDebug>
 
-API::API (const QString &portname, int baudrate) : QThread()
+API::API (const QString &portname, int baudrate)
+    : myPortName(portname)
 {
-    myPortName = portname;
     serial.setPortname(portname);
     serial.setBaudrate(baudrate);
-
-    settings_set = 1;
-    get_settings_confirmed=0;
-    notification_request_confirmed=0;
-    dpr_flag = 0;
-    temp_dp_value = 0;
-    temp_dp_value_flag = 0;
-
-    _index = 0;
-    _in_progress = 0;
-    _ndx=0;
-    _op_code = 255;
-    _message_length = 0;
-
-    _cycle_period=30; // api run method should take 30 ms each cycle
-
-    m_currentDevices = devices();
-
-    _signal_warning = 1;
-    port_num = 0;
 }
 
 
-QString API::getPortname() const
+auto API::getPortname() const -> QString
 {
     return serial.getPortname();
 }
 
-int API::getBaudrate() const
+auto API::getBaudrate() const -> int
 {
     return serial.getBaudrate();
 }
@@ -53,13 +32,16 @@ void API::run()
     while (!isInterruptionRequested())  //(!stopThread)
     {
         success = checkUSB(success);
-        if (success) break;
+        if (success == 1)
+        {
+            break;
+        }
 
 
         serial.readIncoming(); // read messages from serial port
         process(); // returns number of bytes read
 
-        if (!notification_request_confirmed)
+        if (notification_request_confirmed == 0)
         {
             emit resendNotificationSignal();
         }
@@ -67,31 +49,31 @@ void API::run()
         if (!request_queue.empty())
         {
             request_queue.lock();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < max_messages; i++)
             {
                 serial.writeTxMessageToMCU(request_queue.pop()); // write all outgoing messages to serial port
             }
             request_queue.wake();
         }
 
-        msleep(35);
+        msleep(ms_count);
     }
     serial.closeSerial();
 }
 
-int API::checkUSB(int success)
+auto API::checkUSB(int success) -> int
 {
     //If the system controller is disconnected and there are only 2 usb devices connected,
     //(Linux Foundation 2.0 root hub and Standard Microsystems Corp. USB 2.0 Hub)
     //then the _signal_warning variable will change to 0
     //This assumes that neither device won't be disconnected and only the system controller will be.
-    if (m_currentDevices.deviceCount() < 3 && _signal_warning == 1)
+    if (devices::deviceCount() < 3 && _signal_warning == 1)
     {
         _signal_warning = 0;
     }
     //If _signal_warning is flipped and the system controller is reconnected,
     //a new serial port will be opened and configured.
-    if (m_currentDevices.deviceCount() >= 3 && _signal_warning == 0)
+    if (devices::deviceCount() >= 3 && _signal_warning == 0)
     {
         //closes previous serial port.
         serial.closeSerial();
@@ -104,7 +86,7 @@ int API::checkUSB(int success)
         {
             port_num = 0;
         }
-        myPortName = myPortName.mid(0,11) + QString::number(port_num);
+        myPortName = myPortName.mid(0,port_name_sub_length) + QString::number(port_num);
 
         //Opens and configures serial port with new name.
         serial.setPortname(myPortName);
@@ -125,7 +107,7 @@ int API::checkUSB(int success)
 
 void API::process()
 {
-    while (serial.nextByteAvailable())
+    while (serial.nextByteAvailable() == 1)
     {
         processBytes(serial.getRxByte());
     }
@@ -133,41 +115,42 @@ void API::process()
 
 void API::processBytes(unsigned char byte)
 {
-    if (_in_progress==1)
+    if (_in_progress == 1)
     {
-        if (_op_code==255) // if op-code is undefined //TODO: Should turn this into enum for readability
+        if (_op_code == START_CHAR) // if op-code is undefined //TODO: Should turn this into enum for readability
         {
             _op_code = byte;
             _message_length = getMessageLength(_op_code); //returns 0 if not found
-            input_buffer[_ndx]=_op_code;
+            input_buffer[_ndx] = _op_code;
             _ndx++; // index
         }
-        else if (_message_length!=255) //message_length!=0 //when would message length == 255?
+        else if (_message_length != START_CHAR) //message_length!=0 //when would message length == 255?
         {
-            input_buffer[_ndx]=byte;
+            input_buffer[_ndx] = byte;
             _message_length--;
             _ndx++;
+
             if (_message_length<=0)
             {
-                input_buffer[_ndx]='\0';
-                if (checkCRC(&input_buffer[0],_ndx)==1)
+                input_buffer[_ndx] = '\0';
+                if (checkCRC(&input_buffer[0],_ndx) == 1)
                 {
                     handleRequest(&input_buffer[0]);
                 }
                 //reset //TODO: maybe make method for readability
-                _op_code=255;
-                _in_progress=0;
-                _ndx=0;
+                _op_code = START_CHAR;
+                _in_progress = 0;
+                _ndx = 0;
             }
         }
         else // reset
         {
-            _op_code=255;
+            _op_code = START_CHAR;
             _in_progress = 0;
-            _ndx=0;
+            _ndx = 0;
         }
     }
-    else if (byte==255)
+    else if (byte == START_CHAR)
     {
         _in_progress = 1;
     }
@@ -176,38 +159,21 @@ void API::processBytes(unsigned char byte)
 
 void API::floatToBytes(float src,unsigned char* dst)
 {
-    union {
-        float f;
-        unsigned char b[4];
-    } floatTranslation;
-    floatTranslation.f = src;
-    dst[0] = floatTranslation.b[0];
-    dst[1] = floatTranslation.b[1];
-    dst[2] = floatTranslation.b[2];
-    dst[3] = floatTranslation.b[3];
+    std::array<unsigned char, sizeof(float)> bytes = {};
+    std::memcpy(bytes.data(), &src, sizeof(float));
+    std::memcpy(dst, bytes.data(), sizeof(float));
 }
 
-float API::bytesToFloat(const unsigned char* src)
+auto API::bytesToFloat(const unsigned char* src) -> float
 {
-    union {
-        float f;
-        unsigned char b[4];
-    } floatTranslation;
-
-    floatTranslation.b[0] = *src;
-    src++;
-    floatTranslation.b[1] = *src;
-    src++;
-    floatTranslation.b[2] = *src;
-    src++;
-    floatTranslation.b[3] = *src;
-    src++;
-    return floatTranslation.f;
+    float floatValue = 0;
+    std::memcpy(&floatValue, src, sizeof(float));
+    return floatValue;
 }
 
 void API::handleRequest(unsigned char* buffer)
 {
-    unsigned char op_code = buffer[0];
+    unsigned char op_code = *buffer;
 
     switch(op_code)
     {
@@ -279,7 +245,7 @@ void API::handleRequest(unsigned char* buffer)
     }
 }
 
-int API::getMessageLength(unsigned char op_code)    
+auto API::getMessageLength(unsigned char op_code) -> int
 {           
     switch(op_code)
     {
@@ -366,17 +332,20 @@ void API::sendComm1(unsigned char * buffer, int n)
     request_queue.push(Message(buffer, crc, n));
 }
 
-unsigned char API::calculateCRC(unsigned char* buffer, int n)
+auto API::calculateCRC(unsigned char* buffer, int n) -> unsigned char
 {
     const int generator = 341;
+    const int byte_size = 8;
+    const unsigned char byte_address = 0x80;
+
     unsigned char crc=0;
-    for (int i=0;i<n;i++)
+    for (int i = 0; i < n; i++)
     {
         crc ^= *buffer;
         buffer++;
-        for (int j = 0;j<8;j++)
+        for (int j = 0; j < byte_size; j++)
         {
-            if ((crc&0x80)!=0)
+            if ((crc & byte_address) != 0)
             {
                 crc = (unsigned char) ((crc<<1) ^ generator);
             }
@@ -389,10 +358,10 @@ unsigned char API::calculateCRC(unsigned char* buffer, int n)
     return crc;
 }
 
-int API::checkCRC(unsigned char* buffer, int n)
+auto API::checkCRC(unsigned char* buffer, int n) -> int
 {
     unsigned char crc = calculateCRC(buffer,n);
-    if (crc!=0)
+    if (crc != 0)
     {
         return 0;
     }
@@ -403,8 +372,6 @@ int API::checkCRC(unsigned char* buffer, int n)
 
 void API::queuePowerCycleResponse()
 {
-    unsigned char power_cycle_response[(int)txLengths::DISPLAY_POWER_ON_RECEIVED];
-    power_cycle_response[0]=(unsigned char)txOpCodes::DISPLAY_POWER_ON_RECEIVED;
     unsigned char crc = calculateCRC(&power_cycle_response[0],(int)txLengths::DISPLAY_POWER_ON_RECEIVED);
 
     request_queue.push(Message(power_cycle_response,crc, (int)txLengths::DISPLAY_POWER_ON_RECEIVED));
@@ -424,9 +391,6 @@ void API::sendGetSettingsSlot()
 
 void API::queueGetSettingsRequest()
 {
-    unsigned char get_settings_request[(int)txLengths::DISPLAY_GET_SETTINGS_REQUEST];
-    get_settings_request[0]=(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST;
-
     unsigned char crc = calculateCRC(get_settings_request,(int)txLengths::DISPLAY_GET_SETTINGS_REQUEST);
 
     request_queue.push(Message(get_settings_request,crc,(int)txLengths::DISPLAY_GET_SETTINGS_REQUEST));
@@ -434,9 +398,9 @@ void API::queueGetSettingsRequest()
 
 void API::handleGetSettingsResponse(unsigned char* buffer)
 {
-    if (!get_settings_confirmed)
+    if (get_settings_confirmed == 0)
     {
-        get_settings_confirmed=1;
+        get_settings_confirmed = 1;
     }
 
     buffer++;
@@ -444,7 +408,7 @@ void API::handleGetSettingsResponse(unsigned char* buffer)
     int *data = settings_data.data();
     for (int i=0;i<NUM_SETTINGS;i++,buffer+=4)
     {
-        data[i] = bytesToFloat(buffer);
+        data[i] = (int) bytesToFloat(buffer);
     }
     emit updateSettingsSignal(settings_data);
 }
@@ -465,10 +429,7 @@ void API::resendNotificationSlot(int enable_disable)
 
 void API::queueNotificationRequest(unsigned char enable_disable)
 {
-    unsigned char notification_request[(int)txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST];
-    notification_request[0]=(int)txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST;
     notification_request[1]=enable_disable;
-
     unsigned char crc = calculateCRC(notification_request,(int)txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST);
 
     request_queue.push(Message(notification_request,crc,(int)txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST));
@@ -476,9 +437,9 @@ void API::queueNotificationRequest(unsigned char enable_disable)
 
 void API::handleEnabledNotifications()
 {
-    if (!notification_request_confirmed)
+    if (notification_request_confirmed == 0)
     {
-        notification_request_confirmed=1;
+        notification_request_confirmed = 1;
     }
     emit enableNotificationSignal();
 }
@@ -487,12 +448,9 @@ void API::handleEnabledNotifications()
 
 void API::getModesSlot()
 {
-    unsigned char request[(int)txLengths::DISPLAY_GET_OP_MODES_REQUEST];
-    request[0] = (unsigned char) txOpCodes::DISPLAY_GET_OP_MODES_REQUEST;
+    unsigned char crc = calculateCRC(get_op_modes_request,(int)txLengths::DISPLAY_GET_OP_MODES_REQUEST);
 
-    unsigned char crc = calculateCRC(request,(int)txLengths::DISPLAY_GET_OP_MODES_REQUEST);
-
-    request_queue.push(Message(request,crc,(int)txLengths::DISPLAY_GET_OP_MODES_REQUEST));
+    request_queue.push(Message(get_op_modes_request,crc,(int)txLengths::DISPLAY_GET_OP_MODES_REQUEST));
 }
 
 void API::handleGetModesResponse(unsigned char* buffer)
@@ -512,12 +470,9 @@ void API::handleGetModesResponse(unsigned char* buffer)
 
 void API::getSubsystemStates()
 {
-    unsigned char request[(int)txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST];
-    request[0] = (unsigned char) txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST;
+    unsigned char crc = calculateCRC(get_subsystem_request,(int)txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST);
 
-    unsigned char crc = calculateCRC(request,(int)txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST);
-
-    request_queue.push(Message(request,crc,(int)txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST));
+    request_queue.push(Message(get_subsystem_request,crc,(int)txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST));
 }
 
 void API::handleGetSubsystemStates(unsigned char *buffer)
@@ -545,12 +500,9 @@ void API::handleSystemVersionResponse(unsigned char* buffer)
 
 void API::queryVersion()
 {
-    unsigned char message [(int)txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST];
-    message[0] = (unsigned char)txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST;
+    unsigned char crc = calculateCRC(version_message,(int)txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST);
 
-    unsigned char crc = calculateCRC(message,(int)txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST);
-
-    request_queue.push(Message(message,crc,(int)txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST));
+    request_queue.push(Message(version_message,crc,(int)txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST));
 }
 
 /*SET SETTINGS PATHWAY*/
@@ -568,7 +520,6 @@ void API::handleSetResponse()
 
 void API::setSettings(QVector<int> settings)
 {
-    unsigned char set_request[(int)txLengths::DISPLAY_SET_SETTINGS_REQUEST];
     set_request[0] = (int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST;
     int index = 1;
 
@@ -577,13 +528,13 @@ void API::setSettings(QVector<int> settings)
         for(int i = 0; i< NUM_SETTINGS; i++)
         {
             //Setting value for HIGH DPR Calibration
-            if (i == 0 && temp_dp_value_flag)
+            if (i == 0 && temp_dp_value_flag == 1)
             {
                 floatToBytes(temp_dp_value, &set_request[index]);
             }
             else
             {
-                floatToBytes(settings[i],&set_request[index]);
+                floatToBytes((float) settings[i],&set_request[index]);
             }
             index = index + 4;
         }
@@ -596,35 +547,33 @@ void API::setSettings(QVector<int> settings)
 
 /* GET MEASURED PATHWAY*/
 
-void API::getMeasured(unsigned char id)
+void API::getMeasured(unsigned char measured_id)
 {
-    unsigned char request[(int)txLengths::DISPLAY_GET_MEASURED_REQUEST];
-    request[0] = (unsigned char)txOpCodes::DISPLAY_GET_MEASURED_REQUEST;
-    request[1] = id;
-    sendComm(&request[0], (int)txLengths::DISPLAY_GET_MEASURED_REQUEST);
+    measured_request[1] = measured_id;
+    sendComm(&measured_request[0], (int)txLengths::DISPLAY_GET_MEASURED_REQUEST);
 }
 
 void API::handleGetSensorMeasurementResponse(unsigned char *buffer)
 {
     buffer ++;
-    unsigned char id = *buffer;
+    unsigned char measuredId = *buffer;
     buffer ++;
 
-    if (id == 17)
+    if (measuredId == (unsigned char) MeasuredIDs::WATER_SENSOR_1)
     {
-        unsigned char value = bytesToFloat(buffer);
-        emit receiveWaterSensorValue(id,value);
+        float value =  bytesToFloat(buffer);
+        emit receiveWaterSensorValue(measuredId, (unsigned char) value);
         return;
     }
 
-    if (id == 32 || id == 33)
+    if (measuredId == (unsigned char) MeasuredIDs::O2_LOWER_BOUND || measuredId == (unsigned char) MeasuredIDs::O2_UPPER_BOUND)
     {
-        emit receiveVoltValue(id,bytesToFloat(buffer));
+        emit receiveVoltValue(measuredId, bytesToFloat(buffer));
         return;
     }
 
-    unsigned char value = bytesToFloat(buffer);
-    emit receiveMeasuredValue(id, value);
+    float value = bytesToFloat(buffer);
+    emit receiveMeasuredValue(measuredId, (unsigned char) value);
 }
 
 /*CLEAR WARNING PATHWAY*/
@@ -638,10 +587,7 @@ void API::handleClearWarning(unsigned char* buffer)
 
 void API::clearWarningSlot(int warning_id)
 {
-    unsigned char clear_warning_request[(int)txLengths::DISPLAY_CLEAR_WARNING_REQUEST];
-    clear_warning_request[0]=(int)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST;
     clear_warning_request[1]=warning_id;
-
     unsigned char crc = calculateCRC(clear_warning_request,(int)txLengths::DISPLAY_CLEAR_WARNING_REQUEST);
 
     request_queue.push(Message(clear_warning_request,crc,(int)txLengths::DISPLAY_CLEAR_WARNING_REQUEST));
@@ -659,17 +605,15 @@ void API::handleModeResponse(unsigned char* buffer)
     emit modeSetSignal(modeID, enabled);
 }
 
-void API::sendModeSlot(unsigned char id, unsigned char enable)
+void API::sendModeSlot(unsigned char mode_id, unsigned char enable)
 {
-    unsigned char request[(int)txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST];
-    request[0]=(unsigned char)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST;
-    request[1]=id;
-    request[2]=enable;
-    request[3]=1;
+    display_set_mode_request[0]=(unsigned char)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST;
+    display_set_mode_request[1]=mode_id;
+    display_set_mode_request[2]=enable;
+    display_set_mode_request[3]=1;
+    unsigned char crc = calculateCRC(display_set_mode_request,(int)txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST);
 
-    unsigned char crc = calculateCRC(request,(int)txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST);
-
-    request_queue.push(Message(request,crc,(int)txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST));
+    request_queue.push(Message(display_set_mode_request,crc,(int)txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST));
 }
 
 /*DISPLAY OP MODE RESPONSE PATHWAY*/
@@ -690,31 +634,32 @@ void API::handleModeRequest(unsigned char* buffer)
 
 void API::queueModeResponse(unsigned char modeID, unsigned char value)
 {
-    unsigned char message [(int)txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE];
-    message[0] = (unsigned char)txOpCodes::DISPLAY_ENABLE_OP_MODE_RESPONSE;
-    message[1] = modeID;
-    message[2] = value;
+    system_set_mode_request[0] = (unsigned char)txOpCodes::DISPLAY_ENABLE_OP_MODE_RESPONSE;
+    system_set_mode_request[1] = modeID;
+    system_set_mode_request[2] = value;
+    unsigned char crc = calculateCRC(system_set_mode_request,(int)txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE);
 
-    unsigned char crc = calculateCRC(message,(int)txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE);
-
-    request_queue.push(Message(message,crc,(int)txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE));
+    request_queue.push(Message(system_set_mode_request,crc,(int)txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE));
 }
 
 /*NOTIFICATION PATHWAY*/
 
 void API::handleNotification(unsigned char* buffer)
 {
-    if (!notification_request_confirmed)
+    const int notification_ten_count = 10;
+    const int notification_sixty_count = 60;
+
+    if (notification_request_confirmed == 0)
     {
-        notification_request_confirmed=1;
+        notification_request_confirmed = 1;
     }
 
-    if (m_num_of_notifications % 10 == 0)
+    if (m_num_of_notifications % notification_ten_count == 0)
     {
         queueNotificationResponse();
     }
 
-    if (m_num_of_notifications > 60)
+    if (m_num_of_notifications > notification_sixty_count)
     {
         emit resendMessagesSignal();
         m_num_of_notifications = -1;
@@ -738,16 +683,17 @@ void API::handleNotification(unsigned char* buffer)
     emit notificationUpdateSignal(notification);
 }
 
-void API::handleWarnings(unsigned char* buffer)
+void API::handleWarnings(const unsigned char* buffer)
 {
     QVector<unsigned char> warnings(QVector<unsigned char>(NUM_WARNINGS));
     unsigned char *warnings_data = warnings.data();
 
+    const int bit_size = 8;
     int bitIndex = 0;
 
     for (int k = 0; k < NUM_WARNINGS; k++)
     {
-        warnings_data[k] = (buffer[bitIndex / 8] >> (bitIndex % 8)) & 1;
+        warnings_data[k] = (buffer[bitIndex / bit_size] >> (bitIndex % bit_size)) & 1;
         bitIndex++;
     }
     emit warningUpdateSignal(warnings);
@@ -755,11 +701,10 @@ void API::handleWarnings(unsigned char* buffer)
 
 void API::queueNotificationResponse()
 {
-    if (service_flag) return;
-
-    unsigned char notification_response[(int)txLengths::DISPLAY_NOTIFICATION_RECEIVED];
-    notification_response[0] = (int)txOpCodes::DISPLAY_NOTIFICATION_RECEIVED;
-
+    if (service_flag == 1)
+    {
+        return;
+    }
     unsigned char crc = calculateCRC(notification_response,(int)txLengths::DISPLAY_NOTIFICATION_RECEIVED);
 
     request_queue.push(Message(notification_response,crc,(int)txLengths::DISPLAY_NOTIFICATION_RECEIVED));
@@ -775,14 +720,13 @@ void API::handleSubsystemStateChange(unsigned char *buffer)
 
 void API::queueSubsystemStateChangedResponse()
 {
-    if (service_flag) return;
+    if (service_flag == 1)
+    {
+        return;
+    }
+    unsigned char crc = calculateCRC(subsystem_response,(int)txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED);
 
-    unsigned char response[(int)txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED];
-    response[0] = (unsigned char) txOpCodes::DISPLAY_SUBSYSTEM_STATUS_RECEIVED;
-
-    unsigned char crc = calculateCRC(response,(int)txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED);
-
-    request_queue.push(Message(response,crc,(int)txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED));
+    request_queue.push(Message(subsystem_response,crc,(int)txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED));
 }
 
 /*VENTILATION PATHWAY*/
@@ -795,9 +739,7 @@ void API::handleVentilationStatusUpdate(unsigned char *buffer)
 
 void API::queueVentilationStatusResponse()
 {
-    unsigned char response[(int)txLengths::DISPLAY_VENTILATION_STATUS_RECEIVED];
-    response[0] = (unsigned char) txOpCodes::DISPLAY_VENTILATION_STATUS_RECEIVED;
-    sendComm1(&response[0], (int)txLengths::DISPLAY_VENTILATION_STATUS_RECEIVED);
+    sendComm1(&ventilation_response[0], (int)txLengths::DISPLAY_VENTILATION_STATUS_RECEIVED);
 }
 
 /*HMI BUTTON PUSH PATHWAY*/
@@ -809,24 +751,19 @@ void API::handleHMIButtonPush(unsigned char *buffer)
     emit HMIButtonPushReceived(*buffer);
 }
 
-void API::queueHMIButtonPushResponse(unsigned char id)
+void API::queueHMIButtonPushResponse(unsigned char hmi_id)
 {
-    unsigned char response[(int)txLengths::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED];
-    response[0] = (unsigned char) txOpCodes::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED;
-    response[1] = id;
-    sendComm1(&response[0], (int)txLengths::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED);
+    hmi_response[1] = hmi_id;
+    sendComm1(&hmi_response[0], (int)txLengths::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED);
 }
 
 /*SHUTDOWN PATHWAY*/
 
 void API::queueInitPowerdownOk()
 {
-    unsigned char request[(int)txLengths::DISPLAY_SHUTDOWN_RECEIVED];
-    request[0] = (unsigned char) txOpCodes::DISPLAY_SHUTDOWN_RECEIVED;
+    unsigned char crc = calculateCRC(shutdown_request,(int)txLengths::DISPLAY_SHUTDOWN_RECEIVED);
 
-    unsigned char crc = calculateCRC(request,(int)txLengths::DISPLAY_SHUTDOWN_RECEIVED);
-
-    request_queue.push(Message(request,crc,(int)txLengths::DISPLAY_SHUTDOWN_RECEIVED));
+    request_queue.push(Message(shutdown_request,crc,(int)txLengths::DISPLAY_SHUTDOWN_RECEIVED));
 }
 
 void API::handleInitPowerdown()
@@ -839,13 +776,10 @@ void API::handleInitPowerdown()
 
 void API::confirmPowerdown(unsigned char powerdown)
 {
-    unsigned char request[(int)txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND];
-    request[0] = (unsigned char) txOpCodes::DISPLAY_SHUTDOWN_CONFIRM_SEND;
-    request[1] = powerdown;
+    shutdown_confirm_request[1] = powerdown;
+    unsigned char crc = calculateCRC(shutdown_confirm_request,(int)txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND);
 
-    unsigned char crc = calculateCRC(request,(int)txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND);
-
-    request_queue.push(Message(request,crc,(int)txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND));
+    request_queue.push(Message(shutdown_confirm_request,crc,(int)txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND));
 
 }
 
@@ -859,13 +793,13 @@ void API::handleInitPowerdownCommandOK(unsigned char* buffer)
 
 void API::slotServiceCalibrationResponse(QVector<float> calibration_data)
 {
-    unsigned char data_request[(int)txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE];
+    const int calibration_count = 8;
     data_request[0] = (unsigned char) txOpCodes::DISPLAY_SERVICE_CALIBRATION_RESPONSE;
 
     int index = 1;
-    if(calibration_data.length() == 8)
+    if(calibration_data.length() == calibration_count)
     {
-        for(int i = 0; i< 8; i++)
+        for(int i = 0; i< calibration_count; i++)
         {
             floatToBytes(calibration_data[i],&data_request[index]);
             index = index + 4;
@@ -891,20 +825,15 @@ void API::slotDPR(unsigned char enable_disabled)
 
 void API::handleDPRValSetResponse(unsigned char *buffer)
 {
-    //qDebug() << "DPR VAL SET";
     emit signalDPRValue();
 }
 
-void API::slotDPRValue(unsigned char value) //, unsigned char regAirValue, unsigned char regO2Value, float setValue)
+void API::slotDPRValue(unsigned char value)
 {
-    //qDebug() << "SET DPR VAL " + QString::number(value);
-    unsigned char request[(int)txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST];
-    request[0] = (unsigned char) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST;
-    request[1] = value;
+    dpr_request[1] = value;
+    unsigned char crc = calculateCRC(dpr_request,(int)txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST);
 
-    unsigned char crc = calculateCRC(request,(int)txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST);
-
-    request_queue.push(Message(request,crc,(int)txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST));
+    request_queue.push(Message(dpr_request,crc,(int)txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST));
 }
 
 void API::slotTempDP(unsigned char flag, float value)
@@ -932,24 +861,23 @@ void API::handleSensorZeroResponse(unsigned char *buffer)
 
 void API::zeroSensor(QVector<float> values)
 {
-    unsigned char request[(int)txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST];
-    request[0] = (unsigned char) txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST;
-    request[1] = (unsigned char) values[0];
+    zero_request[0] = (unsigned char) txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST;
+    zero_request[1] = (unsigned char) values[0];
 
 
-    floatToBytes(values[1], &request[2]);
+    floatToBytes(values[1], &zero_request[2]);
 
-    unsigned char crc = calculateCRC(request,(int)txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST);
+    unsigned char crc = calculateCRC(zero_request,(int)txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST);
 
-    request_queue.push(Message(request,crc,(int)txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST));
+    request_queue.push(Message(zero_request,crc,(int)txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST));
 }
 
 /* SERVICE NOTIFICATION PATHWAY */
 
 void API::handleServiceNotifications(unsigned char *buffer)
 {
-
-    if (m_num_of_notifications > 60)
+    const int service_notification_count = 60;
+    if (m_num_of_notifications > service_notification_count)
     {
         emit resendMessagesSignal();
         m_num_of_notifications = -1;

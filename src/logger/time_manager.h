@@ -152,6 +152,8 @@ class TimeManager : public QObject
 
         unsigned char m_daylight_savings_state = 0;
 
+        const qint64 MINUTE_TO_MILLISECECONDS = 3600;
+
         /**
          * @brief   Retrieves current date time, time zone, and internal clock's date and time onto .csv file.
          * @details  Stores current variables for changed date and time, time zone, and internal clock's date and time.
@@ -205,7 +207,7 @@ class TimeManager : public QObject
          * @brief Gets the state of daylight savings.
          * @return unsigned char
          */
-        unsigned char getDaylightSavings();
+        unsigned char getDaylightSavings() const;
 
         /**
          * @brief Switches between daylight savings.

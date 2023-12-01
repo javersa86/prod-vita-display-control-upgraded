@@ -1,25 +1,12 @@
 #include "knob.h"
-#include "gpio.h"
-#include <poll.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <syslog.h>
-#include <unistd.h>
-#include <QDebug>
-
 
 Knob::Knob(uint pin_a, uint pin_b, uint pin_switch)
+    : m_pinA(new GPIO{pin_a, edge, false}),
+      m_pinB(new GPIO{pin_b, edge, false}),
+      m_pinButton(new GPIO{pin_switch, edge, false}),
+      button(new Switch()),
+      encoder(new Encoder())
 {
-    char edge[]="both";
-    m_pinA= new GPIO{pin_a, edge, false};
-    m_pinB = new GPIO{pin_b, edge, false};
-    m_pinButton = new GPIO{pin_switch, edge, false};
-
-    button = new Switch();
-
-    encoder = new Encoder();
-
-
     connect(encoder,&Encoder::encoderIncrement,
             this, &Knob::onEncoderIncrement);
 
@@ -29,12 +16,11 @@ Knob::Knob(uint pin_a, uint pin_b, uint pin_switch)
 
 void Knob::run()
 {
-        struct pollfd fdset[4];
         int nfds = 4;
-        int rc;
-        int MAX_BUF = 64;
-        char buf[MAX_BUF];
-        int len;
+        int rcProcessPoll = -1;
+        const int timeout_count = 1000;
+
+        memset(buf, '\0', sizeof(buf));
 
         m_pinA->openFd();
         m_pinB->openFd();
@@ -57,77 +43,98 @@ void Knob::run()
             fdset[2].fd = m_pinButton->getFD();
             fdset[2].events = POLLPRI;
 
-            rc = poll(fdset,nfds, 3 * 1000);
+            rcProcessPoll = poll(fdset,nfds, 3 * timeout_count);
 
-            if(rc < 0) {
+            if(rcProcessPoll < 0) {
                 qDebug()<<"\npoll() failed!\n";
             }
 
-            if (rc == 0)
-            {
-                //No knob changes
-            }
-
-            if (fdset[0].revents & POLLPRI)
-            {
-                lseek(fdset[0].fd, 0, SEEK_SET);
-                len = read(fdset[0].fd, buf, MAX_BUF);
-                if (len)
-                {
-                    unsigned char result = buf[0] - '0';
-                    if((result | 1) == 1)
-                    {
-                        encoder->onPinAChange(result);
-                    }
-                }
-            }
-
-            if (fdset[1].revents & POLLPRI)
-            {
-                lseek(fdset[1].fd, 0, SEEK_SET);
-                len = read(fdset[1].fd, buf, MAX_BUF);
-                if (len)
-                {
-                    unsigned char result = buf[0] - '0';
-                    if((result | 1) == 1)
-                    {
-                        encoder->onPinBChange(result);
-                    }
-                }
-            }
-
-            if (fdset[2].revents & POLLPRI)
-            {
-                lseek(fdset[2].fd, 0, SEEK_SET);
-                len = read(fdset[2].fd, buf, MAX_BUF);
-                if (len)
-                {
-                    unsigned char result = buf[0] - '0';
-                    if((result | 1) == 1)
-                    {
-                        button->onPinChange(result);
-                    }
-                    msleep(75);
-                }
-            }
+            pollPinA();
+            pollPinB();
+            pollPinSwitch();
 
             fflush(stdout);
         }
 }
 
+void Knob::pollPinA()
+{
+    if ((fdset[0].revents & POLLPRI) == 1)
+    {
+        lseek(fdset[0].fd, 0, SEEK_SET);
+        int len = read(fdset[0].fd, buf, MAX_BUF);
+        if (len == 1)
+        {
+            unsigned char result = buf[0] - '0';
+            if((result | 1) == 1)
+            {
+                encoder->onPinAChange(result);
+            }
+        }
+    }
+}
+
+void Knob::pollPinB()
+{
+    if ((fdset[1].revents & POLLPRI) == 1)
+    {
+        lseek(fdset[1].fd, 0, SEEK_SET);
+        int len = read(fdset[1].fd, buf, MAX_BUF);
+        if (len == 1)
+        {
+            unsigned char result = buf[0] - '0';
+            if((result | 1) == 1)
+            {
+                encoder->onPinBChange(result);
+            }
+        }
+    }
+}
+
+void Knob::pollPinSwitch()
+{
+    const unsigned long milliseconds = 75;
+    if ((fdset[2].revents & POLLPRI) == 1)
+    {
+        lseek(fdset[2].fd, 0, SEEK_SET);
+        int len = read(fdset[2].fd, buf, MAX_BUF);
+        if (len == 1)
+        {
+            unsigned char result = buf[0] - '0';
+            if((result | 1) == 1)
+            {
+                button->onPinChange(result);
+            }
+            msleep(milliseconds);
+        }
+    }
+}
+
 void Knob::listen(unsigned char listen)
 {
-    m_running = listen;
-    if(listen) start();
-    else exit();
+    m_running = listen == 1;
+    if (m_running)
+    {
+        start();
+    }
+    else
+    {
+        exit();
+    }
 }
 
 void Knob::onButtonPush()
 {
-    if(m_running) emit buttonPush();
+    if(m_running)
+    {
+        emit buttonPush();
+    }
 }
 
 void Knob::onEncoderIncrement(unsigned char value)
 {
-    if (m_running) emit encoderIncrement((int)(value * 2) - 1);
+    if (m_running)
+    {
+        emit encoderIncrement((int) (value * 2) - 1);
+    }
 }

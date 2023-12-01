@@ -114,6 +114,8 @@ class MaintenanceManager : public QObject
         unsigned char m_alarm_state = 0;
         int m_timer_count = 0;
 
+        const int TWELVE_MONTHS = 12;
+
         /**
          * @brief Retrieves current dates onto .csv file and stores the current variables for last service date and next service date.
          * @note Updates whenever devices powers on or whenever dates change.

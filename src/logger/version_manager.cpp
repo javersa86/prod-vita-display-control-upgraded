@@ -5,7 +5,7 @@ VersionManager::VersionManager(QObject *parent) :
 {
     std::vector<std::string> tColumns = {"VERSION","NUMBER"};
 
-    m_versionCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(VERSION_FILE), &tColumns[0], 2);
+    m_versionCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(VERSION_FILE), tColumns.data(), 2);
     updateVersions();
 }
 
@@ -19,8 +19,8 @@ void VersionManager::updateVersions()
         std::vector<std::string> vector1 = {HMI,m_hmiVersion.toStdString()};
         std::vector<std::string> vector2 = {SERIAL_NUMBER,m_serialNumber.toStdString()};
 
-        m_versionCsvManager.createRecord(&vector1[0]);
-        m_versionCsvManager.createRecord(&vector2[0]);
+        m_versionCsvManager.createRecord(vector1.data());
+        m_versionCsvManager.createRecord(vector2.data());
 
         emit versionChanged();
         return;
@@ -32,12 +32,12 @@ void VersionManager::updateVersions()
     emit versionChanged();
 }
 
-QString VersionManager::getHmiVersion()
+auto VersionManager::getHmiVersion() -> QString
 {
     return m_hmiVersion;
 }
 
-QString VersionManager::getSerialNumber()
+auto VersionManager::getSerialNumber() -> QString
 {
     return m_serialNumber;
 }

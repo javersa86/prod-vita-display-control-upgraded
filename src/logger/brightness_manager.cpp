@@ -14,7 +14,7 @@ BrightnessManager::BrightnessManager(QObject *parent)
 
 }
 
-int BrightnessManager::getMax()
+auto BrightnessManager::getMax() -> int
 {
     QFile maxFile(QString::fromStdString("/sys/class/backlight/backlight/max_brightness"));
     if (maxFile.open(QIODevice::ReadOnly))
@@ -28,12 +28,12 @@ int BrightnessManager::getMax()
     return -1;
 }
 
-int BrightnessManager::getMaxPercent()
+auto BrightnessManager::getMaxPercent() const -> int
 {
     return m_max_percent;
 }
 
-int BrightnessManager::getMinPercent()
+auto BrightnessManager::getMinPercent() const -> int
 {
     return m_min_percent;
 }
@@ -42,10 +42,12 @@ void BrightnessManager::changeBrightness(double percentage)
 {
     if (m_max > 0)
     {
-        int val = percentage * m_max;
+        double val = percentage * m_max;
         QFile file(m_file);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
             return;
+        }
         QTextStream stream (&file);
         stream << val;
 
@@ -53,7 +55,7 @@ void BrightnessManager::changeBrightness(double percentage)
     }
 }
 
-double BrightnessManager::getBrightness()
+auto BrightnessManager::getBrightness() -> double
 {
     QFile maxFile(m_file);
     if (maxFile.open(QIODevice::ReadOnly))
@@ -61,7 +63,7 @@ double BrightnessManager::getBrightness()
         QString line = QString::fromLatin1(maxFile.readAll());
         if (!line.isNull())
         {
-            return line.toInt() / m_max * 100;
+            return line.toInt() / m_max * m_max_percent;
         }
     }
     return -1;

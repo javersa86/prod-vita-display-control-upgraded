@@ -44,7 +44,7 @@ class CSVManager
          * @param filePath
          * @return bool
          */
-        bool exists(std::string &filePath);
+        static bool exists(std::string &filePath);
 
         std::string m_filePath;
         std::string m_currDir;
@@ -54,7 +54,7 @@ class CSVManager
         /**
          * @brief Empty Constructor.
          */
-        CSVManager();
+        CSVManager() = default;
 
         /**
          * @brief Contructor for the csv manager. The CSV manager manages CSV's CRUD entries and ensure the max number of entries is not exceeded.

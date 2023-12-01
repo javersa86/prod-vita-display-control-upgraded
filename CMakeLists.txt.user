@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 8.0.0, 2023-10-23T15:57:19. -->
+<!-- Written by QtCreator 8.0.0, 2023-12-01T09:01:32. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -68,7 +68,17 @@
     <value type="bool" key="AutoTest.Framework.QtTest">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="AutoTest.CheckStates">
+    <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/gpio_tests.cpp:countEdges">Checked</value>
     <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/gpio_tests.h:GPIOTests">Checked</value>
+    <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/logging_tests.cpp:createNewFile">Checked</value>
+    <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/logging_tests.cpp:createRecord">Checked</value>
+    <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/logging_tests.cpp:deleteOldestFile">Checked</value>
+    <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/logging_tests.cpp:deleteRecord">Checked</value>
+    <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/logging_tests.cpp:editRecord">Checked</value>
+    <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/logging_tests.cpp:fileExceedsMaxSize">Checked</value>
+    <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/logging_tests.cpp:init">Unchecked</value>
+    <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/logging_tests.cpp:maxNumFiles">Checked</value>
+    <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/logging_tests.cpp:readRecord">Checked</value>
     <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/logging_tests.h:LoggingTests">Checked</value>
     <value type="Qt::CheckState" key="1@/home/joseph/work/prod-vita-display-control/tests/warnings.h:WarningTests">Checked</value>
    </valuemap>
@@ -79,8 +89,12 @@
     <value type="bool" key="ClangTools.BuildBeforeAnalysis">true</value>
     <value type="QString" key="ClangTools.DiagnosticConfig">Builtin.DefaultTidyAndClazy</value>
     <value type="int" key="ClangTools.ParallelJobs">4</value>
-    <valuelist type="QVariantList" key="ClangTools.SelectedDirs"/>
-    <valuelist type="QVariantList" key="ClangTools.SelectedFiles"/>
+    <valuelist type="QVariantList" key="ClangTools.SelectedDirs">
+     <value type="QString">/home/joseph/work/prod-vita-display-control/src</value>
+    </valuelist>
+    <valuelist type="QVariantList" key="ClangTools.SelectedFiles">
+     <value type="QString">/home/joseph/work/prod-vita-display-control/main.cpp</value>
+    </valuelist>
     <valuelist type="QVariantList" key="ClangTools.SuppressedDiagnostics"/>
     <value type="bool" key="ClangTools.UseGlobalSettings">true</value>
    </valuemap>
@@ -363,46 +377,52 @@
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinux.DirectUploadStep</value>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedFiles">
-       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/lib/libvita-core.a</value>
-       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/lib/libvita-core.a</value>
-       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/lib/libvita-core.a</value>
+       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/bin/nvent-vita-display</value>
        <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/bin/nvent-vita-display</value>
        <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/lib/libvita-core.a</value>
-       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/lib/libvita-core.a</value>
+       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/bin/nvent-vita-display</value>
        <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/bin/nvent-vita-display</value>
        <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/bin/nvent-vita-display</value>
        <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/bin/nvent-vita-display</value>
        <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/bin/nvent-vita-display</value>
        <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/lib/libvita-core.a</value>
-       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/bin/nvent-vita-display</value>
+       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/lib/libvita-core.a</value>
+       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/lib/libvita-core.a</value>
+       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/lib/libvita-core.a</value>
+       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/lib/libvita-core.a</value>
+       <value type="QString">/tmp/QtCreator-UFlzVQ/usr/local/lib/libvita-core.a</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedHosts">
-       <value type="QString">10.1.10.29</value>
+       <value type="QString">10.1.10.241</value>
+       <value type="QString">10.1.10.66</value>
+       <value type="QString">192.168.20.232</value>
+       <value type="QString">192.168.20.232</value>
        <value type="QString">10.1.10.30</value>
+       <value type="QString">10.1.10.29</value>
        <value type="QString">10.1.10.104</value>
        <value type="QString">10.1.10.161</value>
        <value type="QString">10.1.10.241</value>
        <value type="QString">10.1.10.161</value>
-       <value type="QString">10.1.10.29</value>
+       <value type="QString">10.1.10.66</value>
        <value type="QString">10.1.10.30</value>
+       <value type="QString">10.1.10.29</value>
        <value type="QString">10.1.10.104</value>
-       <value type="QString">10.1.10.241</value>
-       <value type="QString">192.168.20.232</value>
-       <value type="QString">192.168.20.232</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedRemotePaths">
-       <value type="QString">/usr/lib</value>
-       <value type="QString">/usr/lib</value>
-       <value type="QString">/usr/lib</value>
+       <value type="QString">/usr/bin</value>
        <value type="QString">/usr/bin</value>
        <value type="QString">/usr/lib</value>
-       <value type="QString">/usr/lib</value>
+       <value type="QString">/usr/bin</value>
        <value type="QString">/usr/bin</value>
        <value type="QString">/usr/bin</value>
        <value type="QString">/usr/bin</value>
        <value type="QString">/usr/bin</value>
        <value type="QString">/usr/lib</value>
-       <value type="QString">/usr/bin</value>
+       <value type="QString">/usr/lib</value>
+       <value type="QString">/usr/lib</value>
+       <value type="QString">/usr/lib</value>
+       <value type="QString">/usr/lib</value>
+       <value type="QString">/usr/lib</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedSysroots">
        <value type="QString">/home/joseph/work/nvent/sdk/sysroots/cortexa9hf-neon-poky-linux-gnueabi</value>
@@ -417,34 +437,40 @@
        <value type="QString">/home/joseph/work/nvent/sdk/sysroots/cortexa9hf-neon-poky-linux-gnueabi</value>
        <value type="QString">/home/joseph/work/nvent/sdk/sysroots/cortexa9hf-neon-poky-linux-gnueabi</value>
        <value type="QString">/home/joseph/work/nvent/sdk/sysroots/cortexa9hf-neon-poky-linux-gnueabi</value>
+       <value type="QString">/home/joseph/work/nvent/sdk/sysroots/cortexa9hf-neon-poky-linux-gnueabi</value>
+       <value type="QString">/home/joseph/work/nvent/sdk/sysroots/cortexa9hf-neon-poky-linux-gnueabi</value>
       </valuelist>
       <valuelist type="QVariantList" key="RemoteLinux.LastDeployedLocalTimes">
-       <value type="QDateTime">2023-09-29T11:32:57.000</value>
-       <value type="QDateTime">2023-09-01T10:41:07.000</value>
-       <value type="QDateTime">2023-10-23T12:04:05.000</value>
+       <value type="QDateTime">2023-10-05T15:42:43.000</value>
+       <value type="QDateTime">2023-11-29T14:14:11.000</value>
+       <value type="QDateTime">2023-09-18T11:22:54.000</value>
+       <value type="QDateTime">2023-09-18T11:22:57.000</value>
+       <value type="QDateTime">2023-09-01T10:41:10.000</value>
+       <value type="QDateTime">2023-09-29T11:33:00.000</value>
+       <value type="QDateTime">2023-10-23T12:04:06.000</value>
        <value type="QDateTime">2023-10-02T16:27:13.000</value>
        <value type="QDateTime">2023-10-05T15:42:39.000</value>
        <value type="QDateTime">2023-10-02T16:27:09.000</value>
-       <value type="QDateTime">2023-09-29T11:33:00.000</value>
-       <value type="QDateTime">2023-09-01T10:41:10.000</value>
-       <value type="QDateTime">2023-10-23T12:04:06.000</value>
-       <value type="QDateTime">2023-10-05T15:42:43.000</value>
-       <value type="QDateTime">2023-09-18T11:22:54.000</value>
-       <value type="QDateTime">2023-09-18T11:22:57.000</value>
+       <value type="QDateTime">2023-11-29T14:14:09.000</value>
+       <value type="QDateTime">2023-09-01T10:41:07.000</value>
+       <value type="QDateTime">2023-09-29T11:32:57.000</value>
+       <value type="QDateTime">2023-10-23T12:04:05.000</value>
       </valuelist>
       <valuelist type="QVariantList" key="RemoteLinux.LastDeployedRemoteTimes">
-       <value type="QDateTime">2023-09-29T11:33:16.000</value>
-       <value type="QDateTime">2023-09-01T10:41:22.000</value>
-       <value type="QDateTime">2023-10-23T12:04:13.000</value>
+       <value type="QDateTime">2023-10-05T15:42:59.000</value>
+       <value type="QDateTime">2023-11-29T14:19:35.000</value>
+       <value type="QDateTime">2023-09-18T11:33:06.000</value>
+       <value type="QDateTime">2023-09-18T11:32:42.000</value>
+       <value type="QDateTime">2023-09-01T10:41:18.000</value>
+       <value type="QDateTime">2023-09-29T11:33:14.000</value>
+       <value type="QDateTime">2023-10-23T12:04:11.000</value>
        <value type="QDateTime">2023-10-02T16:27:25.000</value>
        <value type="QDateTime">2023-10-05T15:43:01.000</value>
        <value type="QDateTime">2023-10-02T16:27:27.000</value>
-       <value type="QDateTime">2023-09-29T11:33:14.000</value>
-       <value type="QDateTime">2023-09-01T10:41:18.000</value>
-       <value type="QDateTime">2023-10-23T12:04:11.000</value>
-       <value type="QDateTime">2023-10-05T15:42:59.000</value>
-       <value type="QDateTime">2023-09-18T11:33:06.000</value>
-       <value type="QDateTime">2023-09-18T11:32:42.000</value>
+       <value type="QDateTime">2023-11-29T14:19:37.000</value>
+       <value type="QDateTime">2023-09-01T10:41:22.000</value>
+       <value type="QDateTime">2023-09-29T11:33:16.000</value>
+       <value type="QDateTime">2023-10-23T12:04:13.000</value>
       </valuelist>
      </valuemap>
      <value type="qlonglong" key="ProjectExplorer.BuildStepList.StepsCount">3</value>

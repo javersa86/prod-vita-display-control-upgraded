@@ -30,6 +30,7 @@ class Encoder : public QObject
      */
 
     Q_OBJECT
+
     public:
 
         /**
@@ -39,7 +40,8 @@ class Encoder : public QObject
          * @param[out] m_a_state
          * @param[out] m_b_state
          */
-        Encoder();
+        Encoder() = default;
+
     private:
         uint m_a_state;
         uint m_b_state;
@@ -47,6 +49,11 @@ class Encoder : public QObject
 
         volatile int m_sum_0 = -1;
         volatile int m_sum_1 = -1;
+
+        const int bit_sum_13 = 0b1101;
+        const int bit_sum_2 = 0b0010;
+        const int bit_sum_14 = 0b1110;
+        const int bit_sum_1 = 0b0001;
 
         /**
          * @brief Updates m_last_state and emits a signal for +1 or -1 if the knob has been turned.

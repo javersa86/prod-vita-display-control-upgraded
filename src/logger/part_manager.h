@@ -34,6 +34,8 @@
  */
 #define NUMBER_OF_PARTS 23
 
+#define PART_NUMBER_SIZE 20
+
 /**
  * @brief Name of csv file for part information.
  */
@@ -152,7 +154,7 @@ class PartManager : public QObject
         int m_hoursOperating;
         int m_hoursVentilating;
 
-        int m_row_index;
+        int m_row_index{0};
 
         unsigned char m_reset_op = 0;
         unsigned char m_reset_vent = 0;
@@ -253,18 +255,18 @@ class PartManager : public QObject
          * @brief Gets hours operating for part.
          * @return int
          */
-        int getHoursOperating();
+        int getHoursOperating() const;
         /**
          * @brief Gets hours ventilating for part.
          * @return int
          */
-        int getHoursVentilating();
+        int getHoursVentilating() const;
 
         /**
          * @brief Gets index of current row.
          * @return int
          */
-        int getIndex();
+        int getIndex() const;
 
         /**
          * @brief Gets user generated serial number.
@@ -276,7 +278,7 @@ class PartManager : public QObject
          * @brief Gets index of part that was replaced.
          * @return unsigned char
          */
-        unsigned char getPartIndex();
+        unsigned char getPartIndex() const;
 
     public slots:
         /**

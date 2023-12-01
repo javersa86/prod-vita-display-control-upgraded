@@ -2,40 +2,36 @@
 #include "csv_manager.h"
 
 PartManager::PartManager(QObject *parent) :
-    QObject(parent)
+    QObject(parent), m_hours_operating_timer(new QTimer(this)), m_hours_ventilating_timer(new QTimer(this))
 {
-    m_row_index = 0;
-
     //Constructs CSV file and variables for part names, serial numbers, and date installations.
     std::vector<std::string> columns(PART_DATA);
     for(int i = 0; i < PART_DATA; i++)
     {
         columns[i] = partNameMap.at(i);
     }
-    m_partCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(PART_FILE), &columns[0], PART_DATA);
+    m_partCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(PART_FILE), columns.data(), PART_DATA);
     updatePart();
 
     //Constructs CSV file and variables for hours of operations.
     std::vector<std::string> columns1 = {"Part", "Hours Operating"};
-    m_hoursOperatingCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/" + std::string(PART_OPERATING_FILE), &columns1[0], 2);
+    m_hoursOperatingCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/" + std::string(PART_OPERATING_FILE), columns1.data(), 2);
     updateHoursOperating();
 
     //Constructs CSV file and variables for hours of ventilation.
     std::vector<std::string> columns2 = {"Part", "Hours Ventilating"};
-    m_hoursVentilatingCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/" + std::string(PART_VENTILATING_FILE), &columns2[0], 2);
+    m_hoursVentilatingCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/" + std::string(PART_VENTILATING_FILE), columns2.data(), 2);
     updateHoursVentilating();
 
     constexpr int INTERVAL_ONE_SECOND = 1000;
 
     //Timer that increments the hours of operation for parts per second.
-    m_hours_operating_timer = new QTimer(this);
     m_hours_operating_timer->setInterval(INTERVAL_ONE_SECOND);
     m_hours_operating_timer->setSingleShot(false);
     connect(m_hours_operating_timer, &QTimer::timeout, this, &PartManager::incrementHoursOperating);
     m_hours_operating_timer->start();
 
     //Timer that increments the hours of ventilation for parts per second.
-    m_hours_ventilating_timer = new QTimer(this);
     m_hours_ventilating_timer->setInterval(INTERVAL_ONE_SECOND);
     m_hours_ventilating_timer->setSingleShot(false);
     connect(m_hours_ventilating_timer, &QTimer::timeout, this, &PartManager::incrementHoursVentilating);
@@ -58,13 +54,13 @@ void PartManager::updatePart()
             {
                 columns[i] = partNameMap.at(i);
             }
-            m_partCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(PART_FILE), &columns[0], PART_DATA);
+            m_partCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(PART_FILE), columns.data(), PART_DATA);
             createComponents();
             qInfo() << "NVENT" << "," << "COMPONENTS" << "," << "Components Manager reset do to corruption.";
         }
     }
     std::vector<std::string> row = m_partCsvManager.readRecord(m_row_index);
-    if (row.size() == 0)
+    if (row.empty())
     {
         m_partName = QString::fromStdString("");
         m_partNumber = QString::fromStdString("");
@@ -88,7 +84,7 @@ void PartManager::createComponents()
             "N/A",
             temp.toString(QString::fromStdString("MM/dd/yyyy hh:mm:ss")).toStdString()
         };
-        m_partCsvManager.createRecord(&vector[0]);
+        m_partCsvManager.createRecord(vector.data());
     }
 }
 
@@ -104,7 +100,7 @@ void PartManager::updateHoursOperating()
         {
             system("rm /run/media/mmcblk0p2/home/ubuntu/components_operating.csv");
             std::vector<std::string> columns1 = {"Part", "Hours Operating"};
-            m_hoursOperatingCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/" + std::string(PART_OPERATING_FILE), &columns1[0], 2);
+            m_hoursOperatingCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/" + std::string(PART_OPERATING_FILE), columns1.data(), 2);
             
             qInfo() << "NVENT" << "," << "COMPONENTS" << "," << "Components Manager Hours Operating reset do to corruption.";
         }
@@ -112,7 +108,7 @@ void PartManager::updateHoursOperating()
 
     std::vector<std::string> row = m_hoursOperatingCsvManager.readRecord(m_row_index);
 
-    if (row.size() == 0)
+    if (row.empty())
     {
         m_hoursOperating = -1;
         emit partOpChanged();
@@ -127,7 +123,7 @@ void PartManager::createHoursOperating()
     for (int i = 0; i < NUMBER_OF_PARTS; i++)
     {
         std::vector<std::string> vector = {componentNameMap.at(i), "0"};
-        m_hoursOperatingCsvManager.createRecord(&vector[0]);
+        m_hoursOperatingCsvManager.createRecord(vector.data());
     }
 }
 
@@ -136,7 +132,7 @@ void PartManager::incrementHoursOperating()
     for (int i = 0; i < NUMBER_OF_PARTS; i++)
     {
         std::vector<std::string> vector;
-        if (i == m_temp_oper_index && m_reset_op)
+        if (i == m_temp_oper_index && m_reset_op == 1)
         {
             vector = {m_hoursOperatingCsvManager.readRecord(i).at(0),"0"};
             m_reset_op = 0;
@@ -148,7 +144,7 @@ void PartManager::incrementHoursOperating()
             int operating_count = std::stoi(row.at(1));
             vector = {row.at(0), std::to_string(operating_count + 1)};
         }
-        m_hoursOperatingCsvManager.updateRecord(i, &vector[0]);
+        m_hoursOperatingCsvManager.updateRecord(i, vector.data());
     }
     updateHoursOperating();
 }
@@ -165,7 +161,7 @@ void PartManager::updateHoursVentilating()
         {
             system("rm /run/media/mmcblk0p2/home/ubuntu/components_ventilating.csv");
             std::vector<std::string> columns2 = {"Part", "Hours Ventilating"};
-            m_hoursVentilatingCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/" + std::string(PART_VENTILATING_FILE), &columns2[0], 2);
+            m_hoursVentilatingCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/" + std::string(PART_VENTILATING_FILE), columns2.data(), 2);
             
             qInfo() << "NVENT" << "," << "COMPONENTS" << "," << "Components Manager Hours Ventilating reset do to corruption.";
         }
@@ -173,7 +169,7 @@ void PartManager::updateHoursVentilating()
 
     std::vector<std::string> row = m_hoursVentilatingCsvManager.readRecord(m_row_index);
 
-    if (row.size() == 0)
+    if (row.empty())
     {
         m_hoursVentilating = -1;
         emit partVentChanged();
@@ -188,18 +184,18 @@ void PartManager::createHoursVentilating()
     for (int i = 0; i < NUMBER_OF_PARTS; i++)
     {
         std::vector<std::string> vector = {componentNameMap.at(i), "0"};
-        m_hoursVentilatingCsvManager.createRecord(&vector[0]);
+        m_hoursVentilatingCsvManager.createRecord(vector.data());
     }
 }
 
 void PartManager::incrementHoursVentilating()
 {
-    if (m_ventilation_state)
+    if (m_ventilation_state == 1)
     {
         for (int i = 0; i < NUMBER_OF_PARTS; i++)
         {
             std::vector<std::string> vector;
-            if (i == m_temp_vent_index && m_reset_vent)
+            if (i == m_temp_vent_index && m_reset_vent == 1)
             {
                 vector = {m_hoursVentilatingCsvManager.readRecord(i).at(0),"0"};
                 m_reset_vent = 0;
@@ -211,7 +207,7 @@ void PartManager::incrementHoursVentilating()
                 int ventilating_count = std::stoi(row.at(1));
                 vector = {row.at(0), std::to_string(ventilating_count + 1)};
             }
-            m_hoursVentilatingCsvManager.updateRecord(i, &vector[0]);
+            m_hoursVentilatingCsvManager.updateRecord(i, vector.data());
         }
         updateHoursVentilating();
     }
@@ -230,32 +226,32 @@ void PartManager::setVentilationState(unsigned char val)
     m_ventilation_state = val;
 }
 
-QString PartManager::getPartName()
+auto PartManager::getPartName() -> QString
 {
     return m_partName;
 }
 
-QString PartManager::getPartNumber()
+auto PartManager::getPartNumber() -> QString
 {
     return m_partNumber;
 }
 
-QString PartManager::getPartDateTime()
+auto PartManager::getPartDateTime() -> QString
 {
     return m_partDateTime;
 }
 
-int PartManager::getHoursOperating()
+auto PartManager::getHoursOperating() const -> int
 {
     return m_hoursOperating;
 }
 
-int PartManager::getHoursVentilating()
+auto PartManager::getHoursVentilating() const -> int
 {
     return m_hoursVentilating;
 }
 
-int PartManager::getIndex()
+auto PartManager::getIndex() const -> int
 {
     return m_row_index;
 }
@@ -290,12 +286,12 @@ void PartManager::setTempSerial(const QString &number)
     m_temp_serial_number = number;
 }
 
-QString PartManager::getSerialNumber()
+auto PartManager::getSerialNumber() -> QString
 {
     //If part number length is greater than 20, will return substring of serial number at length of 20.
-    if (m_temp_serial_number.size() > 20)
+    if (m_temp_serial_number.size() > PART_NUMBER_SIZE)
     {
-        return m_temp_serial_number.mid(m_temp_serial_number.size() - 20, 20);
+        return m_temp_serial_number.mid(m_temp_serial_number.size() - PART_NUMBER_SIZE, PART_NUMBER_SIZE);
     }
     return m_temp_serial_number;
 }
@@ -307,14 +303,20 @@ void PartManager::setTempDate(const QString &date)
 
 void PartManager::setNewPart(const QString &newTime)
 {
-    m_temp_date = m_temp_date + " " + QDateTime::fromString(newTime,QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")).toString(QString::fromStdString("hh:mm:ss AP"));
+    m_temp_date = m_temp_date +
+            " " +
+            QDateTime::fromString(
+                newTime,
+                QString::fromStdString("MM/dd/yyyy hh:mm:ss AP"))
+            .toString(QString::fromStdString("hh:mm:ss AP"));
+
     //Updates serial number and installation date.
     std::vector<std::string> vector = {
         m_temp_name.toStdString(),
         m_temp_serial_number.toStdString(),
         m_temp_date.toStdString()
     };
-    m_partCsvManager.updateRecord(m_temp_row_index, &vector[0]);
+    m_partCsvManager.updateRecord(m_temp_row_index, vector.data());
     updatePart();
 
     //Updates hours of operation by tracking index in hours timer.
@@ -322,7 +324,7 @@ void PartManager::setNewPart(const QString &newTime)
     m_reset_op = 1;
 
     //Updates hours of ventilation while ventilating by tracking index in hours timer.
-    if (m_ventilation_state)
+    if (m_ventilation_state == 1)
     {
         m_temp_vent_index = m_temp_row_index;
         m_reset_vent = 1;
@@ -331,14 +333,23 @@ void PartManager::setNewPart(const QString &newTime)
     else
     {
         std::vector<std::string> vector1 = {m_temp_name.toStdString(),std::to_string(0)};
-        m_hoursVentilatingCsvManager.updateRecord(m_temp_row_index, &vector1[0]);
+        m_hoursVentilatingCsvManager.updateRecord(m_temp_row_index, vector1.data());
         updateHoursVentilating();
     }
 
     //Updates index for part that was replaced.
     m_part_index = m_temp_row_index;
 
-    qInfo() << "NVENT" << "," << "COMPONENTS" << "," << m_temp_name + " installed on " + m_temp_date + " with the following serial number: " + m_temp_serial_number + ".";
+    qInfo() << "NVENT"
+            << ","
+            << "COMPONENTS"
+            << ","
+            << m_temp_name +
+               " installed on " +
+               m_temp_date +
+               " with the following serial number: " +
+               m_temp_serial_number +
+               ".";
 
     m_temp_row_index = -1;
     m_temp_name = QString::fromStdString("");
@@ -352,7 +363,7 @@ void PartManager::setPartIndex(unsigned char index)
     m_part_index = index;
 }
 
-unsigned char PartManager::getPartIndex()
+auto PartManager::getPartIndex() const -> unsigned char
 {
     return m_part_index;
 }

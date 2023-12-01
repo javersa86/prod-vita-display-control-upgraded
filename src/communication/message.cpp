@@ -1,10 +1,6 @@
 #include "message.h"
 
-Message::Message()
-{
-
-}
-Message::Message(unsigned char* data, unsigned char crc, int tx_size)
+Message::Message(const unsigned char* data, unsigned char crc, int tx_size)
 {
     int index = 0;
 
@@ -23,26 +19,25 @@ Message::Message(unsigned char* data, unsigned char crc, int tx_size)
     m_tx_size = tx_size + 2;
 }
 
-unsigned char Message::getCRC()
+auto Message::getCRC() const -> unsigned char
 {
     return m_crc;
 }
 
-unsigned char * Message::getMessage()
+auto Message::getMessage() -> unsigned char *
 {
     return m_message;
 }
 
-int Message::getSize()
+auto Message::getSize() const -> int
 {
     return m_tx_size;
 }
 
-QString Message::toString()
+auto Message::toString() -> QString
 {
     QString tmp = QString::fromStdString("");
-    int i = 0;
-    for (i = 0; i < m_tx_size; i++)
+    for (int i = 0; i < m_tx_size; i++)
     {
         tmp = tmp + QString::number(m_message[i]) + ", ";
     }

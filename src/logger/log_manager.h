@@ -216,46 +216,48 @@ void log(QtMsgType type, const QMessageLogContext &context, const QString &msg);
  * @note Will only record onto warings file if type reads "WARNING".
  */
 void logEvent(const QString &msg);
+
 /**
  * @brief Vector that stores Titles for Service Log files.
  */
-extern std::vector<std::string> m_columnTitles;
+static std::vector<std::string> m_columnTitles;
 /**
  * @brief Variable used to declared when log manager is initiated.
  */
-extern bool m_logInitiated;
+static bool m_logInitiated;
 /**
  * @brief String variable for the name of the CSV file that stores all service logs.
  */
-extern QString m_currentEventFile;
+static QString m_currentEventFile;
 /**
  * @brief String variable for the name of the CSV file that stores service logs associated with warning logs.
  */
-extern QString m_currentEventFileWarnings;
+static QString m_currentEventFileWarnings;
 /**
  * @brief CSV Manager used to update information on current service log file.
  */
-extern CSVManager m_csvManager;
+static CSVManager m_csvManager;
 /**
  * @brief CSV Manager used to update information on current service log file associated with warning logs.
  */
-extern CSVManager m_csvManager_Warnings;
+static CSVManager m_csvManager_Warnings;
 /**
  * @brief Vector that tracks the titles of all service logs stored in the system.
  */
-extern QVector<QString> m_activeFiles;
+static QVector<QString> m_activeFiles;
 /**
  * @brief Vector that tracks the titles of all service logs stored in the system that only store warning logs.
  */
-extern QVector<QString> m_activeWarningFiles;
+static QVector<QString> m_activeWarningFiles;
 /**
  * @brief CSV Manager used to update CSV file from Time Manager.
  */
-extern CSVManager m_csvManager_Time;
+static CSVManager m_csvManager_Time;
 /**
  * @brief Boolean variable used to log service events directly from the service menu.
  */
-extern bool m_service_state;
+static bool m_service_state;
+
 /**
  * @brief String variable that stores the title of the currently active service log file.
  */

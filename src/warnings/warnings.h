@@ -67,7 +67,7 @@ class Warning
         /**
         * @brief Default constructor
         */
-        Warning();
+        Warning() = default;
         /**
         * @brief   Parent constructor used for all warnings
         * @details Initializes the following components to a warning:
@@ -80,7 +80,7 @@ class Warning
         *          - The color of the warning banner while the warning is displayed: red, blue, yellow, green.
         *          - The text that appears in the clear button: Clear or Prime.
         *
-        * @param id
+        * @param warning_id
         * @param troubleshooting_steps
         * @param title
         * @param warning_class
@@ -90,7 +90,7 @@ class Warning
         * @param clearText
         */
         Warning(
-                const int id,
+                const int warning_id,
                 const QVector<QString> &troubleshooting_steps,
                 const QString &title,
                 const int warning_class,
@@ -175,14 +175,14 @@ public:
     /**
     * @brief Constructor for patient warnings and all patient warnings are inherited from this.
     * @note  The default color for all patient colors is red.
-    * @param id
+    * @param warning_id
     * @param title
     * @param troubleshooting_steps
     * @param clearingBehavior
     * @param color
     */
     PatientWarning(
-            int id,
+            int warning_id,
             const QString &title,
             const QVector<QString> &troubleshooting_steps,
             unsigned char clearingBehavior,
@@ -198,7 +198,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    StackingPressureHigh(int id, const QVector<QString> &troubleshooting =
+    StackingPressureHigh(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("The Stacking Pressure of the patient may be higher than the set SP threshold, ensure there is egress."),
                                  QStringLiteral("Patient may be gas trapping causing the stacking of breaths and/or an increased baseline."),
@@ -217,7 +217,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    PIPHigh(int id, const QVector<QString> &troubleshooting =
+    PIPHigh(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("The PIP of the patient may be higher than the set PIP threshold, ensure there is egress."),
                                  QStringLiteral("Patient compliance may be low, causing rapid rise of PIP. Adjust settings to allow ventilation to resume within safe parameters."),
@@ -238,7 +238,7 @@ public:
     /**
      * @brief Constructor Method.
      */
-    PIPDisconnected(int id, const QVector<QString> &troubleshooting =
+    PIPDisconnected(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("Ensure the PIP line is connected to the patient."),
                                  QStringLiteral("Ensure the PIP line is connected to the NVENT Vita."),
@@ -256,7 +256,7 @@ public:
      * @brief Contructor Method.
      * @note  Sets clear text to "PRIME".
      */
-    NoWaterJet(int id, const QVector<QString> &troubleshooting =
+    NoWaterJet(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("Make sure distilled sterile water is connected to the machine."),
                                  QStringLiteral("Press prime in the warning banner to prime the pumps.")
@@ -273,7 +273,7 @@ public:
      * @brief Contructor Method.
      * @note  Sets clear text to "PRIME".
      */
-    NoWaterAux(int id, const QVector<QString> &troubleshooting =
+    NoWaterAux(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("Make sure distilled sterile water is connected to the machine."),
                                  QStringLiteral("Press prime in the warning banner to prime the pumps.")
@@ -290,7 +290,7 @@ public:
      * @brief Contructor Method.
      * @note  Sets clear text to "PRIME".
      */
-    NoWaterPrime(int id, const QVector<QString> &troubleshooting =
+    NoWaterPrime(int warning_id, const QVector<QString> &troubleshooting =
                                 QVector<QString>({
                                     QStringLiteral("Make sure distilled sterile water is connected to the machine."),
                                     QStringLiteral("Press prime in the warning banner to prime the pumps.")
@@ -307,13 +307,13 @@ public:
     /**
     * @brief Constructor for system warnings and all system warnings are inherited from this.
     * @note  The default color for all system colors is blue.
-    * @param id
+    * @param warning_id
     * @param title
     * @param troubleshooting_steps
     * @param clearingBehavior
     * @param color
     */
-    SystemWarning(int id, const QString &title, const QVector<QString> &troubleshooting_steps, unsigned char clearingBehavior, const QString &color = QStringLiteral("#4A5AE4"));
+    SystemWarning(int warning_id, const QString &title, const QVector<QString> &troubleshooting_steps, unsigned char clearingBehavior, const QString &color = QStringLiteral("#4A5AE4"));
 };
 
 /**
@@ -325,7 +325,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    JetSwitchError(int id, const QVector<QString> &troubleshooting =
+    JetSwitchError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Jet Switch Error!"));
 };
 
@@ -338,7 +338,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    StackingPressureSensorDefective(int id, const QVector<QString> &troubleshooting =
+    StackingPressureSensorDefective(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Stacking Pressure Sensor Defective!"));
 };
 
@@ -351,7 +351,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    StackingPressureSensorDefectiveDouble(int id, const QVector<QString> &troubleshooting =
+    StackingPressureSensorDefectiveDouble(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Stacking Pressure Sensor Defective!<br>(Second Jet Line)"));
 };
 
@@ -364,7 +364,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    StackingPressureDisconnected(int id, const QVector<QString> &troubleshooting =
+    StackingPressureDisconnected(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("Ensure the jet line is connected to the patient."),
                                  QStringLiteral("Ensure the jet line is connected to the NVENT Vita.")
@@ -380,7 +380,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    InappropriateOxygenSensor(int id, const QVector<QString> &troubleshooting =
+    InappropriateOxygenSensor(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("Oxygen sensor cannot be read."),
                                  QStringLiteral("Ensure that you are using a <INSERT KIND OF OXYGEN SENSOR HERE>."),
@@ -397,7 +397,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    LowAirSupply(int id, const QVector<QString> &troubleshooting =
+    LowAirSupply(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("The measured inlet air pressure is too low."),
                                  QStringLiteral("Ensure that the NVENT is securely connected to the air source."),
@@ -414,7 +414,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    LowAirSupplyNoLaser(int id, const QVector<QString> &troubleshooting =
+    LowAirSupplyNoLaser(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("The delivered oxygen concentration may be higher than expected. Do not use a laser."),
                                  QStringLiteral("The measured inlet air pressure is too low."),
@@ -431,7 +431,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    LowOxygenSupply(int id, const QVector<QString> &troubleshooting =
+    LowOxygenSupply(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("The measured inlet oxygen pressure is too low."),
                                  QStringLiteral("Ensure the NVENT is securely connected to the oxygen source.")
@@ -447,7 +447,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    AirProportionalValveError(int id, const QVector<QString> &troubleshooting =
+    AirProportionalValveError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Air Proportional Valve Error!"));
 };
 
@@ -460,7 +460,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    AirProportionalValveErrorNoLaser(int id, const QVector<QString> &troubleshooting =
+    AirProportionalValveErrorNoLaser(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Do not use a laser, 100% oxygen is delivered to the patient.")}), const QString &title = QStringLiteral("Air Proportional Valve Error,<br>Limited O<sub>2</sub> Adjustment in Progress!"));
 };
 
@@ -473,7 +473,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    O2ProportionalValveError(int id, const QVector<QString> &troubleshooting =
+    O2ProportionalValveError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Oxygen Proportional Valve Error!"));
 };
 
@@ -486,7 +486,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    AirInletPressureSensorError(int id, const QVector<QString> &troubleshooting =
+    AirInletPressureSensorError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Air Inlet Pressure Sensor Error!"));
 };
 
@@ -499,7 +499,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    AirInletPressureSensorErrorNoLaser(int id, const QVector<QString> &troubleshooting =
+    AirInletPressureSensorErrorNoLaser(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Do not use a laser, 100% oxygen is delivered to the patient.")}), const QString &title = QStringLiteral("Air Inlet Pressure Sensor Error,<br>Limited O<sub>2</sub> Adjustment in Progress!"));
 };
 
@@ -512,7 +512,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    O2InletPressureSensorError(int id, const QVector<QString> &troubleshooting =
+    O2InletPressureSensorError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Oxygen Inlet Pressure Sensor Error!"));
 };
 
@@ -526,7 +526,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    AuxSwitchError(int id, const QVector<QString> &troubleshooting =
+    AuxSwitchError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Step 1"), QStringLiteral("Step 2"), QStringLiteral("Step 3")}), const QString &title = QStringLiteral("Auxiliary Switch Error!"));
 };
 
@@ -539,7 +539,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    AuxProportionalValveError(int id, const QVector<QString> &troubleshooting =
+    AuxProportionalValveError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Auxiliary Proportional Valve Error!"));
 };
 
@@ -552,7 +552,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    AuxFlowSensorError(int id, const QVector<QString> &troubleshooting =
+    AuxFlowSensorError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Auxiliary Flow Sensor Error!"));
 };
 
@@ -565,7 +565,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    SpeakerDefect(int id, const QVector<QString> &troubleshooting =
+    SpeakerDefect(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("SpeakerDefect!"));
 };
 
@@ -578,7 +578,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    HeaterFailure(int id, const QVector<QString> &troubleshooting =
+    HeaterFailure(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Heater Failure!"));
 };
 
@@ -591,7 +591,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    TemperatureMeasuringError(int id, const QVector<QString> &troubleshooting =
+    TemperatureMeasuringError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Internal Temperature Measuring Defect!"));
 };
 
@@ -604,7 +604,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    JetFlowSensorError(int id, const QVector<QString> &troubleshooting =
+    JetFlowSensorError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Jet Flow Sensor Error!"));
 };
 
@@ -617,7 +617,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    JetHumiditySensorError(int id, const QVector<QString> &troubleshooting =
+    JetHumiditySensorError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Jet Humidity Sensor Error!"));
 };
 
@@ -630,7 +630,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    AuxHumiditySensorError(int id, const QVector<QString> &troubleshooting =
+    AuxHumiditySensorError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Auxiliary Humidity Sensor Error!"));
 };
 
@@ -643,7 +643,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    RTCError(int id, const QVector<QString> &troubleshooting =
+    RTCError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Real Time Clock Error!"));
 };
 
@@ -656,7 +656,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    ExhaustFanError(int id, const QVector<QString> &troubleshooting =
+    ExhaustFanError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Exhaust Fan Error!"));
 };
 
@@ -669,7 +669,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    DrivingPressureRegulatorError(int id, const QVector<QString> &troubleshooting =
+    DrivingPressureRegulatorError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Driving Pressure Regulator Error!"));
 };
 
@@ -682,7 +682,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    PIPSensorError(int id, const QVector<QString> &troubleshooting =
+    PIPSensorError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("PIP Sensor Error!"));
 };
 
@@ -695,7 +695,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    FiO2Failure(int id, const QVector<QString> &troubleshooting =
+    FiO2Failure(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("Check that Air and Oxygen supplies are connected correctly."),
                                  QStringLiteral("Attempt to recalibrate the oxygen sensor in the Settings/Oxygen Calibration Menu."),
@@ -712,7 +712,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    O2CalFailure(int id, const QVector<QString> &troubleshooting =
+    O2CalFailure(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("Check that Air and Oxygen supplies are connected correctly."),
                                  QStringLiteral("The oxygen sensor may need to be replaced.")
@@ -728,7 +728,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    NoComm(int id, const QVector<QString> &troubleshooting =
+    NoComm(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("Unable to retrieve settings, operating in headless mode."),
                                  QStringLiteral("Restart when possible."),
@@ -745,7 +745,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    AuxWaterPumpError(int id, const QVector<QString> &troubleshooting =
+    AuxWaterPumpError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Service is required to change water pump.")}), const QString &title = QStringLiteral("Auxiliary Water Pump Defect"));
 };
 
@@ -758,7 +758,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    JetWaterPumpError(int id, const QVector<QString> &troubleshooting =
+    JetWaterPumpError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Service is required to change water pump.")}), const QString &title = QStringLiteral("Jet Water Pump Defect"));
 };
 
@@ -771,7 +771,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    DehumidificationFailed(int id, const QVector<QString> &troubleshooting =
+    DehumidificationFailed(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("Water may still be connected to the water inlet port."),
                                  QStringLiteral("The water inlet port may be plugged."),
@@ -788,7 +788,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    FlashError(int id, const QVector<QString> &troubleshooting =
+    FlashError(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The system has failed to restore data from memory.")}), const QString &title = QStringLiteral("Failed to Restore Memory"));
 };
 
@@ -801,7 +801,7 @@ public:
     /**
      * @brief Constructor Method.
      */
-    BreathTimingFailure(int id, const QVector<QString> &troubleshootingSteps =
+    BreathTimingFailure(int warning_id, const QVector<QString> &troubleshootingSteps =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Breath Timing Failure!"));
 };
 
@@ -814,7 +814,7 @@ public:
     /**
      * @brief Constructor Method.
      */
-    JetWaterSensorFailure(int id, const QVector<QString> &troubleshootingSteps =
+    JetWaterSensorFailure(int warning_id, const QVector<QString> &troubleshootingSteps =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Jet Water Sensor Failure!"));
 };
 
@@ -827,7 +827,7 @@ public:
     /**
      * @brief Constructor Method.
      */
-    AuxWaterSensorFailure(int id, const QVector<QString> &troubleshootingSteps =
+    AuxWaterSensorFailure(int warning_id, const QVector<QString> &troubleshootingSteps =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Auxiliary Water Sensor Failure!"));
 };
 
@@ -840,7 +840,7 @@ public:
     /**
      * @brief Constructor Method.
      */
-    AmbientTempSensorDefect(int id, const QVector<QString> &troubleshootingSteps =
+    AmbientTempSensorDefect(int warning_id, const QVector<QString> &troubleshootingSteps =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Ambient Temperature Sensor Defect!"));
 };
 
@@ -853,7 +853,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    InternalTempHigh(int id, const QVector<QString> &troubleshooting =
+    InternalTempHigh(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Check that the exhaust fan (located on the device posterior) is not blocked.")}), const QString &title = QStringLiteral("Internal System Temperature High"));
 };
 
@@ -866,13 +866,13 @@ public:
     /**
     * @brief Constructor for notices and all notices are inherited from this.
     * @note  The default color for all notice colors is yellow.
-    * @param id
+    * @param warning_id
     * @param title
     * @param troubleshooting_steps
     * @param clearingBehavior
     * @param color
     */
-    Notice(int id, const QString &title, const QVector<QString> &troubleshooting_steps, unsigned char clearingBehavior, const QString &color = QStringLiteral("#E2C044"));
+    Notice(int warning_id, const QString &title, const QVector<QString> &troubleshooting_steps, unsigned char clearingBehavior, const QString &color = QStringLiteral("#E2C044"));
 };
 
 /**
@@ -885,7 +885,7 @@ public:
      * @brief Contructor Method.
      * @note  Sets color to green.
      */
-    LaserOK(int id, const QVector<QString> &troubleshooting =
+    LaserOK(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Limited O<sub>2</sub> mode is active, excess oxygen has been flushed from the system, and the set oxygen concentration is below the set limited oxygen value.")}), const QString &title = QStringLiteral("Limited O<sub>2</sub> Prepping to 21%"));
 };
 
@@ -898,7 +898,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    LaserPrepping(int id, const QVector<QString> &troubleshooting =
+    LaserPrepping(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Limited O<sub>2</sub> mode is active. The system is prepping for laser use.")}), const QString &title = QStringLiteral("Limited O<sub>2</sub> Prepping to 21%"));
 };
 
@@ -911,7 +911,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    LowStaticO2Pressure(int id, const QVector<QString> &troubleshooting =
+    LowStaticO2Pressure(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The input oxygen pressure is below 35 PSI.")}), const QString &title = QStringLiteral("Low Static O<sub>2</sub> Pressure"));
 };
 
@@ -924,7 +924,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    LowStaticAirPressure(int id, const QVector<QString> &troubleshooting =
+    LowStaticAirPressure(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The input air pressure is below 35 PSI.")}), const QString &title = QStringLiteral("Low Static Air Pressure"));
 };
 
@@ -937,7 +937,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    ManualModePIPMonitoringRecommended(int id, const QVector<QString> &troubleshooting =
+    ManualModePIPMonitoringRecommended(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("Manual mode is active. Consider monitoring PIP.")}), const QString &title = QStringLiteral("Manual Mode Active, PIP Monitoring Recommended"));
 };
 
@@ -950,7 +950,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    PIPMonitoringRecommended(int id, const QVector<QString> &troubleshooting =
+    PIPMonitoringRecommended(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The set breath rate is below 80 BPM. Consider monitoring PIP.")}), const QString &title = QStringLiteral("PIP Monitoring Recommended"));
 };
 
@@ -963,7 +963,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    ETCO2Active(int id, const QVector<QString> &troubleshooting =
+    ETCO2Active(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("End-tidal CO<sub>2</sub> is in progress.")}), const QString &title = QStringLiteral("End Tidal CO<sub>2</sub> Routine Active"));
 };
 
@@ -976,7 +976,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    ServiceDue(int id, const QVector<QString> &troubleshooting =
+    ServiceDue(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The system is due for servicing. Schedule an appointment.")}), const QString &title = QStringLiteral("Service Due"));
 };
 
@@ -989,7 +989,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    BatteryReplacement(int id, const QVector<QString> &troubleshooting =
+    BatteryReplacement(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The battery is low. Schedule a servicing appointment.")}), const QString &title = QStringLiteral("Battery Replacement Due"));
 };
 
@@ -1002,7 +1002,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    HeaterHumidiferOff(int id, const QVector<QString> &troubleshooting =
+    HeaterHumidiferOff(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The heater is defective. Schedule a servicing appointment.")}), const QString &title = QStringLiteral("Heater and Humidifier Off"));
 };
 
@@ -1015,7 +1015,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    HumidificationDeactivated(int id, const QVector<QString> &troubleshooting =
+    HumidificationDeactivated(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("The water sensors may be defective."),
                                  QStringLiteral("The pump priming attempts may have run out. You may be able to reset the pump priming attempts through the humidity page.")
@@ -1031,7 +1031,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    JetHumidificationOff(int id, const QVector<QString> &troubleshooting =
+    JetHumidificationOff(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("The water sensor on the jet line may be defective."),
                                  QStringLiteral("The pump priming attempts may have run out. You may be able to reset the pump priming attempts through the humidity page.")
@@ -1047,7 +1047,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    AuxHumidificationOff(int id, const QVector<QString> &troubleshooting =
+    AuxHumidificationOff(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("The water sensor on the auxiliary line may be defective."),
                                  QStringLiteral("The pump priming attempts may have run out. You may be able to reset the pump priming attempts through the humidity page.")
@@ -1063,7 +1063,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    AuxFlowDeactivated(int id, const QVector<QString> &troubleshooting =
+    AuxFlowDeactivated(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("The water sensor on the auxiliary line may be defective."),
                                  QStringLiteral("The pump priming attempts may have run out. You may be able to reset the pump priming attempts through the humidity page.")
@@ -1079,7 +1079,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    DistilledWater(int id, const QVector<QString> &troubleshooting =
+    DistilledWater(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("Only Use Distilled Sterile Water."),
                                  QStringLiteral("Using Saline or other composite fluids WILL clog water injectors.")
@@ -1095,7 +1095,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    PumpsPriming(int id, const QVector<QString> &troubleshooting =
+    PumpsPriming(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The system is preparing to humidify the critical gases.")}), const QString &title = QStringLiteral("Pump System Priming"));
 };
 
@@ -1108,7 +1108,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    HumidityReminder(int id, const QVector<QString> &troubleshooting =
+    HumidityReminder(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The NVENT Vita has been ventilating for 30 minutes without humidification. Consider humidifying the critical gases."),}), const QString &title = QStringLiteral("Ventilating without Humidifying for 30+ minutes. Consider adding humidity."));
 };
 
@@ -1121,7 +1121,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    O2CalInProgress(int id, const QVector<QString> &troubleshooting =
+    O2CalInProgress(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("The system is calibrating the oxygen sensor."),
                                  QStringLiteral("You may proceed ventilation."),
@@ -1138,7 +1138,7 @@ public:
     /**
      * @brief Contructor Method.
      */
-    O2CalInProgressNoLaser(int id, const QVector<QString> &troubleshooting =
+    O2CalInProgressNoLaser(int warning_id, const QVector<QString> &troubleshooting =
             QVector<QString>({QStringLiteral("The system is calibrating the oxygen sensor. Do not use a laser.")}), const QString &title = QStringLiteral("Oxygen Calibration in Progress,<br>Limited O<sub>2</sub> Adjustment in Progress!"));
 };
 /** @} */

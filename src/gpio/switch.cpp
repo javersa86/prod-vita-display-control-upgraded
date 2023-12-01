@@ -1,14 +1,9 @@
 #include "switch.h"
-#include <QObject>
-#include <QDebug>
 
-Switch::Switch()
-{
-}
 
 void Switch::onPinChange(unsigned char value)
 {
-    if(!value && m_state && !m_ignore)
+    if(value == 0 && m_state == 1 && m_ignore == 0)
     {
         emit push();
     }

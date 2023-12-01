@@ -14,168 +14,14 @@ ContactManager::ContactManager(QObject *parent) :
 {
     std::vector<std::string> tColumns = {"TYPE", "INFO"};
 
-    m_serviceCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(SERVICE_CONTACT_FILE), &tColumns[0], 2);
+    m_serviceCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(SERVICE_CONTACT_FILE), tColumns.data(), 2);
     updateServiceContact();
 
-    m_salesCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(SALES_CONTACT_FILE), &tColumns[0], 2);
+    m_salesCsvManager = CSVManager("/media/NVENT_FILES/" + std::string(SALES_CONTACT_FILE), tColumns.data(), 2);
     updateSalesContact();
 }
 
-void ContactManager::updateServiceContact()
-{
-    if (m_serviceCsvManager.getNumEntries() != 7)
-    {
-        setService(
-                    QString::fromStdString("Susquehanna Micro Inc."),
-                    QString::fromStdString("198 West Beaver Street"),
-                    QString::fromStdString("Hallam"),
-                    QString::fromStdString("PA"),
-                    QString::fromStdString("17406"),
-                    QString::fromStdString("susquemicro.com"),
-                    QString::fromStdString("(888)730-5463")
-                    );
-        return;
-    }
-
-    std::vector<std::string> vector1 = m_serviceCsvManager.readRecord(0);
-    std::vector<std::string> vector2 = m_serviceCsvManager.readRecord(1);
-    std::vector<std::string> vector3 = m_serviceCsvManager.readRecord(2);
-    std::vector<std::string> vector4 = m_serviceCsvManager.readRecord(3);
-    std::vector<std::string> vector5 = m_serviceCsvManager.readRecord(4);
-    std::vector<std::string> vector6 = m_serviceCsvManager.readRecord(5);
-    std::vector<std::string> vector7 = m_serviceCsvManager.readRecord(6);
-
-    //Reboots information if .csv is corrupted
-    if (vector1.size() < 2)
-    {
-        vector1 = {COMPANY,"TBD"};
-    }
-    if (vector2.size() < 2)
-    {
-        vector2 = {STREET,"TBD"};
-    }
-    if (vector3.size() < 2)
-    {
-        vector3 = {CITY,"TBD"};
-    }
-    if (vector4.size() != 2)
-    {
-        vector4 = {STATE,"**"};
-    }
-    else if (vector4.at(1).length() != 2)
-    {
-        vector4 = {STATE,"**"};
-    }
-    if (vector5.size() != 2)
-    {
-        vector5 = {POSTAL_CODE,"*****"};
-    }
-    else if (vector5.at(1).length() != 5)
-    {
-        vector5 = {POSTAL_CODE,"*****"};
-    }
-    if (vector6.size() < 2)
-    {
-        vector6 = {EMAIL,"TBD"};
-    }
-    if (vector7.size() != 2)
-    {
-        vector7 = {PHONE_NUMBER,"(***)***-****"};
-    }
-    else if (vector7.at(1).length() != 13)
-    {
-        vector7 = {PHONE_NUMBER,"(***)***-****"};
-    }
-
-    m_service_company_name = getFullString(vector1);
-    m_service_street = getFullString(vector2);
-    m_service_city = getFullString(vector3);
-    m_service_state = QString::fromStdString(vector4.at(1));
-    m_service_postal_code = QString::fromStdString(vector5.at(1));
-    m_service_email = getFullString(vector6);
-    m_service_phone_number = QString::fromStdString(vector7.at(1));
-
-    emit contactChanged();
-}
-
-void ContactManager::updateSalesContact()
-{
-    if (m_salesCsvManager.getNumEntries() != 7)
-    {
-        setSales(
-                    QString::fromStdString("Lantern Medical, LLC"),
-                    QString::fromStdString("21525 Ridgetop Circle, Suite 180"),
-                    QString::fromStdString("Sterling"),
-                    QString::fromStdString("VA"),
-                    QString::fromStdString("20166"),
-                    QString::fromStdString("info@lantern-medical.com"),
-                    QString::fromStdString("(571)308-2773")
-                    );
-        return;
-    }
-
-    std::vector<std::string> vector1 = m_salesCsvManager.readRecord(0);
-    std::vector<std::string> vector2 = m_salesCsvManager.readRecord(1);
-    std::vector<std::string> vector3 = m_salesCsvManager.readRecord(2);
-    std::vector<std::string> vector4 = m_salesCsvManager.readRecord(3);
-    std::vector<std::string> vector5 = m_salesCsvManager.readRecord(4);
-    std::vector<std::string> vector6 = m_salesCsvManager.readRecord(5);
-    std::vector<std::string> vector7 = m_salesCsvManager.readRecord(6);
-
-    //Reboots information if .csv is corrupted
-    if (vector1.size() < 2)
-    {
-        vector1 = {COMPANY,"TBD"};
-    }
-    if (vector2.size() < 2)
-    {
-        vector2 = {STREET,"TBD"};
-    }
-    if (vector3.size() < 2)
-    {
-        vector3 = {CITY,"TBD"};
-    }
-    if (vector4.size() != 2)
-    {
-        vector4 = {STATE,"**"};
-    }
-    else if (vector4.at(1).length() != 2)
-    {
-        vector4 = {STATE,"**"};
-    }
-    if (vector5.size() != 2)
-    {
-        vector5 = {POSTAL_CODE,"*****"};
-    }
-    else if (vector5.at(1).length() != 5)
-    {
-        vector5 = {POSTAL_CODE,"*****"};
-    }
-    if (vector6.size() < 2)
-    {
-        vector6 = {EMAIL,"TBD"};
-    }
-    if (vector7.size() != 2)
-    {
-        vector7 = {PHONE_NUMBER,"(***)***-****"};
-    }
-    else if (vector7.at(1).length() != 13)
-    {
-        vector7 = {PHONE_NUMBER,"(***)***-****"};
-    }
-
-    m_sales_company_name = getFullString(vector1);
-    m_sales_street = getFullString(vector2);
-    m_sales_city = getFullString(vector3);
-    m_sales_state = QString::fromStdString(vector4.at(1));
-    m_sales_postal_code = QString::fromStdString(vector5.at(1));
-    m_sales_email = getFullString(vector6);
-    m_sales_phone_number = QString::fromStdString(vector7.at(1));
-
-    emit contactChanged();
-}
-
-QString ContactManager::getFullString(std::vector<std::string> vector)
+auto ContactManager::getFullString(std::vector<std::string> vector) -> QString
 {
     QString temp = QString::fromStdString("");
     for (int i = 1; i < vector.size(); i++)
@@ -189,74 +35,31 @@ QString ContactManager::getFullString(std::vector<std::string> vector)
     return temp;
 }
 
-QString ContactManager::getServiceCompanyName()
+void ContactManager::updateServiceContact()
 {
-    return m_service_company_name;
-}
+    if (m_serviceCsvManager.getNumEntries() != number_of_entries)
+    {
+        setService(
+                    QString::fromStdString("Susquehanna Micro Inc."),
+                    QString::fromStdString("198 West Beaver Street"),
+                    QString::fromStdString("Hallam"),
+                    QString::fromStdString("PA"),
+                    QString::fromStdString("17406"),
+                    QString::fromStdString("susquemicro.com"),
+                    QString::fromStdString("(888)730-5463")
+                    );
+        return;
+    }
 
-QString ContactManager::getServiceStreet()
-{
-    return m_service_street;
-}
+    m_service_company_name = getFullString(constructServiceCompanyName());
+    m_service_street = getFullString(constructServiceStreet());
+    m_service_city = getFullString(constructServiceCity());
+    m_service_state = QString::fromStdString(constructServiceState().at(1));
+    m_service_postal_code = QString::fromStdString(constructServicePostalCode().at(1));
+    m_service_email = getFullString(constructServiceEmail());
+    m_service_phone_number = QString::fromStdString(constructServicePhoneNumber().at(1));
 
-QString ContactManager::getServiceCity()
-{
-    return m_service_city;
-}
-
-QString ContactManager::getServiceState()
-{
-    return m_service_state;
-}
-
-QString ContactManager::getServicePostalCode()
-{
-    return m_service_postal_code;
-}
-
-QString ContactManager::getServiceEmail()
-{
-    return m_service_email;
-}
-
-QString ContactManager::getServicePhoneNumber()
-{
-    return m_service_phone_number;
-}
-
-QString ContactManager::getSalesCompanyName()
-{
-    return m_sales_company_name;
-}
-
-QString ContactManager::getSalesStreet()
-{
-    return m_sales_street;
-}
-
-QString ContactManager::getSalesCity()
-{
-    return m_sales_city;
-}
-
-QString ContactManager::getSalesState()
-{
-    return m_sales_state;
-}
-
-QString ContactManager::getSalesPostalCode()
-{
-    return m_sales_postal_code;
-}
-
-QString ContactManager::getSalesEmail()
-{
-    return m_sales_email;
-}
-
-QString ContactManager::getSalesPhoneNumber()
-{
-    return m_sales_phone_number;
+    emit contactChanged();
 }
 
 void ContactManager::setService(
@@ -271,7 +74,7 @@ void ContactManager::setService(
 {
     if (m_serviceCsvManager.getNumEntries() > 0)
     {
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < number_of_entries; i++)
         {
             m_serviceCsvManager.deleteRecord(0);
         }
@@ -293,13 +96,13 @@ void ContactManager::setService(
     std::vector<std::string> vector6 = {EMAIL,m_service_email.toStdString()};
     std::vector<std::string> vector7 = {PHONE_NUMBER,m_service_phone_number.toStdString()};
 
-    m_serviceCsvManager.createRecord(&vector1[0]);
-    m_serviceCsvManager.createRecord(&vector2[0]);
-    m_serviceCsvManager.createRecord(&vector3[0]);
-    m_serviceCsvManager.createRecord(&vector4[0]);
-    m_serviceCsvManager.createRecord(&vector5[0]);
-    m_serviceCsvManager.createRecord(&vector6[0]);
-    m_serviceCsvManager.createRecord(&vector7[0]);
+    m_serviceCsvManager.createRecord(vector1.data());
+    m_serviceCsvManager.createRecord(vector2.data());
+    m_serviceCsvManager.createRecord(vector3.data());
+    m_serviceCsvManager.createRecord(vector4.data());
+    m_serviceCsvManager.createRecord(vector5.data());
+    m_serviceCsvManager.createRecord(vector6.data());
+    m_serviceCsvManager.createRecord(vector7.data());
     emit contactChanged();
 
     qInfo() << "NVENT"
@@ -323,6 +126,160 @@ void ContactManager::setService(
                ".";
 }
 
+auto ContactManager::constructServiceCompanyName() -> std::vector<std::string>
+{
+    const int cvs_index = 0;
+    std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
+
+    if (vector.size() < 2)
+    {
+        vector = {COMPANY,"TBD"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructServiceStreet() -> std::vector<std::string>
+{
+    const int cvs_index = 1;
+    std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
+
+    if (vector.size() < 2)
+    {
+        vector = {STREET,"TBD"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructServiceCity() -> std::vector<std::string>
+{
+    const int cvs_index = 2;
+    std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
+
+    if (vector.size() < 2)
+    {
+        vector = {CITY,"TBD"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructServiceState() -> std::vector<std::string>
+{
+    const int cvs_index = 3;
+    std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
+
+    if (vector.size() != 2 || vector.at(1).length() != 2)
+    {
+        vector = {STATE,"**"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructServicePostalCode() -> std::vector<std::string>
+{
+    const int cvs_index = 4;
+    const int postal_code_length = 5;
+    std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
+
+    if (vector.size() != 2 || vector.at(1).length() != postal_code_length)
+    {
+        vector = {POSTAL_CODE,"*****"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructServiceEmail() -> std::vector<std::string>
+{
+    const int cvs_index = 5;
+    std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
+
+    if (vector.size() < 2)
+    {
+        vector = {EMAIL,"TBD"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructServicePhoneNumber() -> std::vector<std::string>
+{
+    const int cvs_index = 6;
+    const int phone_number_length = 13;
+    std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
+
+    if (vector.size() != 2 || vector.at(1).length() != phone_number_length)
+    {
+        vector = {PHONE_NUMBER,"(***)***-****"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::getServiceCompanyName() -> QString
+{
+    return m_service_company_name;
+}
+
+auto ContactManager::getServiceStreet() -> QString
+{
+    return m_service_street;
+}
+
+auto ContactManager::getServiceCity() -> QString
+{
+    return m_service_city;
+}
+
+auto ContactManager::getServiceState() -> QString
+{
+    return m_service_state;
+}
+
+auto ContactManager::getServicePostalCode() -> QString
+{
+    return m_service_postal_code;
+}
+
+auto ContactManager::getServiceEmail() -> QString
+{
+    return m_service_email;
+}
+
+auto ContactManager::getServicePhoneNumber() -> QString
+{
+    return m_service_phone_number;
+}
+void ContactManager::updateSalesContact()
+{
+    if (m_salesCsvManager.getNumEntries() != number_of_entries)
+    {
+        setSales(
+                    QString::fromStdString("Lantern Medical, LLC"),
+                    QString::fromStdString("21525 Ridgetop Circle, Suite 180"),
+                    QString::fromStdString("Sterling"),
+                    QString::fromStdString("VA"),
+                    QString::fromStdString("20166"),
+                    QString::fromStdString("info@lantern-medical.com"),
+                    QString::fromStdString("(571)308-2773")
+                    );
+        return;
+    }
+
+    m_sales_company_name = getFullString(constructSalesCompanyName());
+    m_sales_street = getFullString(constructSalesStreet());
+    m_sales_city = getFullString(constructSalesCity());
+    m_sales_state = QString::fromStdString(constructSalesState().at(1));
+    m_sales_postal_code = QString::fromStdString(constructSalesPostalCode().at(1));
+    m_sales_email = getFullString(constructSalesEmail());
+    m_sales_phone_number = QString::fromStdString(constructSalesPhoneNumber().at(1));
+
+    emit contactChanged();
+}
+
 void ContactManager::setSales(
         const QString &name,
         const QString &street,
@@ -335,7 +292,7 @@ void ContactManager::setSales(
 {
     if (m_salesCsvManager.getNumEntries() > 0)
     {
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < number_of_entries; i++)
         {
             m_salesCsvManager.deleteRecord(0);
         }
@@ -357,13 +314,13 @@ void ContactManager::setSales(
     std::vector<std::string> vector6 = {EMAIL,m_sales_email.toStdString()};
     std::vector<std::string> vector7 = {PHONE_NUMBER,m_sales_phone_number.toStdString()};
 
-    m_salesCsvManager.createRecord(&vector1[0]);
-    m_salesCsvManager.createRecord(&vector2[0]);
-    m_salesCsvManager.createRecord(&vector3[0]);
-    m_salesCsvManager.createRecord(&vector4[0]);
-    m_salesCsvManager.createRecord(&vector5[0]);
-    m_salesCsvManager.createRecord(&vector6[0]);
-    m_salesCsvManager.createRecord(&vector7[0]);
+    m_salesCsvManager.createRecord(vector1.data());
+    m_salesCsvManager.createRecord(vector2.data());
+    m_salesCsvManager.createRecord(vector3.data());
+    m_salesCsvManager.createRecord(vector4.data());
+    m_salesCsvManager.createRecord(vector5.data());
+    m_salesCsvManager.createRecord(vector6.data());
+    m_salesCsvManager.createRecord(vector7.data());
 
     emit contactChanged();
 
@@ -386,6 +343,134 @@ void ContactManager::setSales(
                "; " +
                m_sales_phone_number +
                ".";
+}
+
+auto ContactManager::constructSalesCompanyName() -> std::vector<std::string>
+{
+    const int cvs_index = 0;
+    std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
+
+    if (vector.size() < 2)
+    {
+        vector = {COMPANY,"TBD"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructSalesStreet() -> std::vector<std::string>
+{
+    const int cvs_index = 1;
+    std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
+
+    if (vector.size() < 2)
+    {
+        vector = {STREET,"TBD"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructSalesCity() -> std::vector<std::string>
+{
+    const int cvs_index = 2;
+    std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
+
+    if (vector.size() < 2)
+    {
+        vector = {CITY,"TBD"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructSalesState() -> std::vector<std::string>
+{
+    const int cvs_index = 3;
+    std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
+
+    if (vector.size() != 2 || vector.at(1).length() != 2)
+    {
+        vector = {STATE,"**"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructSalesPostalCode() -> std::vector<std::string>
+{
+    const int cvs_index = 4;
+    const int postal_code_length = 5;
+    std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
+
+    if (vector.size() != 2 || vector.at(1).length() != postal_code_length)
+    {
+        vector = {POSTAL_CODE,"*****"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructSalesEmail() -> std::vector<std::string>
+{
+    const int cvs_index = 5;
+    std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
+
+    if (vector.size() < 2)
+    {
+        vector = {EMAIL,"TBD"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::constructSalesPhoneNumber() -> std::vector<std::string>
+{
+    const int cvs_index = 6;
+    const int phone_number_length = 13;
+    std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
+
+    if (vector.size() != 2 || vector.at(1).length() != phone_number_length)
+    {
+        vector = {PHONE_NUMBER,"(***)***-****"};
+    }
+
+    return vector;
+}
+
+auto ContactManager::getSalesCompanyName() -> QString
+{
+    return m_sales_company_name;
+}
+
+auto ContactManager::getSalesStreet() -> QString
+{
+    return m_sales_street;
+}
+
+auto ContactManager::getSalesCity() -> QString
+{
+    return m_sales_city;
+}
+
+auto ContactManager::getSalesState() -> QString
+{
+    return m_sales_state;
+}
+
+auto ContactManager::getSalesPostalCode() -> QString
+{
+    return m_sales_postal_code;
+}
+
+auto ContactManager::getSalesEmail() -> QString
+{
+    return m_sales_email;
+}
+
+auto ContactManager::getSalesPhoneNumber() -> QString
+{
+    return m_sales_phone_number;
 }
 
 

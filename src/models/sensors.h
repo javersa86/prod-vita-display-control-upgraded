@@ -14,22 +14,22 @@
 /**
  * @brief Number of calibrated procedures.
  */
-#define NUM_OBP_SENSORS 5
+constexpr int NUM_OBP_SENSORS = 5;
 
 /**
  * @brief Number of measurements on the system.
  */
-#define NUM_MEASURED_SENSORS 40
+constexpr int NUM_MEASURED_SENSORS = 40;
 
 /**
  * @brief Number of sensors tracked.
  */
-#define NUM_ZERO_SENSORS 3
+constexpr int NUM_ZERO_SENSORS = 3;
 
 /**
  * @brief Number of DPR Calibration states.
  */
-#define NUM_HIGH_LOW_SENSORS 2
+constexpr int NUM_HIGH_LOW_SENSORS = 2;
 
 #include <QObject>
 #include <QtQml/QQmlEngine>
@@ -114,7 +114,7 @@ class SensorIDs : public QObject
          * @brief Empty Constructor
          * @param parent
          */
-        SensorIDs(QObject *parent=nullptr) : QObject(parent){};
+        SensorIDs(QObject *parent=nullptr) : QObject(parent){}
 
         /**
          * @brief The enumerations for sensor values on QML files.

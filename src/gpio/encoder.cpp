@@ -7,10 +7,6 @@
  * when the knob is turned.
  */
 
-Encoder::Encoder()
-{
-}
-
 void Encoder::onPinAChange(unsigned char value)
 {
     m_a_state = value;
@@ -31,36 +27,28 @@ void Encoder::setState(unsigned char aState, unsigned char bState)
 
 void Encoder::updateEncoder()
 {
-    int MSB = m_a_state;
-    int LSB = m_b_state;
+    int MSB = (int) m_a_state;
+    int LSB = (int) m_b_state;
 
     int encoded = (MSB << 1) | LSB;
     int sum = (m_last_encoded << 2) | encoded;
 
+    qDebug() << QString::number(sum);
+
     //The sum will look like [0b last_a_state last_b_state current_a_state current_b_state]
-    if(sum == 0b1101 || sum == 0b0010) // 13 || 2
+    if(sum == bit_sum_13 || sum == bit_sum_2) // 13 || 2
     {
-        if (m_sum_0 == -1)
+        if (m_sum_0 == -1 || sum != m_sum_0)
         {
             emit encoderIncrement(0);
             m_sum_0 = sum;
         }
-        else if (sum != m_sum_0)
-        {
-            emit encoderIncrement(0); //emit 0 for -1
-            m_sum_0 = sum;
-        }
     }
-    else if(sum == 0b1110 || sum == 0b0001) // 14 || 1
+    else if(sum == bit_sum_14 || sum == bit_sum_1) // 14 || 1
     {
-        if (m_sum_1 == -1)
+        if (m_sum_1 == -1 || sum != m_sum_1)
         {
             emit encoderIncrement(1);
-            m_sum_1 = sum;
-        }
-        else if (sum != m_sum_1)
-        {
-            emit encoderIncrement(1); //emit 1 for +1
             m_sum_1 = sum;
         }
     }

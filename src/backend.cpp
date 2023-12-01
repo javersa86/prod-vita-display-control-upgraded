@@ -11,8 +11,21 @@
 #include <QStorageInfo>
 
 
-Backend::Backend(StateManager* stateManager, WarningManager* warningManager, O2CalManager* o2CalManager, ZeroManager* zeroManager, PartManager* partManager, DPRManager* dprManager, QObject *parent)
-    : QObject(parent), m_stateManager(stateManager), m_warningManager(warningManager), m_o2CalManager(o2CalManager), m_zeroManager(zeroManager), m_partManager(partManager), m_dprManager(dprManager), m_dehumidication_timer(new QTimer(this))
+Backend::Backend(StateManager* stateManager,
+                 WarningManager* warningManager,
+                 O2CalManager* o2CalManager,
+                 ZeroManager* zeroManager,
+                 PartManager* partManager,
+                 DPRManager* dprManager,
+                 QObject *parent)
+    : QObject(parent),
+      m_stateManager(stateManager),
+      m_warningManager(warningManager),
+      m_o2CalManager(o2CalManager),
+      m_zeroManager(zeroManager),
+      m_partManager(partManager),
+      m_dprManager(dprManager),
+      m_dehumidication_timer(new QTimer(this))
 {
     initResendFunctionPointers();
 
@@ -471,7 +484,7 @@ void Backend::receiveSystemVersion(unsigned char major, unsigned char minor, uns
     m_message_flags[(int)txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST] = 0;
     m_stateManager->setSystemVersion(versionString);
     qInfo() << "NVENT" << "," << "SYSTEM VERSION" << "," << versionString;
-    qInfo() << "NVENT" << "," << "DISPLAY VERSION" << "," << m_stateManager->getDisplaySoftwareVersion();
+    qInfo() << "NVENT" << "," << "DISPLAY VERSION" << "," << StateManager::getDisplaySoftwareVersion();
 }
 
 /*------------------------SET SETTINGS PATHWAY------------------------*/

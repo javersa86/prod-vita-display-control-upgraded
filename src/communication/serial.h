@@ -9,8 +9,13 @@
 #include <fcntl.h> // File control definitions
 #include <errno.h> // Error number definitions
 #include <termios.h> // POSIX terminal control definitionss
+#include <iostream>
+#include <cstring>
+#include <sstream>
 
 #include "message.h"
+
+using namespace std;
 
 /**
  * @addtogroup serialModule
@@ -48,22 +53,22 @@ class Comm
      */
 
     private:
-        QString _portname;
-        int _baudrate;
-        int _fd;
+        QString _portname = QString();
+        int _baudrate = 0;
+        int fileDescriptor; // file description for the serial port
 
         unsigned char tx_buf[TX_BUFFER_SIZE] = {0};
-        int tx_index;
+        int tx_index = 0;
         unsigned char rx_buf[RX_BUFFER_SIZE] = {0};
-        int rx_index;
-        int reading_cursor;
+        int rx_index = 0;
+        int reading_cursor = 0;
 
 
     public:
         /**
          * @brief Default Constructor.
          */
-        Comm();
+        Comm() = default;
 
         /**
          * @brief   Opens the specified port and reads the file description.
@@ -93,7 +98,7 @@ class Comm
          * @note   After saving the tty settings, checks for more errors.
          * @return int
          */
-        int configurePort();
+        int configurePort() const;
 
         /**
          * @brief Sets the serial communication port's portname.
@@ -137,7 +142,7 @@ class Comm
          *
          * @param message
          */
-        void writeTxMessageToMCU(Message message);
+        void writeTxMessageToMCU(Message message) const;
 
         /**
          * @brief   Reads and stores the available amount of bytes into the RX buffer.
@@ -163,7 +168,7 @@ class Comm
         /**
          * @brief Closes the serial port.
          */
-        void closeSerial();
+        void closeSerial() const;
         /** @} */
 };
 

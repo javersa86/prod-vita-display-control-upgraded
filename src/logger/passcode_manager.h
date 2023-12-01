@@ -94,7 +94,7 @@ class PasscodeManager : public QObject
          *          If signal equals 2, passcode was not changed because new passcode length was not 6 digits.
          * @return QString
          */
-        int getChangedValue();
+        int getChangedValue() const;
 
         /**
          * @brief Gets preset passcode when preset was changed on service page

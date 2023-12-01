@@ -1,10 +1,17 @@
 #pragma once
 
+#include <cstdio>
+#include <fcntl.h>
+#include <poll.h>
+#include <QDebug>
 #include <QObject>
+#include <QThread>
+#include <syslog.h>
+#include <unistd.h>
+
+#include "encoder.h"
 #include "gpio.h"
 #include "switch.h"
-#include "encoder.h"
-#include <QThread>
 
 /**
  * @addtogroup knobModule
@@ -58,6 +65,16 @@ class Knob : public QThread
         GPIO* m_pinA;
         GPIO* m_pinB;
         GPIO* m_pinButton;
+
+        char edge[4] = {'b','o','t','h'};
+
+        const int MAX_BUF = 64;
+        struct pollfd fdset[4];
+        char buf[64] = {};
+
+        void pollPinA();
+        void pollPinB();
+        void pollPinSwitch();
 
     public slots:
 

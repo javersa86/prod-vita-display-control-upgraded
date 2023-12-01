@@ -1,47 +1,29 @@
 #include "serial.h"
-#include <iostream>
-#include <cstring>
-#include <sstream>
 
-using namespace std;
 
-Comm::Comm()
+auto Comm::openPort() -> int
 {
+    QByteArray byte_array = _portname.toLocal8Bit();
+    const char *c_str1 = byte_array.data();
 
-    _portname = QString();
-    _baudrate = 0;
-    tx_index=0;
-    rx_index=0;
-    reading_cursor=0;
+    fileDescriptor = open(c_str1, O_RDWR | O_NOCTTY | O_NDELAY);
+
+    if (fileDescriptor == -1)
+    {
+        qDebug() << "@@@ Serial::openPort: " << "Error serial init!";
+        return 1;
+    }
+
+    fcntl(fileDescriptor, F_SETFL, 0);
+    return 0;
+    //port is open
 }
 
-int Comm::openPort()
-{
-     int fd; // file description for the serial port
-
-     QByteArray ba = _portname.toLocal8Bit();
-     const char *c_str1 = ba.data();
-
-     _fd = open(c_str1, O_RDWR | O_NOCTTY | O_NDELAY);
-
-     if (_fd==-1)
-     {
-         qDebug() << "@@@ Serial::openPort: " << "Error serial init!";
-         return 1;
-     }
-     else
-     {
-         fcntl(_fd,F_SETFL,0);
-         //port is open
-     }
-    return(0);
-}   //open_port
-
-int Comm::configurePort()
+auto Comm::configurePort() const -> int
 {
     struct termios tty; //structure to store the port settings in
     // Read in existing settings, and handle any error
-    if(tcgetattr(_fd, &tty) != 0) {
+    if(tcgetattr(fileDescriptor, &tty) != 0) {
         qDebug() << "Error from tcgetattr: " << strerror(errno);
         return 1;
     }
@@ -66,7 +48,9 @@ int Comm::configurePort()
     // tty.c_oflag &= ~OXTABS; // Prevent conversion of tabs to spaces (NOT PRESENT ON LINUX)
     // tty.c_oflag &= ~ONOEOT; // Prevent removal of C-d chars (0x004) in output (NOT PRESENT ON LINUX)
 
-    tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
+    const int deciseconds = 10;
+
+    tty.c_cc[VTIME] = deciseconds;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
     tty.c_cc[VMIN] = 0;
 
     //cfsetispeed(&tty,_baudrate);
@@ -75,14 +59,14 @@ int Comm::configurePort()
     cfsetospeed(&tty, B115200);
 
     // Save tty settings, also checking for error
-    if (tcsetattr(_fd, TCSANOW, &tty) != 0) {
+    if (tcsetattr(fileDescriptor, TCSANOW, &tty) != 0) {
         qDebug() << "Error from tcsetattr: " << strerror(errno);
         return 1;
     }
     return 0;
 }   //configure_port
 
-int Comm::getBaudrate() const
+auto Comm::getBaudrate() const -> int
 {
     return _baudrate;
 }
@@ -92,7 +76,7 @@ void Comm::setBaudrate(int baudrate)
     _baudrate = baudrate;
 }
 
-QString Comm::getPortname() const
+auto Comm::getPortname() const -> QString
 {
     return _portname;
 }
@@ -114,60 +98,56 @@ void Comm::addTX(unsigned char byte)
 
 void Comm::writeToMCU()
 {
-    char n;
-    fd_set rdfs;
     struct timeval timeout;
     timeout.tv_sec=1;
     timeout.tv_usec=0;
 
     if (tx_index>0)
     {
-        write(_fd,tx_buf,tx_index);
+        write(fileDescriptor,tx_buf,tx_index);
         tx_index=0;
     }
 }
 
-void Comm::writeTxMessageToMCU(Message message)
+void Comm::writeTxMessageToMCU(Message message) const
 {
-    char n;
-    fd_set rdfs;
     struct timeval timeout;
     timeout.tv_sec=1;
     timeout.tv_usec=0;
 
     if (message.getSize() > 0)
     {
-        write(_fd,message.getMessage(),message.getSize());
+        write(fileDescriptor,message.getMessage(),message.getSize());
     }
 }
 
-int Comm::readIncoming()
+auto Comm::readIncoming() -> int
 {
-    int rx_space = RX_BUFFER_SIZE-rx_index;
-    int n = read(_fd,&rx_buf[rx_index],rx_space);
-    rx_index+=n;
-    return(n);
+    int rx_space = RX_BUFFER_SIZE - rx_index;
+    int nBytes = read(fileDescriptor, &rx_buf[rx_index], rx_space);
+    rx_index += nBytes;
+    return nBytes;
 }
 
-unsigned char Comm::nextByteAvailable()
+auto Comm::nextByteAvailable() -> unsigned char
 {
-    if (reading_cursor<rx_index)
+    if (reading_cursor < rx_index)
     {
         return 1;
     }
-    rx_index=0;
-    reading_cursor=0;
+    rx_index = 0;
+    reading_cursor = 0;
     return 0;
 }
 
-unsigned char Comm::getRxByte()
+auto Comm::getRxByte() -> unsigned char
 {
     unsigned char next_byte = rx_buf[reading_cursor];
     reading_cursor++;
     return next_byte;
 }
 
-void Comm::closeSerial()
+void Comm::closeSerial() const
 {
-    close(_fd);
+    close(fileDescriptor);
 }

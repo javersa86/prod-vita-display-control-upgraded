@@ -35,7 +35,7 @@ class ModeSetting
         /**
          * @brief Empty Constructor
          */
-        ModeSetting();
+        ModeSetting() = default;
     
         /**
          * @brief Constructor method for mode with min/max value and increments.
@@ -44,7 +44,7 @@ class ModeSetting
          * @param max
          * @param step
          */
-        ModeSetting(int id, int min, int max, int step);
+        ModeSetting(int mode_id, int min, int max, int step);
     
         /**
          * @brief Sets mode value.

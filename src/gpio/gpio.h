@@ -1,6 +1,12 @@
 #pragma once
 
 #include <QObject>
+#include <fcntl.h>
+#include <cstdio>
+#include <syslog.h>
+#include <unistd.h>
+#include <poll.h>
+#include <QDebug>
 
 /**
  * @addtogroup gpioMainModule
@@ -19,6 +25,16 @@
  */
 
 /**
+ * @brief MAX Buffer size for pin update.
+ */
+#define ENCODER_MAX_BUF 64
+
+/**
+ * @brief Constant string for file path for gpio.
+ */
+#define SYSFS_GPIO_DIR "/sys/class/gpio"
+
+/**
  * @brief The GPIO class
  */
 class GPIO : public QObject{
@@ -33,16 +49,16 @@ class GPIO : public QObject{
     private:
         bool _isOut;
 
-        int	_ioFd;
+        int	_ioFd = -1;
 
-        uint _currentValue;
+        uint _currentValue = 2;
         uint _pinNumber;
 
         /**
          * @brief Used to export the pin. If not exported, we cannot interact with the pin
          * @return int
          */
-        int	exportPin();
+        int	exportPin() const;
 
         /**
          * @brief Used to set the file direction of the pin. If out, direction will be out. Otherwise, direction will be in.
@@ -82,7 +98,7 @@ class GPIO : public QObject{
         * @param edge
         * @return int
         */
-        int setEdge(char *edge);
+        int setEdge(char *edge) const;
 
         //int setValue(uint value);
         /**
@@ -99,7 +115,7 @@ class GPIO : public QObject{
          * @brief Gets the file descriptor for the pin
          * @return int
          */
-        int getFD();
+        int getFD() const;
 
     signals:
         /**

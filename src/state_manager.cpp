@@ -8,7 +8,7 @@ StateManager::StateManager(QObject *parent)
 {
 }
 
-QString StateManager::getSystemSoftwareVersion()
+auto StateManager::getSystemSoftwareVersion() -> QString
 {
     return m_systemVersion;
 }
@@ -18,7 +18,7 @@ void StateManager::setSystemVersion(const QString &version)
     m_systemVersion = version;
 }
 
-QString StateManager::getDisplaySoftwareVersion()
+auto StateManager::getDisplaySoftwareVersion() -> QString
 {
     QString result = "v" + QString::number(nvent_vita_display_VERSION_MAJOR) +
             "." + QString::number(nvent_vita_display_VERSION_MINOR) + "." +
@@ -34,7 +34,7 @@ void StateManager::setStartupComplete()
     emit startupComplete();
 }
 
-int StateManager::startupFlag()
+auto StateManager::startupFlag() const -> int
 {
     return m_startup_flag;
 }
@@ -47,7 +47,7 @@ void StateManager::setPowerdownFlag(int flag)
     emit powerdownFlagChanged();
 }
 
-int StateManager::powerdownFlag()
+auto StateManager::powerdownFlag() const -> int
 {
     return m_powerdown_flag;
 }
@@ -58,7 +58,7 @@ void StateManager::setVentilating(unsigned char state)
     emit ventilatingChanged();
 }
 
-unsigned char StateManager::ventilating()
+auto StateManager::ventilating() const -> unsigned char
 {
     return m_ventilating;
 }
@@ -71,7 +71,7 @@ void StateManager::setSeparateHumidity(unsigned char value)
     emit separateHumidityChanged();
 }
 
-unsigned char StateManager::separatedHumidity()
+auto StateManager::separatedHumidity() const -> unsigned char
 {
     return m_humiditySeparated;
 }
@@ -98,101 +98,101 @@ void StateManager::updateNotificationVector(const QVector<float> &notification)
     }
 }
 
-QVector<double> StateManager::getNotificationVector()
+auto StateManager::getNotificationVector() -> QVector<double>
 {
     return notification_vector;
 }
 
 /*---Sensor Measurements____________________________________*/
 
-QVector<int> StateManager::sensorMeasurements()
+auto StateManager::sensorMeasurements() -> QVector<int>
 {
     return m_sensor_measurements;
 }
 
-void StateManager::setSensorMeasurement(unsigned char id, int value)
+void StateManager::setSensorMeasurement(unsigned char sensor_id, int value)
 {
-    m_sensor_measurements[id] = value;
+    m_sensor_measurements[sensor_id] = value;
     emit sensorMeasurementsChanged();
 }
 /*---Modes--------------------------------------------------*/
 
 /*~The following are get methods for enabled/disbaled modes~*/
-unsigned char StateManager::laserMode()
+auto StateManager::laserMode() -> unsigned char
 {
     return m_modes[(int)ModeIDs::LASER_MODE];
 }
-unsigned char StateManager::manualMode()
+auto StateManager::manualMode() -> unsigned char
 {
     return m_modes[(int)ModeIDs::MANUAL_MODE];
 }
 
-unsigned char StateManager::pipMonitoringMode()
+auto StateManager::pipMonitoringMode() -> unsigned char
 {
     return m_modes[(int)ModeIDs::PIP_MONITORING_MODE];
 }
 
-unsigned char StateManager::demoMode()
+auto StateManager::demoMode() -> unsigned char
 {
     return m_modes[(int)ModeIDs::DEMO_MODE];
 }
 
-unsigned char StateManager::screenLockMode()
+auto StateManager::screenLockMode() -> unsigned char
 {
     return m_modes[(int)ModeIDs::SCREEN_LOCK_MODE];
 }
 
-unsigned char StateManager::doubleJetMode()
+auto StateManager::doubleJetMode() -> unsigned char
 {
     return m_modes[(int)ModeIDs::DOUBLE_JET_MODE];
 }
 
-unsigned char StateManager::etCO2Mode()
+auto StateManager::etCO2Mode() -> unsigned char
 {
     return m_modes[(int)ModeIDs::ETCO2_MODE];
 }
 
-unsigned char StateManager::dehumidifyMode()
+auto StateManager::dehumidifyMode() -> unsigned char
 {
     return m_modes[(int)ModeIDs::DEHUMIDIFY_MODE];
 }
 
-unsigned char StateManager::humidityPrimingResetAvailable()
+auto StateManager::humidityPrimingResetAvailable() -> unsigned char
 {
     return m_modes[(int)ModeIDs::HUMIDITY_PRIMING_RESET_AVAILABLE];
 }
 
-unsigned char StateManager::o2CalMode()
+auto StateManager::o2CalMode() -> unsigned char
 {
     return m_modes[(int)ModeIDs::O2_CALIBRATION_MODE];
 }
 
-unsigned char StateManager::alarmSounding()
+auto StateManager::alarmSounding() -> unsigned char
 {
     return m_modes[(int)ModeIDs::ALARM_SOUNDING];
 }
 
-unsigned char StateManager::listeningToKnob()
+auto StateManager::listeningToKnob() -> unsigned char
 {
     return m_modes[(int)ModeIDs::LISTENING_KNOB];
 }
 
-unsigned char StateManager::soundIcon()
+auto StateManager::soundIcon() -> unsigned char
 {
     return m_modes[(int)ModeIDs::SOUND_ICON];
 }
 
-unsigned char StateManager::calMode()
+auto StateManager::calMode() -> unsigned char
 {
     return m_modes[(int)ModeIDs::CALIBRATION_MODE];
 }
 
-unsigned char StateManager::screenLockTouchedMode()
+auto StateManager::screenLockTouchedMode() -> unsigned char
 {
     return m_modes[(int)ModeIDs::SCREEN_LOCK_TOUCHED_MODE];
 }
 
-unsigned char StateManager::getModeEnabled(unsigned char modeID)
+auto StateManager::getModeEnabled(unsigned char modeID) -> unsigned char
 {
     return m_modes[modeID];
 }
@@ -209,22 +209,22 @@ void StateManager::setMode(unsigned char modeID, unsigned char value, unsigned c
     }
 }
 
-unsigned char StateManager::o2CalSuccess()
+auto StateManager::o2CalSuccess() -> unsigned char
 {
     return m_modes_success[(int)ModeIDs::O2_CALIBRATION_MODE];
 }
 
-unsigned char StateManager::dehumidifySuccess()
+auto StateManager::dehumidifySuccess() -> unsigned char
 {
     return m_modes_success[(int)ModeIDs::DEHUMIDIFY_MODE];
 }
 
-unsigned char StateManager::etco2Success()
+auto StateManager::etco2Success() -> unsigned char
 {
     return m_modes_success[(int)ModeIDs::ETCO2_MODE];
 }
 
-unsigned char StateManager::limitedO2Success()
+auto StateManager::limitedO2Success() -> unsigned char
 {
     return m_modes_success[(int)ModeIDs::LASER_MODE];
 }
@@ -233,167 +233,171 @@ unsigned char StateManager::limitedO2Success()
 
 //GETTERS (used by QML for Q_PROPERTIES)
 
-unsigned char StateManager::primaryVentilationState()
+auto StateManager::primaryVentilationState() -> unsigned char
 {
     return m_subsystems[(int)SubsystemIDs::PRIMARY_VENTILATION];
 }
 
-unsigned char StateManager::secondaryVentilationState()
+auto StateManager::secondaryVentilationState() -> unsigned char
 {
     return m_subsystems[(int)SubsystemIDs::SECONDARY_VENTILATION];
 }
 
-unsigned char StateManager::auxiliaryFlowState()
+auto StateManager::auxiliaryFlowState() -> unsigned char
 {
     return m_subsystems[(int)SubsystemIDs::AUXILIARY_FLOW];
 }
 
-unsigned char StateManager::oxygenControlState()
+auto StateManager::oxygenControlState() -> unsigned char
 {
     return m_subsystems[(int)SubsystemIDs::OXYGEN_CONTROL];
 }
 
-unsigned char StateManager::primaryHumidificationState()
+auto StateManager::primaryHumidificationState() -> unsigned char
 {
     return m_subsystems[(int)SubsystemIDs::PRIMARY_HUMIDIFICATION];
 }
 
-unsigned char StateManager::secondaryHumidificationState()
+auto StateManager::secondaryHumidificationState() -> unsigned char
 {
     return m_subsystems[(int)SubsystemIDs::SECONDARY_HUMIDIFICATION];
 }
 
-unsigned char StateManager::auxiliaryHumidificationState()
+auto StateManager::auxiliaryHumidificationState() -> unsigned char
 {
     return m_subsystems[(int)SubsystemIDs::AUXILIARY_HUMIDITY];
 }
 
 void StateManager::setSubsystemStates(const QVector<unsigned char> &states)
 {
-    if(states.length() == NUM_SUBSYSTEMS)
-    for(int i = 0; i < NUM_SUBSYSTEMS; i++)
+    if (states.length() == NUM_SUBSYSTEMS)
     {
-        m_subsystems[i] = states.at(i);
-
+        for(int i = 0; i < NUM_SUBSYSTEMS; i++)
+        {
+            m_subsystems[i] = states.at(i);
+        }
     }
     emit subsystemStateChanged();
 }
 
 /*---Settings-----------------------------------------------*/
 /*~The following are get methods for setting values~*/
-unsigned char StateManager::dp1Setting()
+auto StateManager::dp1Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::DRIVING_PRESSURE_1];
 }
 
-unsigned char StateManager::dp2Setting()
+auto StateManager::dp2Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::DRIVING_PRESSURE_2];
 }
 
-unsigned char StateManager::rate1Setting()
+auto StateManager::rate1Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::RATE_1];
 }
 
-unsigned char StateManager::rate2Setting()
+auto StateManager::rate2Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::RATE_2];
 }
 
-unsigned char StateManager::it1Setting()
+auto StateManager::it1Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::INSPIRATORY_TIME_1];
 }
 
-unsigned char StateManager::it2Setting()
+auto StateManager::it2Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::INSPIRATORY_TIME_2];
 }
 
-unsigned char StateManager::sp1Setting()
+auto StateManager::sp1Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::STACKING_PRESSURE_1];
 }
 
-unsigned char StateManager::sp2Setting()
+auto StateManager::sp2Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::STACKING_PRESSURE_2];
 }
 
-unsigned char StateManager::o2Setting()
+auto StateManager::o2Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::O2];
 }
 
-unsigned char StateManager::pipSetting()
+auto StateManager::pipSetting() -> unsigned char
 {
     return m_settings[(int)SettingIds::PIP];
 }
-unsigned char StateManager::auxSetting()
+auto StateManager::auxSetting() -> unsigned char
 {
     return m_settings[(int)SettingIds::AUX_FLOW];
 }
 
-unsigned char StateManager::hum1Setting()
+auto StateManager::hum1Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::HUM_1];
 }
 
-unsigned char StateManager::hum2Setting()
+auto StateManager::hum2Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::HUM_2];
 }
 
-unsigned char StateManager::humauxSetting()
+auto StateManager::humauxSetting() -> unsigned char
 {
     return m_settings[(int)SettingIds::HUM_AUX];
 }
 
-unsigned char StateManager::etco2RateSetting()
+auto StateManager::etco2RateSetting() -> unsigned char
 {
     return m_settings[(int)SettingIds::ETCO2_RATE];
 }
 
-unsigned char StateManager::etco2ITSetting()
+auto StateManager::etco2ITSetting() -> unsigned char
 {
     return m_settings[(int)SettingIds::ETCO2_IT];
 }
 
-unsigned char StateManager::etco2NumBreathsSetting()
+auto StateManager::etco2NumBreathsSetting() -> unsigned char
 {
     return m_settings[(int)SettingIds::ETCO2_NUM_BREATHS];
 }
 
-unsigned char StateManager::etco2DPSetting()
+auto StateManager::etco2DPSetting() -> unsigned char
 {
     return m_settings[(int)SettingIds::ETCO2_DP];
 }
 
-unsigned char StateManager::laserO2Setting()
+auto StateManager::laserO2Setting() -> unsigned char
 {
     return m_settings[(int)SettingIds::LASER_O2];
 }
 
-unsigned char StateManager::volumeSetting()
+auto StateManager::volumeSetting() -> unsigned char
 {
     return m_settings[(int)SettingIds::VOLUME];
 }
 
-unsigned char StateManager::getSettingValue(unsigned char id)
+auto StateManager::getSettingValue(unsigned char setting_id) -> unsigned char
 {
-    if(id < NUM_SETTINGS) return m_settings[id];
-    else return 0;
+    if(setting_id < NUM_SETTINGS)
+    {
+        return m_settings[setting_id];
+    }
+    return 0;
 }
 
-void StateManager::setSetting(unsigned char id, int val)
+void StateManager::setSetting(unsigned char setting_id, int val)
 {
-    if(id < NUM_SETTINGS)
+    if(setting_id < NUM_SETTINGS)
     {
-        m_settings[id] = val;
+        m_settings[setting_id] = val;
     }
 
-    if(id == (unsigned char)SettingIds::O2)
+    if(setting_id == (unsigned char)SettingIds::O2)
     {
         m_o2_val = val;
     }
@@ -406,7 +410,7 @@ void StateManager::setSetO2Val(unsigned char val)
     m_o2_val = val;
 }
 
-unsigned char StateManager::getSetO2Val()
+auto StateManager::getSetO2Val() const -> unsigned char
 {
     return m_o2_val;
 }
@@ -422,7 +426,6 @@ void StateManager::setSettings(const QVector<int> &settings)
                 m_o2_val = settings.at(i);
             }
             m_settings[i] = settings.at(i);
-
         }
     }
     emit settingChanged();
@@ -440,7 +443,7 @@ void StateManager::setPneumaticSettings(const QVector<int> &settings)
     emit settingChanged();
 }
 
-QString StateManager::getIPAddress()
+auto StateManager::getIPAddress() -> QString
 {
     return m_ip_address;
 }
@@ -451,14 +454,14 @@ void StateManager::setupNetwork()
     m_ip_address = QString::fromStdString("Please Connect");
     if (mgr.isOnline()){
         QList<QHostAddress> addresses = QNetworkInterface::allAddresses();
-        QRegExp re(QString::fromStdString("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$"));
-        if (addresses.size() > 0)
+        QRegExp regularExpression(QString::fromStdString("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$"));
+        if (!addresses.empty())
         {
-            for (int i = 0; i < addresses.size(); i++)
+            for (auto & address : addresses)
             {
-                if (re.exactMatch(addresses[i].toString()) && addresses[i].toString() != QString::fromStdString("127.0.0.1"))
+                if (regularExpression.exactMatch(address.toString()) && address.toString() != QString::fromStdString("127.0.0.1"))
                 {
-                    m_ip_address = addresses[i].toString();
+                    m_ip_address = address.toString();
                 }
             }
         }
@@ -478,7 +481,7 @@ void StateManager::setIPAddress()
     }
 }
 
-int StateManager::currentDPR()
+auto StateManager::currentDPR() const -> int
 {
     return m_currentDPR;
 }
@@ -490,20 +493,20 @@ void StateManager::setDPR(int val)
 }
 
 /* Getter and setter methods for inlet air and o2 */
-float StateManager::zeroInletAir()
+auto StateManager::zeroInletAir() -> float
 {
     return m_inlets[0];
 }
-float StateManager::verifyInletAir()
+auto StateManager::verifyInletAir() -> float
 {
     return m_inlets_verified[0];
 }
 
-float StateManager::zeroInletO2()
+auto StateManager::zeroInletO2() -> float
 {
     return m_inlets[1];
 }
-float StateManager::verifyInletO2()
+auto StateManager::verifyInletO2() -> float
 {
     return m_inlets_verified[1];
 }
@@ -531,20 +534,20 @@ void StateManager::setVerifyInletO2(float val)
 }
 
 /* Getter and setter methods for PIP and SP sensor values. */
-float StateManager::zeroPIP()
+auto StateManager::zeroPIP() -> float
 {
     return m_inlets[2];
 }
-float StateManager::verifyPIP()
+auto StateManager::verifyPIP() -> float
 {
     return m_inlets_verified[2];
 }
 
-float StateManager::zeroSP()
+auto StateManager::zeroSP() -> float
 {
     return m_inlets[3];
 }
-float StateManager::verifySP()
+auto StateManager::verifySP() -> float
 {
     return m_inlets_verified[3];
 }
@@ -570,28 +573,28 @@ void StateManager::setVerifySP(float val)
     emit settingChanged();
 }
 
-int StateManager::getZeroValue(unsigned char id)
+auto StateManager::getZeroValue(unsigned char zero_id) -> float
 {
-    if (id == 3)
+    if (zero_id == 3)
     {
         return m_inlets[0];
     }
-    else if (id == 4)
+    if (zero_id == 4)
     {
         return m_inlets[1];
     }
-    else if (id == 0)
+    if (zero_id == 0)
     {
         return m_inlets[2];
     }
-    else if (id == 1)
+    if (zero_id == 1)
     {
         return m_inlets[3];
     }
     return 0;
 }
 
-unsigned char StateManager::getSavedDP()
+auto StateManager::getSavedDP() const -> unsigned char
 {
     return m_saved_dp;
 }
@@ -601,7 +604,7 @@ void StateManager::setSavedDP(unsigned char val)
     m_saved_dp = val;
 }
 
-unsigned char StateManager::getPresetComplete()
+auto StateManager::getPresetComplete() const -> unsigned char
 {
     return m_preset_complete;
 }
@@ -612,7 +615,7 @@ void StateManager::setPresetComplete(unsigned char val)
     emit settingChanged();
 }
 
-unsigned char StateManager::getDisplayWarnings()
+auto StateManager::getDisplayWarnings() const -> unsigned char
 {
     return m_display_warnings;
 }
@@ -623,7 +626,7 @@ void StateManager::setDisplayWarnings(unsigned char val)
     emit settingChanged();
 }
 
-unsigned char StateManager::getPresetCreateActive()
+auto StateManager::getPresetCreateActive() const -> unsigned char
 {
     return m_preset_create_active;
 }
@@ -634,7 +637,7 @@ void StateManager::setPresetCreateActive(unsigned char val)
     emit settingChanged();
 }
 
-unsigned char StateManager::getSPLineState()
+auto StateManager::getSPLineState() const -> unsigned char
 {
     return m_sp_lines_state;
 }
@@ -645,7 +648,7 @@ void StateManager::setSPLineState(unsigned char val)
     emit spLineSignal();
 }
 
-unsigned char StateManager::getEtco2ButtonState()
+auto StateManager::getEtco2ButtonState() const -> unsigned char
 {
     return m_etco2_button_state;
 }
@@ -653,7 +656,10 @@ unsigned char StateManager::getEtco2ButtonState()
 void StateManager::setEtco2ButtonState(unsigned char val)
 {
     //Ensures that same state won't be set multiple times in a row.
-    if (val != !m_etco2_button_state) return;
+    if ((val == 1) != (m_etco2_button_state == 0))
+    {
+        return;
+    }
     m_etco2_button_state = val;
     emit etChanged();
 }
@@ -664,7 +670,7 @@ void StateManager::setTotalFiles(int count)
     emit saveDataChanged();
 }
 
-int StateManager::getTotalFiles()
+auto StateManager::getTotalFiles() const -> int
 {
     return m_file_count;
 }
@@ -680,7 +686,7 @@ void StateManager::incrementSaveDataProgress()
     emit saveDataChanged();
 }
 
-int StateManager::getSaveDataProgress()
+auto StateManager::getSaveDataProgress() const -> int
 {
     return m_file_progress;
 }
@@ -709,17 +715,19 @@ void StateManager::updateServiceNotificationVector(const QVector<float> &notific
     }
 }
 
-QVector<double> StateManager::getServiceNotificationVector()
+auto StateManager::getServiceNotificationVector() -> QVector<double>
 {
     return service_notification_vector;
 }
 
 void StateManager::adjustOxygen()
 {
-    bool state_measured;
-    if (o2Setting() <= 22)
+    bool state_measured = true;
+    const int min_o2 = 22;
+
+    if (o2Setting() <= min_o2)
     {
-        state_measured = notification_vector.at(2) <= 22;
+        state_measured = notification_vector.at(2) <= min_o2;
     }
     else
     {
@@ -728,7 +736,7 @@ void StateManager::adjustOxygen()
 
     if (state_measured)
     {
-        if (!m_oxygen_adjusting)
+        if (m_oxygen_adjusting == 0)
         {
             m_oxygen_adjusting = 1;
             emit oxygenAdjustmentSignal(1);
@@ -736,7 +744,7 @@ void StateManager::adjustOxygen()
     }
     else if (!state_measured)
     {
-        if (m_oxygen_adjusting)
+        if (m_oxygen_adjusting == 1)
         {
             m_oxygen_adjusting = 0;
             emit oxygenAdjustmentSignal(0);

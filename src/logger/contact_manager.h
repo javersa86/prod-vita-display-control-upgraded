@@ -163,6 +163,8 @@ class ContactManager: public QObject
         QString m_sales_email;
         QString m_sales_phone_number;
 
+        const int number_of_entries = 7;
+
         /**
          * @brief Retrieves contact information for service company from .csv file.
          * @details Stores the current variables for service contact information, which includes the following:
@@ -196,7 +198,23 @@ class ContactManager: public QObject
          * @param vector
          * @return QString
          */
-        QString getFullString(std::vector<std::string> vector);
+        static QString getFullString(std::vector<std::string> vector);
+
+        std::vector<std::string> constructServiceCompanyName();
+        std::vector<std::string> constructServiceStreet();
+        std::vector<std::string> constructServiceCity();
+        std::vector<std::string> constructServiceState();
+        std::vector<std::string> constructServicePostalCode();
+        std::vector<std::string> constructServiceEmail();
+        std::vector<std::string> constructServicePhoneNumber();
+
+        std::vector<std::string> constructSalesCompanyName();
+        std::vector<std::string> constructSalesStreet();
+        std::vector<std::string> constructSalesCity();
+        std::vector<std::string> constructSalesState();
+        std::vector<std::string> constructSalesPostalCode();
+        std::vector<std::string> constructSalesEmail();
+        std::vector<std::string> constructSalesPhoneNumber();
 
     public:
         /**

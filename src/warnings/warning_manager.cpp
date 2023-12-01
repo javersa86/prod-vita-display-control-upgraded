@@ -2,16 +2,8 @@
 #include <QDebug>
 
 WarningManager::WarningManager(QVector<unsigned char> *clearable_warnings, QObject *parent)
-    : QObject(parent)
+    : QObject(parent), m_disconnectTimer(new QTimer(this))
 {
-    m_active_warnings = QVector<int>(NUM_WARNINGS);
-    m_inactive_by_occurance = QVector<int>();
-    m_autoclearing_warnings = QVector<int>(NUM_WARNINGS);
-    m_notices = QVector<int>(NUM_WARNINGS - BEGIN_NOTICE_INDEX);
-    m_top_warning = NO_WARNINGS;
-    m_num_active_warnings_flag = NO_WARNINGS;
-
-    m_currentStateValues = QVector<int>();
     initStateValues();
 
     if(clearable_warnings != nullptr)
@@ -30,14 +22,16 @@ WarningManager::WarningManager(QVector<unsigned char> *clearable_warnings, QObje
 
     constexpr int INTERVAL_THREE_SECONDS = 3000;
 
-    m_disconnectTimer = new QTimer(this);
     connect(m_disconnectTimer,&QTimer::timeout,this,&WarningManager::raiseDisconnectWarning);
     m_disconnectTimer->start(INTERVAL_THREE_SECONDS);
 }
 
 void WarningManager::raiseDisconnectWarning()
 {
-    if (m_service_state) return;
+    if (m_service_state == 1)
+    {
+        return;
+    }
 
     QVector<unsigned char> warningCopy = QVector<unsigned char>(NUM_WARNINGS);
     for (int i = 0; i < NUM_WARNINGS; i++)
@@ -48,109 +42,124 @@ void WarningManager::raiseDisconnectWarning()
     setActiveWarnings(&warningCopy);
 }
 
-void WarningManager::setActiveWarnings(QVector<unsigned char> *warnings )
+void WarningManager::setActiveWarnings(QVector<unsigned char> *warnings)
 {
     unsigned char changed = 0;
     if (warnings->length() == NUM_WARNINGS)
     {
-        for (int i = 0; i < BEGIN_NOTICE_INDEX; i++)
-        {
-            if(m_active_warnings.at(i) != warnings->at(i))
-            {
-                changed = 1;
-                //Writes down single and double jet values.
-                QString msg = QString::fromStdString("");
-                for (int j = 0; j< NUM_PNEUMATIC_SETTINGS; j ++)
-                {
-                    msg += QString::fromStdString(settingNameMap.at(j)) + ": ";
-                    msg += QString::number(m_currentStateValues.at(j)) + "; ";
-                }
-                qInfo() << "NVENT "
-                        << ","
-                        << "WARNING"
-                        << ","
-                        << m_warnings[i].title().replace(
-                               QString::fromStdString(","),
-                               QString::fromStdString("")
-                               )
-                        << (warnings->at(i) ? "ACTIVE" : "INACTIVE")
-                        << msg;
-
-                //if warning was raised and isn't yet in the by occurrance list
-                if(warnings->at(i) && !m_inactive_by_occurance.contains(i))
-                    m_inactive_by_occurance.append(i);
-
-                //if warning was lowered
-                if(!warnings->at(i))
-                {
-                    //if warning autoclears, remove it from occurance list
-                    if(m_autoclearing_warnings.at(i))
-                    {
-                        m_inactive_by_occurance.removeAll(i);
-                    }
-                }
-                //update active warnings
-                m_active_warnings.replace(i, warnings->at(i));
-
-                //Signals to qml if SP High is raised and shows blue lines.
-                if (i == 1 && m_active_warnings.at(i))
-                {
-                    emit spWarning();
-                }
-            }
-        }
-
-        for (int i = BEGIN_NOTICE_INDEX; i< NUM_WARNINGS; i++)
-        {
-            if (i == 59 && m_service_due_state) continue;
-
-            if(m_notices.at(i - BEGIN_NOTICE_INDEX) != warnings->at(i))
-            {
-                changed = 1;
-                //Writes down single and double jet values.
-                QString msg = QString::fromStdString("");
-                for (int j = 0; j< NUM_PNEUMATIC_SETTINGS; j ++)
-                {
-                    msg += QString::fromStdString(settingNameMap.at(j)) + ": ";
-                    msg += QString::number(m_currentStateValues.at(j)) + "; ";
-                }
-                qInfo() << "NVENT "
-                        << ","
-                        << "WARNING"
-                        << ","
-                        << m_warnings[i].title().replace(
-                               QString::fromStdString(","),
-                               QString::fromStdString("")
-                               )
-                        << (warnings->at(i) ? "ACTIVE" : "INACTIVE")
-                        << msg;
-
-                m_notices.replace(i - BEGIN_NOTICE_INDEX,warnings->at(i));
-            }
-            //Checks if O2 Calibration Progress warnings are active.
-            setCalibrationProgress(i - BEGIN_NOTICE_INDEX);
-        }
+        changed = setActiveAlarms(changed, warnings);
+        changed = setActiveNotices(changed, warnings);
 
         //Updates service due.
-        if (m_notices.at(7) != m_service_due_state)
+        if (m_notices.at(SERVICE_NOTICE_ID) != m_service_due_state)
         {
             changed = 1;
-            m_notices.replace(7,m_service_due_state);
+            m_notices.replace(SERVICE_NOTICE_ID, m_service_due_state);
         }
 
-        if(changed)
+        if(changed == 1)
         {
             emit warningChanged();
+
             int num = getNumActiveWarnings();
             num++;
         }
     }
 }
 
+auto WarningManager::setActiveAlarms(unsigned char changed, QVector<unsigned char> *warnings) -> unsigned char
+{
+    for (int i = 0; i < BEGIN_NOTICE_INDEX; i++)
+    {
+        if(m_active_warnings.at(i) != warnings->at(i))
+        {
+            changed = 1;
+            //Writes down single and double jet values.
+            QString msg = QString::fromStdString("");
+            for (int j = 0; j< NUM_PNEUMATIC_SETTINGS; j ++)
+            {
+                msg += QString::fromStdString(settingNameMap.at(j)) + ": ";
+                msg += QString::number(m_currentStateValues.at(j)) + "; ";
+            }
+            qInfo() << "NVENT "
+                    << ","
+                    << "WARNING"
+                    << ","
+                    << m_warnings[i].title().replace(
+                           QString::fromStdString(","),
+                           QString::fromStdString("")
+                           )
+                    << (warnings->at(i) == 1 ? "ACTIVE" : "INACTIVE")
+                    << msg;
+
+            //if warning was raised and isn't yet in the by occurrance list
+            if ((warnings->at(i) == 1) && m_inactive_by_occurance.contains(i))
+            {
+                m_inactive_by_occurance.append(i);
+            }
+
+            //if warning was lowered
+            if(warnings->at(i) == 0)
+            {
+                //if warning autoclears, remove it from occurance list
+                if(m_autoclearing_warnings.at(i) == 1)
+                {
+                    m_inactive_by_occurance.removeAll(i);
+                }
+            }
+            //update active warnings
+            m_active_warnings.replace(i, warnings->at(i));
+
+            //Signals to qml if SP High is raised and shows blue lines.
+            if (i == 1 && m_active_warnings.at(i) == 1)
+            {
+                emit spWarning();
+            }
+        }
+    }
+    return changed;
+}
+auto WarningManager::setActiveNotices(unsigned char changed, QVector<unsigned char> *warnings) -> unsigned char
+{
+    for (int i = BEGIN_NOTICE_INDEX; i< NUM_WARNINGS; i++)
+    {
+        if (i == SERVICE_ID && m_service_due_state == 1)
+        {
+            continue;
+        }
+
+        if(m_notices.at(i - BEGIN_NOTICE_INDEX) != warnings->at(i))
+        {
+            changed = 1;
+            //Writes down single and double jet values.
+            QString msg = QString::fromStdString("");
+            for (int j = 0; j< NUM_PNEUMATIC_SETTINGS; j ++)
+            {
+                msg += QString::fromStdString(settingNameMap.at(j)) + ": ";
+                msg += QString::number(m_currentStateValues.at(j)) + "; ";
+            }
+            qInfo() << "NVENT "
+                    << ","
+                    << "WARNING"
+                    << ","
+                    << m_warnings[i].title().replace(
+                           QString::fromStdString(","),
+                           QString::fromStdString("")
+                           )
+                    << (warnings->at(i) == 1 ? "ACTIVE" : "INACTIVE")
+                    << msg;
+
+            m_notices.replace(i - BEGIN_NOTICE_INDEX,warnings->at(i));
+        }
+        //Checks if O2 Calibration Progress warnings are active.
+        setCalibrationProgress(i - BEGIN_NOTICE_INDEX);
+    }
+    return changed;
+}
+
 void WarningManager::setCalibrationProgress(int o2_index)
 {
-
-    if (o2_index == 19)
+    if (o2_index == CALIBRATION_ID)
     {
         if (m_notices.at(o2_index) == 1 && m_o2_calibration_flag == 0)
         {
@@ -162,7 +171,7 @@ void WarningManager::setCalibrationProgress(int o2_index)
             m_o2_calibration_flag = 0;
         }
     }
-    if (o2_index == 20)
+    if (o2_index == CALIBRATION_LIMITED_ID)
     {
         if (m_notices.at(o2_index) == 1 && m_o2_laser_in_progress_calibration_flag == 0)
         {
@@ -173,16 +182,20 @@ void WarningManager::setCalibrationProgress(int o2_index)
         {
             m_o2_laser_in_progress_calibration_flag = 0;
         }
-
     }
 }
 
-int WarningManager::getLaserWarning()
+auto WarningManager::getLaserWarning() -> int
 {
-    if (m_notices.at(0)) return 0;
-    else if (m_notices.at(1)) return 1;
-    else if (m_notices.at(19)) return 1;
-    else return 2;
+    if (m_notices.at(0) == 1)
+    {
+        return 0;
+    }
+    if (m_notices.at(1) == 1 || m_notices.at(CALIBRATION_ID) == 1)
+    {
+        return 1;
+    }
+    return 2;
 }
 
 void WarningManager::setAutoClearingWarnings(QVector<unsigned char> *clearable_warnings)
@@ -196,23 +209,23 @@ void WarningManager::setAutoClearingWarnings(QVector<unsigned char> *clearable_w
     }
 }
 
-void WarningManager::clearWarning(unsigned char id)
+void WarningManager::clearWarning(unsigned char clear_id)
 {
-    if(id < BEGIN_NOTICE_INDEX)
+    if(clear_id < BEGIN_NOTICE_INDEX)
     {
-        if(!(m_active_warnings.at(id)))
+        if(m_active_warnings.at(clear_id) == 0)
         {
-            m_inactive_by_occurance.removeAll(id);
+            m_inactive_by_occurance.removeAll(clear_id);
             emit warningChanged();
         }
     }
 }
 
-bool WarningManager::activeWarnings()
+auto WarningManager::activeWarnings() -> bool
 {
     for (int i = 0; i < NUM_WARNINGS; i++)
     {
-        if(m_active_warnings.at(i))
+        if(m_active_warnings.at(i) == 1)
         {
             return true;
         }
@@ -220,11 +233,11 @@ bool WarningManager::activeWarnings()
     return false;
 }
 
-bool WarningManager::notices()
+auto WarningManager::notices() -> bool
 {
     for (int i = 0; i < NUM_WARNINGS - BEGIN_NOTICE_INDEX; i++)
     {
-        if(m_notices.at(i))
+        if(m_notices.at(i) == 1)
         {
             return true;
         }
@@ -232,68 +245,73 @@ bool WarningManager::notices()
     return false;
 }
 
-bool WarningManager::getWarningActive(unsigned char i)
+auto WarningManager::getWarningActive(unsigned char warning_id) -> bool
 {
-    if (i < NUM_WARNINGS)
+    if (warning_id < NUM_WARNINGS)
     {
-        if(i < BEGIN_NOTICE_INDEX)
-            return (bool) m_active_warnings.at(i);
-        else
-            return (bool) m_notices.at(i - BEGIN_NOTICE_INDEX);
+        if(warning_id < BEGIN_NOTICE_INDEX)
+        {
+            return (bool) m_active_warnings.at(warning_id);
+        }
+        return (bool) m_notices.at(warning_id - BEGIN_NOTICE_INDEX);
     }
     return false;
 }
 
-int WarningManager::getWarningBehavior(unsigned char i)
+auto WarningManager::getWarningBehavior(unsigned char warning_id) -> int
 {
-    if(i < NUM_WARNINGS)
+    if(warning_id < NUM_WARNINGS)
     {
-        return m_warnings[i].clearingBehavior();
+        return m_warnings[warning_id].clearingBehavior();
     }
-    else return 0;
+    return 0;
 }
 
-int WarningManager::getNumActiveWarnings()
+auto WarningManager::getNumActiveWarnings() -> int
 {
     int num_warnings = 0;
     for(int i = 0; i < BEGIN_NOTICE_INDEX; i++)
     {
-        if(m_active_warnings.at(i))
+        if(m_active_warnings.at(i) == 1 || m_inactive_by_occurance.contains(i))
+        {
             num_warnings ++;
-        else if (m_inactive_by_occurance.contains(i))
-            num_warnings ++;
+        }
     }
     for(int i = BEGIN_NOTICE_INDEX; i < NUM_WARNINGS; i++)
     {
-        if (m_notices.at(i - BEGIN_NOTICE_INDEX))
+        if (m_notices.at(i - BEGIN_NOTICE_INDEX) == 1)
+        {
             num_warnings ++;
+        }
     }
     return num_warnings;
 }
 
-QVector<int> WarningManager::getWarningBanners()
+auto WarningManager::getWarningBanners() -> QVector<int>
 {
     QVector<int> warnings = QVector<int>();
     if(activeWarnings())
     {
         for (int i = 0; i < BEGIN_NOTICE_INDEX; i++)
         {
-            if (m_active_warnings.at(i))
+            if (m_active_warnings.at(i) == 1)
             {
                 warnings.append(i);
             }
         }
     }
-    for(int i = 0; i < m_inactive_by_occurance.size(); i++)
+    int total_inactive = m_inactive_by_occurance.size();
+
+    for(int i = 0; i < total_inactive; i++)
     {
-        if (!m_active_warnings.at(m_inactive_by_occurance.at(i)))
+        if (m_active_warnings.at(m_inactive_by_occurance.at(i)) == 0)
         {
             warnings.append(m_inactive_by_occurance.at(i));
         }
     }
     for (int i = BEGIN_NOTICE_INDEX; i < NUM_WARNINGS; i ++)
     {
-        if (m_notices.at(i - BEGIN_NOTICE_INDEX))
+        if (m_notices.at(i - BEGIN_NOTICE_INDEX) == 1)
         {
             warnings.append(i);
         }
@@ -311,40 +329,58 @@ void WarningManager::updateWarnings(QVector<unsigned char> *warnings)
     setActiveWarnings(warnings);
 }
 
-QString WarningManager::getWarningTitle(unsigned char i)
+auto WarningManager::getWarningTitle(unsigned char warning_id) -> QString
 {
-    if (i < NUM_WARNINGS)  return m_warnings[i].title();
-    else return QString();
+    if (warning_id < NUM_WARNINGS)
+    {
+        return m_warnings[warning_id].title();
+    }
+    return {};
 }
 
-QString WarningManager::getWarningDesc(unsigned char i)
+auto WarningManager::getWarningDesc(unsigned char warning_id) -> QString
 {
-    if (i < NUM_WARNINGS) return m_warnings[i].description();
-    else return QString();
+    if (warning_id < NUM_WARNINGS)
+    {
+        return m_warnings[warning_id].description();
+    }
+    return {};
 }
 
-QString WarningManager::getWarningClearText(unsigned char i)
+auto WarningManager::getWarningClearText(unsigned char warning_id) -> QString
 {
-    if (i < NUM_WARNINGS) return m_warnings[i].clearText();
-    return QString();
+    if (warning_id < NUM_WARNINGS)
+    {
+        return m_warnings[warning_id].clearText();
+    }
+    return {};
 }
 
-QVector<QString> WarningManager::getWarningInformation(unsigned char i)
+auto WarningManager::getWarningInformation(unsigned char warning_id) -> QVector<QString>
 {
-    if (i < NUM_WARNINGS) return m_warnings[i].troubleshootingSteps();
-    else return QVector<QString>();
+    if (warning_id < NUM_WARNINGS)
+    {
+        return m_warnings[warning_id].troubleshootingSteps();
+    }
+    return {};
 }
 
-int WarningManager::getWarningClass(unsigned char i)
+auto WarningManager::getWarningClass(unsigned char warning_id) -> int
 {
-    if (i < NUM_WARNINGS) return m_warnings[i].warningClass();
-    else return NO_WARNINGS;
+    if (warning_id < NUM_WARNINGS)
+    {
+        return m_warnings[warning_id].warningClass();
+    }
+    return NO_WARNINGS;
 }
 
-QString WarningManager::getWarningColor(unsigned char i)
+auto WarningManager::getWarningColor(unsigned char warning_id) -> QString
 {
-    if (i < NUM_WARNINGS) return m_warnings[i].color();
-    else return QString::fromStdString("");
+    if (warning_id < NUM_WARNINGS)
+    {
+        return m_warnings[warning_id].color();
+    }
+    return QString::fromStdString("");
 }
 
 void WarningManager::initStateValues()
@@ -363,11 +399,11 @@ void WarningManager::setStateValues(QVector<int> temp)
     }
 }
 
-void WarningManager::setStateValue(int id, int value)
+void WarningManager::setStateValue(int warning_id, int value)
 {
-    if (id < NUM_PNEUMATIC_SETTINGS)
+    if (warning_id < NUM_PNEUMATIC_SETTINGS)
     {
-        m_currentStateValues[id] = value;
+        m_currentStateValues[warning_id] = value;
     }
 }
 

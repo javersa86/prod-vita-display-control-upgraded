@@ -90,12 +90,15 @@ class O2CalManager : public QObject
          */
         void incrementCalibrationProgress();
 
+        void constructO2CalVals(int index);
+        void constructO2CalValRows(std::vector<std::string> tmp, int index_i, int index_j);
+
         /**
          * @brief Updates text for minutes and seconds.
          * @param value
          * @return QString
          */
-        QString prependZero(int value);
+        static QString prependZero(int value);
 
         CSVManager m_o2CsvManager;
         QVector<QString> m_timeStamps;
@@ -117,6 +120,7 @@ class O2CalManager : public QObject
         int m_calibration_seconds = 60;
         QTimer *m_calibration_progress_timer;
 
+        const int DEFAULT_SECONDS = 60;
 
     public:
         /**
@@ -186,7 +190,7 @@ class O2CalManager : public QObject
          * @return int
          * @callergraph
          */
-        int getNumO2CalVals();
+        int getNumO2CalVals() const;
 
         /**
          * @brief Starts the calibration timer, and won't restart timer if warning is triggered again.

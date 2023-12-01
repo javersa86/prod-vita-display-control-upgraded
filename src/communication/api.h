@@ -1,10 +1,11 @@
 #pragma once
 
-#include <QObject>
 #include <QThread>
+#include <QObject>
 #include <QString>
 #include <QVector>
 #include <time.h>
+#include <QtDebug>
 
 // C library headers
 #include <stdio.h>
@@ -15,6 +16,7 @@
 #include "serial.h"
 #include "api_consts.h"
 #include "../models/settings.h"
+#include "../models/sensors.h"
 #include "../communication/devices.h"
 #include "message_queue.h"
 
@@ -55,18 +57,6 @@ class API : public QThread
 
     Q_OBJECT
 
-    QString _portname;
-    int _baudrate;
-    //__processBytes data
-    unsigned char _index;
-    unsigned char _op_code;
-    unsigned char _in_progress;
-    unsigned char input_buffer[INPUT_BUFFER_SIZE];
-    int _ndx;
-    int _message_length;
-
-    unsigned long _cycle_period;
-
     public:
 
         /**
@@ -104,14 +94,9 @@ class API : public QThread
         void run();
 
         /**
-         * @brief Stores the devices tracked on the API.
-         */
-        devices m_currentDevices;
-
-        /**
          * @brief Variable used to check if display controller is disconnected to system controller.
          */
-        int _signal_warning;
+        int _signal_warning = 1;
 
         /**
          * @brief Variable stores portname.
@@ -121,23 +106,61 @@ class API : public QThread
         /**
          * @brief Variable stores port number.
          */
-        int port_num;
+        int port_num = 0;
 
     private:
 
         Comm serial;
 
-        unsigned char settings_set;
-        unsigned char get_settings_confirmed;
-        unsigned char notification_request_confirmed;
-        unsigned char dpr_flag;
-        float temp_dp_value;
-        unsigned char temp_dp_value_flag;
+        unsigned char settings_set = 1;
+        unsigned char get_settings_confirmed = 0;
+        unsigned char notification_request_confirmed = 0;
+        unsigned char dpr_flag = 0;
+        float temp_dp_value = 0;
+        unsigned char temp_dp_value_flag = 0;
         unsigned char service_flag = 0;
         int m_num_of_notifications = -1;
 
         MessageQueue request_queue;
         MessageQueue response_queue;
+
+        QString _portname = QString::fromStdString("");
+        int _baudrate = -1;
+
+        //__processBytes data
+        unsigned char _index = 0;
+        unsigned char _op_code = 255;
+        unsigned char _in_progress = 0;
+        unsigned char input_buffer[INPUT_BUFFER_SIZE] = {};
+        int _ndx = 0;
+        int _message_length = 0;
+
+        unsigned long _cycle_period = 30; // api run method should take 30 ms each cycle
+
+        const int max_messages = 5;
+        const unsigned long ms_count = 35;
+        const int port_name_sub_length = 11;
+
+        unsigned char power_cycle_response[(int)txLengths::DISPLAY_POWER_ON_RECEIVED] = {(unsigned char)txOpCodes::DISPLAY_POWER_ON_RECEIVED};
+        unsigned char get_settings_request[(int)txLengths::DISPLAY_GET_SETTINGS_REQUEST] = {(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST};
+        unsigned char notification_request[(int)txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST] = {(int)txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST, 0};
+        unsigned char get_op_modes_request[(int)txLengths::DISPLAY_GET_OP_MODES_REQUEST] = {(unsigned char) txOpCodes::DISPLAY_GET_OP_MODES_REQUEST};
+        unsigned char get_subsystem_request[(int)txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST] = {(unsigned char) txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST};
+        unsigned char version_message[(int)txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST] = {(unsigned char)txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST};
+        unsigned char set_request[(int)txLengths::DISPLAY_SET_SETTINGS_REQUEST] = {};
+        unsigned char measured_request[(int)txLengths::DISPLAY_GET_MEASURED_REQUEST] = {(unsigned char)txOpCodes::DISPLAY_GET_MEASURED_REQUEST, 0};
+        unsigned char clear_warning_request[(int)txLengths::DISPLAY_CLEAR_WARNING_REQUEST] = {(unsigned char)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST,0};
+        unsigned char display_set_mode_request[(int)txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST] = {0};
+        unsigned char system_set_mode_request[(int)txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE] = {0};
+        unsigned char notification_response[(int)txLengths::DISPLAY_NOTIFICATION_RECEIVED] = {(unsigned char)txOpCodes::DISPLAY_NOTIFICATION_RECEIVED};
+        unsigned char subsystem_response[(int)txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED] = {(unsigned char) txOpCodes::DISPLAY_SUBSYSTEM_STATUS_RECEIVED};
+        unsigned char ventilation_response[(int)txLengths::DISPLAY_VENTILATION_STATUS_RECEIVED] = {(unsigned char) txOpCodes::DISPLAY_VENTILATION_STATUS_RECEIVED};
+        unsigned char hmi_response[(int)txLengths::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED] = {(unsigned char) txOpCodes::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED, 0};
+        unsigned char shutdown_request[(int)txLengths::DISPLAY_SHUTDOWN_RECEIVED] = {(unsigned char) txOpCodes::DISPLAY_SHUTDOWN_RECEIVED};
+        unsigned char shutdown_confirm_request[(int)txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND] = {(unsigned char) txOpCodes::DISPLAY_SHUTDOWN_CONFIRM_SEND, 0};
+        unsigned char data_request[(int)txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE] = {0};
+        unsigned char dpr_request[(int)txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = {(unsigned char) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST, 0};
+        unsigned char zero_request[(int)txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = {0};
 
         /**
          * @brief Checks for the USB connection between the display and system controller.
@@ -171,14 +194,14 @@ class API : public QThread
          * @param src
          * @param dst
          */
-        void floatToBytes(float,unsigned char*);
+        static void floatToBytes(float,unsigned char*);
 
         /**
          * @brief Translate byte array into float.
          * @param src
          * @return float
          */
-        float bytesToFloat(const unsigned char*);
+        static float bytesToFloat(const unsigned char*);
 
         /**
          * @brief Calls handler methods depending on the proveded message and assumes first element is op code.
@@ -191,7 +214,7 @@ class API : public QThread
          * @param op_code
          * @return int
          */
-        int getMessageLength(unsigned char);
+        static int getMessageLength(unsigned char);
 
         /**
          * @brief Adds start character and CRC to comm array, then adds it to the outgoing messages.
@@ -214,7 +237,7 @@ class API : public QThread
          * @param n
          * @return unsigned char
          */
-        unsigned char calculateCRC(unsigned char*,int);
+        static unsigned char calculateCRC(unsigned char*,int);
 
         /**
          * @brief Valid crcs will produce 0.
@@ -222,7 +245,7 @@ class API : public QThread
          * @param n
          * @return int
          */
-        int checkCRC(unsigned char*,int);
+        static int checkCRC(unsigned char*,int);
 
         /*POWER CYCLE PATHWAY*/
 
@@ -361,7 +384,7 @@ class API : public QThread
          * @note The buffer is a pointer to the first warning element in a notification.
          * @param buffer
          */
-        void handleWarnings(unsigned char*);
+        void handleWarnings(const unsigned char*);
 
         /**
          * @brief Adds a notification response to the outgoing queue when a notification is received.

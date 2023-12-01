@@ -64,14 +64,14 @@ class BrightnessManager : public QObject
          * @return int
          * @callergraph
          */
-        int getMaxPercent();
+        int getMaxPercent() const;
 
         /**
          * @brief Gets the min brightness percentage.
          * @return int
          * @callergraph
          */
-        int getMinPercent();
+        int getMinPercent() const;
 
 
     signals:
@@ -91,7 +91,7 @@ class BrightnessManager : public QObject
          * @brief Get the maximum value of the brightness, located in the max_brightness file.
          * @return int
          */
-        int getMax();
+        static int getMax();
         /** @} */
 };
 

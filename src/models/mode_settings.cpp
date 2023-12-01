@@ -1,12 +1,7 @@
 #include "mode_settings.h"
 
-ModeSetting::ModeSetting()
-{
-
-}
-
-ModeSetting::ModeSetting(int id, int min, int max, int step)
-    : m_id(id)
+ModeSetting::ModeSetting(int mode_id, int min, int max, int step)
+    : m_id(mode_id)
     , m_min(min)
     , m_max(max)
     , m_step(step)
@@ -18,27 +13,27 @@ void ModeSetting::value(int value)
     m_value = value;
 }
 
-int ModeSetting::value() const
+auto ModeSetting::value() const -> int
 {
     return m_value;
 }
 
-int ModeSetting::id() const
+auto ModeSetting::id() const -> int
 {
     return m_id;
 }
 
-int ModeSetting::min() const
+auto ModeSetting::min() const -> int
 {
     return m_min;
 }
 
-int ModeSetting::max() const
+auto ModeSetting::max() const -> int
 {
     return m_max;
 }
 
-int ModeSetting::step() const
+auto ModeSetting::step() const -> int
 {
     return m_step;
 }

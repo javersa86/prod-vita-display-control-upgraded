@@ -3,7 +3,7 @@
 /**
  * @author Joseph Aversa
  * @name zero_manager
- * @date 05/31/2022
+ * @date 0MAX_ZERO_VALS/31/2022
  *
  * When the PIP and SP sensors are zeroed, the display asks the service technician to apply pressure
  * to those sensors to verify that the sensor zeroing was effective.
@@ -16,42 +16,42 @@ ZeroManager::ZeroManager(QObject *parent) :
 {
     //Retrive Time Stamp from time manager CSV file
     std::vector<std::string> tColumns = {"TYPE", "TIME"};
-    m_timeCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/time.csv", &tColumns[0],2);
+    m_timeCsvManager = CSVManager("/run/media/mmcblk0p2/home/ubuntu/time.csv", tColumns.data(),2);
 
     if (!QFileInfo::exists(QString::fromStdString("/media/NVENT_FILES/calibration")))
     {
         QDir().mkdir(QString::fromStdString("/media/NVENT_FILES/calibration"));
     }
 
-    m_pipCsvManager = CSVManager(PIP_FILE, &zeroColumns[0], 2);
-    m_spCsvManager = CSVManager(SP_FILE, &zeroColumns[0], 2);
-    m_airCsvManager = CSVManager(INLET_AIR_FILE, &zeroColumns[0], 2);
-    m_o2CsvManager = CSVManager(INLET_O2_FILE, &zeroColumns[0], 2);
+    m_pipCsvManager = CSVManager(PIP_FILE, (zeroColumns).data(), 2);
+    m_spCsvManager = CSVManager(SP_FILE, (zeroColumns).data(), 2);
+    m_airCsvManager = CSVManager(INLET_AIR_FILE, (zeroColumns).data(), 2);
+    m_o2CsvManager = CSVManager(INLET_O2_FILE, (zeroColumns).data(), 2);
 
-    m_verifiedPipCsvManager = CSVManager(PIP_VERIFY_FILE, &zeroColumns[0], 2);
-    m_verifiedSpCsvManager = CSVManager(SP_VERIFY_FILE, &zeroColumns[0], 2);
-    m_verifiedInletAirCsvManager = CSVManager(INLET_AIR_VERIFY_FILE, &zeroColumns[0], 2);
-    m_verifiedInletO2CsvManager = CSVManager(INLET_O2_VERIFY_FILE, &zeroColumns[0], 2);
+    m_verifiedPipCsvManager = CSVManager(PIP_VERIFY_FILE, (zeroColumns).data(), 2);
+    m_verifiedSpCsvManager = CSVManager(SP_VERIFY_FILE, (zeroColumns).data(), 2);
+    m_verifiedInletAirCsvManager = CSVManager(INLET_AIR_VERIFY_FILE, (zeroColumns).data(), 2);
+    m_verifiedInletO2CsvManager = CSVManager(INLET_O2_VERIFY_FILE, (zeroColumns).data(), 2);
 
-    m_pip_timestamps = QVector<QString>(5);
-    m_sp_timestamps = QVector<QString>(5);
-    m_air_timestamps = QVector<QString>(5);
-    m_o2_timestamps = QVector<QString>(5);
+    m_pip_timestamps = QVector<QString>(MAX_ZERO_VALS);
+    m_sp_timestamps = QVector<QString>(MAX_ZERO_VALS);
+    m_air_timestamps = QVector<QString>(MAX_ZERO_VALS);
+    m_o2_timestamps = QVector<QString>(MAX_ZERO_VALS);
 
-    m_verified_pip_timestamps = QVector<QString>(5);
-    m_verified_sp_timestamps = QVector<QString>(5);
-    m_verified_air_timestamps = QVector<QString>(5);
-    m_verified_o2_timestamps = QVector<QString>(5);
+    m_verified_pip_timestamps = QVector<QString>(MAX_ZERO_VALS);
+    m_verified_sp_timestamps = QVector<QString>(MAX_ZERO_VALS);
+    m_verified_air_timestamps = QVector<QString>(MAX_ZERO_VALS);
+    m_verified_o2_timestamps = QVector<QString>(MAX_ZERO_VALS);
 
-    m_pipVals = QVector<float>(5);
-    m_spVals = QVector<float>(5);
-    m_airVals = QVector<float>(5);
-    m_o2Vals = QVector<float>(5);
+    m_pipVals = QVector<float>(MAX_ZERO_VALS);
+    m_spVals = QVector<float>(MAX_ZERO_VALS);
+    m_airVals = QVector<float>(MAX_ZERO_VALS);
+    m_o2Vals = QVector<float>(MAX_ZERO_VALS);
 
-    m_verifiedPipVals = QVector<float>(5);
-    m_verifiedSpVals = QVector<float>(5);
-    m_verifiedAirVals = QVector<float>(5);
-    m_verifiedO2Vals = QVector<float>(5);
+    m_verifiedPipVals = QVector<float>(MAX_ZERO_VALS);
+    m_verifiedSpVals = QVector<float>(MAX_ZERO_VALS);
+    m_verifiedAirVals = QVector<float>(MAX_ZERO_VALS);
+    m_verifiedO2Vals = QVector<float>(MAX_ZERO_VALS);
 
     updateZeroVals();
 }
@@ -80,41 +80,42 @@ void ZeroManager::deleteOldestPipVal()
 
 void ZeroManager::updatePipVals()
 {
-    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
+    QRegExp regularExpression(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numPipVals = m_pipCsvManager.getNumEntries();
 
     if (m_numPipVals > MAX_ZERO_VALS)
     {
         system("rm /media/NVENT_FILES/calibration/pip_vals.csv");
-        m_pipCsvManager = CSVManager(PIP_FILE, &zeroColumns[0], 2);
+        m_pipCsvManager = CSVManager(PIP_FILE, (zeroColumns).data(), 2);
         m_numPipVals = m_pipCsvManager.getNumEntries();
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "PIP Values reset do to corruption.";
     }
 
-    int i = 0;
-    for(; i< m_numPipVals; i++)
+    int index = 0;
+    for(; index < m_numPipVals; index++)
     {
-        std::vector<std::string> tmp = m_pipCsvManager.readRecord(i);
+        std::vector<std::string> tmp = m_pipCsvManager.readRecord(index);
         if (tmp.size() != 2)
         {
-            m_pip_timestamps[i] = QString::fromStdString("");
-            m_pipVals[i] = -1;
+            m_pip_timestamps[index] = QString::fromStdString("");
+            m_pipVals[index] = -1;
+            break;
         }
-        else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
-            m_pip_timestamps[i] = QString::fromStdString(tmp[0]);
-            m_pipVals[i] = QString::fromStdString(tmp[1]).toFloat();
+        if (regularExpression.exactMatch(QString::fromStdString(tmp[1]))) {
+            m_pip_timestamps[index] = QString::fromStdString(tmp[0]);
+            m_pipVals[index] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_pip_timestamps[i] = QString::fromStdString("");
-            m_pipVals[i] = -1;
+            m_pip_timestamps[index] = QString::fromStdString("");
+            m_pipVals[index] = -1;
         }
     }
 
-    for(; i < MAX_ZERO_VALS; i++)
+    for(; index < MAX_ZERO_VALS; index++)
     {
-        m_pip_timestamps[i] = QString::fromStdString("");
-        m_pipVals[i] = -1;
+        m_pip_timestamps[index] = QString::fromStdString("");
+        m_pipVals[index] = -1;
     }
 }
 
@@ -127,43 +128,45 @@ void ZeroManager::deleteOldestSpVal()
 
 void ZeroManager::updateSpVals()
 {
-    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
+    QRegExp regularExpression(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numSpVals = m_spCsvManager.getNumEntries();
 
     if (m_numSpVals > MAX_ZERO_VALS)
     {
         system("rm /media/NVENT_FILES/calibration/sp_vals.csv");
-        m_spCsvManager = CSVManager(SP_FILE, &zeroColumns[0], 2);
+        m_spCsvManager = CSVManager(SP_FILE, (zeroColumns).data(), 2);
         m_numSpVals = m_spCsvManager.getNumEntries();
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "SP Values reset do to corruption.";
     }
 
-    int i = 0;
-    for(; i< m_numSpVals; i++)
+    int index = 0;
+    for(; index< m_numSpVals; index++)
     {
-        std::vector<std::string> tmp = m_spCsvManager.readRecord(i);
+        std::vector<std::string> tmp = m_spCsvManager.readRecord(index);
 
         //Length of row must be 4
         if (tmp.size() != 2)
         {
-            m_sp_timestamps[i] = QString::fromStdString("");
-            m_spVals[i] = -1;
+            m_sp_timestamps[index] = QString::fromStdString("");
+            m_spVals[index] = -1;
+            break;
         }
-        else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
-            m_sp_timestamps[i] = QString::fromStdString(tmp[0]);
-            m_spVals[i] = QString::fromStdString(tmp[1]).toFloat();
+        if (regularExpression.exactMatch(QString::fromStdString(tmp[1])))
+        {
+            m_sp_timestamps[index] = QString::fromStdString(tmp[0]);
+            m_spVals[index] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_sp_timestamps[i] = QString::fromStdString("");
-            m_spVals[i] = -1;
+            m_sp_timestamps[index] = QString::fromStdString("");
+            m_spVals[index] = -1;
         }
     }
 
-    for(; i < MAX_ZERO_VALS; i++)
+    for(; index < MAX_ZERO_VALS; index++)
     {
-        m_sp_timestamps[i] = QString::fromStdString("");
-        m_spVals[i] = -1;
+        m_sp_timestamps[index] = QString::fromStdString("");
+        m_spVals[index] = -1;
     }
 }
 
@@ -176,42 +179,43 @@ void ZeroManager::deleteOldestInletAirVal()
 
 void ZeroManager::updateInletAirVals()
 {
-    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
+    QRegExp regularExpression(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numAirVals = m_airCsvManager.getNumEntries();
 
     if (m_numAirVals > MAX_ZERO_VALS)
     {
         system("rm /media/NVENT_FILES/calibration/inlet_air_vals.csv");
-        m_airCsvManager = CSVManager(INLET_AIR_FILE, &zeroColumns[0], 2);
+        m_airCsvManager = CSVManager(INLET_AIR_FILE, (zeroColumns).data(), 2);
         m_numAirVals = m_airCsvManager.getNumEntries();
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Inlet Air Values reset do to corruption.";
     }
 
-    int i = 0;
-    for (; i < m_numAirVals; i++)
+    int index = 0;
+    for (; index < m_numAirVals; index++)
     {
-        std::vector<std::string> tmp = m_airCsvManager.readRecord(i);
+        std::vector<std::string> tmp = m_airCsvManager.readRecord(index);
         if (tmp.size() != 4)
         {
-            m_air_timestamps[i] = QString::fromStdString("");
-            m_airVals[i] = -1;
+            m_air_timestamps[index] = QString::fromStdString("");
+            m_airVals[index] = -1;
+            break;
         }
-        else if (re.exactMatch(QString::fromStdString(tmp[1])))
+        if (regularExpression.exactMatch(QString::fromStdString(tmp[1])))
         {
-            m_air_timestamps[i] = QString::fromStdString(tmp[0]);
-            m_pipVals[i] = QString::fromStdString(tmp[1]).toFloat();
+            m_air_timestamps[index] = QString::fromStdString(tmp[0]);
+            m_pipVals[index] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_air_timestamps[i] = QString::fromStdString("");
-            m_airVals[i] = -1;
+            m_air_timestamps[index] = QString::fromStdString("");
+            m_airVals[index] = -1;
         }
     }
 
-    for(; i < MAX_ZERO_VALS; i++)
+    for(; index < MAX_ZERO_VALS; index++)
     {
-        m_air_timestamps[i] = QString::fromStdString("");
-        m_airVals[i] = -1;
+        m_air_timestamps[index] = QString::fromStdString("");
+        m_airVals[index] = -1;
     }
 }
 
@@ -224,41 +228,42 @@ void ZeroManager::deleteOldestInletO2Val()
 
 void ZeroManager::updateInletO2Vals()
 {
-    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
+    QRegExp regularExpression(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numO2Vals = m_o2CsvManager.getNumEntries();
 
     if (m_numO2Vals > MAX_ZERO_VALS)
     {
         system("rm /media/NVENT_FILES/calibration/inlet_o2_vals.csv");
-        m_o2CsvManager = CSVManager(INLET_O2_FILE, &zeroColumns[0], 2);
+        m_o2CsvManager = CSVManager(INLET_O2_FILE, (zeroColumns).data(), 2);
         m_numO2Vals = m_o2CsvManager.getNumEntries();
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Inlet O2 values reset do to corruption.";
     }
 
-    int i = 0;
-    for (; i < m_numO2Vals; i++)
+    int index = 0;
+    for (; index < m_numO2Vals; index++)
     {
-        std::vector<std::string> tmp = m_o2CsvManager.readRecord(i);
+        std::vector<std::string> tmp = m_o2CsvManager.readRecord(index);
         if(tmp.size() != 2)
         {
-            m_o2_timestamps[i] = QString::fromStdString("");
-            m_o2Vals[i] = -1;
+            m_o2_timestamps[index] = QString::fromStdString("");
+            m_o2Vals[index] = -1;
+            break;
         }
-        else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
-            m_o2_timestamps[i] = QString::fromStdString(tmp[0]);
-            m_o2Vals[i] = QString::fromStdString(tmp[1]).toFloat();
+        if (regularExpression.exactMatch(QString::fromStdString(tmp[1]))) {
+            m_o2_timestamps[index] = QString::fromStdString(tmp[0]);
+            m_o2Vals[index] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_o2_timestamps[i] = QString::fromStdString("");
-            m_o2Vals[i] = -1;
+            m_o2_timestamps[index] = QString::fromStdString("");
+            m_o2Vals[index] = -1;
         }
     }
 
-    for(; i < MAX_ZERO_VALS; i++)
+    for(; index < MAX_ZERO_VALS; index++)
     {
-        m_o2_timestamps[i] = QString::fromStdString("");
-        m_o2Vals[i] = -1;
+        m_o2_timestamps[index] = QString::fromStdString("");
+        m_o2Vals[index] = -1;
     }
 }
 
@@ -271,41 +276,42 @@ void ZeroManager::deleteOldestVerifiedPipVal()
 
 void ZeroManager::updateVerifiedPipVals()
 {
-    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
+    QRegExp regularExpression(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numVerifiedPipVals = m_verifiedPipCsvManager.getNumEntries();
 
     if (m_numVerifiedPipVals > MAX_ZERO_VALS)
     {
         system("rm /media/NVENT_FILES/calibration/pip_verify.csv");
-        m_verifiedPipCsvManager = CSVManager(PIP_VERIFY_FILE, &zeroColumns[0], 2);
+        m_verifiedPipCsvManager = CSVManager(PIP_VERIFY_FILE, (zeroColumns).data(), 2);
         m_numVerifiedPipVals = m_verifiedPipCsvManager.getNumEntries();
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Verified PIP values reset do to corruption.";
     }
 
-    int i = 0;
-    for (; i < m_numVerifiedPipVals; i++)
+    int index = 0;
+    for (; index < m_numVerifiedPipVals; index++)
     {
-        std::vector<std::string> tmp = m_verifiedPipCsvManager.readRecord(i);
+        std::vector<std::string> tmp = m_verifiedPipCsvManager.readRecord(index);
         if(tmp.size() != 2)
         {
-            m_verified_pip_timestamps[i] = QString::fromStdString("");
-            m_verifiedPipVals[i] = -1;
+            m_verified_pip_timestamps[index] = QString::fromStdString("");
+            m_verifiedPipVals[index] = -1;
+            break;
         }
-        else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
-            m_verified_pip_timestamps[i] = QString::fromStdString(tmp[0]);
-            m_verifiedPipVals[i] = QString::fromStdString(tmp[1]).toFloat();
+        if (regularExpression.exactMatch(QString::fromStdString(tmp[1]))) {
+            m_verified_pip_timestamps[index] = QString::fromStdString(tmp[0]);
+            m_verifiedPipVals[index] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_verified_pip_timestamps[i] = QString::fromStdString("");
-            m_verifiedPipVals[i] = -1;
+            m_verified_pip_timestamps[index] = QString::fromStdString("");
+            m_verifiedPipVals[index] = -1;
         }
     }
 
-    for(; i < MAX_ZERO_VALS; i++)
+    for(; index < MAX_ZERO_VALS; index++)
     {
-        m_verified_pip_timestamps[i] = QString::fromStdString("");
-        m_verifiedPipVals[i] = -1;
+        m_verified_pip_timestamps[index] = QString::fromStdString("");
+        m_verifiedPipVals[index] = -1;
     }
 }
 
@@ -318,41 +324,42 @@ void ZeroManager::deleteOldestVerifiedSpVal()
 
 void ZeroManager::updateVerifiedSpVals()
 {
-    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
+    QRegExp regularExpression(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numVerifiedSpVals = m_verifiedSpCsvManager.getNumEntries();
 
     if (m_numVerifiedSpVals > MAX_ZERO_VALS)
     {
         system("rm /media/NVENT_FILES/calibration/sp_verify.csv");
-        m_verifiedSpCsvManager = CSVManager(SP_VERIFY_FILE, &zeroColumns[0], 2);
+        m_verifiedSpCsvManager = CSVManager(SP_VERIFY_FILE, (zeroColumns).data(), 2);
         m_numVerifiedSpVals = m_verifiedSpCsvManager.getNumEntries();
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Verified SP values reset do to corruption.";
     }
 
-    int i = 0;
-    for (; i < m_numVerifiedSpVals; i++)
+    int index = 0;
+    for (; index < m_numVerifiedSpVals; index++)
     {
-        std::vector<std::string> tmp = m_verifiedSpCsvManager.readRecord(i);
+        std::vector<std::string> tmp = m_verifiedSpCsvManager.readRecord(index);
         if(tmp.size() != 2)
         {
-            m_verified_sp_timestamps[i] = QString::fromStdString("");
-            m_verifiedSpVals[i] = -1;
+            m_verified_sp_timestamps[index] = QString::fromStdString("");
+            m_verifiedSpVals[index] = -1;
+            break;
         }
-        else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
-            m_verified_sp_timestamps[i] = QString::fromStdString(tmp[0]);
-            m_verifiedSpVals[i] = QString::fromStdString(tmp[1]).toFloat();
+        if (regularExpression.exactMatch(QString::fromStdString(tmp[1]))) {
+            m_verified_sp_timestamps[index] = QString::fromStdString(tmp[0]);
+            m_verifiedSpVals[index] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_verified_sp_timestamps[i] = QString::fromStdString("");
-            m_verifiedSpVals[i] = -1;
+            m_verified_sp_timestamps[index] = QString::fromStdString("");
+            m_verifiedSpVals[index] = -1;
         }
     }
 
-    for(; i < MAX_ZERO_VALS; i++)
+    for(; index < MAX_ZERO_VALS; index++)
     {
-        m_verified_sp_timestamps[i] = QString::fromStdString("");
-        m_verifiedSpVals[i] = -1;
+        m_verified_sp_timestamps[index] = QString::fromStdString("");
+        m_verifiedSpVals[index] = -1;
     }
 }
 
@@ -365,41 +372,42 @@ void ZeroManager::deleteOldestVerifiedInletAirVal()
 
 void ZeroManager::updateVerifiedInletAir()
 {
-    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
+    QRegExp regularExpression(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numVerifiedAirVals = m_verifiedInletAirCsvManager.getNumEntries();
 
     if (m_numVerifiedAirVals > MAX_ZERO_VALS)
     {
         system("rm /media/NVENT_FILES/calibration/sp_verify.csv");
-        m_verifiedInletAirCsvManager = CSVManager(INLET_AIR_VERIFY_FILE, &zeroColumns[0], 2);
+        m_verifiedInletAirCsvManager = CSVManager(INLET_AIR_VERIFY_FILE, (zeroColumns).data(), 2);
         m_numVerifiedAirVals = m_verifiedInletAirCsvManager.getNumEntries();
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Verified Air values reset do to corruption.";
     }
 
-    int i = 0;
-    for (; i < m_numVerifiedAirVals; i++)
+    int index = 0;
+    for (; index < m_numVerifiedAirVals; index++)
     {
-        std::vector<std::string> tmp = m_verifiedInletAirCsvManager.readRecord(i);
+        std::vector<std::string> tmp = m_verifiedInletAirCsvManager.readRecord(index);
         if(tmp.size() != 2)
         {
-            m_verified_air_timestamps[i] = QString::fromStdString("");
-            m_verifiedAirVals[i] = -1;
+            m_verified_air_timestamps[index] = QString::fromStdString("");
+            m_verifiedAirVals[index] = -1;
+            break;
         }
-        else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
-            m_verified_air_timestamps[i] = QString::fromStdString(tmp[0]);
-            m_verifiedAirVals[i] = QString::fromStdString(tmp[1]).toFloat();
+        if (regularExpression.exactMatch(QString::fromStdString(tmp[1]))) {
+            m_verified_air_timestamps[index] = QString::fromStdString(tmp[0]);
+            m_verifiedAirVals[index] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_verified_air_timestamps[i] = QString::fromStdString("");
-            m_verifiedAirVals[i] = -1;
+            m_verified_air_timestamps[index] = QString::fromStdString("");
+            m_verifiedAirVals[index] = -1;
         }
     }
 
-    for(; i < MAX_ZERO_VALS; i++)
+    for(; index < MAX_ZERO_VALS; index++)
     {
-        m_verified_air_timestamps[i] = QString::fromStdString("");
-        m_verifiedAirVals[i] = -1;
+        m_verified_air_timestamps[index] = QString::fromStdString("");
+        m_verifiedAirVals[index] = -1;
     }
 }
 
@@ -412,50 +420,51 @@ void ZeroManager::deleteOldestVerifiedInletO2Val()
 
 void ZeroManager::updateVerifiedInletO2()
 {
-    QRegExp re(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
+    QRegExp regularExpression(QString::fromStdString(R"(-?\d+(?:\.\d+)?)"));
 
     m_numVerifiedO2Vals = m_verifiedInletO2CsvManager.getNumEntries();
 
     if (m_numVerifiedO2Vals > MAX_ZERO_VALS)
     {
         system("rm /media/NVENT_FILES/calibration/pip_verify.csv");
-        m_verifiedInletO2CsvManager = CSVManager(INLET_O2_VERIFY_FILE, &zeroColumns[0], 2);
+        m_verifiedInletO2CsvManager = CSVManager(INLET_O2_VERIFY_FILE, (zeroColumns).data(), 2);
         m_numVerifiedO2Vals = m_verifiedInletO2CsvManager.getNumEntries();
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Verified O2 values reset do to corruption.";
     }
 
-    int i = 0;
-    for (; i < m_numVerifiedO2Vals; i++)
+    int index = 0;
+    for (; index < m_numVerifiedO2Vals; index++)
     {
-        std::vector<std::string> tmp = m_verifiedInletO2CsvManager.readRecord(i);
+        std::vector<std::string> tmp = m_verifiedInletO2CsvManager.readRecord(index);
         if(tmp.size() != 2)
         {
-            m_verified_o2_timestamps[i] = QString::fromStdString("");
-            m_verifiedO2Vals[i] = -1;
+            m_verified_o2_timestamps[index] = QString::fromStdString("");
+            m_verifiedO2Vals[index] = -1;
+            break;
         }
-        else if (re.exactMatch(QString::fromStdString(tmp[1]))) {
-            m_verified_o2_timestamps[i] = QString::fromStdString(tmp[0]);
-            m_verifiedO2Vals[i] = QString::fromStdString(tmp[1]).toFloat();
+        if (regularExpression.exactMatch(QString::fromStdString(tmp[1]))) {
+            m_verified_o2_timestamps[index] = QString::fromStdString(tmp[0]);
+            m_verifiedO2Vals[index] = QString::fromStdString(tmp[1]).toFloat();
         }
         else {
-            m_verified_o2_timestamps[i] = QString::fromStdString("");
-            m_verifiedO2Vals[i] = -1;
+            m_verified_o2_timestamps[index] = QString::fromStdString("");
+            m_verifiedO2Vals[index] = -1;
         }
     }
 
-    for(; i < MAX_ZERO_VALS; i++)
+    for(; index < MAX_ZERO_VALS; index++)
     {
-        m_verified_o2_timestamps[i] = QString::fromStdString("");
-        m_verifiedO2Vals[i] = -1;
+        m_verified_o2_timestamps[index] = QString::fromStdString("");
+        m_verifiedO2Vals[index] = -1;
     }
 }
 
-void ZeroManager::addZeroValue(int id, float value)
+void ZeroManager::addZeroValue(int sensor_id, float value)
 {
-    if (id == 0)
+    if (sensor_id == 0)
     {
-        //Deletes oldest PIP value if at 5 entry limit.
-        if (m_numPipVals >= 5)
+        //Deletes oldest PIP value if at MAX_ZERO_VALS entry limit.
+        if (m_numPipVals >= MAX_ZERO_VALS)
         {
             deleteOldestPipVal();
         }
@@ -463,13 +472,13 @@ void ZeroManager::addZeroValue(int id, float value)
         std::string timeStamp = m_timeCsvManager.readRecord(0).at(1) + " - " + m_timeCsvManager.readRecord(1).at(1);
         std::vector<std::string> vector = {timeStamp, std::to_string(value)};
 
-        m_pipCsvManager.createRecord(&vector[0]);
+        m_pipCsvManager.createRecord(vector.data());
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "PIP Value: " + QString::number(value);
     }
-    else if (id == 1)
+    else if (sensor_id == 1)
     {
-        //Deletes oldest SP value if at 5 entry limit.
-        if (m_numSpVals >= 5)
+        //Deletes oldest SP value if at MAX_ZERO_VALS entry limit.
+        if (m_numSpVals >= MAX_ZERO_VALS)
         {
             deleteOldestSpVal();
         }
@@ -477,13 +486,13 @@ void ZeroManager::addZeroValue(int id, float value)
         std::string timeStamp = m_timeCsvManager.readRecord(0).at(1) + " - " + m_timeCsvManager.readRecord(1).at(1);
         std::vector<std::string> vector = {timeStamp, std::to_string(value)};
 
-        m_spCsvManager.createRecord(&vector[0]);
+        m_spCsvManager.createRecord(vector.data());
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "SP Value: " + QString::number(value);
     }
-    else if (id == 3)
+    else if (sensor_id == 3)
     {
-        //Deletes oldest Inlet Air value if at 5 entry limit.
-        if (m_numAirVals >= 5)
+        //Deletes oldest Inlet Air value if at MAX_ZERO_VALS entry limit.
+        if (m_numAirVals >= MAX_ZERO_VALS)
         {
             deleteOldestInletAirVal();
         }
@@ -491,13 +500,13 @@ void ZeroManager::addZeroValue(int id, float value)
         std::string timeStamp = m_timeCsvManager.readRecord(0).at(1) + " - " + m_timeCsvManager.readRecord(1).at(1);
         std::vector<std::string> vector = {timeStamp, std::to_string(value)};
 
-        m_airCsvManager.createRecord(&vector[0]);
+        m_airCsvManager.createRecord(vector.data());
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Inlet Air Value: " + QString::number(value);
     }
-    else if (id == 4)
+    else if (sensor_id == 4)
     {
-        //Deletes oldest Inlet O2 value if at 5 entry limit.
-        if (m_numO2Vals >= 5)
+        //Deletes oldest Inlet O2 value if at MAX_ZERO_VALS entry limit.
+        if (m_numO2Vals >= MAX_ZERO_VALS)
         {
             deleteOldestInletO2Val();
         }
@@ -505,18 +514,18 @@ void ZeroManager::addZeroValue(int id, float value)
         std::string timeStamp = m_timeCsvManager.readRecord(0).at(1) + " - " + m_timeCsvManager.readRecord(1).at(1);
         std::vector<std::string> vector = {timeStamp, std::to_string(value)};
 
-        m_o2CsvManager.createRecord(&vector[0]);
+        m_o2CsvManager.createRecord(vector.data());
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Inlet O2 Value: " + QString::number(value);
     }
     updateZeroVals();
 }
 
-void ZeroManager::addVerifiedValue(int id, float value)
+void ZeroManager::addVerifiedValue(int sensor_id, float value)
 {
-    if (id == 0)
+    if (sensor_id == 0)
     {
-        //Deletes oldest PIP value if at 5 entry limit.
-        if (m_numVerifiedPipVals >= 5)
+        //Deletes oldest PIP value if at MAX_ZERO_VALS entry limit.
+        if (m_numVerifiedPipVals >= MAX_ZERO_VALS)
         {
             deleteOldestVerifiedPipVal();
         }
@@ -524,13 +533,13 @@ void ZeroManager::addVerifiedValue(int id, float value)
         std::string timeStamp = m_timeCsvManager.readRecord(0).at(1) + " - " + m_timeCsvManager.readRecord(1).at(1);
         std::vector<std::string> vector = {timeStamp, std::to_string(value)};
 
-        m_verifiedPipCsvManager.createRecord(&vector[0]);
+        m_verifiedPipCsvManager.createRecord(vector.data());
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Verified PIP Value: " + QString::number(value);
     }
-    else if (id == 1)
+    else if (sensor_id == 1)
     {
-        //Deletes oldest SP value if at 5 entry limit.
-        if (m_numVerifiedSpVals >= 5)
+        //Deletes oldest SP value if at MAX_ZERO_VALS entry limit.
+        if (m_numVerifiedSpVals >= MAX_ZERO_VALS)
         {
             deleteOldestVerifiedSpVal();
         }
@@ -538,13 +547,13 @@ void ZeroManager::addVerifiedValue(int id, float value)
         std::string timeStamp = m_timeCsvManager.readRecord(0).at(1) + " - " + m_timeCsvManager.readRecord(1).at(1);
         std::vector<std::string> vector = {timeStamp, std::to_string(value)};
 
-        m_verifiedSpCsvManager.createRecord(&vector[0]);
+        m_verifiedSpCsvManager.createRecord(vector.data());
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Verified SP Value: " + QString::number(value);
     }
-    else if (id == 3)
+    else if (sensor_id == 3)
     {
-        //Deletes oldest Inlet Air value if at 5 entry limit.
-        if (m_numVerifiedAirVals >= 5)
+        //Deletes oldest Inlet Air value if at MAX_ZERO_VALS entry limit.
+        if (m_numVerifiedAirVals >= MAX_ZERO_VALS)
         {
             deleteOldestVerifiedInletAirVal();
         }
@@ -552,13 +561,13 @@ void ZeroManager::addVerifiedValue(int id, float value)
         std::string timeStamp = m_timeCsvManager.readRecord(0).at(1) + " - " + m_timeCsvManager.readRecord(1).at(1);
         std::vector<std::string> vector = {timeStamp, std::to_string(value)};
 
-        m_verifiedInletAirCsvManager.createRecord(&vector[0]);
+        m_verifiedInletAirCsvManager.createRecord(vector.data());
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Verified Inlet Air Value: " + QString::number(value);
     }
-    else if (id == 4)
+    else if (sensor_id == 4)
     {
-        //Deletes oldest Inlet O2 value if at 5 entry limit.
-        if (m_numVerifiedO2Vals >= 5)
+        //Deletes oldest Inlet O2 value if at MAX_ZERO_VALS entry limit.
+        if (m_numVerifiedO2Vals >= MAX_ZERO_VALS)
         {
             deleteOldestVerifiedInletO2Val();
         }
@@ -566,14 +575,14 @@ void ZeroManager::addVerifiedValue(int id, float value)
         std::string timeStamp = m_timeCsvManager.readRecord(0).at(1) + " - " + m_timeCsvManager.readRecord(1).at(1);
         std::vector<std::string> vector = {timeStamp, std::to_string(value)};
 
-        m_verifiedInletO2CsvManager.createRecord(&vector[0]);
+        m_verifiedInletO2CsvManager.createRecord(vector.data());
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Verified Inlet O2 Value: " + QString::number(value);
     }
     updateZeroVals();
 
 }
 
-float ZeroManager::getZeroPIP()
+auto ZeroManager::getZeroPIP() -> float
 {
     if (m_numPipVals > 0)
     {
@@ -582,7 +591,7 @@ float ZeroManager::getZeroPIP()
     return -1;
 }
 
-float ZeroManager::getZeroSP()
+auto ZeroManager::getZeroSP() -> float
 {
     if (m_numSpVals > 0)
     {
@@ -591,7 +600,7 @@ float ZeroManager::getZeroSP()
     return -1;
 }
 
-float ZeroManager::getInletAir()
+auto ZeroManager::getInletAir() -> float
 {
     if (m_numAirVals > 0)
     {
@@ -600,7 +609,7 @@ float ZeroManager::getInletAir()
     return -1;
 }
 
-float ZeroManager::getInletO2()
+auto ZeroManager::getInletO2() -> float
 {
     if (m_numO2Vals > 0)
     {
@@ -609,7 +618,7 @@ float ZeroManager::getInletO2()
     return -1;
 }
 
-float ZeroManager::getVerifiedZeroPIP()
+auto ZeroManager::getVerifiedZeroPIP() -> float
 {
     if (m_numVerifiedPipVals > 0)
     {
@@ -618,7 +627,7 @@ float ZeroManager::getVerifiedZeroPIP()
     return -1;
 }
 
-float ZeroManager::getVerifiedZeroSP()
+auto ZeroManager::getVerifiedZeroSP() -> float
 {
     if (m_numVerifiedSpVals > 0)
     {
@@ -627,7 +636,7 @@ float ZeroManager::getVerifiedZeroSP()
     return -1;
 }
 
-float ZeroManager::getVerifiedInletAir()
+auto ZeroManager::getVerifiedInletAir() -> float
 {
     if (m_numVerifiedAirVals > 0)
     {
@@ -636,7 +645,7 @@ float ZeroManager::getVerifiedInletAir()
     return -1;
 }
 
-float ZeroManager::getVerifiedInletO2()
+auto ZeroManager::getVerifiedInletO2() -> float
 {
     if (m_numVerifiedO2Vals > 0)
     {

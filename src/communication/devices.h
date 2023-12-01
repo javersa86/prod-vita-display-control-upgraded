@@ -33,7 +33,7 @@ class devices
         /**
          * @brief Default Constructor.
          */
-        devices();
+        devices() = default;
         //Devices connected at the time of collection.
 
         /**
@@ -41,7 +41,7 @@ class devices
          * @note Devices should be connected at the time of collection.
          * @return size_t
          */
-        size_t deviceCount();
+        static size_t deviceCount();
         /** @} */
 
 };

@@ -29,6 +29,8 @@
  */
 #define MAX_PRESETS 12
 
+#define PRESET_NAME_LENGTH 20
+
 /**
  * @brief The PresetManager class
  */
@@ -221,13 +223,13 @@ class PresetManager : public QObject
          * @brief Gets state of keyboard: uppercase, lowercase, numbers and symbols, and other symbols.
          * @return unsigned char
          */
-        unsigned char getKeyboardState();
+        unsigned char getKeyboardState() const;
 
         /**
          * @brief Gets all caps state.
          * @return unsigned char
          */
-        unsigned char getAllCapState();
+        unsigned char getAllCapState() const;
 
     public slots:
         /**
@@ -328,6 +330,19 @@ class PresetManager : public QObject
         unsigned char m_keyboard_state = 0;
 
         unsigned char all_caps_state = 0;
+
+        const int PRESET_INDEX_1 = 0;
+        const int PRESET_INDEX_2 = 1;
+        const int PRESET_INDEX_3 = 2;
+        const int PRESET_INDEX_4 = 3;
+        const int PRESET_INDEX_5 = 4;
+        const int PRESET_INDEX_6 = 5;
+        const int PRESET_INDEX_7 = 6;
+        const int PRESET_INDEX_8 = 7;
+        const int PRESET_INDEX_9 = 8;
+        const int PRESET_INDEX_10 = 9;
+        const int PRESET_INDEX_11 = 10;
+        const int PRESET_INDEX_12 = 11;
         /** @} */
 };
 
