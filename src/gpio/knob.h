@@ -50,8 +50,9 @@ class Knob : public QThread
          * @param pin_a
          * @param pin_b
          * @param pin_switch
+         * @param edge
          */
-        Knob(uint, uint, uint);
+        Knob(uint, uint, uint, char*);
 
         /**
          * @brief Loops to listen to the knob. Loops while m_running is true.
@@ -66,15 +67,14 @@ class Knob : public QThread
         GPIO* m_pinB;
         GPIO* m_pinButton;
 
-        char edge[4] = {'b','o','t','h'};
-
         const int MAX_BUF = 64;
-        struct pollfd fdset[4];
-        char buf[64] = {};
 
-        void pollPinA();
-        void pollPinB();
-        void pollPinSwitch();
+        struct pollfd fdset[4];
+        char buf[64];
+
+        void pollPinA(pollfd*, char*);
+        void pollPinB(pollfd*, char*);
+        void pollPinSwitch(pollfd*, char*);
 
     public slots:
 

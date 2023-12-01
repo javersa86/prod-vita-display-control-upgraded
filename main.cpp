@@ -291,7 +291,11 @@ auto main(int argc, char *argv[]) -> int
     const int pinA = 9;
     const int pinB = 57;
     const int pinSwitch = 55;
-    Knob knob{pinA, pinB, pinSwitch};\
+
+    std::array<char,4> edge = {'b','o','t','h'};
+    char* edgePtr = edge.data();
+
+    Knob knob{pinA, pinB, pinSwitch, edgePtr};\
 // These are the calculations for figuring out what the pin numbers are.
 // There's further description of how the knob works in the knob related files
 //   (b-1) * 32 + nn

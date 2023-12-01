@@ -33,8 +33,6 @@ void Encoder::updateEncoder()
     int encoded = (MSB << 1) | LSB;
     int sum = (m_last_encoded << 2) | encoded;
 
-    qDebug() << QString::number(sum);
-
     //The sum will look like [0b last_a_state last_b_state current_a_state current_b_state]
     if(sum == bit_sum_13 || sum == bit_sum_2) // 13 || 2
     {

@@ -24,7 +24,6 @@ GPIO::~GPIO()
 
 auto GPIO::getValue() -> unsigned char
 {
-
     //If the pin has direction "in,"
     if( !_isOut )
     {
@@ -40,6 +39,7 @@ auto GPIO::getValue() -> unsigned char
         char chRead = -1;
 
         read(_ioFd, &chRead, 1);
+
         //since GPIO value is saved in file, it will be returned as a char
         if(chRead != '0')
         {
@@ -82,10 +82,12 @@ void GPIO::openFd()
         close(_ioFd );
     }
 
-    if( _isOut ) {
+    if( _isOut )
+    {
         _ioFd = open(buf.data(), O_RDWR);
     }
-    else {
+    else
+    {
         _ioFd = open(buf.data(), O_RDONLY);
     }
 
@@ -130,7 +132,8 @@ auto GPIO::setDirection(bool out) -> int
     return 0;
 }
 
-auto GPIO::setEdge(char *edge) const -> int{
+auto GPIO::setEdge(char *edge) const -> int
+{
     int fileDescriptor = -1;
     std::array<char,ENCODER_MAX_BUF> buf;
 
