@@ -31,6 +31,7 @@ class Switch : public QObject
      */
 
     Q_OBJECT
+
     public:
 
         /**
@@ -39,20 +40,6 @@ class Switch : public QObject
          * @param pin_path
          */
         Switch() = default;
-
-    private:
-        uint m_state;
-        unsigned char m_ignore = 0;
-
-    signals:
-
-        /**
-         * @brief Signal for when button is pushed.
-         * @callgraph
-         */
-        void push(); //param in/out
-
-    public:
 
         /**
          * @brief Slot to listen for button pushes. Only emits a signal on the release of the button.
@@ -65,6 +52,19 @@ class Switch : public QObject
          * @param value
          */
         void setState(unsigned char);
+
+    signals:
+
+        /**
+         * @brief Signal for when button is pushed.
+         * @callgraph
+         */
+        void push(); //param in/out
+
+    private:
+
+        uint m_state;
+        unsigned char m_ignore = 0;
         /** @} */
 };
 

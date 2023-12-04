@@ -839,15 +839,16 @@ class Backend : public QObject
         /**
          * @brief Unsigned char array for the flags for which messages need to be sent to the API.
          */
-        unsigned char m_message_flags[NUM_API] = {0};
+        QVector<unsigned char> m_message_flags = QVector<unsigned char>(NUM_API); // [NUM_API] = {0};
         /**
          * @brief Unsigned char array for the state of modes that need to be updated.
          */
-        unsigned char m_send_modes[NUM_MODES] = {0};
+        QVector<unsigned char> m_send_modes = QVector<unsigned char>(NUM_MODES); //[NUM_MODES] = {0};
         /**
          * @brief Unsigned char array for the state of measurements.
          */
-        unsigned char m_get_sensors[NUM_MEASURED_SENSORS] = {0};
+        QVector<unsigned char> m_get_sensors = QVector<unsigned char>(NUM_MEASURED_SENSORS); //[NUM_MEASURED_SENSORS] = {0};
+
         //Warning that needs to be cleared
         unsigned char m_warningToClear = WARNING_CLEARED;
 
@@ -860,7 +861,7 @@ class Backend : public QObject
         /**
          * @brief Function array to send messages to API.
          */
-        resend_function_pointer m_resend_functions[NUM_API] = {nullptr};
+        QVector<resend_function_pointer> m_resend_functions = QVector<resend_function_pointer>(NUM_API, nullptr); //[NUM_API] = {nullptr};
 
         /**
          * @brief Variable to track the current directory name for a USB drive.

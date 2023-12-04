@@ -52,18 +52,6 @@ class Comm
      * @{
      */
 
-    private:
-        QString _portname = QString();
-        int _baudrate = 0;
-        int fileDescriptor; // file description for the serial port
-
-        unsigned char tx_buf[TX_BUFFER_SIZE] = {0};
-        int tx_index = 0;
-        unsigned char rx_buf[RX_BUFFER_SIZE] = {0};
-        int rx_index = 0;
-        int reading_cursor = 0;
-
-
     public:
         /**
          * @brief Default Constructor.
@@ -169,6 +157,18 @@ class Comm
          * @brief Closes the serial port.
          */
         void closeSerial() const;
+
+    private:
+
+        QString _portname = QString();
+        int _baudrate = 0;
+        int fileDescriptor; // file description for the serial port
+
+        unsigned char tx_buf[TX_BUFFER_SIZE] = {0};
+        int tx_index = 0;
+        unsigned char rx_buf[RX_BUFFER_SIZE] = {0};
+        int rx_index = 0;
+        int reading_cursor = 0;
         /** @} */
 };
 

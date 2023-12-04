@@ -162,17 +162,6 @@ class PneumaticSettings : public QObject
          */
         int warningThreshold() const;
 
-    private:
-        int m_id{-1};
-        QString m_unit;
-        QString m_title;
-        int m_min{-1};
-        int m_max{-1};
-        int m_step{1};
-        int m_minOn{m_min};
-        int m_warningThreshold;
-        QString m_help;
-
     signals:
         /**
          * @brief minSignal
@@ -219,6 +208,17 @@ class PneumaticSettings : public QObject
          * @callgraph
          */
         void warningThresholdSignal();
+
+    private:
+        int m_id{-1};
+        QString m_unit;
+        QString m_title;
+        int m_min{-1};
+        int m_max{-1};
+        int m_step{1};
+        int m_minOn{m_min};
+        int m_warningThreshold;
+        QString m_help;
         /** @} */
 
 };

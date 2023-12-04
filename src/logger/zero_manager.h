@@ -81,36 +81,36 @@ class ZeroManager : public QObject
     /**
      * @brief zeroPIP
      */
-    Q_PROPERTY(float zeroPIP READ getZeroPIP NOTIFY zeroChanged);
+    Q_PROPERTY(float zeroPIP READ getZeroPIP NOTIFY zeroChanged)
     /**
      * @brief zeroSP
      */
-    Q_PROPERTY(float zeroSP  READ getZeroSP  NOTIFY zeroChanged);
+    Q_PROPERTY(float zeroSP  READ getZeroSP  NOTIFY zeroChanged)
     /**
      * @brief inletAir
      */
-    Q_PROPERTY(float inletAir READ getInletAir NOTIFY zeroChanged);
+    Q_PROPERTY(float inletAir READ getInletAir NOTIFY zeroChanged)
     /**
      * @brief inletO2
      */
-    Q_PROPERTY(float inletO2 READ getInletO2 NOTIFY zeroChanged);
+    Q_PROPERTY(float inletO2 READ getInletO2 NOTIFY zeroChanged)
 
     /**
      * @brief verifiedZeroPIP
      */
-    Q_PROPERTY(float verifiedZeroPIP READ getVerifiedZeroPIP NOTIFY zeroChanged);
+    Q_PROPERTY(float verifiedZeroPIP READ getVerifiedZeroPIP NOTIFY zeroChanged)
     /**
      * @brief verifiedZeroSP
      */
-    Q_PROPERTY(float verifiedZeroSP READ getVerifiedZeroSP NOTIFY zeroChanged);
+    Q_PROPERTY(float verifiedZeroSP READ getVerifiedZeroSP NOTIFY zeroChanged)
     /**
      * @brief verifiedInletAir
      */
-    Q_PROPERTY(float verifiedInletAir READ getVerifiedInletAir NOTIFY zeroChanged);
+    Q_PROPERTY(float verifiedInletAir READ getVerifiedInletAir NOTIFY zeroChanged)
     /**
      * @brief verifiedInletO2
      */
-    Q_PROPERTY(float verifiedInletO2 READ getVerifiedInletO2 NOTIFY zeroChanged);
+    Q_PROPERTY(float verifiedInletO2 READ getVerifiedInletO2 NOTIFY zeroChanged)
     
     public:
 
@@ -187,8 +187,72 @@ class ZeroManager : public QObject
             "Value"
         };
 
+    public slots:
+        /**
+         * @brief Adds an entry to the Zero values associated CSV file.
+         * @param id
+         * @param value
+         * @callergraph
+         */
+        void addZeroValue(int, float);
+        
+        /**
+         * @brief Adds an entry to the Verification values associated CSV file.
+         * @param id
+         * @param value
+         * @callergraph
+         */
+        void addVerifiedValue(int, float);
+
+    signals:
+        /**
+         * @brief Signal for when zero manager is updated.
+         * @callgraph
+         */
+        void zeroChanged();
 
     private:
+        CSVManager m_timeCsvManager;
+
+        CSVManager m_pipCsvManager;
+        CSVManager m_spCsvManager;
+        CSVManager m_airCsvManager;
+        CSVManager m_o2CsvManager;
+
+        CSVManager m_verifiedPipCsvManager;
+        CSVManager m_verifiedSpCsvManager;
+        CSVManager m_verifiedInletAirCsvManager;
+        CSVManager m_verifiedInletO2CsvManager;
+
+        QVector<QString> m_pip_timestamps;
+        QVector<QString> m_sp_timestamps;
+        QVector<QString> m_air_timestamps;
+        QVector<QString> m_o2_timestamps;
+
+        QVector<QString> m_verified_pip_timestamps;
+        QVector<QString> m_verified_sp_timestamps;
+        QVector<QString> m_verified_air_timestamps;
+        QVector<QString> m_verified_o2_timestamps;
+
+        QVector<float> m_pipVals;
+        QVector<float> m_spVals;
+        QVector<float> m_airVals;
+        QVector<float> m_o2Vals;
+
+        QVector<float> m_verifiedPipVals;
+        QVector<float> m_verifiedSpVals;
+        QVector<float> m_verifiedAirVals;
+        QVector<float> m_verifiedO2Vals;
+
+        int m_numPipVals;
+        int m_numSpVals;
+        int m_numAirVals;
+        int m_numO2Vals;
+
+        int m_numVerifiedPipVals;
+        int m_numVerifiedSpVals;
+        int m_numVerifiedAirVals;
+        int m_numVerifiedO2Vals;
 
         /**
          * @brief   Retrieves current values from .csv files.
@@ -263,73 +327,6 @@ class ZeroManager : public QObject
          * @brief Deletes oldest verification inlet o2 value from file.
          */
         void deleteOldestVerifiedInletO2Val();
-
-    private:
-        CSVManager m_timeCsvManager;
-        
-        CSVManager m_pipCsvManager;
-        CSVManager m_spCsvManager;
-        CSVManager m_airCsvManager;
-        CSVManager m_o2CsvManager;
-
-        CSVManager m_verifiedPipCsvManager;
-        CSVManager m_verifiedSpCsvManager;
-        CSVManager m_verifiedInletAirCsvManager;
-        CSVManager m_verifiedInletO2CsvManager;
-
-        QVector<QString> m_pip_timestamps;
-        QVector<QString> m_sp_timestamps;
-        QVector<QString> m_air_timestamps;
-        QVector<QString> m_o2_timestamps;
-
-        QVector<QString> m_verified_pip_timestamps;
-        QVector<QString> m_verified_sp_timestamps;
-        QVector<QString> m_verified_air_timestamps;
-        QVector<QString> m_verified_o2_timestamps;
-        
-        QVector<float> m_pipVals;
-        QVector<float> m_spVals;
-        QVector<float> m_airVals;
-        QVector<float> m_o2Vals;
-
-        QVector<float> m_verifiedPipVals;
-        QVector<float> m_verifiedSpVals;
-        QVector<float> m_verifiedAirVals;
-        QVector<float> m_verifiedO2Vals;
-        
-        int m_numPipVals;
-        int m_numSpVals;
-        int m_numAirVals;
-        int m_numO2Vals;
-
-        int m_numVerifiedPipVals;
-        int m_numVerifiedSpVals;
-        int m_numVerifiedAirVals;
-        int m_numVerifiedO2Vals;
-
-    public slots:
-        /**
-         * @brief Adds an entry to the Zero values associated CSV file.
-         * @param id
-         * @param value
-         * @callergraph
-         */
-        void addZeroValue(int, float);
-        
-        /**
-         * @brief Adds an entry to the Verification values associated CSV file.
-         * @param id
-         * @param value
-         * @callergraph
-         */
-        void addVerifiedValue(int, float);
-
-    signals:
-        /**
-         * @brief Signal for when zero manager is updated.
-         * @callgraph
-         */
-        void zeroChanged();
         /** @} */
 };
 

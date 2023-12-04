@@ -43,11 +43,6 @@ class Message
      * @{
      */
 
-    private:
-        unsigned char m_message[INPUT_BUFFER_SIZE] = {0};
-        unsigned char m_crc = 0;
-        int m_tx_size = 0;
-
     public:
         /**
          * @brief Empty Constructor
@@ -86,6 +81,11 @@ class Message
          * @return QString
          */
         QString toString();
+
+    private:
+        unsigned char m_message[INPUT_BUFFER_SIZE] = {0};
+        unsigned char m_crc = 0;
+        int m_tx_size = 0;
         /** @} */
 };
 

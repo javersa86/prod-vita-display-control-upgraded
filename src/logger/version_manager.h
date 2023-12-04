@@ -63,18 +63,6 @@ class VersionManager: public QObject
      */
     Q_PROPERTY(QString serialNumber READ getSerialNumber NOTIFY versionChanged)
 
-    private:
-        CSVManager m_versionCsvManager;
-
-        QString m_hmiVersion;
-        QString m_serialNumber;
-
-        /**
-         * @brief   Retrieves current HMI Version and Serial Number from .csv file.
-         * @details Stores current values onto vectors. Updates whenever device powers on or whenever info changes.
-         */
-        void updateVersions();
-
     public:
 
         /**
@@ -109,6 +97,19 @@ class VersionManager: public QObject
          * @callgraph
          */
         void versionChanged();
+
+    private:
+
+        CSVManager m_versionCsvManager;
+
+        QString m_hmiVersion;
+        QString m_serialNumber;
+
+        /**
+         * @brief   Retrieves current HMI Version and Serial Number from .csv file.
+         * @details Stores current values onto vectors. Updates whenever device powers on or whenever info changes.
+         */
+        void updateVersions();
         /** @} */
 };
 

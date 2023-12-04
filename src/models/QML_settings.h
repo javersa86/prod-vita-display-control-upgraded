@@ -29,7 +29,7 @@ class SettingIndex : public QObject
          * @brief Empty Constructor
          * @param parent
          */
-        SettingIndex(QObject *parent=nullptr) : QObject(parent){};
+        SettingIndex(QObject *parent=nullptr) : QObject(parent){}
 
         /**
          * @brief The Index Enumerations for Setting Updates on QML files.

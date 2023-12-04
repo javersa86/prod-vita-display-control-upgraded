@@ -39,6 +39,7 @@ class Knob : public QThread
      */
 
     Q_OBJECT
+
     public:
 
         /**
@@ -59,7 +60,31 @@ class Knob : public QThread
          */
         void run();
 
+    public slots:
+
+        /**
+         * @brief Listens to the knob if listening is enabled. Else, stops listening to the knob.
+         * @param listen
+         * @callergraph
+         */
+        void listen(unsigned char);
+
+    signals:
+
+        /**
+         * @brief Signal for increment or decrementing the knob value -> 1 = +1 and 0 = -1.
+         * @param encoderVal
+         * @callgraph
+         */
+        void encoderIncrement(int encoderVal); //increment or decrement the knob value -> 1 = +1; 0= -1
+        /**
+         * @brief Signal for when button is pushed.
+         * @callgraph
+         */
+        void buttonPush();
+
     private:
+
         Switch* button;
         Encoder* encoder;
 
@@ -69,21 +94,15 @@ class Knob : public QThread
 
         const int MAX_BUF = 64;
 
-        struct pollfd fdset[4];
-        char buf[64];
+        struct pollfd fdset[4] = {};
+        char buf[64] = {};
+
+        int m_encoderIncrement{0};
+        bool m_running = false;
 
         void pollPinA(pollfd*, char*);
         void pollPinB(pollfd*, char*);
         void pollPinSwitch(pollfd*, char*);
-
-    public slots:
-
-        /**
-         * @brief Listens to the knob if listening is enabled. Else, stops listening to the knob.
-         * @param listen
-         * @callergraph
-         */
-        void listen(unsigned char);
 
     private slots:
 
@@ -102,25 +121,6 @@ class Knob : public QThread
          * @callergraph
          */
         void onButtonPush();
-
-
-
-    signals:
-        /**
-         * @brief Signal for increment or decrementing the knob value -> 1 = +1 and 0 = -1.
-         * @param encoderVal
-         * @callgraph
-         */
-        void encoderIncrement(int encoderVal); //increment or decrement the knob value -> 1 = +1; 0= -1
-        /**
-         * @brief Signal for when button is pushed.
-         * @callgraph
-         */
-        void buttonPush();
-
-    private:
-        int m_encoderIncrement{0};
-        bool m_running = false;
 
         /** @} */
 };

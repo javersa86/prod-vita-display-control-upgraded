@@ -111,32 +111,6 @@ class PresetManager : public QObject
      */
     Q_PROPERTY(unsigned char allCapState READ getAllCapState NOTIFY presetAllCapChanged)
 
-    signals:
-
-        /**
-         * @brief Signal for when preset value is updated.
-         * @callgraph
-         */
-        void presetsChanged();
-
-        /**
-         * @brief Signal for when preset name is updated.
-         * @callgraph
-         */
-        void presetNameChanged();
-
-        /**
-         * @brief Signal for when keyboard state changed.
-         * @callgraph
-         */
-        void presetKeyboardStateChanged();
-
-        /**
-         * @brief Signal for when keyboard is all caps.
-         * @callgraph
-         */
-        void presetAllCapChanged();
-
     public:
 
         /**
@@ -304,7 +278,34 @@ class PresetManager : public QObject
          */
         void resetKeyboard();
 
+    signals:
+
+        /**
+         * @brief Signal for when preset value is updated.
+         * @callgraph
+         */
+        void presetsChanged();
+
+        /**
+         * @brief Signal for when preset name is updated.
+         * @callgraph
+         */
+        void presetNameChanged();
+
+        /**
+         * @brief Signal for when keyboard state changed.
+         * @callgraph
+         */
+        void presetKeyboardStateChanged();
+
+        /**
+         * @brief Signal for when keyboard is all caps.
+         * @callgraph
+         */
+        void presetAllCapChanged();
+
     private:
+
         CSVManager m_presetCsvManager;
         QVector<QVector<int>> m_presets;
 

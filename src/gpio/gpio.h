@@ -46,27 +46,6 @@ class GPIO : public QObject{
 
     Q_OBJECT
 
-    private:
-        bool _isOut;
-
-        int	_ioFd = -1;
-
-        uint _currentValue = 2;
-        uint _pinNumber;
-
-        /**
-         * @brief Used to export the pin. If not exported, we cannot interact with the pin
-         * @return int
-         */
-        int	exportPin() const;
-
-        /**
-         * @brief Used to set the file direction of the pin. If out, direction will be out. Otherwise, direction will be in.
-         * @param out
-         * @return int
-         */
-        int	setDirection(bool out);
-
     public:
 
         /**
@@ -118,13 +97,34 @@ class GPIO : public QObject{
         int getFD() const;
 
     signals:
+
         /**
          * @brief Signal for when pin changes.
          * @callgraph
          */
         void pinChange(unsigned char);
 
-    public slots:
+    private:
+
+        bool _isOut;
+
+        int	_ioFd = -1;
+
+        uint _currentValue = 2;
+        uint _pinNumber;
+
+        /**
+         * @brief Used to export the pin. If not exported, we cannot interact with the pin
+         * @return int
+         */
+        int	exportPin() const;
+
+        /**
+         * @brief Used to set the file direction of the pin. If out, direction will be out. Otherwise, direction will be in.
+         * @param out
+         * @return int
+         */
+        int	setDirection(bool out);
         /** @} */
 };
 

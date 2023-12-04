@@ -346,55 +346,6 @@ class StateManager : public QObject
      */
     Q_PROPERTY(QVector<double> service_notification_vector READ getServiceNotificationVector NOTIFY notificationVectorChanged)
 
-
-    private:
-        //flags
-        int m_powerdown_flag = 0;
-        int m_startup_flag = 1;
-        int m_modes[NUM_MODES] = {0};
-        unsigned char m_subsystems[NUM_SUBSYSTEMS] = {1};
-        unsigned char m_o2_val = 0;
-        int m_modes_success[NUM_MODES] = {1};
-        int m_settings[NUM_SETTINGS] = {0};
-        unsigned char m_humiditySeparated = 0;
-        unsigned char m_ventilating = 0;
-
-        int m_currentDPR = 0;
-
-        float m_inlets[4] = {0};
-        float m_inlets_verified[4] = {0};
-
-        unsigned char m_saved_dp = 0;
-
-        unsigned char m_preset_create_active = 0;
-
-        //unsigned char m_regulators[3] = {0};
-
-        //software version
-        QString m_systemVersion;
-        //notification
-        QVector<double> notification_vector = QVector<double>(NUM_SETTINGS_NOTIFICATIONS + NUM_CALCULATIONS_NOTIFICATIONS + 1,0);
-        //sensor measurements
-        QVector<int> m_sensor_measurements = QVector<int>(NUM_MEASURED_SENSORS);
-
-        QString m_ip_address;
-        QString m_ip_address_network;
-
-        unsigned char m_preset_complete = 1;
-
-        unsigned char m_display_warnings = 1;
-
-        unsigned char m_sp_lines_state = 0;
-
-        unsigned char m_etco2_button_state = 0;
-
-        int m_file_count = 0;
-        int m_file_progress = 0;
-
-        QVector<double> service_notification_vector = QVector<double>(NUM_SERVICE_NOTIFICATIONS, 0);
-
-        unsigned char m_oxygen_adjusting = 0;
-
     public:
         /**
         * @brief Empty Constructor
@@ -1148,6 +1099,57 @@ class StateManager : public QObject
         void forceManualOffSignal();
 
         void limitedO2State(int stateVal);
+
+    private:
+
+        //flags
+        int m_powerdown_flag = 0;
+        int m_startup_flag = 1;
+        unsigned char m_o2_val = 0;
+        unsigned char m_humiditySeparated = 0;
+        unsigned char m_ventilating = 0;
+
+        int m_currentDPR = 0;
+
+        float m_inlets[4] = {0};
+        float m_inlets_verified[4] = {0};
+
+        unsigned char m_saved_dp = 0;
+
+        unsigned char m_preset_create_active = 0;
+
+        //unsigned char m_regulators[3] = {0};
+
+        //software version
+        QString m_systemVersion;
+
+        QString m_ip_address;
+        QString m_ip_address_network;
+
+        unsigned char m_preset_complete = 1;
+
+        unsigned char m_display_warnings = 1;
+
+        unsigned char m_sp_lines_state = 0;
+
+        unsigned char m_etco2_button_state = 0;
+
+        int m_file_count = 0;
+        int m_file_progress = 0;
+
+        unsigned char m_oxygen_adjusting = 0;
+
+        //notification
+        QVector<double> notification_vector = QVector<double>(NUM_SETTINGS_NOTIFICATIONS + NUM_CALCULATIONS_NOTIFICATIONS + 1, 0);
+        //sensor measurements
+        QVector<int> m_sensor_measurements = QVector<int>(NUM_MEASURED_SENSORS);
+        QVector<int> m_modes = QVector<int>(NUM_MODES, 0);
+        QVector<unsigned char> m_subsystems = QVector<unsigned char>(NUM_SUBSYSTEMS, 1);
+
+        QVector<int> m_modes_success = QVector<int>(NUM_MODES, 1);
+        QVector<int> m_settings = QVector<int>(NUM_SETTINGS, 0);
+
+        QVector<double> service_notification_vector = QVector<double>(NUM_SERVICE_NOTIFICATIONS, 0);
         /** @} */
 };
 /** @} */

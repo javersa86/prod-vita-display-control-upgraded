@@ -54,79 +54,6 @@ class WarningManager : public QObject
      */
     Q_PROPERTY(int laserWarning READ getLaserWarning NOTIFY warningChanged)
 
-    private:
-        int m_top_warning = NO_WARNINGS;
-        int m_num_active_warnings_flag = NO_WARNINGS;
-
-        QVector<int> m_active_warnings = QVector<int>(NUM_WARNINGS);
-        QVector<int> m_notices = QVector<int>(NUM_WARNINGS - BEGIN_NOTICE_INDEX);
-        QVector<int> m_inactive_by_occurance = QVector<int>();
-        QVector<int> m_autoclearing_warnings = QVector<int>(NUM_WARNINGS);
-        QVector<int> m_currentStateValues = QVector<int>();
-
-        QTimer *m_disconnectTimer;
-        
-        unsigned char m_o2_calibration_flag = 0;
-        unsigned char m_o2_laser_in_progress_calibration_flag = 0;
-
-        unsigned char m_service_state = 0;
-
-        unsigned char m_service_due_state = 0;
-
-        const int SERVICE_ID = 59;
-        const int SERVICE_NOTICE_ID = 7;
-        const int CALIBRATION_ID = 19;
-        const int CALIBRATION_LIMITED_ID = 20;
-
-        /**
-        * @brief Raise a "No Comm" warning if warnings are not updated.
-        */
-        void raiseDisconnectWarning();
-
-        /**
-        * @brief      Sets all active warnings in the system.
-        * @details    For all warnings, excluding notices, updates the active warnings list to match the received array and log the included Pneumatic Settings.
-        *             If a warning was raised and is not in the inactive_by_occurance list yet, appends the warning id to the end of the list.
-        *             If a warning was lowered and autoclears, removes all occurances of the warning id from inactive_by_occurance list.
-        *             For all notices, updates the list of active notices to match the received array and log the included Pneumatic Settings.
-        *             If warnings are changed, a signal is emitted that warnings have changed and number count of warnings is set.
-        * @note       This is called everytime there is a notification update.
-        * @param warnings
-        */
-        void setActiveWarnings(QVector<unsigned char> *);
-
-        unsigned char setActiveAlarms(unsigned char, QVector<unsigned char> *);
-        unsigned char setActiveNotices(unsigned char, QVector<unsigned char> *);
-
-        /**
-        * @brief      Sets the vector for which warnings are autoclearing or not.
-        * @details    There two state for a autoclearing warning.
-        *              - state 1: autoclearing
-        *              - state 0: not autoclearing
-        * @note  Clear at any point warnings are the same as autoclearing warnings on the display, for they are lowered as soon as the system controller lowers them.
-        * @note  Warnings that should drop on the DC when they drop on the SC; includes things like Service Due, and notices like Laser Prepping.
-        * @param clearable_warnings
-        */
-        void setAutoClearingWarnings(QVector<unsigned char> *);
-
-        /**
-        * @brief  Returns true if there are any active warnings, false otherwise.
-        * @return bool
-        */
-        bool activeWarnings();
-
-        /**
-        * @brief Return true if there are any notices, false otherwise.
-        * @return bool
-        */
-        bool notices();
-
-        /**
-         * @brief Checks if O2 Cal In Progress are active and sends signal to O2 Cal Manager to trigger timer.
-         * @param o2_index
-         */
-        void setCalibrationProgress(int o2_index);
-
     public:
 
         /**
@@ -177,24 +104,6 @@ class WarningManager : public QObject
          * @param value
          */
         void pauseDisconnection(unsigned char value);
-
-    signals:
-        /**
-         * @brief Signal for raising or clearing active warnings.
-         * @callgraph
-         */
-        void warningChanged();
-        /**
-         * @brief Signal for making blue lines visible on graph when SP High is raised.
-         * @callgraph
-         */
-        void spWarning();
-        
-        /**
-         * @brief Signal for O2 Calibration progress.
-         * @callgraph
-         */
-        void o2CalibrationSignal();
 
     public slots:
         //Communicate with QML
@@ -292,7 +201,26 @@ class WarningManager : public QObject
          */
         void updateServiceAlarm(unsigned char state);
 
+    signals:
+        /**
+         * @brief Signal for raising or clearing active warnings.
+         * @callgraph
+         */
+        void warningChanged();
+        /**
+         * @brief Signal for making blue lines visible on graph when SP High is raised.
+         * @callgraph
+         */
+        void spWarning();
+
+        /**
+         * @brief Signal for O2 Calibration progress.
+         * @callgraph
+         */
+        void o2CalibrationSignal();
+
     private:
+
         /**
          * @brief Constant array for all warnings on the system.
          */
@@ -372,6 +300,78 @@ class WarningManager : public QObject
             O2CalInProgressNoLaser(70),
             O2CalInProgress(71)
         };
+
+        int m_top_warning = NO_WARNINGS;
+        int m_num_active_warnings_flag = NO_WARNINGS;
+
+        QVector<int> m_active_warnings = QVector<int>(NUM_WARNINGS);
+        QVector<int> m_notices = QVector<int>(NUM_WARNINGS - BEGIN_NOTICE_INDEX);
+        QVector<int> m_inactive_by_occurance = QVector<int>();
+        QVector<int> m_autoclearing_warnings = QVector<int>(NUM_WARNINGS);
+        QVector<int> m_currentStateValues = QVector<int>();
+
+        QTimer *m_disconnectTimer;
+
+        unsigned char m_o2_calibration_flag = 0;
+        unsigned char m_o2_laser_in_progress_calibration_flag = 0;
+
+        unsigned char m_service_state = 0;
+
+        unsigned char m_service_due_state = 0;
+
+        const int SERVICE_ID = 59;
+        const int SERVICE_NOTICE_ID = 7;
+        const int CALIBRATION_ID = 19;
+        const int CALIBRATION_LIMITED_ID = 20;
+
+        /**
+        * @brief Raise a "No Comm" warning if warnings are not updated.
+        */
+        void raiseDisconnectWarning();
+
+        /**
+        * @brief      Sets all active warnings in the system.
+        * @details    For all warnings, excluding notices, updates the active warnings list to match the received array and log the included Pneumatic Settings.
+        *             If a warning was raised and is not in the inactive_by_occurance list yet, appends the warning id to the end of the list.
+        *             If a warning was lowered and autoclears, removes all occurances of the warning id from inactive_by_occurance list.
+        *             For all notices, updates the list of active notices to match the received array and log the included Pneumatic Settings.
+        *             If warnings are changed, a signal is emitted that warnings have changed and number count of warnings is set.
+        * @note       This is called everytime there is a notification update.
+        * @param warnings
+        */
+        void setActiveWarnings(QVector<unsigned char> *);
+
+        unsigned char setActiveAlarms(unsigned char, QVector<unsigned char> *);
+        unsigned char setActiveNotices(unsigned char, QVector<unsigned char> *);
+
+        /**
+        * @brief      Sets the vector for which warnings are autoclearing or not.
+        * @details    There two state for a autoclearing warning.
+        *              - state 1: autoclearing
+        *              - state 0: not autoclearing
+        * @note  Clear at any point warnings are the same as autoclearing warnings on the display, for they are lowered as soon as the system controller lowers them.
+        * @note  Warnings that should drop on the DC when they drop on the SC; includes things like Service Due, and notices like Laser Prepping.
+        * @param clearable_warnings
+        */
+        void setAutoClearingWarnings(QVector<unsigned char> *);
+
+        /**
+        * @brief  Returns true if there are any active warnings, false otherwise.
+        * @return bool
+        */
+        bool activeWarnings();
+
+        /**
+        * @brief Return true if there are any notices, false otherwise.
+        * @return bool
+        */
+        bool notices();
+
+        /**
+         * @brief Checks if O2 Cal In Progress are active and sends signal to O2 Cal Manager to trigger timer.
+         * @param o2_index
+         */
+        void setCalibrationProgress(int o2_index);
         /** @} */
 };
 /** @} */

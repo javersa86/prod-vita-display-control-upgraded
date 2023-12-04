@@ -82,14 +82,21 @@ void StateManager::updateNotificationVector(const QVector<float> &notification)
 {
     if (notification.size() == NUM_SETTINGS_NOTIFICATIONS + NUM_CALCULATIONS_NOTIFICATIONS + 1)
     {
-        QVector<double> temp(notification.size());
-        const float *_data = notification.constData();
-        double *notifications_data = temp.data();
+        QVector<double> temp;
+        temp.reserve(notification.size());
 
-        for (int i = 0; i < notification.size(); ++i)
+//        const float *_data = notification.constData();
+//        double *notifications_data = temp.data();
+
+//        for (int i = 0; i < notification.size(); ++i)
+//        {
+//            notifications_data[i] = _data[i];
+//        }
+
+        std::transform(notification.begin(), notification.end(), std::back_inserter(temp), [](float value) -> double
         {
-            notifications_data[i] = _data[i];
-        }
+            return static_cast<double>(value);
+        });
 
         notification_vector = std::move(temp);
 
@@ -120,81 +127,81 @@ void StateManager::setSensorMeasurement(unsigned char sensor_id, int value)
 /*~The following are get methods for enabled/disbaled modes~*/
 auto StateManager::laserMode() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::LASER_MODE];
+    return m_modes.at((int) ModeIDs::LASER_MODE);
 }
 auto StateManager::manualMode() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::MANUAL_MODE];
+    return m_modes.at((int) ModeIDs::MANUAL_MODE);
 }
 
 auto StateManager::pipMonitoringMode() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::PIP_MONITORING_MODE];
+    return m_modes.at((int)ModeIDs::PIP_MONITORING_MODE);
 }
 
 auto StateManager::demoMode() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::DEMO_MODE];
+    return m_modes.at((int)ModeIDs::DEMO_MODE);
 }
 
 auto StateManager::screenLockMode() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::SCREEN_LOCK_MODE];
+    return m_modes.at((int)ModeIDs::SCREEN_LOCK_MODE);
 }
 
 auto StateManager::doubleJetMode() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::DOUBLE_JET_MODE];
+    return m_modes.at((int)ModeIDs::DOUBLE_JET_MODE);
 }
 
 auto StateManager::etCO2Mode() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::ETCO2_MODE];
+    return m_modes.at((int)ModeIDs::ETCO2_MODE);
 }
 
 auto StateManager::dehumidifyMode() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::DEHUMIDIFY_MODE];
+    return m_modes.at((int)ModeIDs::DEHUMIDIFY_MODE);
 }
 
 auto StateManager::humidityPrimingResetAvailable() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::HUMIDITY_PRIMING_RESET_AVAILABLE];
+    return m_modes.at((int)ModeIDs::HUMIDITY_PRIMING_RESET_AVAILABLE);
 }
 
 auto StateManager::o2CalMode() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::O2_CALIBRATION_MODE];
+    return m_modes.at((int)ModeIDs::O2_CALIBRATION_MODE);
 }
 
 auto StateManager::alarmSounding() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::ALARM_SOUNDING];
+    return m_modes.at((int)ModeIDs::ALARM_SOUNDING);
 }
 
 auto StateManager::listeningToKnob() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::LISTENING_KNOB];
+    return m_modes.at((int)ModeIDs::LISTENING_KNOB);
 }
 
 auto StateManager::soundIcon() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::SOUND_ICON];
+    return m_modes.at((int)ModeIDs::SOUND_ICON);
 }
 
 auto StateManager::calMode() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::CALIBRATION_MODE];
+    return m_modes.at((int)ModeIDs::CALIBRATION_MODE);
 }
 
 auto StateManager::screenLockTouchedMode() -> unsigned char
 {
-    return m_modes[(int)ModeIDs::SCREEN_LOCK_TOUCHED_MODE];
+    return m_modes.at((int)ModeIDs::SCREEN_LOCK_TOUCHED_MODE);
 }
 
 auto StateManager::getModeEnabled(unsigned char modeID) -> unsigned char
 {
-    return m_modes[modeID];
+    return m_modes.at(modeID);
 }
 
 void StateManager::setMode(unsigned char modeID, unsigned char value, unsigned char success)
@@ -211,22 +218,22 @@ void StateManager::setMode(unsigned char modeID, unsigned char value, unsigned c
 
 auto StateManager::o2CalSuccess() -> unsigned char
 {
-    return m_modes_success[(int)ModeIDs::O2_CALIBRATION_MODE];
+    return m_modes_success.at((int)ModeIDs::O2_CALIBRATION_MODE);
 }
 
 auto StateManager::dehumidifySuccess() -> unsigned char
 {
-    return m_modes_success[(int)ModeIDs::DEHUMIDIFY_MODE];
+    return m_modes_success.at((int)ModeIDs::DEHUMIDIFY_MODE);
 }
 
 auto StateManager::etco2Success() -> unsigned char
 {
-    return m_modes_success[(int)ModeIDs::ETCO2_MODE];
+    return m_modes_success.at((int)ModeIDs::ETCO2_MODE);
 }
 
 auto StateManager::limitedO2Success() -> unsigned char
 {
-    return m_modes_success[(int)ModeIDs::LASER_MODE];
+    return m_modes_success.at((int)ModeIDs::LASER_MODE);
 }
 
 /*---Subsystems---------------------------------------------*/
@@ -235,37 +242,37 @@ auto StateManager::limitedO2Success() -> unsigned char
 
 auto StateManager::primaryVentilationState() -> unsigned char
 {
-    return m_subsystems[(int)SubsystemIDs::PRIMARY_VENTILATION];
+    return m_subsystems.at((int)SubsystemIDs::PRIMARY_VENTILATION);
 }
 
 auto StateManager::secondaryVentilationState() -> unsigned char
 {
-    return m_subsystems[(int)SubsystemIDs::SECONDARY_VENTILATION];
+    return m_subsystems.at((int)SubsystemIDs::SECONDARY_VENTILATION);
 }
 
 auto StateManager::auxiliaryFlowState() -> unsigned char
 {
-    return m_subsystems[(int)SubsystemIDs::AUXILIARY_FLOW];
+    return m_subsystems.at((int)SubsystemIDs::AUXILIARY_FLOW);
 }
 
 auto StateManager::oxygenControlState() -> unsigned char
 {
-    return m_subsystems[(int)SubsystemIDs::OXYGEN_CONTROL];
+    return m_subsystems.at((int)SubsystemIDs::OXYGEN_CONTROL);
 }
 
 auto StateManager::primaryHumidificationState() -> unsigned char
 {
-    return m_subsystems[(int)SubsystemIDs::PRIMARY_HUMIDIFICATION];
+    return m_subsystems.at((int)SubsystemIDs::PRIMARY_HUMIDIFICATION);
 }
 
 auto StateManager::secondaryHumidificationState() -> unsigned char
 {
-    return m_subsystems[(int)SubsystemIDs::SECONDARY_HUMIDIFICATION];
+    return m_subsystems.at((int)SubsystemIDs::SECONDARY_HUMIDIFICATION);
 }
 
 auto StateManager::auxiliaryHumidificationState() -> unsigned char
 {
-    return m_subsystems[(int)SubsystemIDs::AUXILIARY_HUMIDITY];
+    return m_subsystems.at((int)SubsystemIDs::AUXILIARY_HUMIDITY);
 }
 
 void StateManager::setSubsystemStates(const QVector<unsigned char> &states)
@@ -284,108 +291,108 @@ void StateManager::setSubsystemStates(const QVector<unsigned char> &states)
 /*~The following are get methods for setting values~*/
 auto StateManager::dp1Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::DRIVING_PRESSURE_1];
+    return m_settings.at((int)SettingIds::DRIVING_PRESSURE_1);
 }
 
 auto StateManager::dp2Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::DRIVING_PRESSURE_2];
+    return m_settings.at((int)SettingIds::DRIVING_PRESSURE_2);
 }
 
 auto StateManager::rate1Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::RATE_1];
+    return m_settings.at((int)SettingIds::RATE_1);
 }
 
 auto StateManager::rate2Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::RATE_2];
+    return m_settings.at((int)SettingIds::RATE_2);
 }
 
 auto StateManager::it1Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::INSPIRATORY_TIME_1];
+    return m_settings.at((int)SettingIds::INSPIRATORY_TIME_1);
 }
 
 auto StateManager::it2Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::INSPIRATORY_TIME_2];
+    return m_settings.at((int)SettingIds::INSPIRATORY_TIME_2);
 }
 
 auto StateManager::sp1Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::STACKING_PRESSURE_1];
+    return m_settings.at((int)SettingIds::STACKING_PRESSURE_1);
 }
 
 auto StateManager::sp2Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::STACKING_PRESSURE_2];
+    return m_settings.at((int)SettingIds::STACKING_PRESSURE_2);
 }
 
 auto StateManager::o2Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::O2];
+    return m_settings.at((int)SettingIds::O2);
 }
 
 auto StateManager::pipSetting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::PIP];
+    return m_settings.at((int)SettingIds::PIP);
 }
 auto StateManager::auxSetting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::AUX_FLOW];
+    return m_settings.at((int)SettingIds::AUX_FLOW);
 }
 
 auto StateManager::hum1Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::HUM_1];
+    return m_settings.at((int)SettingIds::HUM_1);
 }
 
 auto StateManager::hum2Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::HUM_2];
+    return m_settings.at((int)SettingIds::HUM_2);
 }
 
 auto StateManager::humauxSetting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::HUM_AUX];
+    return m_settings.at((int)SettingIds::HUM_AUX);
 }
 
 auto StateManager::etco2RateSetting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::ETCO2_RATE];
+    return m_settings.at((int)SettingIds::ETCO2_RATE);
 }
 
 auto StateManager::etco2ITSetting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::ETCO2_IT];
+    return m_settings.at((int)SettingIds::ETCO2_IT);
 }
 
 auto StateManager::etco2NumBreathsSetting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::ETCO2_NUM_BREATHS];
+    return m_settings.at((int)SettingIds::ETCO2_NUM_BREATHS);
 }
 
 auto StateManager::etco2DPSetting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::ETCO2_DP];
+    return m_settings.at((int)SettingIds::ETCO2_DP);
 }
 
 auto StateManager::laserO2Setting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::LASER_O2];
+    return m_settings.at((int)SettingIds::LASER_O2);
 }
 
 auto StateManager::volumeSetting() -> unsigned char
 {
-    return m_settings[(int)SettingIds::VOLUME];
+    return m_settings.at((int)SettingIds::VOLUME);
 }
 
 auto StateManager::getSettingValue(unsigned char setting_id) -> unsigned char
 {
     if(setting_id < NUM_SETTINGS)
     {
-        return m_settings[setting_id];
+        return m_settings.at(setting_id);
     }
     return 0;
 }
@@ -700,14 +707,21 @@ void StateManager::updateServiceNotificationVector(const QVector<float> &notific
 {
     if (notification.size() == NUM_SERVICE_NOTIFICATIONS)
     {
-        QVector<double> temp(notification.size());
-        const float *_data = notification.constData();
-        double *notifications_data = temp.data();
+        QVector<double> temp;
+        temp.reserve(notification.size());
 
-        for (int i = 0; i < notification.size(); i++)
+//        const float *_data = notification.constData();
+//        double *notifications_data = temp.data();
+
+//        for (int i = 0; i < notification.size(); i++)
+//        {
+//            notifications_data[i] = _data[i];
+//        }
+
+        std::transform(notification.begin(), notification.end(), std::back_inserter(temp), [](float value) -> double
         {
-            notifications_data[i] = _data[i];
-        }
+            return static_cast<double>(value);
+        });
 
         service_notification_vector = std::move(temp);
 

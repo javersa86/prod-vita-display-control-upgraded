@@ -42,26 +42,6 @@ class Encoder : public QObject
          */
         Encoder() = default;
 
-    private:
-        uint m_a_state;
-        uint m_b_state;
-        volatile int m_last_encoded;
-
-        volatile int m_sum_0 = -1;
-        volatile int m_sum_1 = -1;
-
-        const int bit_sum_13 = 0b1101;
-        const int bit_sum_2 = 0b0010;
-        const int bit_sum_14 = 0b1110;
-        const int bit_sum_1 = 0b0001;
-
-        /**
-         * @brief Updates m_last_state and emits a signal for +1 or -1 if the knob has been turned.
-         */
-        void updateEncoder();
-
-    public:
-
         /**
          * @brief Slot for updating m_b_state when the b pin value changes. Calls updateEncoder.
          * @param value
@@ -82,12 +62,33 @@ class Encoder : public QObject
         void setState(unsigned char, unsigned char);
 
     signals:
+
         /**
          * @brief Signal for when knob turns.
          * @param value
          * @callgraph
          */
         void encoderIncrement(unsigned char value);
+
+    private:
+
+        uint m_a_state;
+        uint m_b_state;
+        volatile int m_last_encoded;
+
+        volatile int m_sum_0 = -1;
+        volatile int m_sum_1 = -1;
+
+        const int bit_sum_13 = 0b1101;
+        const int bit_sum_2 = 0b0010;
+        const int bit_sum_14 = 0b1110;
+        const int bit_sum_1 = 0b0001;
+
+        /**
+         * @brief Updates m_last_state and emits a signal for +1 or -1 if the knob has been turned.
+         */
+        void updateEncoder();
+
     /** @} */
 
 };

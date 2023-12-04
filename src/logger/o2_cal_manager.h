@@ -76,52 +76,6 @@ class O2CalManager : public QObject
      */
     Q_PROPERTY(QString calibrationProgressTime READ getCalibrationProgressTime NOTIFY calibrationProgressSignal)
 
-    private:
-        /**
-         * @brief  Deletes the oldest CSV entry. Assumes the oldest entry is the first entry.
-         */
-        void deleteOldestO2CalVal();
-        /**
-         * @brief Read the CSV file and update the values saved in memory accordingly.
-         */
-        void updateO2Vals();
-        /**
-         * @brief Updates progress timer for calibration.
-         */
-        void incrementCalibrationProgress();
-
-        void constructO2CalVals(int index);
-        void constructO2CalValRows(std::vector<std::string> tmp, int index_i, int index_j);
-
-        /**
-         * @brief Updates text for minutes and seconds.
-         * @param value
-         * @return QString
-         */
-        static QString prependZero(int value);
-
-        CSVManager m_o2CsvManager;
-        QVector<QString> m_timeStamps;
-        QVector<QVector<int>> m_o2Vals;
-        QVector<QVector<QString>> m_volts;
-        int m_numO2Vals;
-
-        CSVManager m_timeManager;
-
-        std::vector<std::string> o2Columns = {
-            "TIME STAMP",
-            " LOWEST VALUE",
-            " HIGHEST VALUE",
-            " LOWEST VOLTAGE",
-            " HIGHEST VOLTAGE"
-        };
-
-        QString m_calibration_text = "01:00";
-        int m_calibration_seconds = 60;
-        QTimer *m_calibration_progress_timer;
-
-        const int DEFAULT_SECONDS = 60;
-
     public:
         /**
          * @brief Constructor for the Calibration Manager
@@ -215,6 +169,53 @@ class O2CalManager : public QObject
          * @callgraph
          */
         void calibrationProgressSignal();
+
+    private:
+
+        /**
+         * @brief  Deletes the oldest CSV entry. Assumes the oldest entry is the first entry.
+         */
+        void deleteOldestO2CalVal();
+        /**
+         * @brief Read the CSV file and update the values saved in memory accordingly.
+         */
+        void updateO2Vals();
+        /**
+         * @brief Updates progress timer for calibration.
+         */
+        void incrementCalibrationProgress();
+
+        void constructO2CalVals(int index);
+        void constructO2CalValRows(std::vector<std::string> tmp, int index_i, int index_j);
+
+        /**
+         * @brief Updates text for minutes and seconds.
+         * @param value
+         * @return QString
+         */
+        static QString prependZero(int value);
+
+        CSVManager m_o2CsvManager;
+        QVector<QString> m_timeStamps;
+        QVector<QVector<int>> m_o2Vals;
+        QVector<QVector<QString>> m_volts;
+        int m_numO2Vals;
+
+        CSVManager m_timeManager;
+
+        std::vector<std::string> o2Columns = {
+            "TIME STAMP",
+            " LOWEST VALUE",
+            " HIGHEST VALUE",
+            " LOWEST VOLTAGE",
+            " HIGHEST VOLTAGE"
+        };
+
+        QString m_calibration_text = "01:00";
+        int m_calibration_seconds = 60;
+        QTimer *m_calibration_progress_timer;
+
+        const int DEFAULT_SECONDS = 60;
         /** @} */
 };
 

@@ -73,9 +73,9 @@ void Backend::resendMessages()
 {
     for (int i = 0; i< NUM_API; i++)
     {
-        if(m_message_flags[i] == 1 && this->m_resend_functions[i] != nullptr)
+        if(m_message_flags.at(i) == 1 && this->m_resend_functions.at(i) != nullptr)
         {
-            (this->*m_resend_functions[i])();
+            (this->*m_resend_functions.at(i))();
         }
     }
 }
@@ -182,7 +182,7 @@ auto Backend::exportDirectory(const QString &src, const QString &dst) -> bool
 
     QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::NoDot | QDir::NoDotAndDotDot);
 
-    for (QString& fileName : fileNames)
+    bool shouldCopy = std::all_of(fileNames.begin(), fileNames.end(), [&](const QString& fileName) -> bool
     {
         if (copyProgressing == 1)
         {
@@ -209,8 +209,10 @@ auto Backend::exportDirectory(const QString &src, const QString &dst) -> bool
         {
             m_stateManager->incrementSaveDataProgress();
         }
-    }
-    return true;
+        return true;
+    });
+
+    return shouldCopy;
 }
 
 void Backend::updateFileCount()
@@ -276,8 +278,11 @@ void Backend::serviceAlarmSlot(unsigned char state)
 void Backend::checkStartupComplete()
 {
     unsigned char startupInProgress = 0;
-    for(unsigned char m_message_flag : m_message_flags)
+    for(unsigned char m_message_flag : qAsConst(m_message_flags))
     {
+        qDebug() << QString::number(startupInProgress);
+        qDebug() << QString::number(m_message_flag);
+
         startupInProgress = startupInProgress | m_message_flag;
     }
 
@@ -296,6 +301,7 @@ void Backend::getSettings()
 
 void Backend::initGetSettings()
 {
+    qDebug() << "Get Settings";
     getSettings();
     m_message_flags[(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST] = 1;
 }
@@ -307,9 +313,9 @@ void Backend::receiveGetSettingsSlot(QVector<int> setting_vals)
     m_stateManager->setSettings(setting_vals);
     m_warningManager->setStateValues(setting_vals);
 
-    if(m_message_flags[(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST] == 1)
+    if(m_message_flags.at((int) txOpCodes::DISPLAY_GET_SETTINGS_REQUEST) == 1)
     {
-        m_message_flags[(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST] = 0;
+        m_message_flags[(int) txOpCodes::DISPLAY_GET_SETTINGS_REQUEST] = 0;
 
         QString logData = QString::fromStdString("");
         for (int i = 0; i < NUM_SETTINGS - 1; i++)
@@ -375,8 +381,10 @@ auto Backend::getHumidityLevel(int value) -> int
 
 void Backend::initEnableNotifications()
 {
+
+    qDebug() << "Enable Notifications";
     enableNotifications();
-    m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST] = 1;
 }
 
 void Backend::enableNotifications()
@@ -386,20 +394,21 @@ void Backend::enableNotifications()
 
 void Backend::enableNotificationsSlot()
 {
-    m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST] = 0;
+    m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST] = 0;
 }
 
 /*------------------------GET OP MODES PATHWAY---------------------*/
 
 void Backend::initGetModes()
 {
+    qDebug() << "Get Modes";
     getModes();
-    m_message_flags[(int)txOpCodes::DISPLAY_GET_OP_MODES_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_GET_OP_MODES_REQUEST] = 1;
 }
 
 void Backend::receiveModes(QVector<int> modes)
 {
-    if (modes.length() == NUM_MODES && m_message_flags[(int)txOpCodes::DISPLAY_GET_OP_MODES_REQUEST] == 1)
+    if (modes.length() == NUM_MODES && m_message_flags.at((int) txOpCodes::DISPLAY_GET_OP_MODES_REQUEST) == 1)
     {
         for (int i = 0; i < NUM_MODES; i ++)
         {
@@ -422,7 +431,7 @@ void Backend::receiveModes(QVector<int> modes)
             }
         }
         //Initializes flag the confirm restored modes.
-        m_message_flags[(int)txOpCodes::DISPLAY_GET_OP_MODES_REQUEST] = 0;
+        m_message_flags[(int) txOpCodes::DISPLAY_GET_OP_MODES_REQUEST] = 0;
 
         //Logs which modes were restored in event files
         QString logData = QString::fromStdString("");
@@ -444,8 +453,10 @@ void Backend::getModes()
 
 void Backend::initGetSubsystemStates()
 {
+    qDebug() << "Get Subsystem States";
+
     sendGetSubsystems();
-    m_message_flags[(int)txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST] = 1;
 }
 
 void Backend::receiveSubsystemStates(const QVector<unsigned char> &states)
@@ -457,7 +468,7 @@ void Backend::receiveSubsystemStates(const QVector<unsigned char> &states)
         et_button_on_startup = 0;
         receiveVentilationStateChange(1);
     }
-    m_message_flags[(int)txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST] = 0;
+    m_message_flags[(int) txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST] = 0;
 }
 
 void Backend::sendGetSubsystems()
@@ -469,8 +480,9 @@ void Backend::sendGetSubsystems()
 
 void Backend::initGetSystemVersion()
 {
+    qDebug() << "Get System Version";
     sendGetSystemVersion();
-    m_message_flags[(int)txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST] = 1;
 }
 
 void Backend::sendGetSystemVersion()
@@ -481,7 +493,7 @@ void Backend::sendGetSystemVersion()
 void Backend::receiveSystemVersion(unsigned char major, unsigned char minor, unsigned char patch)
 {
     QString versionString = "v" + QString::number(major) + "." + QString::number(minor) + "." + QString::number(patch);
-    m_message_flags[(int)txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST] = 0;
+    m_message_flags[(int) txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST] = 0;
     m_stateManager->setSystemVersion(versionString);
     qInfo() << "NVENT" << "," << "SYSTEM VERSION" << "," << versionString;
     qInfo() << "NVENT" << "," << "DISPLAY VERSION" << "," << StateManager::getDisplaySoftwareVersion();
@@ -524,7 +536,7 @@ void Backend::setPneumaticSettings(const QVector<int> &settings)
     msg += QString::number(m_stateManager->getSettingValue(NUM_PNEUMATIC_SETTINGS - 1));
 
     sendSettingsUpdate();
-    m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
 
     qInfo() << "NVENT " << "," << "PRESET" << "," << "IMPLEMENT" << msg;
 }
@@ -538,7 +550,7 @@ void Backend::setScreenLockModes(unsigned char value)
     m_send_modes[(unsigned char) ModeIDs::SCREEN_LOCK_TOUCHED_MODE] = 1;
 
     sendModeCommand();
-    m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] = 1;
 
     qInfo() << "NVENT"
             << ","
@@ -588,7 +600,7 @@ void Backend::receiveSettingsUpdate(int setting_id, int value)
 
     //Raise flag to send to message to API
     sendSettingsUpdate();
-    m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
 
     qInfo() << "NVENT " << "," << "SETTING" << "," << "REQUEST" << QString::fromStdString(settingNameMap.at(setting_id)) << value;
 }
@@ -603,9 +615,9 @@ void Backend::settingsConfirmed()
         m_stateManager->settingsCompleteTriggered();
     }
 
-    if(m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] == 1)
+    if(m_message_flags.at((int) txOpCodes::DISPLAY_SET_SETTINGS_REQUEST) == 1)
     {
-        m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 0;
+        m_message_flags[(int) txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 0;
 
         qInfo() << "NVENT" << "," << "SETTING" << "," << "CONFIRMED";
     }
@@ -640,7 +652,7 @@ void Backend::separateHumidity(unsigned char separate, int hum_value, int hum_au
     }
 
     sendSettingsUpdate();
-    m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
 
     qInfo() << "NVENT " << "," << "SETTING" << "," << "REQUEST" << QString::fromStdString(settingNameMap.at((int)SettingIds::HUM_1)) << hum_value;
     qInfo() << "NVENT " << "," << "SETTING" << "," << "REQUEST" << QString::fromStdString(settingNameMap.at((int)SettingIds::HUM_AUX)) << hum_aux_value;
@@ -701,7 +713,7 @@ void Backend::receiveDehumidifySettingsUpdate()
 
     //m_settings_flag = 1;
     sendSettingsUpdate();
-    m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
 
     qInfo() << "NVENT " << "," << "SETTING" << "," << "REQUEST" << QString::fromStdString(settingNameMap.at((int)SettingIds::HUM_1)) << 0;
     qInfo() << "NVENT " << "," << "SETTING" << "," << "REQUEST" << QString::fromStdString(settingNameMap.at((int)SettingIds::HUM_2)) << 0;
@@ -746,28 +758,28 @@ void Backend::receiveWaterSensor(unsigned char setting_id, unsigned char value)
         m_get_sensors[(int)MeasuredIDs::WATER_SENSOR_AUX] = 1;
 
         sendGetMeasured();
-        m_message_flags[(int)txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
+        m_message_flags[(int) txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
     }
 }
 
 void Backend::handleO2CalVals(unsigned char setting_id, unsigned char value)
 {
-    if (setting_id == (int)MeasuredIDs::O2_LOWER_CAL_VAL)
+    if (setting_id == (int) MeasuredIDs::O2_LOWER_CAL_VAL)
     {
         m_O2Vals[0] = value;
-        m_get_sensors[(int)MeasuredIDs::O2_UPPER_CAL_VAL] = 1;
+        m_get_sensors[(int) MeasuredIDs::O2_UPPER_CAL_VAL] = 1;
 
         sendGetMeasured();
-        m_message_flags[(int)txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
+        m_message_flags[(int) txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
     }
 
-    else if (setting_id == (int)MeasuredIDs::O2_UPPER_CAL_VAL)
+    else if (setting_id == (int) MeasuredIDs::O2_UPPER_CAL_VAL)
     {
         m_O2Vals[1] = value;
-        m_get_sensors[(int)MeasuredIDs::O2_LOWER_BOUND] = 1;
+        m_get_sensors[(int) MeasuredIDs::O2_LOWER_BOUND] = 1;
 
         sendGetMeasured();
-        m_message_flags[(int)txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
+        m_message_flags[(int) txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
     }
 }
 
@@ -779,18 +791,18 @@ void Backend::handleVoltVals(unsigned char setting_id, float value)
         m_get_sensors[(int)MeasuredIDs::O2_UPPER_BOUND] = 1;
 
         sendGetMeasured();
-        m_message_flags[(int)txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
+        m_message_flags[(int) txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
     }
-    else if (setting_id == (int)MeasuredIDs::O2_UPPER_BOUND)
+    else if (setting_id == (int) MeasuredIDs::O2_UPPER_BOUND)
     {
         m_Volts[1] = value;
 
         //If calibration values and voltage were never set, create new calibration values and voltage.
         if (
-                m_get_sensors[(int)MeasuredIDs::O2_LOWER_CAL_VAL] == 0 &&
-                m_get_sensors[(int)MeasuredIDs::O2_UPPER_CAL_VAL] == 0 &&
-                m_get_sensors[(int)MeasuredIDs::O2_LOWER_BOUND] == 0 &&
-                m_get_sensors[(int)MeasuredIDs::O2_UPPER_BOUND] == 0)
+                m_get_sensors.at((int) MeasuredIDs::O2_LOWER_CAL_VAL) == 0 &&
+                m_get_sensors.at((int) MeasuredIDs::O2_UPPER_CAL_VAL) == 0 &&
+                m_get_sensors.at((int) MeasuredIDs::O2_LOWER_BOUND) == 0 &&
+                m_get_sensors.at((int) MeasuredIDs::O2_UPPER_BOUND) == 0)
         {
             m_o2CalManager->addO2CalVals(m_O2Vals[0], m_O2Vals[1], m_Volts[0], m_Volts[1]);
             m_getO2CalsFlag = 0;
@@ -800,15 +812,15 @@ void Backend::handleVoltVals(unsigned char setting_id, float value)
 
 void Backend::checkSensorsReceived()
 {
-    for (unsigned char m_get_sensor : m_get_sensors)
+    for (unsigned char m_get_sensor : qAsConst(m_get_sensors))
     {
         if (m_get_sensor == 1)
         {
-            m_message_flags[(int)txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
+            m_message_flags[(int) txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
             return;
         }
 
-        m_message_flags[(int)txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 0;
+        m_message_flags[(int) txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 0;
     }
 }
 
@@ -816,7 +828,7 @@ void Backend::sendGetMeasured()
 {
     for (int i = 0; i < NUM_MEASURED_SENSORS; i++)
     {
-        if(m_get_sensors[i] == 1)
+        if(m_get_sensors.at(i) == 1)
         {
             emit sendGetSensorMeasurementSignal(i);
         }
@@ -826,10 +838,10 @@ void Backend::sendGetMeasured()
 void Backend::initGetO2Cals()
 {
     m_getO2CalsFlag = 1;
-    m_get_sensors[(int)MeasuredIDs::O2_LOWER_CAL_VAL] = 1;
+    m_get_sensors[(int) MeasuredIDs::O2_LOWER_CAL_VAL] = 1;
 
     sendGetMeasured();
-    m_message_flags[(int)txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
 }
 
 /*------------------------CLEAR WARNING PATHWAY-----------------------------*/
@@ -847,7 +859,7 @@ void Backend::initClearAlarm(int warning_id)
 
     m_warning_to_clear = warning_id;
     sendClearAlarm();
-    m_message_flags[(int)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST] = 1;
 }
 
 void Backend::sendClearAlarm()
@@ -857,9 +869,9 @@ void Backend::sendClearAlarm()
 
 void Backend::clearAlarmSlot(int warning_id)
 {
-    if (m_message_flags[(int)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST] == 1)
+    if (m_message_flags.at((int) txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST) == 1)
     {
-        m_message_flags[(int)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST] = 0;
+        m_message_flags[(int) txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST] = 0;
     }
     qInfo() << "NVENT" << "," << "CLEAR WARNING" << "," << "Warning Cleared: " + QString::number(warning_id);
 }
@@ -868,15 +880,15 @@ void Backend::clearAlarmSlot(int warning_id)
 
 void Backend::modesSet()
 {
-    for (unsigned char m_send_mode : m_send_modes)
+    for (unsigned char m_send_mode : qAsConst(m_send_modes))
     {
         if (m_send_mode == 1)
         {
-            m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] = 1;
+            m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] = 1;
             return;
         }
     }
-    m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] = 0;
+    m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] = 0;
 }
 
 void Backend::setMode(unsigned char modeID, unsigned char value)
@@ -887,11 +899,11 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
     }
 
     unsigned char tmp_success = 2;
-    if (modeID == (unsigned char)ModeIDs::LASER_MODE && value == 1)
+    if (modeID == (unsigned char) ModeIDs::LASER_MODE && value == 1)
     {
         tmp_success = 1;
     }
-    else if (modeID == (unsigned char)ModeIDs::LASER_MODE && value == 0)
+    else if (modeID == (unsigned char) ModeIDs::LASER_MODE && value == 0)
     {
         tmp_success = 0;
     }
@@ -902,11 +914,11 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
     m_send_modes[modeID] = 1;
 
     sendModeCommand();
-    m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] = 1;
 
     //Emits signal from knob to change mode
     QString temp = QString::fromStdString("");
-    if(modeID == (unsigned char)ModeIDs::LISTENING_KNOB)
+    if(modeID == (unsigned char) ModeIDs::LISTENING_KNOB)
     {
         emit listenToKnob(value);
     }
@@ -1031,7 +1043,7 @@ void Backend::sendModeCommand()
 {
     for(int i = 0; i < NUM_MODES; i++)
     {
-        if (m_send_modes[i] == 1)
+        if (m_send_modes.at(i) == 1)
         {
             emit setModeSignal(i, m_stateManager->getModeEnabled(i));
         }
@@ -1043,7 +1055,7 @@ void Backend::modeConfirmed(unsigned char modeID, unsigned char value)
     //check if the mode needs to be set
 
     QString temp = QString::fromStdString("");
-    if(m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST] == 1 && m_send_modes[modeID] == 1)
+    if(m_message_flags.at((int) txOpCodes::DISPLAY_ENABLE_OP_MODE_REQUEST) == 1 && m_send_modes.at(modeID) == 1)
     {
         //check that mode was set to correct value
         if(m_stateManager->getModeEnabled(modeID) == value)
@@ -1167,10 +1179,10 @@ void Backend::powerdownInitiated()
         m_stateManager->setPowerdownFlag(1);
     }
 
-    m_get_sensors[(int)MeasuredIDs::WATER_SENSOR_1] = 1;
+    m_get_sensors[(int) MeasuredIDs::WATER_SENSOR_1] = 1;
 
     sendGetMeasured();
-    m_message_flags[(int)txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_GET_MEASURED_REQUEST] = 1;
 }
 
 /*------------------------SHUTDOWN CONFIRM PATHWAY----------------------------------------*/
@@ -1184,7 +1196,7 @@ void Backend::initiatePowerdown(unsigned char powerdown)
     m_stateManager->setPowerdownFlag(powerdown);
 
     sendPowerdownCommand();
-    m_message_flags[(int)txOpCodes::DISPLAY_SHUTDOWN_CONFIRM_SEND] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_SHUTDOWN_CONFIRM_SEND] = 1;
 }
 
 void Backend::sendPowerdownCommand()
@@ -1194,7 +1206,7 @@ void Backend::sendPowerdownCommand()
 
 void Backend::powerdownConfirmed()
 {
-    m_message_flags[(int)txOpCodes::DISPLAY_SHUTDOWN_CONFIRM_SEND] = 0;
+    m_message_flags[(int) txOpCodes::DISPLAY_SHUTDOWN_CONFIRM_SEND] = 0;
     if(m_stateManager->powerdownFlag() == 1)
     {
         system("shutdown -h now");
@@ -1251,7 +1263,7 @@ void Backend::updateDPRStates(unsigned char val)
     }
     m_dpr = val;
     sendDPRValue();
-    m_message_flags[(int)txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
 
     qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Change Pressure Regulator State: " + temp;
 }
@@ -1266,7 +1278,7 @@ void Backend::lowDPRConfirmation(unsigned char value)
 
     m_dpr = 4;
     sendDPRValue();
-    m_message_flags[(int)txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
 }
 
 void Backend::highDPRConfirmation(int flag, float value)
@@ -1277,7 +1289,7 @@ void Backend::highDPRConfirmation(int flag, float value)
         emit signalTempDP(flag,value);
 
         sendSettingsUpdate();
-        m_message_flags[(int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
+        m_message_flags[(int) txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
     }
     else if (flag == 2)
     {
@@ -1288,7 +1300,7 @@ void Backend::highDPRConfirmation(int flag, float value)
 
         m_dpr = 4;
         sendDPRValue();
-        m_message_flags[(int)txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
+        m_message_flags[(int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
         qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Change Pressure Regulator State: Default";
     }
     else if (flag == 0)
@@ -1300,7 +1312,7 @@ void Backend::highDPRConfirmation(int flag, float value)
 
         m_dpr = 4;
         sendDPRValue();
-        m_message_flags[(int)txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
+        m_message_flags[(int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
         qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Change Pressure Regulator State: Default";
     }
 }
@@ -1322,7 +1334,7 @@ void Backend::regulatorConfirmation(unsigned char val,unsigned char regulator_id
 
     m_dpr = 4;
     sendDPRValue();
-    m_message_flags[(int)txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
     qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Change Pressure Regulator State: Default";
 }
 
@@ -1333,9 +1345,9 @@ void Backend::sendDPRValue()
 
 void Backend::slotDPRValue()
 {
-    if (m_message_flags[(int)txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] == 1)
+    if (m_message_flags.at((int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST) == 1)
     {
-        m_message_flags[(int)txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 0;
+        m_message_flags[(int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 0;
         qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Pressure Regulator State Change Confirmed";
     }
 
@@ -1352,7 +1364,7 @@ void Backend::endDPRCalibration()
 
     m_dpr = 4;
     sendDPRValue();
-    m_message_flags[(int)txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
     qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Change Pressure Regulator State: Default";
 }
 
@@ -1380,7 +1392,7 @@ void Backend::initZeroSensor(unsigned char sensor_id, float value)
     }
 
     sendZeroSensor();
-    m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = 1;
+    m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = 1;
 
     qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Zero Sensor: " + QString::number(sensor_id) + temp;
 }
@@ -1416,9 +1428,9 @@ void Backend::receiveSensorZeroed(const QVector<unsigned char> &values)
         }
     }
 
-    if (m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] == 1)
+    if (m_message_flags.at((int) txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST) == 1)
     {
-        m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = 0;
+        m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = 0;
 
         qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << temp + "Sensor Zeroed";
     }

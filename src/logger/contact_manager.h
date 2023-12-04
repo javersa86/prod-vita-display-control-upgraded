@@ -143,79 +143,6 @@ class ContactManager: public QObject
      */
     Q_PROPERTY(QString salesPhoneNumber READ getSalesPhoneNumber NOTIFY contactChanged)
 
-    private:
-        CSVManager m_serviceCsvManager;
-        CSVManager m_salesCsvManager;
-
-        QString m_service_company_name;
-        QString m_service_street;
-        QString m_service_city;
-        QString m_service_state;
-        QString m_service_postal_code;
-        QString m_service_email;
-        QString m_service_phone_number;
-
-        QString m_sales_company_name;
-        QString m_sales_street;
-        QString m_sales_city;
-        QString m_sales_state;
-        QString m_sales_postal_code;
-        QString m_sales_email;
-        QString m_sales_phone_number;
-
-        const int number_of_entries = 7;
-
-        /**
-         * @brief Retrieves contact information for service company from .csv file.
-         * @details Stores the current variables for service contact information, which includes the following:
-         *  - Company Name
-         *  - Street Address
-         *  - Town / City
-         *  - State
-         *  - Postal Code / ZipCode
-         *  - email / website
-         *  - phone number
-         *  @note Updates when device powers on or whenever info changes.
-         */
-        void updateServiceContact();
-
-        /**
-         * @brief  Retrieves contact information for sales company from .csv file.
-         * @details Stores the current variables for sales contact information, which includes the following:
-         *  - Company Name
-         *  - Street Address
-         *  - Town / City
-         *  - State
-         *  - Postal Code / ZipCode
-         *  - email / website
-         *  - phone number
-         *  @note Updates when device powers on or whenever info changes.
-         */
-        void updateSalesContact();
-
-        /**
-         * @brief Constructs and returns string from vector that is greater than 2 entries.
-         * @param vector
-         * @return QString
-         */
-        static QString getFullString(std::vector<std::string> vector);
-
-        std::vector<std::string> constructServiceCompanyName();
-        std::vector<std::string> constructServiceStreet();
-        std::vector<std::string> constructServiceCity();
-        std::vector<std::string> constructServiceState();
-        std::vector<std::string> constructServicePostalCode();
-        std::vector<std::string> constructServiceEmail();
-        std::vector<std::string> constructServicePhoneNumber();
-
-        std::vector<std::string> constructSalesCompanyName();
-        std::vector<std::string> constructSalesStreet();
-        std::vector<std::string> constructSalesCity();
-        std::vector<std::string> constructSalesState();
-        std::vector<std::string> constructSalesPostalCode();
-        std::vector<std::string> constructSalesEmail();
-        std::vector<std::string> constructSalesPhoneNumber();
-
     public:
         /**
          * @brief Constructor Method and constructs CSV Managers.
@@ -412,6 +339,80 @@ class ContactManager: public QObject
          * @callgraph
          */
         void allCapKeySignal(int value);
+
+    private:
+
+        CSVManager m_serviceCsvManager;
+        CSVManager m_salesCsvManager;
+
+        QString m_service_company_name;
+        QString m_service_street;
+        QString m_service_city;
+        QString m_service_state;
+        QString m_service_postal_code;
+        QString m_service_email;
+        QString m_service_phone_number;
+
+        QString m_sales_company_name;
+        QString m_sales_street;
+        QString m_sales_city;
+        QString m_sales_state;
+        QString m_sales_postal_code;
+        QString m_sales_email;
+        QString m_sales_phone_number;
+
+        const int number_of_entries = 7;
+
+        /**
+         * @brief Retrieves contact information for service company from .csv file.
+         * @details Stores the current variables for service contact information, which includes the following:
+         *  - Company Name
+         *  - Street Address
+         *  - Town / City
+         *  - State
+         *  - Postal Code / ZipCode
+         *  - email / website
+         *  - phone number
+         *  @note Updates when device powers on or whenever info changes.
+         */
+        void updateServiceContact();
+
+        /**
+         * @brief  Retrieves contact information for sales company from .csv file.
+         * @details Stores the current variables for sales contact information, which includes the following:
+         *  - Company Name
+         *  - Street Address
+         *  - Town / City
+         *  - State
+         *  - Postal Code / ZipCode
+         *  - email / website
+         *  - phone number
+         *  @note Updates when device powers on or whenever info changes.
+         */
+        void updateSalesContact();
+
+        /**
+         * @brief Constructs and returns string from vector that is greater than 2 entries.
+         * @param vector
+         * @return QString
+         */
+        static QString getFullString(std::vector<std::string> vector);
+
+        std::vector<std::string> constructServiceCompanyName();
+        std::vector<std::string> constructServiceStreet();
+        std::vector<std::string> constructServiceCity();
+        std::vector<std::string> constructServiceState();
+        std::vector<std::string> constructServicePostalCode();
+        std::vector<std::string> constructServiceEmail();
+        std::vector<std::string> constructServicePhoneNumber();
+
+        std::vector<std::string> constructSalesCompanyName();
+        std::vector<std::string> constructSalesStreet();
+        std::vector<std::string> constructSalesCity();
+        std::vector<std::string> constructSalesState();
+        std::vector<std::string> constructSalesPostalCode();
+        std::vector<std::string> constructSalesEmail();
+        std::vector<std::string> constructSalesPhoneNumber();
         /** @} */
 };
 

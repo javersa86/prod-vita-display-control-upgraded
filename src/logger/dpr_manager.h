@@ -50,29 +50,6 @@ class DPRManager : public QObject
      */
     Q_PROPERTY(int DPRCalVal READ getDPRCalVal NOTIFY dprValsChanged)
 
-    private:
-        CSVManager m_dprCsvManager;
-        QVector<QString> m_timeStamps;
-        QVector<int> m_dprVals;
-        int m_numDPRVals;
-
-        CSVManager m_timeManager;
-
-        std::vector<std::string> dprColumns = {
-            "TIME STAMP",
-            " DPR VALUE"
-        };
-
-        /**
-         * @brief Deletes the oldest CSV entry. Assumes the oldest entry is the first.
-         */
-        void deleteOldestDPRVal();
-
-        /**
-         * @brief Reads the CSV file and updatse the values saved in memory accordingly
-         */
-        void updateDPRVals();
-
     public:
         /**
          * @brief Constructor for the Calibration Manager.
@@ -105,6 +82,30 @@ class DPRManager : public QObject
          * @callgraph
          */
         void dprValsChanged();
+
+    private:
+
+        CSVManager m_dprCsvManager;
+        QVector<QString> m_timeStamps;
+        QVector<int> m_dprVals;
+        int m_numDPRVals;
+
+        CSVManager m_timeManager;
+
+        std::vector<std::string> dprColumns = {
+            "TIME STAMP",
+            " DPR VALUE"
+        };
+
+        /**
+         * @brief Deletes the oldest CSV entry. Assumes the oldest entry is the first.
+         */
+        void deleteOldestDPRVal();
+
+        /**
+         * @brief Reads the CSV file and updatse the values saved in memory accordingly
+         */
+        void updateDPRVals();
         /** @} */
 };
 

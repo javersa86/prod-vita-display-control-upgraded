@@ -133,9 +133,11 @@ void API::processBytes(unsigned char byte)
             if (_message_length<=0)
             {
                 input_buffer[_ndx] = '\0';
-                if (checkCRC(&input_buffer[0],_ndx) == 1)
+                QVector<unsigned char> localCopy = input_buffer.mid(0);
+                unsigned char* buf = localCopy.data();
+                if (checkCRC(buf, _ndx) == 1)
                 {
-                    handleRequest(&input_buffer[0]);
+                    handleRequest(buf);
                 }
                 //reset //TODO: maybe make method for readability
                 _op_code = START_CHAR;
@@ -374,7 +376,7 @@ void API::queuePowerCycleResponse()
 {
     unsigned char crc = calculateCRC(&power_cycle_response[0],(int)txLengths::DISPLAY_POWER_ON_RECEIVED);
 
-    request_queue.push(Message(power_cycle_response,crc, (int)txLengths::DISPLAY_POWER_ON_RECEIVED));
+    request_queue.push(Message(&power_cycle_response[0], crc, (int)txLengths::DISPLAY_POWER_ON_RECEIVED));
 }
 
 void API::handlePowerCycle()
@@ -391,9 +393,9 @@ void API::sendGetSettingsSlot()
 
 void API::queueGetSettingsRequest()
 {
-    unsigned char crc = calculateCRC(get_settings_request,(int)txLengths::DISPLAY_GET_SETTINGS_REQUEST);
+    unsigned char crc = calculateCRC(&get_settings_request[0], (int) txLengths::DISPLAY_GET_SETTINGS_REQUEST);
 
-    request_queue.push(Message(get_settings_request,crc,(int)txLengths::DISPLAY_GET_SETTINGS_REQUEST));
+    request_queue.push(Message(&get_settings_request[0], crc, (int) txLengths::DISPLAY_GET_SETTINGS_REQUEST));
 }
 
 void API::handleGetSettingsResponse(unsigned char* buffer)
@@ -406,7 +408,7 @@ void API::handleGetSettingsResponse(unsigned char* buffer)
     buffer++;
     QVector<int> settings_data(QVector<int>(NUM_SETTINGS));
     int *data = settings_data.data();
-    for (int i=0;i<NUM_SETTINGS;i++,buffer+=4)
+    for (int i = 0; i < NUM_SETTINGS; i++, buffer+=4)
     {
         data[i] = (int) bytesToFloat(buffer);
     }
@@ -430,9 +432,9 @@ void API::resendNotificationSlot(int enable_disable)
 void API::queueNotificationRequest(unsigned char enable_disable)
 {
     notification_request[1]=enable_disable;
-    unsigned char crc = calculateCRC(notification_request,(int)txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST);
+    unsigned char crc = calculateCRC(&notification_request[0],(int)txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST);
 
-    request_queue.push(Message(notification_request,crc,(int)txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST));
+    request_queue.push(Message(&notification_request[0],crc,(int)txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST));
 }
 
 void API::handleEnabledNotifications()
@@ -448,9 +450,9 @@ void API::handleEnabledNotifications()
 
 void API::getModesSlot()
 {
-    unsigned char crc = calculateCRC(get_op_modes_request,(int)txLengths::DISPLAY_GET_OP_MODES_REQUEST);
+    unsigned char crc = calculateCRC(&get_op_modes_request[0], (int) txLengths::DISPLAY_GET_OP_MODES_REQUEST);
 
-    request_queue.push(Message(get_op_modes_request,crc,(int)txLengths::DISPLAY_GET_OP_MODES_REQUEST));
+    request_queue.push(Message(&get_op_modes_request[0], crc, (int) txLengths::DISPLAY_GET_OP_MODES_REQUEST));
 }
 
 void API::handleGetModesResponse(unsigned char* buffer)
@@ -458,7 +460,7 @@ void API::handleGetModesResponse(unsigned char* buffer)
     buffer ++;
     QVector<int> modes;
     modes.reserve(NUM_MODES);
-    for (int i = 0; i < NUM_MODES; i++)
+    for (int i = 1; i < NUM_MODES; i++)
     {
         modes.append(*buffer);
         buffer++;
@@ -470,9 +472,9 @@ void API::handleGetModesResponse(unsigned char* buffer)
 
 void API::getSubsystemStates()
 {
-    unsigned char crc = calculateCRC(get_subsystem_request,(int)txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST);
+    unsigned char crc = calculateCRC(&get_subsystem_request[0], (int) txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST);
 
-    request_queue.push(Message(get_subsystem_request,crc,(int)txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST));
+    request_queue.push(Message(&get_subsystem_request[0], crc, (int) txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST));
 }
 
 void API::handleGetSubsystemStates(unsigned char *buffer)
@@ -500,9 +502,9 @@ void API::handleSystemVersionResponse(unsigned char* buffer)
 
 void API::queryVersion()
 {
-    unsigned char crc = calculateCRC(version_message,(int)txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST);
+    unsigned char crc = calculateCRC(&version_message[0], (int) txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST);
 
-    request_queue.push(Message(version_message,crc,(int)txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST));
+    request_queue.push(Message(&version_message[0],crc,(int)txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST));
 }
 
 /*SET SETTINGS PATHWAY*/
@@ -518,7 +520,7 @@ void API::handleSetResponse()
     emit settingsConfirmed();
 }
 
-void API::setSettings(QVector<int> settings)
+void API::setSettings(const QVector<int> &settings)
 {
     set_request[0] = (int)txOpCodes::DISPLAY_SET_SETTINGS_REQUEST;
     int index = 1;
@@ -534,17 +536,18 @@ void API::setSettings(QVector<int> settings)
             }
             else
             {
-                floatToBytes((float) settings[i],&set_request[index]);
+                floatToBytes((float) settings.at(i), &set_request[index]);
             }
             index = index + 4;
         }
     }
 
-    unsigned char crc = calculateCRC(set_request,(int)txLengths::DISPLAY_SET_SETTINGS_REQUEST);
+    QVector<unsigned char> requestData = set_request;
 
-    request_queue.push(Message(set_request,crc,(int)txLengths::DISPLAY_SET_SETTINGS_REQUEST));
+    unsigned char crc = calculateCRC(requestData.data(), (int) txLengths::DISPLAY_SET_SETTINGS_REQUEST);
+
+    request_queue.push(Message(requestData.data(), crc, (int) txLengths::DISPLAY_SET_SETTINGS_REQUEST));
 }
-
 /* GET MEASURED PATHWAY*/
 
 void API::getMeasured(unsigned char measured_id)
@@ -588,9 +591,9 @@ void API::handleClearWarning(unsigned char* buffer)
 void API::clearWarningSlot(int warning_id)
 {
     clear_warning_request[1]=warning_id;
-    unsigned char crc = calculateCRC(clear_warning_request,(int)txLengths::DISPLAY_CLEAR_WARNING_REQUEST);
+    unsigned char crc = calculateCRC(&clear_warning_request[0], (int) txLengths::DISPLAY_CLEAR_WARNING_REQUEST);
 
-    request_queue.push(Message(clear_warning_request,crc,(int)txLengths::DISPLAY_CLEAR_WARNING_REQUEST));
+    request_queue.push(Message(&clear_warning_request[0], crc, (int) txLengths::DISPLAY_CLEAR_WARNING_REQUEST));
 }
 
 /*DISPLAY OP MODE REQUEST PATHWAY*/
@@ -611,9 +614,9 @@ void API::sendModeSlot(unsigned char mode_id, unsigned char enable)
     display_set_mode_request[1]=mode_id;
     display_set_mode_request[2]=enable;
     display_set_mode_request[3]=1;
-    unsigned char crc = calculateCRC(display_set_mode_request,(int)txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST);
+    unsigned char crc = calculateCRC(&display_set_mode_request[0], (int) txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST);
 
-    request_queue.push(Message(display_set_mode_request,crc,(int)txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST));
+    request_queue.push(Message(&display_set_mode_request[0], crc, (int) txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST));
 }
 
 /*DISPLAY OP MODE RESPONSE PATHWAY*/
@@ -621,7 +624,7 @@ void API::sendModeSlot(unsigned char mode_id, unsigned char enable)
 void API::handleModeRequest(unsigned char* buffer)
 {
     buffer ++;
-    unsigned char modeID= *buffer;
+    unsigned char modeID = *buffer;
     buffer ++;
     unsigned char enabled = *buffer;
     buffer ++;
@@ -637,9 +640,9 @@ void API::queueModeResponse(unsigned char modeID, unsigned char value)
     system_set_mode_request[0] = (unsigned char)txOpCodes::DISPLAY_ENABLE_OP_MODE_RESPONSE;
     system_set_mode_request[1] = modeID;
     system_set_mode_request[2] = value;
-    unsigned char crc = calculateCRC(system_set_mode_request,(int)txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE);
+    unsigned char crc = calculateCRC(&system_set_mode_request[0], (int) txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE);
 
-    request_queue.push(Message(system_set_mode_request,crc,(int)txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE));
+    request_queue.push(Message(&system_set_mode_request[0], crc, (int) txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE));
 }
 
 /*NOTIFICATION PATHWAY*/
@@ -705,9 +708,9 @@ void API::queueNotificationResponse()
     {
         return;
     }
-    unsigned char crc = calculateCRC(notification_response,(int)txLengths::DISPLAY_NOTIFICATION_RECEIVED);
+    unsigned char crc = calculateCRC(&notification_response[0], (int)txLengths::DISPLAY_NOTIFICATION_RECEIVED);
 
-    request_queue.push(Message(notification_response,crc,(int)txLengths::DISPLAY_NOTIFICATION_RECEIVED));
+    request_queue.push(Message(&notification_response[0], crc, (int)txLengths::DISPLAY_NOTIFICATION_RECEIVED));
 }
 
 /*SUBSYSTEM STATES PATHWAY*/
@@ -724,9 +727,9 @@ void API::queueSubsystemStateChangedResponse()
     {
         return;
     }
-    unsigned char crc = calculateCRC(subsystem_response,(int)txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED);
+    unsigned char crc = calculateCRC(&subsystem_response[0], (int) txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED);
 
-    request_queue.push(Message(subsystem_response,crc,(int)txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED));
+    request_queue.push(Message(&subsystem_response[0], crc, (int) txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED));
 }
 
 /*VENTILATION PATHWAY*/
@@ -739,7 +742,7 @@ void API::handleVentilationStatusUpdate(unsigned char *buffer)
 
 void API::queueVentilationStatusResponse()
 {
-    sendComm1(&ventilation_response[0], (int)txLengths::DISPLAY_VENTILATION_STATUS_RECEIVED);
+    sendComm1(&ventilation_response[0], (int) txLengths::DISPLAY_VENTILATION_STATUS_RECEIVED);
 }
 
 /*HMI BUTTON PUSH PATHWAY*/
@@ -754,16 +757,16 @@ void API::handleHMIButtonPush(unsigned char *buffer)
 void API::queueHMIButtonPushResponse(unsigned char hmi_id)
 {
     hmi_response[1] = hmi_id;
-    sendComm1(&hmi_response[0], (int)txLengths::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED);
+    sendComm1(&hmi_response[0], (int) txLengths::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED);
 }
 
 /*SHUTDOWN PATHWAY*/
 
 void API::queueInitPowerdownOk()
 {
-    unsigned char crc = calculateCRC(shutdown_request,(int)txLengths::DISPLAY_SHUTDOWN_RECEIVED);
+    unsigned char crc = calculateCRC(&shutdown_request[0], (int) txLengths::DISPLAY_SHUTDOWN_RECEIVED);
 
-    request_queue.push(Message(shutdown_request,crc,(int)txLengths::DISPLAY_SHUTDOWN_RECEIVED));
+    request_queue.push(Message(&shutdown_request[0], crc, (int) txLengths::DISPLAY_SHUTDOWN_RECEIVED));
 }
 
 void API::handleInitPowerdown()
@@ -777,9 +780,9 @@ void API::handleInitPowerdown()
 void API::confirmPowerdown(unsigned char powerdown)
 {
     shutdown_confirm_request[1] = powerdown;
-    unsigned char crc = calculateCRC(shutdown_confirm_request,(int)txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND);
+    unsigned char crc = calculateCRC(&shutdown_confirm_request[0], (int) txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND);
 
-    request_queue.push(Message(shutdown_confirm_request,crc,(int)txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND));
+    request_queue.push(Message(&shutdown_confirm_request[0], crc, (int) txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND));
 
 }
 
@@ -801,14 +804,16 @@ void API::slotServiceCalibrationResponse(QVector<float> calibration_data)
     {
         for(int i = 0; i< calibration_count; i++)
         {
-            floatToBytes(calibration_data[i],&data_request[index]);
+            floatToBytes(calibration_data[i], &data_request[index]);
             index = index + 4;
         }
     }
 
-    unsigned char crc = calculateCRC(data_request,(int)txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE);
+    QVector<unsigned char> dataRequest = data_request;
 
-    request_queue.push(Message(data_request,crc,(int)txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE));
+    unsigned char crc = calculateCRC(dataRequest.data(), (int) txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE);
+
+    request_queue.push(Message(dataRequest.data(), crc, (int) txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE));
 }
 
 void API::handleServiceCalibrationRequest()
@@ -831,9 +836,9 @@ void API::handleDPRValSetResponse(unsigned char *buffer)
 void API::slotDPRValue(unsigned char value)
 {
     dpr_request[1] = value;
-    unsigned char crc = calculateCRC(dpr_request,(int)txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST);
+    unsigned char crc = calculateCRC(&dpr_request[0], (int) txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST);
 
-    request_queue.push(Message(dpr_request,crc,(int)txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST));
+    request_queue.push(Message(&dpr_request[0], crc, (int) txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST));
 }
 
 void API::slotTempDP(unsigned char flag, float value)
@@ -867,9 +872,9 @@ void API::zeroSensor(QVector<float> values)
 
     floatToBytes(values[1], &zero_request[2]);
 
-    unsigned char crc = calculateCRC(zero_request,(int)txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST);
+    unsigned char crc = calculateCRC(&zero_request[0], (int) txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST);
 
-    request_queue.push(Message(zero_request,crc,(int)txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST));
+    request_queue.push(Message(&zero_request[0], crc, (int) txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST));
 }
 
 /* SERVICE NOTIFICATION PATHWAY */

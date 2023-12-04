@@ -30,7 +30,7 @@ class ServiceNotificationIndex : public QObject
          * @brief
          * @param parent
          */
-        ServiceNotificationIndex(QObject *parent=nullptr) : QObject(parent){};
+        ServiceNotificationIndex(QObject *parent=nullptr) : QObject(parent){}
 
         enum Index
         {

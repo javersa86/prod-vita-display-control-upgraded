@@ -102,25 +102,6 @@ class PasscodeManager : public QObject
          */
         QString getPresetPasscodeManual();
 
-    private:
-        /**
-         * @brief Retrieves current passcodes onto .csv file.
-         * @details Stores the current variables for service page and preset page passcodes.
-         *          Updates whenever device powers on or whenever passcodes are changed by the user.
-         *          If newly created passcode file has no rows for preset passcode and service passcode,
-         *          system will store variables with default passcode values.
-         *          Also, it will record default passcodes onto .csv file.
-         */
-        void updatePasscode();
-        QString encryptPasscode(QString);
-        QString decriptPasscode(QString);
-
-    private:
-        CSVManager m_passcodeCsvManager;
-        QString m_service_passcode;
-        QString m_preset_passcode;
-        int m_signal_change_value;
-
     public slots:
         /**
          * @brief Changes service page passcode.
@@ -160,6 +141,25 @@ class PasscodeManager : public QObject
          * @callgraph
          */
         void passcodeChanged();
+
+    private:
+
+        /**
+         * @brief Retrieves current passcodes onto .csv file.
+         * @details Stores the current variables for service page and preset page passcodes.
+         *          Updates whenever device powers on or whenever passcodes are changed by the user.
+         *          If newly created passcode file has no rows for preset passcode and service passcode,
+         *          system will store variables with default passcode values.
+         *          Also, it will record default passcodes onto .csv file.
+         */
+        void updatePasscode();
+        QString encryptPasscode(QString);
+        QString decriptPasscode(QString);
+
+        CSVManager m_passcodeCsvManager;
+        QString m_service_passcode;
+        QString m_preset_passcode;
+        int m_signal_change_value;
         /** @} */
 
 };

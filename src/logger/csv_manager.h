@@ -37,18 +37,6 @@ class CSVManager
      * @addtogroup csvManagerModule
      * @{
      */
-    private:
-
-        /**
-         * @brief Gets whether or not the csv file exists.
-         * @param filePath
-         * @return bool
-         */
-        static bool exists(std::string &filePath);
-
-        std::string m_filePath;
-        std::string m_currDir;
-        int m_numArgs;
 
     public:
         /**
@@ -114,6 +102,19 @@ class CSVManager
          * @return int
          */
         int getNumEntries();
+
+    private:
+
+        /**
+         * @brief Gets whether or not the csv file exists.
+         * @param filePath
+         * @return bool
+         */
+        static bool exists(std::string &filePath);
+
+        std::string m_filePath;
+        std::string m_currDir;
+        int m_numArgs;
         /** @} */
 };
 

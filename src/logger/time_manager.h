@@ -133,45 +133,6 @@ class TimeManager : public QObject
          */
         QString getCurrentDateTime();
 
-    private:
-        CSVManager m_timeCsvManager;
-
-        QDateTime m_current_date_time;
-        QString m_time_zone;
-        QDateTime m_internal;
-
-        QTimer *m_increment_time;
-
-        QDate m_temp_date;
-        QTime m_temp_time;
-        int m_temp_time_zone;
-
-        unsigned char m_date_state = 0;
-        unsigned char m_time_state = 0;
-        unsigned char m_time_zone_state = 0;
-
-        unsigned char m_daylight_savings_state = 0;
-
-        const qint64 MINUTE_TO_MILLISECECONDS = 3600;
-
-        /**
-         * @brief   Retrieves current date time, time zone, and internal clock's date and time onto .csv file.
-         * @details  Stores current variables for changed date and time, time zone, and internal clock's date and time.
-         *           Updates whenever devices powers on or when date/time changes.
-         */
-        void updateTime();
-
-        /**
-         * @brief Gets the time different between current date and time and internal date and time.
-         * @return qint64
-         */
-        qint64 getTimeDifference(const QString &temp);
-
-        /**
-         * @brief Updates time when time zone is updated.
-         */
-        void getTimeZoneDifference(const QString &oldZone, const QString &newZone);
-
     public slots:
 
         /**
@@ -235,6 +196,45 @@ class TimeManager : public QObject
          * @callgraph
          */
         void daylightChanged();
+
+    private:
+        CSVManager m_timeCsvManager;
+
+        QDateTime m_current_date_time;
+        QString m_time_zone;
+        QDateTime m_internal;
+
+        QTimer *m_increment_time;
+
+        QDate m_temp_date;
+        QTime m_temp_time;
+        int m_temp_time_zone;
+
+        unsigned char m_date_state = 0;
+        unsigned char m_time_state = 0;
+        unsigned char m_time_zone_state = 0;
+
+        unsigned char m_daylight_savings_state = 0;
+
+        const qint64 MINUTE_TO_MILLISECECONDS = 3600;
+
+        /**
+         * @brief   Retrieves current date time, time zone, and internal clock's date and time onto .csv file.
+         * @details  Stores current variables for changed date and time, time zone, and internal clock's date and time.
+         *           Updates whenever devices powers on or when date/time changes.
+         */
+        void updateTime();
+
+        /**
+         * @brief Gets the time different between current date and time and internal date and time.
+         * @return qint64
+         */
+        qint64 getTimeDifference(const QString &temp);
+
+        /**
+         * @brief Updates time when time zone is updated.
+         */
+        void getTimeZoneDifference(const QString &oldZone, const QString &newZone);
         /** @} */
 };
 

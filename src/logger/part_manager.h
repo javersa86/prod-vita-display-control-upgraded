@@ -142,92 +142,6 @@ class PartManager : public QObject
      */
     Q_PROPERTY(unsigned char partIndex READ getPartIndex WRITE setPartIndex NOTIFY partChanged)
 
-    private:
-        CSVManager m_partCsvManager;
-        CSVManager m_hoursOperatingCsvManager;
-        CSVManager m_hoursVentilatingCsvManager;
-
-        QString m_partName;
-        QString m_partNumber;
-        QString m_partDateTime;
-
-        int m_hoursOperating;
-        int m_hoursVentilating;
-
-        int m_row_index{0};
-
-        unsigned char m_reset_op = 0;
-        unsigned char m_reset_vent = 0;
-
-        unsigned char m_ventilation_state = 0;
-
-        int m_temp_row_index = -1;
-        QString m_temp_name = "";
-        QString m_temp_serial_number = "";
-        QString m_temp_date = "";
-        unsigned char m_temp_oper_index = -1;
-        unsigned char m_temp_vent_index = -1;
-
-        unsigned char m_part_index = -1;
-
-
-        //Increments hours operating and ventilating per second.
-        QTimer *m_hours_operating_timer;
-        QTimer *m_hours_ventilating_timer;
-
-
-        /**
-         * @brief Updates signal values for part name, serial number and installation date.
-         * @details Retrieves component from row on .csv file.
-         *          Stores the current values for current component.
-         *          Updates current component whenever device powers on,
-         *          whenever current component is changed by the user,
-         *          or when different component is selected.
-         *          Component data will reset due to CSV file corruption.
-         */
-        void updatePart();
-
-        /**
-         * @brief Creates components when device powers on for the first time or if data is corrupted.
-         * @note Creates default data for parts when starting new device.
-         */
-        void createComponents();
-
-        /**
-         * @brief Updates signal values for hours operating.
-         * @details Retrieve component hours of operation row on .csv file.
-         *          Stores the current value for current component.
-         *          Component data will reset due to CSV file corruption.
-         */
-        void updateHoursOperating();
-        /**
-         * @brief Updates signal values for hours ventilating.
-         * @details Retrieve component hours of ventilation row on .csv file.
-         *          Stores the current value for current component.
-         *          Component data will reset due to CSV file corruption.
-         */
-        void updateHoursVentilating();
-
-        /**
-         * @brief Starts component hours of operations when device powers on for the first time or restarts if data is corrupted.
-         * @note Creates default data for hours when starting new device.
-         */
-        void createHoursOperating();
-        /**
-         * @brief Starts component hours of ventilations when device powers on for the first time or restarts if data is corrupted.
-         * @note Creates default data for hours when starting new device.
-         */
-        void createHoursVentilating();
-
-        /**
-         * @brief Increments each part hours of operation by a second.
-         */
-        void incrementHoursOperating();
-        /**
-         * @brief Increments each part hours of ventilation by a second. Only increments while device is ventilating.
-         */
-        void incrementHoursVentilating();
-
     public:
         /**
          * @brief Constructor method for program allows the user to change info for each component.
@@ -365,6 +279,93 @@ class PartManager : public QObject
          * @callgraph
          */
         void serialChanged();
+
+    private:
+
+        CSVManager m_partCsvManager;
+        CSVManager m_hoursOperatingCsvManager;
+        CSVManager m_hoursVentilatingCsvManager;
+
+        QString m_partName;
+        QString m_partNumber;
+        QString m_partDateTime;
+
+        int m_hoursOperating;
+        int m_hoursVentilating;
+
+        int m_row_index{0};
+
+        unsigned char m_reset_op = 0;
+        unsigned char m_reset_vent = 0;
+
+        unsigned char m_ventilation_state = 0;
+
+        int m_temp_row_index = -1;
+        QString m_temp_name = "";
+        QString m_temp_serial_number = "";
+        QString m_temp_date = "";
+        unsigned char m_temp_oper_index = -1;
+        unsigned char m_temp_vent_index = -1;
+
+        unsigned char m_part_index = -1;
+
+
+        //Increments hours operating and ventilating per second.
+        QTimer *m_hours_operating_timer;
+        QTimer *m_hours_ventilating_timer;
+
+
+        /**
+         * @brief Updates signal values for part name, serial number and installation date.
+         * @details Retrieves component from row on .csv file.
+         *          Stores the current values for current component.
+         *          Updates current component whenever device powers on,
+         *          whenever current component is changed by the user,
+         *          or when different component is selected.
+         *          Component data will reset due to CSV file corruption.
+         */
+        void updatePart();
+
+        /**
+         * @brief Creates components when device powers on for the first time or if data is corrupted.
+         * @note Creates default data for parts when starting new device.
+         */
+        void createComponents();
+
+        /**
+         * @brief Updates signal values for hours operating.
+         * @details Retrieve component hours of operation row on .csv file.
+         *          Stores the current value for current component.
+         *          Component data will reset due to CSV file corruption.
+         */
+        void updateHoursOperating();
+        /**
+         * @brief Updates signal values for hours ventilating.
+         * @details Retrieve component hours of ventilation row on .csv file.
+         *          Stores the current value for current component.
+         *          Component data will reset due to CSV file corruption.
+         */
+        void updateHoursVentilating();
+
+        /**
+         * @brief Starts component hours of operations when device powers on for the first time or restarts if data is corrupted.
+         * @note Creates default data for hours when starting new device.
+         */
+        void createHoursOperating();
+        /**
+         * @brief Starts component hours of ventilations when device powers on for the first time or restarts if data is corrupted.
+         * @note Creates default data for hours when starting new device.
+         */
+        void createHoursVentilating();
+
+        /**
+         * @brief Increments each part hours of operation by a second.
+         */
+        void incrementHoursOperating();
+        /**
+         * @brief Increments each part hours of ventilation by a second. Only increments while device is ventilating.
+         */
+        void incrementHoursVentilating();
         /** @} */
 };
 

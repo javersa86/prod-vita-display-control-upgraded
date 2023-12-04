@@ -103,30 +103,6 @@ class MaintenanceManager : public QObject
          */
         QString updateNextTwelveMonthDate();
 
-    private:
-        CSVManager m_maintenanceCsvManager;
-        QString m_last_date;
-        QString m_next_date;
-
-        CSVManager m_timeCsvManager;
-        QTimer *m_timer;
-
-        unsigned char m_alarm_state = 0;
-        int m_timer_count = 0;
-
-        const int TWELVE_MONTHS = 12;
-
-        /**
-         * @brief Retrieves current dates onto .csv file and stores the current variables for last service date and next service date.
-         * @note Updates whenever devices powers on or whenever dates change.
-         */
-        void updateServiceDates();
-
-        /**
-         * @brief Reads from time manager to update Service Due Warning.
-         */
-        void raiseAlarm();
-
     public slots:
         /**
          * @brief Sets last service date.
@@ -156,6 +132,30 @@ class MaintenanceManager : public QObject
         void validation(bool value);
 
         void alarmSignal(unsigned char);
+
+    private:
+        CSVManager m_maintenanceCsvManager;
+        QString m_last_date;
+        QString m_next_date;
+
+        CSVManager m_timeCsvManager;
+        QTimer *m_timer;
+
+        unsigned char m_alarm_state = 0;
+        int m_timer_count = 0;
+
+        const int TWELVE_MONTHS = 12;
+
+        /**
+         * @brief Retrieves current dates onto .csv file and stores the current variables for last service date and next service date.
+         * @note Updates whenever devices powers on or whenever dates change.
+         */
+        void updateServiceDates();
+
+        /**
+         * @brief Reads from time manager to update Service Due Warning.
+         */
+        void raiseAlarm();
         /** @} */
 
 };
