@@ -94,8 +94,8 @@ class Knob : public QThread
 
         const int MAX_BUF = 64;
 
-        struct pollfd fdset[4] = {};
-        char buf[64] = {};
+        struct pollfd fdset[4];
+        char buf[64];
 
         int m_encoderIncrement{0};
         bool m_running = false;

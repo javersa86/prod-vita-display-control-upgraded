@@ -57,7 +57,7 @@ void Knob::run()
 
 void Knob::pollPinA(pollfd *fdset, char *buf)
 {
-    if ((fdset[0].revents & POLLPRI) != 0)
+    if (fdset[0].revents & POLLPRI)
     {
         lseek(fdset[0].fd, 0, SEEK_SET);
         int len = read(fdset[0].fd, buf, MAX_BUF);
@@ -75,7 +75,7 @@ void Knob::pollPinA(pollfd *fdset, char *buf)
 
 void Knob::pollPinB(pollfd *fdset, char *buf)
 {
-    if ((fdset[1].revents & POLLPRI) != 0)
+    if (fdset[1].revents & POLLPRI)
     {
         lseek(fdset[1].fd, 0, SEEK_SET);
         int len = read(fdset[1].fd, buf, MAX_BUF);
@@ -94,7 +94,7 @@ void Knob::pollPinB(pollfd *fdset, char *buf)
 void Knob::pollPinSwitch(pollfd *fdset, char *buf)
 {
     const unsigned long milliseconds = 75;
-    if ((fdset[2].revents & POLLPRI) != 0)
+    if (fdset[2].revents & POLLPRI)
     {
         lseek(fdset[2].fd, 0, SEEK_SET);
         int len = read(fdset[2].fd, buf, MAX_BUF);

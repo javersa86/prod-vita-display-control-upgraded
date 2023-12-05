@@ -55,7 +55,7 @@ auto GPIO::exportPin() const -> int
 {
     int fileDescriptor = -1;
     int len = -1;
-    std::array<char,ENCODER_MAX_BUF> buf;
+    std::array<char,ENCODER_MAX_BUF> buf{};
 
     fileDescriptor = open(SYSFS_GPIO_DIR "/export", O_WRONLY);
 

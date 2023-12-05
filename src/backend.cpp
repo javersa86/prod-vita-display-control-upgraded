@@ -298,7 +298,6 @@ void Backend::getSettings()
 
 void Backend::initGetSettings()
 {
-    qDebug() << "Get Settings";
     getSettings();
     m_message_flags[(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST] = 1;
 }
@@ -378,8 +377,6 @@ auto Backend::getHumidityLevel(int value) -> int
 
 void Backend::initEnableNotifications()
 {
-
-    qDebug() << "Enable Notifications";
     enableNotifications();
     m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST] = 1;
 }
@@ -398,7 +395,6 @@ void Backend::enableNotificationsSlot()
 
 void Backend::initGetModes()
 {
-    qDebug() << "Get Modes";
     getModes();
     m_message_flags[(int) txOpCodes::DISPLAY_GET_OP_MODES_REQUEST] = 1;
 }
@@ -450,8 +446,6 @@ void Backend::getModes()
 
 void Backend::initGetSubsystemStates()
 {
-    qDebug() << "Get Subsystem States";
-
     sendGetSubsystems();
     m_message_flags[(int) txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST] = 1;
 }
@@ -477,7 +471,6 @@ void Backend::sendGetSubsystems()
 
 void Backend::initGetSystemVersion()
 {
-    qDebug() << "Get System Version";
     sendGetSystemVersion();
     m_message_flags[(int) txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST] = 1;
 }
