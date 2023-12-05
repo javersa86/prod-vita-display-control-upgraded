@@ -1098,6 +1098,10 @@ class StateManager : public QObject
          */
         void forceManualOffSignal();
 
+        /**
+         * @brief limitedO2State
+         * @param stateVal
+         */
         void limitedO2State(int stateVal);
 
     private:
