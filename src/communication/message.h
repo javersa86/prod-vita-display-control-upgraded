@@ -7,6 +7,7 @@
 #include <cstring>
 #include <sstream>
 #include <QString>
+#include <QVector>
 
 /**
  * @addtogroup messageModule
@@ -83,7 +84,7 @@ class Message
         QString toString();
 
     private:
-        unsigned char m_message[INPUT_BUFFER_SIZE] = {0};
+        QVector<unsigned char> m_message = QVector<unsigned char>(INPUT_BUFFER_SIZE, 0); //[INPUT_BUFFER_SIZE] = {0};
         unsigned char m_crc = 0;
         int m_tx_size = 0;
         /** @} */

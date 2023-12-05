@@ -26,7 +26,7 @@ auto Message::getCRC() const -> unsigned char
 
 auto Message::getMessage() -> unsigned char *
 {
-    return m_message;
+    return &(m_message.data())[0];
 }
 
 auto Message::getSize() const -> int
@@ -39,7 +39,7 @@ auto Message::toString() -> QString
     QString tmp = QString::fromStdString("");
     for (int i = 0; i < m_tx_size; i++)
     {
-        tmp = tmp + QString::number(m_message[i]) + ", ";
+        tmp = tmp + QString::number(m_message.at(i)) + ", ";
     }
     return tmp;
 }

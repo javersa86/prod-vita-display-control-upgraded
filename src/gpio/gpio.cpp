@@ -73,7 +73,7 @@ auto GPIO::exportPin() const -> int
 
 void GPIO::openFd()
 {
-    std::array<char,ENCODER_MAX_BUF> buf;
+    std::array<char,ENCODER_MAX_BUF> buf{};
 
     qsnprintf(buf.data(), sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", _pinNumber);
 
@@ -105,9 +105,9 @@ auto GPIO::getFD() const -> int
 auto GPIO::setDirection(bool out) -> int
 {
     int fileDescriptor = -1;
-    std::array<char,ENCODER_MAX_BUF> buf;
+    std::array<char,ENCODER_MAX_BUF> buf{};
 
-    qsnprintf(buf.data(), sizeof(buf), SYSFS_GPIO_DIR  "/gpio%d/direction", _pinNumber);
+    qsnprintf(buf.data(), sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/direction", _pinNumber);
     fileDescriptor = open(buf.data(), O_WRONLY);
 
     if( fileDescriptor < 0 )
@@ -135,7 +135,7 @@ auto GPIO::setDirection(bool out) -> int
 auto GPIO::setEdge(char *edge) const -> int
 {
     int fileDescriptor = -1;
-    std::array<char,ENCODER_MAX_BUF> buf;
+    std::array<char,ENCODER_MAX_BUF> buf{};
 
     qsnprintf(buf.data(), sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/edge", _pinNumber);
 
