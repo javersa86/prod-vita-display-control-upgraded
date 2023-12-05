@@ -460,7 +460,7 @@ void API::handleGetModesResponse(unsigned char* buffer)
     buffer ++;
     QVector<int> modes;
     modes.reserve(NUM_MODES);
-    for (int i = 1; i < NUM_MODES; i++)
+    for (int i = 0; i < NUM_MODES; i++)
     {
         modes.append(*buffer);
         buffer++;

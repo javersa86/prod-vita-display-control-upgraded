@@ -445,8 +445,8 @@ void log(QtMsgType type, const QMessageLogContext &context, const QString &msg)
     {
         case QtDebugMsg:
         {
-            fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-            //fprintf(stderr, "%s \n", localMsg.constData());
+            //fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            fprintf(stderr, "%s \n", localMsg.constData());
             break;
         }
         case QtInfoMsg:

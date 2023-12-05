@@ -280,9 +280,6 @@ void Backend::checkStartupComplete()
     unsigned char startupInProgress = 0;
     for(unsigned char m_message_flag : qAsConst(m_message_flags))
     {
-        qDebug() << QString::number(startupInProgress);
-        qDebug() << QString::number(m_message_flag);
-
         startupInProgress = startupInProgress | m_message_flag;
     }
 
