@@ -21,12 +21,11 @@ Rectangle {
     property real time: 0
     property int tv1_val
     property int map_val
+
     property int max_pip: 0
     property int max_sp: 0
 
-    property int rate_millis: state_manager.rate1Setting > 0 ?
-                                  (60 / state_manager.rate1Setting) * 1000 :
-                                  1000
+    property int rate_millis: state_manager.rate1Setting > 0 ? (60 / state_manager.rate1Setting) * 1000 : 1000
     property bool received_notification: false
     
     property int notificationSP1: 0
