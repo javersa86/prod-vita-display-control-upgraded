@@ -37,8 +37,6 @@ Rectangle {
     property int notificationTV2: 6
     property int notificationMAP: 7
 
-    //...
-
     Component.onCompleted: {
         graph_timer.start();
         pip_update_timer.start();
