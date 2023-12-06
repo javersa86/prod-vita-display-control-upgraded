@@ -587,7 +587,7 @@ public:
      * @brief Contructor Method.
      */
     TemperatureMeasuringError(const int &id, const QVector<QString> &troubleshooting =
-            QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Internal Temperature Measuring Defect!"));
+            QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Internal Temperature<br>Measuring Defect!"));
 };
 
 /**
