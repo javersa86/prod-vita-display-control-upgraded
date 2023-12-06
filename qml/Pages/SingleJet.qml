@@ -310,13 +310,14 @@ Rectangle {
         min: oxygen.min
         max: lm_switch.checked? state_manager.laserO2Limit : oxygen.max
 
-        borderColor: lm_switch.checked? warningDisplayed : Style.primary_light
-        setColor: lm_switch.checked? warningDisplayed : Style.primary_light
-        measuredDisplayColor: lm_switch.checked? warningDisplayed : Style.primary_light
-        measuredColor: lm_switch.checked? warningDisplayed : Style.primary_light
-        warningDisplayed: warning_manager.laserWarning === 0 ? Style.o2_color :
+        borderColor: warningDisplayed
+        setColor: warningDisplayed
+        measuredDisplayColor: warningDisplayed
+        measuredColor: warningDisplayed
+
+        warningDisplayed: warning_manager.laserWarning === 0 && lm_switch.checked ? Style.o2_color :
                           warning_manager.laserWarning === 1 && lm_switch.checked ? Style.notice :
-                                                               Style.primary_light
+                                                                                    Style.primary_light
 
         onClicked: {
             homeStack.push("SettingDial.qml", {"homeStack": homeStack, "title": title, "unit": unit,
