@@ -315,7 +315,7 @@ Rectangle {
         measuredDisplayColor: lm_switch.checked? warningDisplayed : Style.primary_light
         measuredColor: lm_switch.checked? warningDisplayed : Style.primary_light
         warningDisplayed: warning_manager.laserWarning === 0 ? Style.o2_color :
-                          warning_manager.laserWarning === 1 ? Style.notice :
+                          warning_manager.laserWarning === 1 && lm_switch.checked ? Style.notice :
                                                                Style.primary_light
 
         onClicked: {
