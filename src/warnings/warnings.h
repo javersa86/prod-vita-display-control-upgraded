@@ -378,7 +378,7 @@ public:
     InappropriateOxygenSensor(const int &id, const QVector<QString> &troubleshooting =
             QVector<QString>({
                                  QStringLiteral("Oxygen sensor cannot be read."),
-                                 QStringLiteral("Ensure that you are using a <INSERT KIND OF OXYGEN SENSOR HERE>."),
+                                 QStringLiteral("Ensure that you are using a &lt;INSERT KIND OF OXYGEN SENSOR HERE&gt;."),
                                  QStringLiteral("Ensure the oxygen sensor is securely inserted.")}),
                               const QString &title = QStringLiteral("Inappropriate Oxygen Sensor Detected"));
 };
