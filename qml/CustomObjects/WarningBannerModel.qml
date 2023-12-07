@@ -254,8 +254,22 @@ Rectangle{
             repeat: false
             onTriggered:
             {
-                popupStack.troubleshoot(title, "Troubleshoot Alarm", warning_manager.getWarningInformation(warningID).length, warning_manager.getWarningInformation(warningID),
-                                        warning_manager.getWarningColor(warningID))
+                if (root.warningID == 52)
+                {
+                    popupStack.troubleshoot("Limited O<sub>2</sub> Safe",
+                                            "Troubleshoot Alarm",
+                                            warning_manager.getWarningInformation(warningID).length,
+                                            warning_manager.getWarningInformation(warningID),
+                                            warning_manager.getWarningColor(warningID))
+                }
+                else
+                {
+                    popupStack.troubleshoot(title,
+                                            "Troubleshoot Alarm",
+                                            warning_manager.getWarningInformation(warningID).length,
+                                            warning_manager.getWarningInformation(warningID),
+                                            warning_manager.getWarningColor(warningID))
+                }
                 troubleshootButton.color = Style.primary_light_selected
                 timer.stop()
             }
