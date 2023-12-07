@@ -33,7 +33,7 @@
 /**
  * @brief Constant for number of bytes used service calibration values.
  */
-#define NUM_SERVICE_NOTIFICATIONS 5
+#define NUM_SERVICE_NOTIFICATIONS 7
 
 /**
  * @file api_consts.h

@@ -1,6 +1,5 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import QtGraphicalEffects 1.12
 import QtQml 2.12
 import "../../Styles"
 import "../../CustomObjects"
@@ -12,10 +11,15 @@ Rectangle {
     property StackView popupStack
 
     property bool zeroState: true
-    property bool lowVerifyState: false
-    property bool highVerifyState: false
+    property bool verifyState: false
 
-    property int zeroResult: -1
+    property int result: -1
+
+    property real tmpValue: -1
+
+    property real verifyValue: (state_manager.service_notification_vector[5] - state_manager.zeroInletAir) > 0 ?
+                               (state_manager.service_notification_vector[5] - state_manager.zeroInletAir) :
+                               0.0
 
     MouseArea
     {
@@ -24,8 +28,47 @@ Rectangle {
 
     Component.onCompleted:
     {
-        backend.sensorCalibration(1,3,0)
         confirmBox.state = "moveIn"
+    }
+
+    function setZeroPass()
+    {
+        passfailText.visible = true
+        passfailText.text = "Zero Passed"
+        passfailText.color = Style.affirmative
+        passfail.visible = true
+        passfailIcon.source = "../../iconography/thumbs-up.svg"
+        colorOverlay.color = Style.affirmative
+    }
+
+    function setZeroFail()
+    {
+        passfailText.visible = true
+        passfailText.text = "Actual Value for Zeroing (" + tmpValue + ") is not less than 3"
+        passfailText.color = Style.dissident
+        passfail.visible = true
+        passfailIcon.source = "../../iconography/thumbs-down.svg"
+        colorOverlay.color = Style.dissident
+    }
+
+    function setZeroFail()
+    {
+        passfailText.visible = true
+        passfailText.text = "Calibration Fail"
+        passfailText.color = Style.dissident
+        passfail.visible = true
+        passfailIcon.source = "../../iconography/thumbs-down.svg"
+        colorOverlay.color = Style.dissident
+    }
+
+    function resetPassFail()
+    {
+        passfailText.visible = false
+        passfailText.text = ""
+        passfailText.color = Style.primary_dark
+        passfail.visible = false
+        passfailIcon.source = ""
+        colorOverlay.color = Style.primary_dark
     }
 
     Connections
@@ -34,14 +77,19 @@ Rectangle {
 
         onZeroFinished:
         {
-            zeroResult = value
-            if (zeroResult == 0)
+            result = value
+            if (result == 0)
             {
-                lowVerifyState = true
+                setVerifyFail()
+                zeroState = false
+                verifyState = true
             }
             else
             {
+                actualZeroValue.visible = false
+                setVerifyPass()
                 zeroState = true
+                verifyState = false
             }
         }
     }
@@ -105,44 +153,43 @@ Rectangle {
         {
             id:passfail
             y: 86
-            anchors.right: passfailText.left
+            anchors.right: parent.right
+            anchors.rightMargin: 60
 
             width: 35.1
             height: 35.1
-            visible: zeroResult != -1
+
+            visible: false
             color: Style.transparent
 
             Image {
                 id: passfailIcon
-                source: zeroResult == 0 ? "../../iconography/thumbs-up.svg" : "../../iconography/thumbs-down.svg"
+                source: ""
                 sourceSize.width: parent.width
                 sourceSize.height: parent.height
                 smooth: true
             }
 
             ColorOverlay {
+                id: colorOverlay
                 anchors.fill: passfailIcon
                 source: passfailIcon
-                color: zeroResult == 0 ? Style.affirmative : Style.dissident
             }
         }
 
         Text {
             id: passfailText
-            text: zeroResult == 0 ? qsTr("Passed") : qsTr("Failed")
+            text: ""
             anchors.verticalCenter: passfail.verticalCenter
-            anchors.right: parent.right
+            anchors.right: passfail.right
             anchors.rightMargin: 60
-            leftPadding: 5
             font: Style.buttonFont
-            visible: zeroResult != -1
-            color: zeroResult == 0 ? Style.affirmative : Style.dissident
         }
 
         Rectangle
         {
             id: zeroBox
-            width: parent.width * 0.2475
+            width: parent.width * .33
             height: 242
 
             anchors.top: textBox.bottom
@@ -174,7 +221,7 @@ Rectangle {
 
                 Text {
                     id: actualZeroValue
-                    text: state_manager.inletAir
+                    text: zeroState ? state_manager.service_notification_vector[4].toFixed(1) : state_manager.inletAir.toFixed(1)
                     color: Style.primary_light
                     font: Style.settingPageTitle
                     anchors.centerIn: parent
@@ -202,7 +249,7 @@ Rectangle {
 
                 Text {
                     id: lastZeroValue
-                    text: zero_manager.inletAir
+                    text: zero_manager.zeroInletAir.toFixed(1)
                     color: Style.primary_light
                     font: Style.settingPageTitle
                     anchors.centerIn: parent
@@ -229,10 +276,35 @@ Rectangle {
 
                 onClicked:
                 {
-                    zeroState = false
-                    downArrowIcon.color = Style.numeric_ui_unit
-                    upArrowIcon.color = Style.numeric_ui_unit
-                    backend.initZeroSensor(3)
+                    tmpValue = state_manager.service_notification_vector[4]
+                    if (0 < tmpValue && tmpValue < 5)
+                    {
+                        state_manager.setZeroInletAir(tmpValue)
+                        setZeroPass()
+                        zeroState = false
+                        verifyState = true
+                    }
+                    else
+                    {
+                        setZeroFail()
+                    }
+                }
+            }
+
+            CancelButton
+            {
+                id: zeroCancel
+                anchors.top: zeroButton.bottom
+                anchors.topMargin: 12
+                anchors.left: zeroButton.left
+                enabled: verifyState && !zeroState
+                visible: verifyState && !zeroState
+
+                onClicked:
+                {
+                    resetPassFail()
+                    zeroState = true
+                    verifyState = false
                 }
             }
         }
@@ -240,7 +312,7 @@ Rectangle {
         Rectangle
         {
             id: verifyBox
-            width: parent.width * .5
+            width: parent.width * .33
             height: 242
 
             anchors.top: textBox.bottom
@@ -268,28 +340,16 @@ Rectangle {
                 border.width: 2
                 anchors.top: verifyTitle.bottom
                 anchors.topMargin: 16
-                anchors.right: parent.horizontalCenter
-                anchors.rightMargin: 40
+                anchors.left: parent.left
 
                 Text {
                     id: actualVerifyValue
-                    text: state_manager.inletAir
+                    text: verifyValue.toFixed(1)
                     color: Style.primary_light
                     font: Style.settingPageTitle
                     anchors.centerIn: parent
-                    visible: lowVerifyState || highVerifyState
+                    visible: verifyState
                 }
-            }
-
-            Text {
-                id: downArrowIcon
-                text: "&#x2913;"
-                font: Style.setFont
-                textFormat: Text.RichText
-                color: Style.numeric_ui_unit
-                anchors.verticalCenter: actualVerifyBox.verticalCenter
-                anchors.left: actualVerifyBox.right
-                anchors.leftMargin: 4
             }
 
             Text {
@@ -301,40 +361,6 @@ Rectangle {
                 anchors.horizontalCenter: actualVerifyBox.horizontalCenter
             }
 
-            VerifyButton
-            {
-                id: lowVerifyButton
-                anchors.top: actualVerifyText.bottom
-                anchors.topMargin: 12
-                anchors.right: parent.horizontalCenter
-                anchors.rightMargin: 27
-                enabled: lowVerifyState && state_manager.inletAir <= 30
-
-                onClicked:
-                {
-                    downArrowIcon.color = Style.affirmative
-                    lowVerifyState = false
-                    highVerifyState = true
-                }
-            }
-
-            CancelButton
-            {
-                id: lowVerifyCancel
-                anchors.top: lowVerifyButton.bottom
-                anchors.topMargin: 12
-                anchors.left: lowVerifyButton.left
-                enabled: lowVerifyState && !zeroState
-                visible: lowVerifyState && !zeroState
-
-                onClicked:
-                {
-                    downArrowIcon.color = Style.numeric_ui_unit
-                    lowVerifyState = false
-                    zeroState = true
-                }
-            }
-
             Rectangle
             {
                 id: lastVerifyBox
@@ -343,27 +369,15 @@ Rectangle {
                 color: Style.transparent
                 anchors.top: verifyTitle.bottom
                 anchors.topMargin: 16
-                anchors.left: parent.horizontalCenter
-                anchors.leftMargin: 40
+                anchors.right: parent.right
 
                 Text {
                     id: lastVerifyValue
-                    text: zero_manager.verifiedInletAir
+                    text: zero_manager.verifiedInletAir.toFixed(1)
                     color: Style.primary_light
                     font: Style.settingPageTitle
                     anchors.centerIn: parent
                 }
-            }
-
-            Text {
-                id: upArrowIcon
-                text: "&#x2912;"
-                font: Style.setFont
-                textFormat: Text.RichText
-                color: Style.numeric_ui_unit
-                anchors.verticalCenter: lastVerifyBox.verticalCenter
-                anchors.left: lastVerifyBox.right
-                anchors.leftMargin: 4
             }
 
             Text {
@@ -377,35 +391,32 @@ Rectangle {
 
             VerifyButton
             {
-                id: highVerifyButton
-                anchors.top: lastVerifyText.bottom
+                id: verifyButton
+                anchors.top: actualVerifyText.bottom
                 anchors.topMargin: 12
-                anchors.left: parent.horizontalCenter
-                anchors.leftMargin: 27
-                enabled: highVerifyState && state_manager.inletAir >= 31
+                anchors.horizontalCenter: parent.horizontalCenter
+                enabled: verifyState
 
                 onClicked:
                 {
-                    zero_manager.addVerifiedValue(3, state_manager.inletAir)
-                    upArrowIcon.color = Style.affirmative
-                    highVerifyState = false
+                    verifyState = false
                     zeroState = true
+                    backend.initZeroSensor(3, verifyValue)
                 }
             }
 
             CancelButton
             {
-                id: highVerifyCancel
-                anchors.top: highVerifyButton.bottom
+                id: verifyCancel
+                anchors.top: verifyButton.bottom
                 anchors.topMargin: 12
-                anchors.left: highVerifyButton.left
-                enabled: highVerifyState && !lowVerifyState && !zeroState
-                visible: highVerifyState && !lowVerifyState && !zeroState
+                anchors.left: verifyButton.left
+                enabled: verifyState && !zeroState
+                visible: verifyState && !zeroState
 
                 onClicked:
                 {
-                    upArrowIcon.color = Style.numeric_ui_unit
-                    highVerifyState = false
+                    verifyState = false
                     zeroState = true
                 }
             }
@@ -431,7 +442,6 @@ Rectangle {
 
             onClicked:
             {
-                backend.sensorCalibration(0,3,0);
                 popupStack.clear()
             }
 
@@ -513,32 +523,28 @@ Rectangle {
 
     property string airText: "If the Inlet Air Sensor is reading measurements while Air is not connected, the service technician will be required to conduct a " +
                              "thorough calibration procedure and verify that the data is accurate.<br><br>" +
+
                              "To zero the Inlet Air Sensor, push down on the Confirm button on the Zero Section. " +
                              "A thumbs up or down icon will be displayed on the top right of the window to indicate that the zero procedure succeeds or fails. " +
                              "After Sensor Calibration is accomplished, the low verification procedure will be available.<br><br>" +
+
                              "NOTE: Remove the Air gas supply line from the rear of the NVENT VITA and ensure no pressure is in the system. <br><br>" +
+
                              "To verify the Inlet Air Measurement is accurate, the following steps need to be conducted:<br><br>" +
                              "1. Apply 30 PSI or below to the Air gas supply line on the rear panel of the NVENT VITA. <br>" +
                              "2. Push down on the left Verify button on the Verification Section.<br>" +
                              "3. The down arrow will change to green to indicate that the measurement has been reached and high verification procedure will be available.<br>" +
                              "4. Apply 31 PSI or above to the Air gas supply line on the rear panel of the NVENT VITA. <br>" +
                              "5. Push down on the right Verify button on the Verification Section.<br>" +
-                             "6. The up arrow will change to green to indicate that the measurement has been reached."
+                             "6. The up arrow will change to green to indicate that the measurement has been reached. <br><br>" +
+
+                             "The thumbs up or down icon will be displayed again to indicate that calibration succeeded or failed, " +
+                             "and actual values on the Zero and Verify section are saved."
 
     CalibrationHelpBox
     {
         id: helpBox
         titleText: "Calibration"
         helpText: airText
-    }
-
-    WarningBanner
-    {
-        id: warningBanner
-        anchors.horizontalCenter: parent.horizontalCenter
-        y: 0
-        warnings: warning_manager.displayWarnings
-        visible: warnings.length > 0
-        popupStack: popupStack
     }
 }

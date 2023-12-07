@@ -59,7 +59,9 @@ enum MeasuredRequests
     SP_AVG = 36,
     SP_INST = 37,
     PIP_AVG = 38,
-    PIP_INST = 39
+    PIP_INST = 39,
+    INLET_AIR_AVG = 40,
+    INLET_AIR_INST = 41
 };
 
 /** @} */

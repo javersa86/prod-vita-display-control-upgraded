@@ -94,7 +94,9 @@ enum class MeasuredIDs
     SP_AVG = 36,
     SP_INST = 37,
     PIP_AVG = 38,
-    PIP_INST = 39
+    PIP_INST = 39,
+    INLET_AIR_AVG = 40,
+    INLET_AIR_INST = 41
 };
 
 //Used to connect the above enums with the QML
@@ -173,7 +175,9 @@ class SensorIDs : public QObject
             SP_AVG = (int)MeasuredIDs::SP_AVG,
             SP_INST = (int)MeasuredIDs::SP_INST,
             PIP_AVG = (int)MeasuredIDs::PIP_AVG,
-            PIP_INST = (int)MeasuredIDs::PIP_INST
+            PIP_INST = (int)MeasuredIDs::PIP_INST,
+            INLET_AIR_AVG = (int)MeasuredIDs::INLET_AIR_AVG,
+            INLET_AIR_INST = (int)MeasuredIDs::INLET_AIR_INST
 
         };
 

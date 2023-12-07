@@ -1,6 +1,5 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import QtGraphicalEffects 1.12
 import QtQml 2.12
 import "../../Styles"
 import "../../CustomObjects"
@@ -19,8 +18,8 @@ Rectangle {
     property real tmpValue: -1
 
     property real verifyValue: (state_manager.service_notification_vector[3] - state_manager.zeroPIP) > 0 ?
-                                   (state_manager.service_notification_vector[3] - state_manager.zeroPIP) :
-                                   0.0
+                               (state_manager.service_notification_vector[3] - state_manager.zeroPIP) :
+                               0.0
 
     MouseArea
     {
@@ -218,16 +217,6 @@ Rectangle {
                 anchors.left: parent.left
             }
 
-//            Text {
-//                id: zeroValue
-//                text: "Target: 0 - 3"
-//                font: Style.buttonFont
-//                color: Style.primary_light
-//                anchors.verticalCenter: zeroTitle.verticalCenter
-//                anchors.left: zeroTitle.right
-//                anchors.leftMargin: 30
-//            }
-
             Rectangle
             {
                 id: actualZeroBox
@@ -350,16 +339,6 @@ Rectangle {
                 anchors.top: parent.top
                 anchors.left: parent.left
             }
-
-//            Text {
-//                id: verifyValue
-//                text: "Raw"
-//                font: Style.buttonFont
-//                color: Style.primary_light
-//                anchors.verticalCenter: verifyTitle.verticalCenter
-//                anchors.left: verifyTitle.right
-//                anchors.leftMargin: 30
-//            }
 
             Rectangle
             {
