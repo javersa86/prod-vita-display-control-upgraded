@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.impl 2.12
 import QtGraphicalEffects 1.12
+import QtQml 2.12
 import "../Styles"
 import SettingIndex 1.0
 import IDs 1.0
@@ -101,6 +102,33 @@ Button {
                         adjustmentTimer.start()
                     }
                 }
+            }
+        }
+
+        onLimitedO2State:
+        {
+            if (setting_id === Index.O2 && state_manager.limited_o2_success < 2)
+            {
+                var temp;
+                if (state_manager.limited_o2_success > 0)
+                {
+                    temp = state_manager.laserO2Limit;
+                }
+                else
+                {
+                    temp = oxygen.max;
+                }
+
+                scalingY = (1 - (Number.parseInt(measuredValue.text) - Number.parseInt(control.min)) / (Number.parseInt(temp) - Number.parseInt(control.min)))
+                if(scalingY < 0)
+                {
+                    scalingY = 0
+                }
+                if(scalingY > 1)
+                {
+                    scalingY = 1
+                }
+                console.log("Limited O2 State: " + state_manager.limited_o2_success)
             }
         }
     }
