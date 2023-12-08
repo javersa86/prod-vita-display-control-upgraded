@@ -164,9 +164,9 @@ class Comm
         int _baudrate = 0;
         int fileDescriptor; // file description for the serial port
 
-        unsigned char tx_buf[TX_BUFFER_SIZE] = {0};
+        QVector<unsigned char> tx_buf = QVector<unsigned char>(TX_BUFFER_SIZE, 0); //[TX_BUFFER_SIZE] = {0};
         int tx_index = 0;
-        unsigned char rx_buf[RX_BUFFER_SIZE] = {0};
+        QVector<unsigned char> rx_buf = QVector<unsigned char>(RX_BUFFER_SIZE, 0); //[RX_BUFFER_SIZE] = {0};
         int rx_index = 0;
         int reading_cursor = 0;
         /** @} */

@@ -104,7 +104,7 @@ void Comm::writeToMCU()
 
     if (tx_index>0)
     {
-        write(fileDescriptor,tx_buf,tx_index);
+        write(fileDescriptor,tx_buf.constData(),tx_index);
         tx_index=0;
     }
 }
@@ -142,7 +142,7 @@ auto Comm::nextByteAvailable() -> unsigned char
 
 auto Comm::getRxByte() -> unsigned char
 {
-    unsigned char next_byte = rx_buf[reading_cursor];
+    unsigned char next_byte = rx_buf.at(reading_cursor); //[reading_cursor];
     reading_cursor++;
     return next_byte;
 }

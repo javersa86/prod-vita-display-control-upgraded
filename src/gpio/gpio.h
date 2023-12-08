@@ -48,7 +48,7 @@ class GPIO : public QObject{
 
     private:
 
-        bool _isOut;
+        bool _is_out = true;
 
         int	_ioFd = -1;
 
@@ -77,7 +77,7 @@ class GPIO : public QObject{
          * @param isOut
          * @param parent
          */
-        explicit GPIO(uint pinNumber, char* edge, bool isOut = true, QObject *parent = 0);
+        explicit GPIO(uint pinNumber, char* edge, bool isOut, QObject *parent = 0);
         /**
          * @brief GPIO destructor. Closes the pin
          */

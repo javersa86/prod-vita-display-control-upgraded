@@ -25,7 +25,7 @@ GPIO::~GPIO()
 auto GPIO::getValue() -> unsigned char
 {
     //If the pin has direction "in,"
-    if( !_isOut )
+    if( !_is_out )
     {
         if(0 > _ioFd)
         {
@@ -82,7 +82,7 @@ void GPIO::openFd()
         close(_ioFd );
     }
 
-    if( _isOut )
+    if( _is_out )
     {
         _ioFd = open(buf.data(), O_RDWR);
     }
@@ -127,7 +127,7 @@ auto GPIO::setDirection(bool out) -> int
 
     close(fileDescriptor);
 
-    _isOut = out;
+    _is_out = out;
 
     return 0;
 }
