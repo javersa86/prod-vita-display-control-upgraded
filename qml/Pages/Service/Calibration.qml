@@ -78,7 +78,7 @@ Rectangle{
 
             onClicked:
             {
-                //popupStack.push("CalibrationInletAir.qml", {"popupStack": popupStack})
+                popupStack.push("CalibrationInletAir.qml", {"popupStack": popupStack})
             }
         }
 
