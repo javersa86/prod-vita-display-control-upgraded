@@ -40,7 +40,9 @@ class ServiceNotificationIndex : public QObject
             PIP_INST = 3,
             INLET_AIR_AVG = 4,
             INLET_AIR_INST = 5,
-            CAL_VAL = 6
+            INLET_O2_AVG = 6,
+            INLET_O2_INST = 7,
+            CAL_VAL = 8
         };
         Q_ENUM(Index);
 

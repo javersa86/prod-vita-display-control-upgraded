@@ -78,7 +78,7 @@ Rectangle{
 
             onClicked:
             {
-                //popupStack.push("CalibrationInletAir.qml", {"popupStack": popupStack})
+                popupStack.push("CalibrationInletAir.qml", {"popupStack": popupStack})
             }
         }
 
@@ -93,7 +93,7 @@ Rectangle{
 
             onClicked:
             {
-                //popupStack.push("CalibrationInletO2.qml", {"popupStack": popupStack});
+                popupStack.push("CalibrationInletO2.qml", {"popupStack": popupStack});
             }
         }
 

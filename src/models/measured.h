@@ -13,7 +13,7 @@
 /**
  * @brief Number of measurements.
  */
-#define NUM_MEASURED_REQUESTS 36
+#define NUM_MEASURED_REQUESTS 44
 
 /**
  * @brief The enumerations for Measured IDs.
@@ -61,7 +61,9 @@ enum MeasuredRequests
     PIP_AVG = 38,
     PIP_INST = 39,
     INLET_AIR_AVG = 40,
-    INLET_AIR_INST = 41
+    INLET_AIR_INST = 41,
+    INLET_O2_AVG = 42,
+    INLET_O2_INST = 43
 };
 
 /** @} */

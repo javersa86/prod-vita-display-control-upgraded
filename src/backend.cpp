@@ -1278,6 +1278,12 @@ void Backend::initZeroSensor(unsigned char id, float value)
         m_stateManager->setVerifyInletAir(value);
         m_zero_values.append(m_stateManager->zeroInletAir());
     }
+    else if (id == 4)
+    {
+        temp = " (INLET O2)";
+        m_stateManager->setVerifyInletO2(value);
+        m_zero_values.append(m_stateManager->zeroInletO2());
+    }
 
     sendZeroSensor();
     m_message_flags[(int)txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = 1;
@@ -1323,6 +1329,16 @@ void Backend::receiveSensorZeroed(QVector<unsigned char> values)
         {
             m_zeroManager->addZeroValue(3, m_stateManager->zeroInletAir());
             m_zeroManager->addVerifiedValue(3, m_stateManager->verifyInletAir());
+        }
+    }
+    else if (m_zeroSensor == 4 && values.at(0) == 4)
+    {
+        temp = "INLET O2 ";
+        result = values.at(1) ? 1 : 0;
+        if (result)
+        {
+            m_zeroManager->addZeroValue(4, m_stateManager->zeroInletO2());
+            m_zeroManager->addVerifiedValue(4, m_stateManager->verifyInletO2());
         }
     }
 

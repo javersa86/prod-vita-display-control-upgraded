@@ -19,7 +19,7 @@
 /**
  * @brief Number of measurements on the system.
  */
-#define NUM_MEASURED_SENSORS 40
+#define NUM_MEASURED_SENSORS 44
 
 /**
  * @brief Number of sensors tracked.
@@ -96,7 +96,9 @@ enum class MeasuredIDs
     PIP_AVG = 38,
     PIP_INST = 39,
     INLET_AIR_AVG = 40,
-    INLET_AIR_INST = 41
+    INLET_AIR_INST = 41,
+    INLET_O2_AVG = 42,
+    INLET_O2_INST = 43
 };
 
 //Used to connect the above enums with the QML
@@ -177,8 +179,9 @@ class SensorIDs : public QObject
             PIP_AVG = (int)MeasuredIDs::PIP_AVG,
             PIP_INST = (int)MeasuredIDs::PIP_INST,
             INLET_AIR_AVG = (int)MeasuredIDs::INLET_AIR_AVG,
-            INLET_AIR_INST = (int)MeasuredIDs::INLET_AIR_INST
-
+            INLET_AIR_INST = (int)MeasuredIDs::INLET_AIR_INST,
+            INLET_O2_AVG = (int)MeasuredIDs::INLET_O2_AVG,
+            INLET_O2_INST = (int)MeasuredIDs::INLET_O2_INST
         };
 
         Q_ENUM(OBPS)

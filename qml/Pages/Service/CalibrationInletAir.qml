@@ -17,8 +17,8 @@ Rectangle {
 
     property real tmpValue: -1
 
-    property real verifyValue: (state_manager.service_notification_vector[5] - state_manager.zeroInletAir) > 0 ?
-                               (state_manager.service_notification_vector[5] - state_manager.zeroInletAir) :
+    property real verifyValue: (state_manager.service_notification_vector[5] - state_manager.inletAir) > 0 ?
+                               (state_manager.service_notification_vector[5] - state_manager.inletAir) :
                                0.0
 
     MouseArea
@@ -249,7 +249,7 @@ Rectangle {
 
                 Text {
                     id: lastZeroValue
-                    text: zero_manager.zeroInletAir.toFixed(1)
+                    text: zero_manager.inletAir.toFixed(1)
                     color: Style.primary_light
                     font: Style.settingPageTitle
                     anchors.centerIn: parent
