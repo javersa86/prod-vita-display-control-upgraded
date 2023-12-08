@@ -88,7 +88,8 @@ class DPRManager : public QObject
         CSVManager m_dprCsvManager;
         QVector<QString> m_timeStamps;
         QVector<int> m_dprVals;
-        int m_numDPRVals;
+
+        int m_numDPRVals = 0;
 
         CSVManager m_timeManager;
 

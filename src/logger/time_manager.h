@@ -208,7 +208,7 @@ class TimeManager : public QObject
 
         QDate m_temp_date;
         QTime m_temp_time;
-        int m_temp_time_zone;
+        int m_temp_time_zone = -5;
 
         unsigned char m_date_state = 0;
         unsigned char m_time_state = 0;

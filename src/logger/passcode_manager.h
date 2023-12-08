@@ -159,7 +159,7 @@ class PasscodeManager : public QObject
         CSVManager m_passcodeCsvManager;
         QString m_service_passcode;
         QString m_preset_passcode;
-        int m_signal_change_value;
+        int m_signal_change_value = 0;
         /** @} */
 
 };

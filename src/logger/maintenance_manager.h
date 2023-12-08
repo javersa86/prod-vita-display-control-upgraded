@@ -139,7 +139,6 @@ class MaintenanceManager : public QObject
         QString m_next_date;
 
         CSVManager m_timeCsvManager;
-        QTimer *m_timer;
 
         unsigned char m_alarm_state = 0;
         int m_timer_count = 0;

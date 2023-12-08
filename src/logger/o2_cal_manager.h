@@ -199,7 +199,7 @@ class O2CalManager : public QObject
         QVector<QString> m_timeStamps;
         QVector<QVector<int>> m_o2Vals;
         QVector<QVector<QString>> m_volts;
-        int m_numO2Vals;
+        int m_numO2Vals = 0;
 
         CSVManager m_timeManager;
 

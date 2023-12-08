@@ -83,11 +83,11 @@ class ModeSetting
         int max() const;
     
     private:
-        int m_value;
-        int m_id;
-        int m_min;
-        int m_max;
-        int m_step;
+        int m_value = -1;
+        int m_id = -1;
+        int m_min = -1;
+        int m_max = -1;
+        int m_step = -1;
         /** @} */
 };
 

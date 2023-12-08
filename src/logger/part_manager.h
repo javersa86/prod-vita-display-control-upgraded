@@ -290,8 +290,8 @@ class PartManager : public QObject
         QString m_partNumber;
         QString m_partDateTime;
 
-        int m_hoursOperating;
-        int m_hoursVentilating;
+        int m_hoursOperating = 0;
+        int m_hoursVentilating = 0;
 
         int m_row_index{0};
 

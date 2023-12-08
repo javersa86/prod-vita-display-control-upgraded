@@ -244,15 +244,15 @@ class ZeroManager : public QObject
         QVector<float> m_verifiedAirVals;
         QVector<float> m_verifiedO2Vals;
 
-        int m_numPipVals;
-        int m_numSpVals;
-        int m_numAirVals;
-        int m_numO2Vals;
+        int m_numPipVals = 0;
+        int m_numSpVals = 0;
+        int m_numAirVals = 0;
+        int m_numO2Vals = 0;
 
-        int m_numVerifiedPipVals;
-        int m_numVerifiedSpVals;
-        int m_numVerifiedAirVals;
-        int m_numVerifiedO2Vals;
+        int m_numVerifiedPipVals = 0;
+        int m_numVerifiedSpVals = 0;
+        int m_numVerifiedAirVals = 0;
+        int m_numVerifiedO2Vals = 0;
 
         /**
          * @brief   Retrieves current values from .csv files.

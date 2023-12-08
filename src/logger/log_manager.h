@@ -8,6 +8,7 @@
 #include <QTimeZone>
 #include <stdio.h>
 #include <unistd.h>
+#include <cstdlib>
 
 #include "csv_manager.h"
 #include "time_manager.h"

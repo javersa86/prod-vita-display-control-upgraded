@@ -309,7 +309,7 @@ class PresetManager : public QObject
         CSVManager m_presetCsvManager;
         QVector<QVector<int>> m_presets;
 
-        int m_numPresets;
+        int m_numPresets = 0;
 
         /**
          * @brief Updates presets and preset names saved in memory based on the presets and preset names in the CSV files.
