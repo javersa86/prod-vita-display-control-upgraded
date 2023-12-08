@@ -19,7 +19,7 @@
 /**
  * @brief Number of measurements on the system.
  */
-#define NUM_MEASURED_SENSORS 40
+#define NUM_MEASURED_SENSORS 42
 
 /**
  * @brief Number of sensors tracked.

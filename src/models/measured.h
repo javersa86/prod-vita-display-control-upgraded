@@ -13,7 +13,7 @@
 /**
  * @brief Number of measurements.
  */
-#define NUM_MEASURED_REQUESTS 36
+#define NUM_MEASURED_REQUESTS 42
 
 /**
  * @brief The enumerations for Measured IDs.
