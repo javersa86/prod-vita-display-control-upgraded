@@ -1,6 +1,5 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import QtGraphicalEffects 1.12
 import QtQml 2.12
 import "Pages"
 import "CustomObjects"
@@ -13,7 +12,8 @@ ApplicationWindow
     id: homeWindow
 
     visible: true
-    width: 1280; height: 800
+    width: 1280;
+    height: 800
     color: Style.primary_dark
 
     property int screenLockFlag: state_manager.screen_lock_mode
@@ -139,7 +139,7 @@ ApplicationWindow
     }
 
 
-   HamburgerMenu
+    HamburgerMenu
     {
         id: hambugerMenu
         width: 317
@@ -291,7 +291,8 @@ ApplicationWindow
         }
     }
 
-   Rectangle {
+    Rectangle
+    {
        id: demo_icon
        x: 1135
        y:95
@@ -311,8 +312,8 @@ ApplicationWindow
        }
    }
 
-   StackView
-   {
+    StackView
+    {
        id: serviceStack
 
        enabled: servicePopupStack.depth == 0
@@ -422,10 +423,6 @@ ApplicationWindow
         visible: warnings.length > 0 && state_manager.display_warnings
         popupStack: popupStack
     }
-
-
-
-
 
     StackView
     {
@@ -563,8 +560,6 @@ ApplicationWindow
             {
                 mouse.accepted = false
                 interactionTimer.restart()
-
-
             }
         }
 
@@ -576,7 +571,13 @@ ApplicationWindow
             running: true
             onTriggered:
             {
-                if (!state_manager.start_up_flag && !state_manager.dehumidify_mode && !state_manager.screen_lock_mode && serviceStack.depth ==0 && !state_manager.preset_create_active)
+                if (
+                        !state_manager.start_up_flag &&
+                        !state_manager.dehumidify_mode &&
+                        !state_manager.screen_lock_mode &&
+                        serviceStack.depth ==0 &&
+                        !state_manager.preset_create_active
+                    )
                 {
                     while (homeStack.depth > 1)
                     {
@@ -584,7 +585,11 @@ ApplicationWindow
                     }
                     popupStack.clear()
                     hambugerMenu.close()
-                    if (powerdownFlag)backend.initiatePowerdown(0);
+
+                    if (powerdownFlag)
+                    {
+                        backend.initiatePowerdown(0);
+                    }
                 }
             }
         }
@@ -592,6 +597,7 @@ ApplicationWindow
         Connections
         {
             target: knob
+
             onEncoderIncrement:
             {
                 interactionTimer.restart()

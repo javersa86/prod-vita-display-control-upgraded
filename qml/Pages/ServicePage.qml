@@ -5,7 +5,8 @@ import QtQml 2.12
 import "../Styles"
 import "../CustomObjects"
 
-Rectangle{
+Rectangle
+{
     id: root_window
     color: Style.primary_dark
     objectName: "ServicePage"
@@ -19,7 +20,8 @@ Rectangle{
         anchors.fill:parent
     }
 
-    HamburgerButton {
+    HamburgerButton
+    {
         id: hamburger
         x: 0
         y: -10
@@ -64,7 +66,8 @@ Rectangle{
             anchors.top: title.bottom
         }
 
-        HelpIcon {
+        HelpIcon
+        {
             id: hint_button
             anchors.left: pageTitle.right
             anchors.verticalCenter: pageTitle.verticalCenter
@@ -316,7 +319,8 @@ Rectangle{
         }
     }
 
-    Text {
+    Text
+    {
         id: displayDateTime
         color: Style.primary_light
         anchors.bottom: parent.bottom
@@ -330,7 +334,8 @@ Rectangle{
         }
     }
 
-    Timer {
+    Timer
+    {
         id: clock
         interval: 100
         repeat: true
@@ -343,7 +348,8 @@ Rectangle{
         }
     }
 
-    Item {
+    Item
+    {
         id: valueHolder
         property string oxygenHelpText: "In the event of a failed automatic O<sub>2</sub> calibration or if an additional O<sub>2</sub> calibration is needed, a manual O<sub>2</sub> calibration should be performed. Prior to a manual O<sub>2</sub> calibration being performed, ensure that the Air and Oxygen supply lines are connected to the machine and the source. Limited O<sub>2</sub> mode cannot be utilized during an O<sub>2</sub> calibration."
     }

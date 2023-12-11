@@ -1,11 +1,11 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import QtGraphicalEffects 1.12
 import QtQml 2.12
 import "../Styles"
 import "../CustomObjects"
 
-Rectangle{
+Rectangle
+{
     id: root
     color: Style.primary_dark
     property int index
@@ -30,7 +30,8 @@ Rectangle{
 
     property Item adjustmentPage
 
-    property var values: [root.dp1Val,
+    property var values: [
+        root.dp1Val,
         root.dp2Val,
         root.freq1Val,
         root.freq2Val,
@@ -43,9 +44,11 @@ Rectangle{
         root.auxVal,
         root.hum1Val,
         root.hum2Val,
-        root.humauxVal]
+        root.humauxVal
+    ]
 
-    Component.onCompleted: {
+    Component.onCompleted:
+    {
         state_manager.preset_create_active = 1;
         populateFirstRow()
         populateSecondRow()
@@ -127,6 +130,7 @@ Rectangle{
     Connections
     {
         target: root.adjustmentPage
+
         onOpenPresetKeyboard:
         {
             root.stack.pop();
@@ -156,7 +160,6 @@ Rectangle{
         id: secondRow
     }
 
-
     Rectangle
     {
         id: mainContainer
@@ -166,7 +169,8 @@ Rectangle{
         y: 85
         color:Style.transparent
 
-        Text {
+        Text
+        {
             text: qsTr("Presets > " + root.titleAppend)
             font: Style.numericUiDisplayFont
             color:Style.primary_light
@@ -183,7 +187,8 @@ Rectangle{
             height: .05 * parent.width
             y: .15 * parent.height
 
-            Text {
+            Text
+            {
                 id: presetTitle
                 text: preset_manager.presetName
                 font: Style.numberButtonFont
@@ -196,7 +201,9 @@ Rectangle{
             {
                 anchors.fill: parent
                 pressAndHoldInterval: 225
-                onPressAndHold: {
+
+                onPressAndHold:
+                {
                     titleBox.color = Style.primary_light_selected
                     titleBox.delay(50)
                 }

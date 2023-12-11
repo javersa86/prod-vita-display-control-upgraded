@@ -281,7 +281,8 @@ Rectangle{
         }
     }
 
-    Rectangle {
+    Rectangle
+    {
         color: Style.primary_dark
         width:parent.width
         height:presetGrid.y
@@ -367,13 +368,15 @@ Rectangle{
             x: 60
         }
 
-        Item {
+        Item
+        {
             id: plusItem
             width: 40
             height: 40
             anchors.verticalCenter: parent.verticalCenter
 
-            Image {
+            Image
+            {
                 id: plusIcon
                 source: "../iconography/plus.svg"
                 sourceSize.width: width
@@ -385,7 +388,8 @@ Rectangle{
 
             }
 
-            ColorOverlay {
+            ColorOverlay
+            {
                 anchors.fill: plusIcon
                 source: plusIcon
                 color: Style.primary_light
@@ -405,7 +409,8 @@ Rectangle{
         }
     }
 
-    HamburgerButton {
+    HamburgerButton
+    {
         id: hamburger
         x: 0
         y: -10

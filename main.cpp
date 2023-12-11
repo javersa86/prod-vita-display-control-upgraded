@@ -295,16 +295,16 @@ auto main(int argc, char *argv[]) -> int
     std::array<char,4> edge = {'b','o','t','h'};
     char* edgePtr = edge.data();
 
+    // These are the calculations for figuring out what the pin numbers are.
+    // There's further description of how the knob works in the knob related files
+    // (b-1) * 32 + nn
+    //     b_b=2
+    //     b_nn=25 // b is 57
+    //     a_b=1
+    //     a_nn=9 // a is 9
+    //     switch_b=2
+    //     switch_nn=23 // switch is 55
     Knob knob{pinA, pinB, pinSwitch, edgePtr};\
-// These are the calculations for figuring out what the pin numbers are.
-// There's further description of how the knob works in the knob related files
-//   (b-1) * 32 + nn
-//    b_b=2
-//    b_nn=25 // b is 57
-//    a_b=1
-//    a_nn=9 // a is 9
-//    switch_b=2
-//    switch_nn=23 // switch is 55
 
     //This allows the developer to send QML signals with QVectors of floats.
     qRegisterMetaType<QVector<float> >("QVector<float>");
