@@ -30,6 +30,38 @@
 /**
  * @addtogroup main
  * @brief Main application where everything begins.
+ * @details
+ *
+ * The sequence of events when the software starts to run goes as followed:
+ *  1. The logging of qDebug messages to a file is initiated.
+ *  <br>&emsp;1.1 Note that /log does not exist, and logs will not be saved.
+ *  <br>&emsp;1.2 The log manager is constructed.
+ *  2. The QApplication and the QQmlApplicationEngine is initiated.
+ *  3. The Objects that commiunicate with the QML code are constructed and constructed in the following order.
+ *  <br>&emsp;3.1. The Time Manager manages the curent date, time, and time zone of the device. Data is passed to QML, and saved data to the CSV file. Once the CSV file for the time is created and CSV data is stored, and service and warning logs are generated.
+ *  <br>&emsp;3.2. The State Manager holds the states of the device, ie. set settings and modes. Note: The state manager states are not set directly be the QML. They are set by the backend controller.
+ *  <br>&emsp;3.3. The \htmlonly Warning \endhtmlonly Manager holds the warnings to display.
+ *  <br>&emsp;3.4. The \htmlonly API \endhtmlonly acts as the mmiddl man between the system and the display controller.
+ *  <br>&emsp;3.5. The O<sub>2</sub> Calibration Manager manages the O<sub>2</sub> calibration values. It passes the most recent O<sub>2</sub> cal vals to the QML, and saves calibration values to a CSV file.
+ *  <br>&emsp;3.6. The DPR Manager manages the DPR values. It passes the most recent DPR values (high or low), and saves DPR values to a CSV file.
+ *  <br>&emsp;3.7. The Zero Manager manages the sensor calibration values. It passes the most recent values to the QML, and saves calibration values to CSV files.
+ *  <br>&emsp;3.8. The Part Manager manages the operating times for different parts.
+ *  <br>&emsp;3.9. The \htmlonly Backend \endhtmlonly Controller acts as the middle man between the QML and the other managers above. It also sends and receives signals from the \htmlonly API\endhtmlonly.
+ *  <br>&emsp;3.10. The Preset Manager manages the presets. It passes presets to the QML, and saves presets to a CSV file.
+ *  <br>&emsp;3.11. The Brightness Manager manages the brightness of the display. Brightness in Linux is represente by a brightness file in the file system.
+ *  <br>&emsp;3.12. The Passcode Manager manages the passcode needed for preset page and service page. Passes passcodes to QML, and saves passcode to CSV file.
+ *  <br>&emsp;3.13. The Maintenance Manager manages the service dates for when technician arrives to fix device.
+ *  <br>&emsp;3.14. The Contact Manager manages the contact information for the service company and the sales company.
+ *  <br>&emsp;3.15. The Version Manager manages the HMI vaersion and the serial number on the device.
+ *  <br>&emsp;3.16. The \htmlonly Knob \endhtmlonly Controller that sends increments (+/-1) and button push signals.
+ *  4. The Objects that store the constant values for settings, such as minimum, maximum, step, and so on.
+ *  5. The QObject connections between different signal and slot functions.
+ *  6. Regester the QVector<float> datatype to send QML signals with QVectors of floats.
+ *  7. Declare QML variables used to expose certain enum classes to the QML.
+ *  8. Set the contexts and connect the various objects used to communicate with QML to the QML.
+ *  9. Start the startup sequence in the \htmlonly Backend \endhtmlonly Controller.
+ *  10. Load the Home Window Page to the QML Engine
+ *  11. Start the \htmlonly API \endhtmlonly Thread.
  * @{
  */
 

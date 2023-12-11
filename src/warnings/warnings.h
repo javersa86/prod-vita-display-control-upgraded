@@ -871,7 +871,7 @@ public:
 };
 
 /**
- * @brief Class for Notice when Laser-Safe Mode is enabled and for when oxygen concentration is at a level for laser use.
+ * @brief Class for Notice when Limited O<sub>2</sub> Mode is enabled and for when oxygen concentration is at a level for Limited O<sub>2</sub> use.
  */
 class LaserOK : public Notice
 {
@@ -885,7 +885,7 @@ public:
 };
 
 /**
- * @brief Class for Notice when oxygen is adjusting to a level for laser use.
+ * @brief Class for Notice when oxygen is adjusting to a level Limited O<sub>2</sub> laser use.
  */
 class LaserPrepping : public Notice
 {

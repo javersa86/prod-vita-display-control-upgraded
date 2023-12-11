@@ -1,29 +1,219 @@
 //Module for custom objects.
 
 /**
- * @ingroup stylingModule
- * @defgroup familyModule Font Family: Roboto
+ * @addtogroup stylingModule
  * @{
- * @brief Font Family utilized for different texts.
  * @details
  *
- * ## Font Family: Roboto
+ * \section stylingModule Styling
  *
- * Roboto was chosen for the font family for all texts on the Graphical User Interface for its readability and its modern aesthetic that makes it a suitable choice for contemporary designs. The font family also makes the NVENT-Vita look more professional, especially in the field of medicine.
+ * Styling refers to the overall design for the Graphical User Interface. Styling includes color of centein objects and pages, the font and sizes for text and titles, and even the positioning and sizes of objects on pages. Styling is significantly important not only to the NVENT-VITA, but to UI Development in general, for it is important to the visual appeal, improving user experience, reinforcing branding and identity, differentiation to other products, and aiding in the communication between user and interface.
  *
- * Style variations for the font family include:
- * - Black
- * - Black Italic
- * - Bold
- * - Bold Italic
- * - Italic
- * - Light
- * - Light Italic
- * - Medium
- * - Medium Italic
- * - Regular
- * - Thin
- * - Thin Italic
+ * The Font Family chosen for the display: <b>Roboto</b>.<br>
+ *
+ * Roboto was chosen for the font family for all texts on the Graphical User Interface for its readability and its modern aesthetic that makes it a suitable choice for contemporary designs. The font family also makes the NVENT-Vita look more professional, especially in the field of medicine. Style variations for the font family include: Black, Black Italic, Bold, Bold Italic, Italic, Light, Light Italic, Medium, Medium Italic, Regular, Thin, and Thin Italic.
+ *
+ * Text on the GUI will be displayed in different style variations of the Roboto Font Family, and sizes. Text and object will be displayed in different sizes, and colors. <br><br>
+ *
+ * For the Hex Code representing colors (some color are meant to be transparent and utilized as a alpha layer):
+ *
+ * <table>
+ *  <tr>
+ *      <th>Color Name</th>
+ *      <th>Hex Code</th>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary</th>
+ *      <td>@htmlonly <font color="#3D96A8">#3D96A8</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Secondary</th>
+ *      <td>@htmlonly <font color="#6FCC68">#6FCC68</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Tertiary</th>
+ *      <td>@htmlonly <font color="#FAE061">#FAE061</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>\htmlonly PIP\endhtmlonly</th>
+ *      <td>@htmlonly <font color="#C12E30">#C12E30</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>SP</th>
+ *      <td>@htmlonly <font color="#0E6CBF">#0E6CBF</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary Dark</th>
+ *      <td>@htmlonly <font color="#202531">#202531</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary Light</th>
+ *      <td>@htmlonly <font color="#E3ECFB">#E3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary Dark Translucent</th>
+ *      <td>@htmlonly <font color="#8C202531">#8C202531</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>General Measured Value</th>
+ *      <td>@htmlonly <font color="#E6E3ECFB">#E6E3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>General Set Display</th>
+ *      <td>@htmlonly <font color="#4A90E2">#4A90E2</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Scale Rectangle Border</th>
+ *      <td>@htmlonly <font color="#66F2F2F2">#66F2F2F2</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Unit</th>
+ *      <td>@htmlonly <font color="#99E3ECFB">#99E3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Min and Max</th>
+ *      <td>@htmlonly <font color="#BFE3ECFB">#BFE3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Transparent</th>
+ *      <td>@htmlonly <font color="#00000000">#00000000</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Unclickable Border</th>
+ *      <td>@htmlonly <font color="#313C51">#313C51</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Statistic Value</th>
+ *      <td>@htmlonly <font color="#E6E3ECFB">#E6E3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Mode Active</th>
+ *      <td>@htmlonly <font color="#1F2A34">#1F2A34</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Mode Inactive</th>
+ *      <td>@htmlonly <font color="#506385">#506385</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Mode Label</th>
+ *      <td>@htmlonly <font color="#3D96A8">#3D96A8</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary Light Selected</th>
+ *      <td>@htmlonly <font color="#1AE3ECFB">#1AE3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Numeric UI Unit</th>
+ *      <td>@htmlonly <font color="#A1A7B2">#A1A7B2</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Affirmative</th>
+ *      <td>@htmlonly <font color="#4AE287">#4AE287</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Affirmative Translucent</th>
+ *      <td>@htmlonly <font color="#804AE287">#804AE287</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Dissident</th>
+ *      <td>@htmlonly <font color="#FF223D">#FF223D</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Cancel</th>
+ *      <td>@htmlonly <font color="#E24A5F">#E24A5F</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Primary Light Disabled</th>
+ *      <td>@htmlonly <font color="#8CE3ECFB">#8CE3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Patient \htmlonly Warning\endhtmlonly</th>
+ *      <td>@htmlonly <font color="#F24C26">#F24C26</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>System \htmlonly Warning\endhtmlonly</th>
+ *      <td>@htmlonly <font color="#4A5AE4">#4A5AE4</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>\htmlonly Notice\endhtmlonly</th>
+ *      <td>@htmlonly <font color="#E2C044">#E2C044</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>\htmlonly Warning \endhtmlonly Description</th>
+ *      <td>@htmlonly <font color="#8CE3ECFB">#8CE3ECFB</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Menu Color</th>
+ *      <td>@htmlonly <font color="#313C51">#313C51</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Mode Active \htmlonly Warning\endhtmlonly</th>
+ *      <td>@htmlonly <font color="#FBA455">#FBA455</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>O<sub>2</sub> Color</th>
+ *      <td>@htmlonly <font color="#6FCC68">#6FCC68</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Help Icon Selected</th>
+ *      <td>@htmlonly <font color="#804A90E2">#804A90E2</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>Mode Active \htmlonly Warning \endhtmlonly Selected</th>
+ *      <td>@htmlonly <font color="#8CFBA455">#8CFBA455</font> @endhtmlonly</td>
+ *  </tr>
+ *  <tr>
+ *      <th>General Set Display Selected</th>
+ *      <td>@htmlonly <font color="#8C4A90E2">#8C4A90E2</font> @endhtmlonly</td>
+ *  </tr>
+ * </table><br>
+ *
+ * Font Styles built from the Roboto Font Family, Style Variations, Sizes, and Weights:<br>
+ *
+ * <table>
+ *  <tr>
+ *      <th>Font</th>
+ *  </tr>
+ *  <tr><td style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 96px; word-wrap: break-word;"><br><br>Measured Font <br><br><br></tr>
+ *  <tr><td style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 72px; word-wrap: break-word;"><br><br>Loading Text Font <br><br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 36px; word-wrap: break-word;"><br><br>Page Title Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Black', sans-serif; font-size: 34px; word-wrap: break-word;"><br><br>Statistic Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 32px; word-wrap: break-word;"><br><br>Set Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 32px; word-wrap: break-word;"><br><br> Numeric UI Display Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Black', sans-serif; font-size: 30px; word-wrap: break-word;"><br><br> Statistic Font (Small Version) <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Black', sans-serif; font-size: 24px; word-wrap: break-word;"><br>\htmlonly Warning \endhtmlonly Flag Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 24px; word-wrap: break-word;"><br>\htmlonly Warning \endhtmlonly  Title Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 24px; word-wrap: break-word;"><br>Number Button Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 24px; word-wrap: break-word;"><br>Setting Page Title <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 18px; word-wrap: break-word;"><br>Title Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 18px; word-wrap: break-word;"><br>Unit Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 18px; word-wrap: break-word;"><br>Min and Max Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 18px; word-wrap: break-word;"><br><u>Cancel Font <br><br></u></td></tr>
+ *  <tr><td style="font-family: 'Roboto Bold', sans-serif; font-size: 18px; word-wrap: break-word;"><br>\htmlonly Warning \endhtmlonly  Description Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 17px; word-wrap: break-word;"><br>Button Font <br><br></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 17px; word-wrap: break-word;"><br><u>Button Font Underlined <br><br></u></td></tr>
+ *  <tr><td style="font-family: 'Roboto Medium', sans-serif; font-size: 12px; word-wrap: break-word;"><br>Small Button Font <br><br></td></tr>
+ * </table><br><br>
+ *
+ * Contant texts used on the GUI for the Pneumatic Setting Titles and Units.
+ * Constants included:
+ * - \htmlonly PIP \endhtmlonly Title: Peak Insp. Pressure
+ * - SP Title: Stacking Pressure
+ * - Auxiliary Flow Title: Auxiliary
+ * - \htmlonly Humidity \endhtmlonly Title: \htmlonly Humidity \endhtmlonly
+ * - Driving Pressure Title: Driving Pressure
+ * - \htmlonly Rate \endhtmlonly Title: \htmlonly Rate \endhtmlonly
+ * - Inspiratory Time Title: Inspiratory Time
+ * - Oxygen Title: Oxygen
+ * - cmH<sub>2</sub>O Unit: cmH<sub>2</sub>
+ * - LPM Unit: lpm
+ * - Percent Unit: %
+ * - PSI Unit: PSI
+ * - BPM Unit: BPM
+ * - ml Unit: ml
+ * - MAP Unit: MAP
+ * - TV Unit: TV
+ * - MV Unit: MV
  *
  * @file Roboto-Black.ttf
  * @file Roboto-BlackItalic.ttf
@@ -37,147 +227,13 @@
  * @file Roboto-Regular.ttf
  * @file Roboto-Thin.ttf
  * @file Roboto-ThinItalic.ttf
- * @}
- */
-
-/**
- * @ingroup stylingModule
- * @defgroup styleModule Styles and Fonts
- * @{
- * @brief Colors and Fonts
- * @details
- *
- * ## Styles and Fonts
- *
- * Text on the GUI will be displayed in different style variations of the Roboto Font Family, and sizes. Text and object will be displayed in different sizes, and colors.
- *
- * ### Hex Colors
- *
- * Hex Code representing colors (some color are meant to be transparent and utilized as a alpha layer):
- * - Primary: @htmlonly <font color="#3D96A8">#3D96A8</font> @endhtmlonly
- * - Secondary: @htmlonly <font color="#6FCC68">#6FCC68</font> @endhtmlonly
- * - Tertiary: @htmlonly <font color="#FAE061">#FAE061</font> @endhtmlonly
- * - PIP: @htmlonly <font color="#C12E30">#C12E30</font> @endhtmlonly
- * - SP: @htmlonly <font color="#0E6CBF">#0E6CBF</font> @endhtmlonly
- * - Primary Dark: @htmlonly <font color="#202531">#202531</font> @endhtmlonly
- * - Primary Light: @htmlonly <font color="#E3ECFB">#E3ECFB</font> @endhtmlonly
- * - Primary Dark Translucent: @htmlonly <font color="#8C202531">#8C202531</font> @endhtmlonly
- * - General Measured Value: @htmlonly <font color="#E6E3ECFB">#E6E3ECFB</font> @endhtmlonly
- * - General Set Display: @htmlonly <font color="#4A90E2">#4A90E2</font> @endhtmlonly
- * - Scale Rectangle Border: @htmlonly <font color="#66F2F2F2">#66F2F2F2</font> @endhtmlonly
- * - Unit: @htmlonly <font color="#99E3ECFB">#99E3ECFB</font> @endhtmlonly
- * - Min and Max: @htmlonly <font color="#BFE3ECFB">#BFE3ECFB</font> @endhtmlonly
- * - Transparent: @htmlonly <font color="#00000000">#00000000</font> @endhtmlonly
- * - Unclickable Border: @htmlonly <font color="#313C51">#313C51</font> @endhtmlonly
- * - Statistic Value: @htmlonly <font color="#E6E3ECFB">#E6E3ECFB</font> @endhtmlonly
- * - Mode Active: @htmlonly <font color="#1F2A34">#1F2A34</font> @endhtmlonly
- * - Mode Inactive: @htmlonly <font color="#506385">#506385</font> @endhtmlonly
- * - Mode Label: @htmlonly <font color="#3D96A8">#3D96A8</font> @endhtmlonly
- * - Primary Light Selected: @htmlonly <font color="#1AE3ECFB">#1AE3ECFB</font> @endhtmlonly
- * - Numeric UI Unit: @htmlonly <font color="#A1A7B2">#A1A7B2</font> @endhtmlonly
- * - Affirmative: @htmlonly <font color="#4AE287">#4AE287</font> @endhtmlonly
- * - Affirmative Translucent: @htmlonly <font color="#804AE287">#804AE287</font> @endhtmlonly
- * - Dissident: @htmlonly <font color="#FF223D">#FF223D</font> @endhtmlonly
- * - Cancel: @htmlonly <font color="#E24A5F">#E24A5F</font> @endhtmlonly
- * - Primary Light Disabled: @htmlonly <font color="#8CE3ECFB">#8CE3ECFB</font> @endhtmlonly
- * - Patient Warning: @htmlonly <font color="#F24C26">#F24C26</font> @endhtmlonly
- * - System Warning: @htmlonly <font color="#4A5AE4">#4A5AE4</font> @endhtmlonly
- * - Notice: @htmlonly <font color="#E2C044">#E2C044</font> @endhtmlonly
- * - Warning Description: @htmlonly <font color="#8CE3ECFB">#8CE3ECFB</font> @endhtmlonly
- * - Menu Color: @htmlonly <font color="#313C51">#313C51</font> @endhtmlonly
- * - Mode Active Warning: @htmlonly <font color="#FBA455">#FBA455</font> @endhtmlonly
- * - O<sub>2</sub> Color: @htmlonly <font color="#6FCC68">#6FCC68</font> @endhtmlonly
- * - Help Icon Selected: @htmlonly <font color="#804A90E2">#804A90E2</font> @endhtmlonly
- * - Mode Active Warning Selected: @htmlonly <font color="#8CFBA455">#8CFBA455</font> @endhtmlonly
- * - General Set Display Selected: @htmlonly <font color="#8C4A90E2">#8C4A90E2</font> @endhtmlonly
- *
- * ## Fonts
- *
- * @htmlonly
- * Font Styles built from the Roboto Font Family, Style Variations, Sizes, and Weights:<br><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 96px;">- Measured Font</div><br><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 32px;">- Set Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">- Title Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">- Unit Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">- Min and Max Font</div><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-size: 34px;">- Statistic Font</div><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-size: 30px;">- Statistic Font (Small Version)</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 24px;">- Number Button Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 32px;">- Numeric UI Display Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 17px;">- Button Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 17px;"><u>- Button Font Underlined</u></div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 18px;"><u>- Cancel Font</u></div><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-size: 24px;">- Warning Flag Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 24px;">- Warning Title Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 18px;">- Warning Description Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 36px;">- Page Title Font</div><br>
- * <div style="font-family: 'Roboto Bold', sans-serif; font-size: 24px;">- Setting Page Title</div><br>
- * <div style="font-family: 'Roboto Black', sans-serif; font-weight: 900; font-size: 72px;">- Loading Text Font</div><br>
- * <div style="font-family: 'Roboto Medium', sans-serif; font-size: 12px;">- Small Button Font</div>
- * @endhtmlonly
  *
  * @file Style.qml
  * @brief File containing fonts and colors.
- * @}
- */
-
-/**
- * @ingroup stylingModule
- * @defgroup textModule Constant Texts
- * @{
- * @brief String constants for titles and units.
- * @details
- *
- * ## Constant Texts
- *
- * Contant texts used on the GUI for the Pneumatic Setting Titles and Units.
- * Constants included:
- * - PIP Title: Peak Insp. Pressure
- * - SP Title: Stacking Pressure
- * - Auxiliary Flow Title: Auxiliary
- * - Humidity Title: Humidity
- * - Driving Pressure Title: Driving Pressure
- * - Rate Title: Rate
- * - Inspiratory Time Title: Inspiratory Time
- * - Oxygen Title: Oxygen
- * - cmH<sub>2</sub>O Unit: cmH<sub>2</sub>
- * - LPM Unit: lpm
- * - Percent Unit: %
- * - PSI Unit: PSI
- * - BPM Unit: BPM
- * - ml Unit: ml
- * - MAP Unit: MAP
- * - TV Unit: TV
- * - MV Unit: MV
  *
  * @file Strings.qml
  * @brief String constants for titles and units.
- * @details
- * Includes the following:
- * - PIP Title: Peak Insp. Pressure
- * - SP Title: Stacking Pressure
- * - Auxiliary Flow Title: Auxiliary
- * - Humidity Title: Humidity
- * - Driving Pressure Title: Driving Pressure
- * - Rate Title: Rate
- * - Inspiratory Time Title: Inspiratory Time
- * - Oxygen Title: Oxygen
- * - cmH<sub>2</sub>O Unit: cmH<sub>2</sub>
- * - lpm Unit: lpm
- * - percent Unit: %
- * - psi Unit: PSI
- * - bpm Unit: BPM
- * - ml Unit: ml
- * - map Unit: MAP
- * - tv Unit: TV
- * - mv Unit: MV
  *
- * @}
- */
-
-/**
- * @addtogroup familyModule
- * @{
  *
                                  Apache License
                            Version 2.0, January 2004
@@ -380,6 +436,5 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-
  * @}
  */

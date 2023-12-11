@@ -315,7 +315,7 @@ public:
      * @param help
      */
     explicit O2(int id, const QString &title = QStringLiteral("Oxygen"),
-                const QString &help = QStringLiteral("The NVENT Vita is able to proportionally control the concentration of oxygen being delivered to the patient based on desired operator settings.  The NVENT VITA performs an automatic O2 calibration of the oxygen sensor 3 minutes after powering the device on. An automatic secondary O2 calibration will be performed 10 mins after the device is powered on to ensure proper operation. Calibration can also be performed by the user manually, or it will occur automatically once every 24 hours the unit is powered on. The oxygen concentration can be set in 1% increments from  21% to 100%. The Oxygen setpoint will be delivered on both the Jet Line and the Auxiliary Line."));
+                const QString &help = QStringLiteral("The NVENT Vita is able to proportionally control the concentration of oxygen being delivered to the patient based on desired operator settings. The NVENT VITA performs an automatic O<sub>2</sub> calibration of the oxygen sensor 3 minutes after powering the device on. An automatic secondary O<sub>2</sub> calibration will be performed 10 mins after the device is powered on to ensure proper operation. Calibration can also be performed by the user manually, or it will occur automatically once every 24 hours the unit is powered on. The oxygen concentration can be set in 1% increments from 21% to 100%. The Oxygen setpoint will be delivered on both the Jet Line and the Auxiliary Line."));
 };
 
 /**

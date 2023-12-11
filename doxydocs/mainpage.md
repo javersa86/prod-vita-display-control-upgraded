@@ -1,16 +1,126 @@
 \mainpage Display Overview
-
-This page is the main introduction page that will outline all major design paramters for the display controller. \n\n
-
 \tableofcontents
 
-# NVENT-VITA Display Controller Software
+This page is the main introduction page that will outline all major design parameters for the display controller. \n\n
 
-## Introduction
+This manual is divided in the following sections:
+1. \subpage introduction "Introduction" <br>
+        &emsp;&emsp;1.1 \subpage introduction_background "Background" <br>
+        &emsp;&emsp;1.2 \subpage introduction_tech_used "Technologies Used" <br>
+        &emsp;&emsp;1.3 \subpage introduction_directory_structure "Directory Structure" <br>
+2. \subpage mainThread   "Threading Architecture" <br>
+        &emsp;&emsp;2.1 \subpage mainThread_definitions "Definitions" <br>
+        &emsp;&emsp;2.2 \subpage mainThread_background "Background" <br>
+        &emsp;&emsp;2.3 \subpage thread_list "List of Threads" <br>
+                &emsp;&emsp;&emsp;&emsp;2.3.1 \subpage thread1 "API Thread" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.1.1 \subpage thread1_background "Background" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.1.2 \subpage thread1_sequence "Sequence of Events" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.1.3 \subpage thread1_references "Module References" <br>
+                &emsp;&emsp;&emsp;&emsp;2.3.2 \subpage thread2 "Encoder Knob Thread" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.2.1 \subpage thread2_background "Background" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.2.2 \subpage thread2_sequence "Sequence of Events" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.2.3 \subpage thread2_references "Module References" <br>
+3. \subpage modules "Modules" <br>
+        &emsp;&emsp;3.1 \subpage moduleDefinitions "Definitions" <br>
+        &emsp;&emsp;3.2 \subpage main "Main Application" <br>
+        &emsp;&emsp;3.3 \subpage frontendModule "Frontend Module (GUI)" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.1 \subpage frontendModule_background "GUI Background" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.2 \subpage frontendModule_technologies "GUI Technologies Used" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.3 \subpage frontendModule_directory "GUI Directory Structure" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.4 \subpage frontendModule_page_description "Page Description" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.5 \subpage frontendModule_page_stacks "Page StackViews" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.6 \subpage pagesModule "Pages" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.1 \subpage homePagesModule "Main Window and its Related Pages" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.2 \subpage pneumaticSettingPagesModule "Pneumatic Settings Adjustment Pages" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.3 \subpage humidityAdjustmentModule "Humidity Adjustment Page" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.4 \subpage presetPagesModule "Preset Options" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.5 \subpage jetActiveModule "Shutdown and Dehumidification Pages" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.6 \subpage screenlockModule "Screen Lock Mode" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.7 \subpage helpPagesModule "Help Pages" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.8 \subpage troubleshootingPagesModule "Troubleshooting Steps" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.9 \subpage settingsMenuPagesModule "Settings Menu" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.6.10 \subpage serviceMenuPagesModule "Service Menu" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.7 \subpage customObjectsModule "Custom Objects" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.1 \subpage customObjectsGraph "Graph" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.2 \subpage customObjectsNavigation "Navigational Sidebar and Inputs" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.3 \subpage customObjectsWarningBanner "Warning Banner" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.4 \subpage customObjectsOtherObjects "Other Objects" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.5 \subpage customObjectsInputs "Buttons and Other Inputs" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.6 \subpage customObjectsSwitches "Switches" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.7 \subpage customObjectsKeyboards "Keyboards and Keypads" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.3.7.8 \subpage customObjectsLayouts "Page Layouts" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.8 \subpage stylingModule "Styling" <br>
+                &emsp;&emsp;&emsp;&emsp;3.3.9 \subpage iconographyModule "Iconography" <br>
+        &emsp;&emsp;3.4 \subpage backendModule "Backend Module (Backend Controller)" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.1 \subpage backendModule_background "Backend Background" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.2 \subpage backendModule_technologies "Backend Technologies Used" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.3 \subpage backendModule_directory "Backend Directory Structure" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.4 \subpage backendModule_modes "Operational Modes" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.5 \subpage backendController "Backend Controller" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.5.1 \subpage backendController_description "Backend Description" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.5.2 \subpage backendController_request_function "Backend Request Function" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.5.3 \subpage backendController_startup_requests "Backend Startup Requests" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.5.4 \subpage backendController_requests "Backend Requests" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.5.5 \subpage backendController_functions "Other Backend Functions" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.6 \subpage stateManager "State Manager" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.7 \subpage warningsModule "Warnings and Warning Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.7.1 \subpage warningsModule_classes "Warning Classes" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.7.2 \subpage warningsModule_clear_behavior "Warning Clear Behavior" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.7.3 \subpage warningsParent "List of Warnings" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.7.4 \subpage warningsManager "Warning Manager" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.8 \subpage modelsModule "Models" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.8.1 \subpage opModeModels "Op Mode IDs" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.8.2 \subpage hmiModels "HMI Input IDs" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.8.3 \subpage settingsModels "Pneumatic Settings Models" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.8.4 \subpage notificationModels "Notifications" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.8.5 \subpage serviceNotificationModels "Service Notifications" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.9 \subpage loggerModule "Log Manager and other Managers" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.1 \subpage csvManagerModule "CSV Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.2 \subpage logManagerModule "Log Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.3 \subpage brightnessManagerModule "Brightness Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.4 \subpage contactManagerModule "Contact Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.5 \subpage dprManagerModule "DPR Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.6 \subpage maintenanceManagerModule "Maintenance Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.7 \subpage o2CalManagerModule "O2 Calibration Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.8 \subpage partManagerModule "Part Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.9 \subpage passcodeManagerModule "Passcode Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.10 \subpage presetManagerModule "Preset Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.11 \subpage timeManagerModule "Time Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.12 \subpage versionManagerModule "Version Manager" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.9.13 \subpage zeroManagerModule "Zero Manager" <br>
+                &emsp;&emsp;&emsp;&emsp;3.4.10 \subpage gpioModule "Knob Controller and other GPIO Components" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.10.1 \subpage knobModule "Knob Controller" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.10.2 \subpage gpioModule_calc "Calculating Pin Numbers" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.10.3 \subpage switchModule "Switch" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.10.4 \subpage encoderModule "Encoder" <br>
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.4.10.5 \subpage gpioMainModule "GPIO" <br>
+        &emsp;&emsp;3.5 \subpage communicationModule "Communication Module (API Controller)" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.1 \subpage communicationModule_background "API Background" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.2 \subpage communicationModule_technologies "API Technologies Used" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.3 \subpage communicationModule_directory "API Directory Structure" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.4 \subpage serialModule "Serial Port Communication (Comm Object)" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.5 \subpage messageModule "Message Object and Message Queue" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.6 \subpage apiModule "API Requests and Responses" <br>
+                &emsp;&emsp;&emsp;&emsp;3.5.7 \subpage devicesModule "Devices Object" <br>
+                        
+        
+        
 
-The NVENT-VITA Display Controller software is the graphical user interface application that allows the user to interact with NVENT VITA’s system features. The software is designed to manage and track the different pneumatic settings, measurements, modes, data, and other features available on the device. For the display controller software, it consists of frontend components, the backend controller, and the API Thread where the display controller communicates with the system controller. 
 
-## Technologies Used
+
+
+<!-- Introduction -->
+        
+\page introduction Introduction
+\tableofcontents
+
+\section introduction_background Background
+
+The NVENT-VITA Display Controller software is the graphical user interface application that allows the user to interact with NVENT VITA’s system features. The software is designed to manage and track the different pneumatic settings, measurements, modes, data, and other features available on the device. For the display controller software, it consists of frontend components, the backend controller, and the \htmlonly API \endhtmlonly Thread where the display controller communicates with the system controller.
+
+<b>Display Version: 1.2.0</b>
+
+\section introduction_tech_used Technologies Used
 
 The display controller software is a Qt cross platform application that utilizes QML files for the frontend and C++ header and source code for the backend. The application utilizes multiple libraries from the following modules from Qt 5.12.3: 
 * Qt Core
@@ -27,35 +137,142 @@ The project is built from the following components:
   - QObject to connect data between classes
 * <b>“qml.qrc” file:</b> the XML-based resource collection file used by Qt to bundle QML files and other assets.
 
-## Directory Structure
+\section introduction_directory_structure Directory Structure
 
 The project is organized as followed:
 * <b>/qml:</b> Contains all UI components built from QML.
-* <b>/scripts:</b> Contains CMake and shell scripts required to run the QT Project and utilize all display GPIO components of the A62 board.
+* <b>/scripts:</b> Contains CMake and shell scripts required to run the QT Project and utilize all display \htmlonly GPIO \endhtmlonly components of the A62 board.
 * <b>/src:</b> Contains all source files for executing the application.
 
-## Modules
 
-The NVENT-VITA is divided in the following modules:
-- \subpage frontendModule "Frontend Module (GUI)": Handles multiple pages, and navigates through and utilizes all features of the system.
-- \subpage backendModule "Backend Module (Backend Controller)": Handles all the data management of the NVENT-VITA.
-- \subpage communicationModule "Communication Module (API Controller)": Handles all communication between the display controller and the system controller.
+
+
+<!--- defines main thread -->
+
+\page mainThread Threading Architecture
+\tableofcontents
+This page gives detailed information on threading.
+
+\section mainThread_definitions Definitions
+
+<b>Thread</b> - A sequence of software code the application must execute.
+
+\section mainThread_background Background
+
+For the display application to run alongside the system controller, multiple threads need to run continuously with the system and concurrently with each other.
+
+\section thread_list List of Threads
+
+\subsection thread1 API Thread
+
+\subsubsection thread1_background Background
+
+The user will power on the device and startup the display application. On Startup, and after the main functions declare the important variables and initiate the different managers and controllers, the API Controller will start the main thread.
+
+\subsubsection thread1_sequence Sequence of Events
+
+1. The \htmlonly API \endhtmlonly Controller is built and running from QThread that starts at the start of the application. Each loop represents an \htmlonly API \endhtmlonly Cycle of at least 30 milliseconds.
+2. Starts by opening the Serial Port connected to the system controller through the serial port object with the following Port Name and Baud \htmlonly Rate\endhtmlonly:
+    - Serial Port Parameters:
+      - Port Name: "/dev/ttyUSB0"
+      - Baud \htmlonly Rate\endhtmlonly: 115200
+    - If the serial object fails to open the serial port, then an attempt will be made to close the port and exit the thread.
+    - If the port is opened, then the appropriate configurations will be made. 
+3. Afterwards, an infinite while loop will be triggered and will only be interrupted by request. 
+4. Checks to see if the System Controller is connected to the Display Controller via devices object.
+5. Reads and processes bytes from the MCU.
+6. Handles the different requests and responses from the system controller and sends signals to the backend controller for updates.
+7. While the \htmlonly API \endhtmlonly Controller is handling messages from the system, it is also adding messages to a message queue from requests and responses from the backend controller via signals.
+8. After handling the different requests and responses and if the queue is not empty, the message queue will lock the mutex for the thread, pop up to 5 messages from the queue, and write those messages to the serial object. The thread and other running threads will wake up again.
+9. The thread will sleep for at least 25 milliseconds.
+
+\subsubsection thread1_references Module References
+
+- \ref communicationModule "Communication Module"
+
+\subsection thread2 Encoder Knob Thread
+
+\subsubsection thread2_background Background
+
+Activities available on the NVENT-VITA include adjusting pneumatic settings in the system. For when adjustment pages are displayed, the Op Mode "Listening Knob" will be enabled (usually when the backend emits a signal to the knob controller).
+
+\subsubsection thread2_sequence Sequence of Events
+
+1. Open the file descriptors for \htmlonly GPIO \endhtmlonly objects representing Pin A, Pin B, and the \htmlonly Switch \endhtmlonly Pin.
+2. Sets the state of the switch of the button object with \htmlonly GPIO \endhtmlonly object switch, and the states of the encoder object with the Pin A and B \htmlonly GPIO \endhtmlonly objects.
+3. The while loop will then trigger and only be disabled when Op Mode is disabled.
+4. Constructs the POLLFD "fdset", the data structure that tracks the file descriptors for each \htmlonly GPIO \endhtmlonly object and sets each event notification to POLLPRI.
+   - POLLPRI: to read urgent data
+5. Poll the memory of the fd_set for the number of events that changed.
+6. If the file descriptor for Pin A is updated, the state representing Pin A on the encoder object changes.
+7. If the file descriptor for Pin B is updated, the state representing Pin B on the encoder object changes.
+8. If the file descriptor for \htmlonly Switch \endhtmlonly Pin is updated, the state of the Button object changes.
+   - Thread will sleep for 75 ms.
+9. At the ending, flushes out the standard output.
+
+\subsubsection thread2_references Module References
+
+- \ref gpioModule "Knob Controller and other GPIO Components"
+- \ref pneumaticSettingPagesModule "Pneumatic Settings Adjustment Pages"
+- \ref humidityAdjustmentModule "HumidityAdjustment Page"
+- \ref settingsMenuPagesModule "Settings Menu"
+- \ref serviceMenuPagesModule "Service Menu"
+- \ref customObjectsModule "Custom Objects"
+
+
+
+
+
+
 
 <!--- defines major modules -->
 
 \page modules Modules
-
 \tableofcontents
+
+
+
+
+
+<!--- Definitons -->
+
+@defgroup moduleDefinitions Definitions
+@brief Definitions available for all modules.
+@{
+@details
+
+<b>Module</b> - Any of a number of distinct but interrelated units from which a program may be built up or into which a complex activity may be analyzed.<br>
+<b>Main</b> - Section of a program that is entered first and from which program units and procedures are called.<br>
+<b>Frontend</b> - Everything a user sees and interacts with.<br>
+<b>\htmlonly Backend \endhtmlonly</b> - The portion of the code the user doesn’t see.<br>
+<b>State</b> - information designed to remember preceding events or user interactions.<br>
+<b>Manager</b> - Organizes and stores extra data on the display.<br>
+<b>\htmlonly API \endhtmlonly</b> - Application Programming Interface, a way for two or more computer programs to communicate with each other.<br>
+<b>\htmlonly GPIO \endhtmlonly</b> (General Purpose Input/Output) - A set of pins on a microcontroller or single-board computer that can be configured to either read input signals from external devices or provide output signals to control external devices. \htmlonly GPIO \endhtmlonly pins can be used to interact with various electronic components and peripherals, such as sensors, LEDS, motors, buttons, and more.<br>
+<b>Queue</b> - A data structure that follows the First-In-First-Out (FIFO) Principle, where the element added first will be the first to be removed. Elements are added to the "tail" of the queue, and removed from the "head" of the queue.<br>
+<b>Enqueue</b> - The operation of adding (pushing) an element to the rear end of a queue.<br>
+<b>Dequeue</b> - The operation of removing (popping) an element from the front end of a queue.<br>
+@}
+
+
+
+
+
+<!--- Frontend -->
 
 @defgroup frontendModule Frontend Module (GUI)
 @brief Documentation for all QML files.
+@{
+@details
 
-# NVENT VITA Frontend Module Documentation
+\section frontendModule Frontend Module (GUI)
 
-## Introduction
+\subsection frontendModule_background GUI Background
+
 The frontend software is the Graphical User Interface that the user will interact with to trigger and change events in the backend module. The GUI will be composed of multiple pages, objects, images, and styling tools.
 
-## Technologies used
+\subsection frontendModule_technologies GUI Technologies Used
+
 The frontend is built using QML, a markup language used in the Qt framework for designing the Graphical User Interface. It utilizes the following QT 5 libraries:
 * QtQuick 2.12
 * QtQuick.Controls 2.12
@@ -76,7 +293,7 @@ JavaScript is also utilized on the pages and objects for different purposes. Mos
 
 The <b>“qml.qrc” file</b> is also XML-based resource collection file used by Qt to bundle QML files and the other assets together.
 
-## Directory Structure
+\subsection frontendModule_directory GUI Directory Structure
 
 The GUI pages are ordered as followed:
 - <b>/qml:</b> Header directory for the Graphical User Interface.
@@ -91,25 +308,42 @@ The GUI pages are ordered as followed:
 - <b>/qml/fonts:</b> Contains all Font Libraries.
 - <b>/qml/iconography:</b> Contains all iconography.
 
-## Additional Information
+\subsection frontendModule_page_description Page Description
 
-Information for the other components of the GUI is available in the following links:
+In context to the graphical user interface, a page refers to a screen within an application that presents a specific set of information or functionality to the user. A page will be composed of different objects, texts, and inputs (referred to as mouse areas). Each page size will match the screen size of the display controller's screen, which is 1280 x 800. For popup windows, the page itself will still be 1280 x 800, but the background will be transparent and the middle section will be composed of a rectangular box.
 
-- @ref pagesModule "Pages"
-- @ref customObjectsModule "Custom Objects"
-- @ref stylingModule "Styling"
-- @ref iconographyModule "Iconography"
+\subsection frontendModule_page_stacks Page StackViews
+
+A <b>StackView</b> is a component that provides a way to manage multiple views/pages in a stack-like manner for navigation. Stack refers to a data structure that follows the Last-In-First-Out (LIFO) Model. It is a collection of elements in which items can be added or removed only from one end. Note that for Popup windows and pages that are not the Home page, the Preset Creation page, and the Service Menu page will automatically redirect back to the home page if there is no activity or input for at least 1 minute.
+
+The <b>Home Stack</b> is where the user will navigate between main components of the GUI, including the following: the Home Window Page, Adjustment Pages, the Preset Pages, the Settings Menu Page, Passcode Pages, and the Service Menu Page.
+
+The <b>Popup Stack</b> is where the user pushes up Popup Windows and other pages separate from the main components: the Screen Lock Popup and Overlay, Dehumidification Popups and Progress Page, the Jet Active Popup and Shutdown Procedure Popups, the Help and Troubleshooting Boxes, the Preset Name Popup and the Preset Implementation Popup, and the Pneumatic Settings Confirmation Popup.
+
+The <b>Adjustment Page</b> Stacks are utilized for adjustment pages where the user will need to switch between the dial page, and the keypad page.
+
+The <b>Service Popup Stack</b> is specifically for the popup windows available on the Service Menu.
+
+The <b>Settings Stacks</b> are used to contain menu pages for the Settings Menu and the Service Menu.
+@}
+
+
+
+<!-- Backend -->
 
 @defgroup backendModule Backend Module (Backend Controller)
 @brief Documentation for backend functions and features.
+@{
 @details 
 
-# NVENT VITA Backend Module Documentation
+\section backendModule Backend Module (Backend Controller)
 
-## Introduction
-The backend software is responsible for managing all tasks and settings available on the display controller. The backend consists of the backend controller, the state manager, the GPIO module, constant models, and multiple loggers and managers for other backend components. This documentation is intended for developers, FDA officials, and medical service technicians who will be working with software.
+\subsection backendModule_background Backend Background
 
-## Technologies Used
+The backend software is responsible for managing all tasks and settings available on the display controller. The backend consists of the backend controller, the state manager, the \htmlonly GPIO \endhtmlonly module, constant models, and multiple loggers and managers for other backend components. This documentation is intended for developers, FDA officials, and medical service technicians who will be working with software.
+
+\subsection backendModule_technologies Backend Technologies Used
+
 The backend is built using C++ classes, which consists of header files and source files. It utilizes the following QT 5 libraries: 
 * QObject
 * QVector
@@ -123,7 +357,7 @@ The backend is built using C++ classes, which consists of header files and sourc
 
 The backend also utilizes C++ standard library as well.
 
-## Directory Structure
+\subsection backendModule_directory Backend Directory Structure
 
 The backend code is organizaed as followed:
 * <b>/src:</b> Header source directory for the backend controller that handles all tasks, and the state manager that manages the state of all settings.
@@ -132,209 +366,46 @@ The backend code is organizaed as followed:
 * <b>/src/models:</b> Defines the constant values and models for pneumatic settings, modes, measurements, subsystems, notifications, HMI Buttons, and other settings.
 * <b>/src/warnings:</b> Defines the constant values related to warnings, the model structure for all warnings, and contains the management for all warnings running on the system.
 
-## Functionality
-The backend consists of the following components:
-* Backend Controller: main application that handles tasks from the requests and responses from the API and QML inputs.
-* State Manager: manages the state of pneumatic settings, modes, subsystems, measurements, and other settings.
-* Warnings Manager: Manages the number of warnings that are running on the system.
-* Models: Constants and Models for all files.
-* Log Manager and other managers: the main log manager that writes service logs, and other managers on the display controller.
-* GPIO Module: Manages the pins connected to the microcontroller that enables the display controller’s encoder knob.
+\subsection backendModule_modes Operational Modes
 
-## Backend Controller
-The backend controller is where all activity occurs from the user inputs on the Graphical User Interface and the updates from the system controller. The following functions are triggered from the backend controller:
-- Trigger a timer that will continue to send requests to the API via emitting QObject signals until responses are sent via QObject slots. The following requests are sent from the backend to the API:
-  - <b>Get Settings Request:</b> Retrieve all pneumatic settings from the API on startup.
-  - <b>Enable Notifications Request:</b> Enable the constant retrieval of notifications from the system on startup. Notification updates will be sent to the state manager and the warning manager.
-  - <b>Get Op Modes Request:</b> Retrieve the state of all op modes enabled or disabled on the system on startup.
-  - <b>Get Subsystem State Request:</b> Retrieve the state of all subsystems on the system on startup.
-  - <b>Get System Version Request:</b> Retrieve the most recent version number of the system controller on startup. Also saves the most recent version of the display controller.
-  - <b>Set Settings Request:</b> Updates the values for pneumatic settings requests updates to the system controller. 
-    - One pneumatic setting can be changed, such as updating the rate from 30 BPM to 90 BPM.
-    - All pneumatic settings can be changed, such as implementing a preset.
-    - When Laser-Safe Oxygen Concentration is less than the current oxygen concentration, oxygen concentration is updated.
-    - Humidity on the jet line and the auxiliary line is updated at once.
-  - <b>Get Measured Request:</b> Retrieves measurements running on the system, such as for detecting water on the system, O<sub>2</sub> Calibration Voltages, or low and high O<sub>2</sub> Calibration values.
-    - Utilized so that when calibration procedures are conducted, the system is sending the constant measurements for the following: Inlet Air, Inlet O<sub>2</sub>, Peak Inspiratory Pressure, Stacking Pressure, and the Driving Pressure Regulator.
-  - <b>Enable Op Mode Request:</b> Enable or disable an Op Mode on the system. Multiple activities occur between updating op modes:
-    - Screen Lock Mode and Screen Lock Touched Mode need to be enabled at once.
-    - If the system is venting or manual mode is enabled, enabling ETCO<sub>2</sub> Mode is prevented.
-    - If ETCO<sub>2</sub> Mode is enabled, enabling manual mode is prevented.
-    - Emits signal to knob controller when enabling the Listening Knob Op Mode.
-    - When enabling Laser-Safe Mode, and if the Oxygen Concentration is greater than Laser-Safe Oxygen Concentration, Oxygen Concentration is updated to match it. Also, when the minimum value for Oxygen Concentration is reached, the Laser-Safe Timer in the O<sub>2</sub> Calibration Manager will start.
-    - When disabling Laser-Safe Mode, oxygen concentration sets back to its original value.
-    - When enabling or disabling the O<sub>2</sub> Calibration Op Mode, the 1 minute timer stored in the O<sub>2</sub> Calibration Manager will start or stop.
-    - When enabling service calibration mode, the following occur: 
-      - The warning banner will not be displayed (even if warnings are running).
-      - The current Driving Pressure Pneumatic Setting will be saved. 
-      - Signal is emitted for the API service variable.
-      - The Set DPR Cal Val Request is sent at its default state.
-    - When disabling service calibration mode, the following occur:
-      - The saved Driving Pressured Pneumatic Setting will be set again.
-      - The warning banner will be displayed.
-      - Signal is emitted for the API service variable.
-    - When Disabling the Humidity Priming Reset Available Mode, the Humidity on the Jet Line and the Auxiliary Line is set to 0.
-    - When Disabling Dehumidification, the Dehumidification Timer will stop.
-  - <b>Shutdown Confirm Send Request:</b> Send request to the system to confirm that the device can shutdown completely, can cancel the shutdown procedure.
-  - <b>Set DPR Cal Val Request:</b> Request to update the state of calibration for pressure regulators: 
-    - Low DPR: requests constant measurements for DPR, and sets Driving Pressure to 0. Saves DPR value from system to DPR Calibration Manager.
-    - High DPR: requests constant measurements for DPR, and sets Driving pressure to 45. Sets precise float values for Driving Pressure during calibration and saves DPR value from system to DPR Calibration Manager.
-    - Air Regulator: sets Driving Pressure to 48.
-    - O<sub>2</sub> Regulator: sets Driving Pressure to 48.
-    - Default
-  - <b>Enable Pressure Sensor Zero Request:</b> Requests calibration for the following sensors: Inlet Air, Inlet O<sub>2</sub>, PIP, and SP. Saves value to Zero Calibration Manager for Sensor values.
-- For Modes Requested from the system, the following will occur:
-  - When the system enables the O<sub>2</sub> Calibration Op Mode, the 1 minute timer stored in the O<sub>2</sub> Calibration Manager will start and O<sub>2</sub> Calibration values and voltages are requested.
-  - When the system disables the O<sub>2</sub> Calibration Op Mode, the 1 minute timer stored in the O<sub>2</sub> Calibration Manager will stop.
-  - When the system enables dehumidification, the Humidity on the Jet Line and the Auxiliary Line is set to 0.
-- Detect the dev port for a USB drive, and find and create the directories to send service logs to.
-- Eject dev port for USB drive.
-- Update log manager for when the service menu is opened.
-- Runs a 2 minute countdown timer for when the dehumidification progress page is up.
-- Receives ventilation status updates from the system, which will be utilized for the state manager, the End-Tidal Button, and the part manager.
-- Receiving the ids for which the HMI button is pushed, is especially useful for screen lock mode.
-- When the system begins the shutdown procedure, the backend requests measurements for Water Sensors to determine if water is detected on Jet and Auxiliary Lines.
+The Operational Modes (Op Modes) are the distinct settings in which user input produces different results compared to the standard setting of the device.
 
-## State Manager
+<table>
+    <tr>
+    <th>Mode</th><th>Description</th></tr>
+    <tr><td>Limited O<sub>2</sub></td><td>The laser on the system is active and the measured oxygen is required to be within a safer threshold to avoid ignition.</td></tr>
+    <tr><td>Double Jets</td><td>The device is venting on two jet lines.</td></tr>
+    <tr><td>Manual</td><td>Disables automatic ventilation, and the user needs to manually vent the system by pressing down on the encoder knob.</td></tr>
+    <tr><td>Screen Lock</td><td>Disables functionality for the screen and the HMI inputs that are not the encoder pushdown button.</td></tr>
+    <tr><td>Demo</td><td>Displays all functions of the device, but only for demonstration purposes. Warnings will be hidden.</td></tr>
+    <tr><td>\htmlonly PIP \endhtmlonly Disconnected Monitoring</td><td>The \htmlonly PIP \endhtmlonly line is monitored for pressure that is used for a connected patient. Ventilation is disabled if a patient is not found.</td></tr>
+    <tr><td>End-Tidal (ETCO<sub>2</sub>) Procedure</td><td>The device ventilates at a state where the level of carbon dioxide is released at the end of an exhaled breath.</td></tr>
+    <tr><td>Dehumidification</td><td>Water vapor is being removed from the device.</td></tr>
+    <tr><td>O<sub>2</sub> Calibration</td><td>The oxygen sensor is calibrating the accurately read the measurement for oxygen concentration.</td></tr>
+    <tr><td>Alarm Sounding</td><td>The device is raising an alarm sound to indicate a warning that needs to be addressed at a high priority, for when the mode is disabled and the warning is still active, a countdown timer will be displayed.</td></tr>
+    <tr><td>\htmlonly Humidity \endhtmlonly Priming Reset Available</td><td>The humidification system will be deactivated after the user fails to pump water after 3 attempts. Button will be available in the humidity adjustment page to disabled mode and reset pumps.</td></tr>
+    <tr><td>Listening To \htmlonly Knob \endhtmlonly </td><td>The encoder knob is active and listening for input.</td></tr>
+    <tr><td>Service Calibration</td><td>Mode only active when the Service Menu is accessed. The Notifications will be disabled, and the Service Notifications will be enabled. The measurements required for calibration will be available and displayed in the Service Menu Calibration page.</td></tr>
+    <tr><td>Screen Lock Touched</td><td>Temporary mode that is triggered when Screen Lock Mode is enabled and the user touches the screen or other HMI Inputs.</td></tr>
+</table>
+@}
 
-The State Manager stores and controls the following from the backend controller and the Graphical User Interface:
-- The state for the Shutdown Procedure.
-- The state for when the system is ventilating.
-- The version numbers for the Display Controller and the System Controller.
-- Flags for when the start up procedure is active and complete.
-- The state of the following Op Modes:
-  - Laser-Safe Mode
-  - Manual Mode
-  - PIP Monitoring Mode
-  - Demo Mode
-  - Screen Lock Mode
-  - Double Jets Mode
-  - EndTidal Procedure
-  - Dehumidification Procedure
-  - O2 Calibration Procedure
-  - Alarm Sounding Mode
-  - Humidity Priming Reset Available
-  - Listening to Knob Mode
-  - Sound Icon Mode (obsolete)
-  - Service Calibration Mode
-- State for when adjustments for humidity on the Jet Line and Auxiliary Line are separated.
-- The state of successes for the following procedures:
-  - Dehumidification
-  - O<sub>2</sub> Calibration
-  - End-Tidal
-- State of the following subsystems:
-  - Primary Ventilation
-  - Secondary Ventilation
-  - Auxiliary Flow
-  - Oxygen Control
-  - Primary Humidification
-  - Secondary Humidification
-  - Auxiliary Humidification
-- The values for the following pneumatic settings:
-  - Driving Pressure 
-  - Rate
-  - Inspiratory Time
-  - Stacking Pressure
-  - Oxygen Concentration
-  - Peak Inspiratory Pressure
-  - Auxiliary Flow
-  - Humidity on the Jet Line
-  - Humidity on the Auxiliary Line
-- If a double jet is installed on the device, then the following pneumatic settings will have secondary values:
-  - Driving Pressure
-  - Rate
-  - Inspiratory Time
-  - Stacking Pressure
-  - Humidity on the Second Jet Line
-- The values for settings utilized for the End-Tidal Procedure:
-  - ETCO2 Rate
-  - ETCO2 Inspiratory Time
-  - ETCO2 Number of Breaths
-  - ETCO2 Driving Pressure
-- The value for Laser-Safe Oxygen Concentration.
-- The volume of the Display Controller Alarm.
-- The saved value for Oxygen Concentration during Laser-Safe.
-- The Calibration State for the Pressure Regulator Calibration.
-- The Calibration Values for Sensor Calibration:
-  - Inlet Air
-  - Inlet O<sub>2</sub>
-  - Peak Inspiratory Pressure
-  - Stacking Pressure
-- The Saved Driving Pressure before Pressure Regulator Calibration.
-- The measured values for Notifications:
-  - Stacking Pressure
-  - Stacking Pressure on second Jet Line
-  - Oxygen Concentration
-  - Peak Inspiratory Pressure
-  - Auxiliary Flow
-  - Tidal Volume 
-  - Tidal Volume on second Jet Line
-  - Map
-  - O<sub>2</sub> Calibration Voltage
-  - Alarm Time
-- The measurement values:
-  - Driving Pressure
-  - Driving Pressure on Second Line
-  - Rate
-  - Rate on Second Line
-  - Inspiratory Time
-  - Inspiratory Time on Second Line 
-  - Stacking Pressure
-  - Stacking Pressure on Second Line
-  - Oxygen Concentration
-  - Peak Inspiratory Pressure
-  - Auxiliary Flow
-  - Humidity on the Jet Line
-  - Humidity on the Second Line
-  - Humidity on the Auxiliary Line
-  - The Heater Temperature
-  - The Average Flow
-  - The Average Flow on the Second Line
-  - Water Sensor on the Jet Line
-  - Water Sensor on the Second Line
-  - Water Sensor on the Auxiliary Line
-  - Tidal Volume
-  - Tidal Volume on the Second Line
-  - Map
-  - Inlet Air Pressure
-  - Inlet O<sub>2</sub> Pressure
-  - PIP Zeroing Value
-  - Stacking Pressure Zeroing Value
-  - Stacking Pressure Zeroing Value on the Second Line
-  - Inlet Air Zeroing Value
-  - Inlet O<sub>2</sub> Zeroing Value
-  - Lowest Bounded O<sub>2</sub> Calibration Value
-  - Highest Bounded O<sub>2</sub> Calibration Value
-  - Lowest O<sub>2</sub> Calibration Voltage
-  - Highest O<sub>2</sub> Calibration Voltage
-  - Realtime O<sub>2</sub> Calibration Voltage
-  - Realtime Driving Pressure Regulator
-- The Display Controller’s IP Address (retrieves and sets IP Address from local network).
-- State of the Preset Implementation Progress.
-- State of Warning Banner Displayed.
-- State of when Presets are being created or edited.
-- State of visibility for Stacking Pressure line on graph.
-- State of functionality for End-Tidal Button.
-- Total number of service logs stored on the device.
-- The number of service logs that are being exported to USB Drive.
 
-## Additional Information
 
-Information for the other components of the Backend is available in the following links:
 
-- @ref warningsModule "Warnings"
-- @ref modelsModule "Models"
-- @ref loggerModule "Log Manager and other Managers"
-- @ref gpioModule "GPIO Module"
+<!-- API -->
 
 @defgroup communicationModule Communication Module (API Controller)
 @brief Documentation for how the Display Controller and the System Controller communication between each other.
 @details
 
-## Introduction
-The API software works separately from the backend and frontend module, for its single tasked requesting and responding to messages from the system controller. The Communication Module is composed of the main API Controller that runs on a looping thread, the Serial Port object, and other components to make commuication more structured.
+\section communicationModule Communication Module (API Controller)
 
-## Technologies Used
+\subsection communicationModule_background API Background
+
+The \htmlonly API \endhtmlonly software works separately from the backend and frontend module, for its single tasked requesting and responding to messages from the system controller. The Communication Module is composed of the main \htmlonly API \endhtmlonly Controller that runs on a looping thread, the Serial Port object, and other components to make commuication more structured.
+
+\subsection communicationModule_technologies API Technologies Used
 The api, like the backend, is built using C++ classes, which consists of header files and source files. It utilizes the following QT  5 libraries:
 * QObject
 * QThread
@@ -363,276 +434,11 @@ The api also utilizes C++ standard libraries:
 * termios.h
 * libusb-1.0/libusb.h
 
-Libusb is a C library that provides generic access to USB devices is utilized for devices object.
+<b>Libusb</b> is a C library that provides generic access to USB devices is utilized for devices object.
 Link: <a href="https://libusb.info/">Libusb Documentation</a>
 
-## Directory Structure
+\subsection communicationModule_directory API Directory Structure
+
 The api code is organized as followed:
 * <b>/src/communication:</b> Header source directory for the api controller that handles all tasks, the serial port object that send input buffer messages to system, 
 queue to send message objects storing input buffers, and the devices object to ensure that there is a usb connection between the display controller and the system controller.
-
-## Functionality
-The api consists of the following:
-* <b>API Controller:</b> the main thread that runs on a repeating loop that reads and writes messages to the serial port object.
-* <b>API Constants:</b> Objects that contain the Transmitted and Received Message ID and Message Lengths for the type of messages that will be sent.
-* <b>Communication Object:</b> Reads and writes the messages created from buffer objects from a file descriptor.
-* <b>Message Queue and Message:</b> Queue that will be utilized to sends a request or a response to the serial port for every loop.
-* <b>Devices Object:</b> Checks to see if USB is connected between system and display controllers.
-
-## API Controller
-
-The API Controller is built and running from QThread that starts at the start of the application. 
-The thread will begin by opening the serial port to the system controller through the serial port object with the following Port Name and Baud Rate:
-- Port Name: "/dev/ttyUSB0"
-- Baud Rate: 115200
-
-If the serial object fails to open the serial port, then an attempt will be made to close port and exit the thread. If the port does open, 
-then the appropriate configurations will be made. Afterwards, an infinite while loop will be triggered and will only be interrupted by request.
-Each loop represents an API Cycle of at least 30 milliseconds.
-Here is the following sequence for the while loop:
-- Checks to see if System Controller is connected to the Display Controller via devices object.
-- Reads and processes bytes from the MCU.
-- Handles the different requests and responses from the system controller and sends signals to backend controller for updates.
-- While the API Controller is handling messages from the system, it is also adding messages to a message queue from requests and responses from the backend controller via signals.
-- After handling the different requests and responses and if the queue is not empty, the message queue will lock the mutex for the thread, pop up to 5 messages from the queue, and write those messages to the serial object. The thread and other running threads will wake up again.
-- The thread will sleep for at least 25 milliseconds.
-
-## Serial Port Communication (Comm Object)
-
-The Comm Object is the UART Serial Port between the Display Controller and the System Controller. The specified port from the Port Name and Baud Rate opens and reads the file descriptor to read and write bytes.
-After reading the existing settings and handling errors, it constructs the tty settings structure to raise the following port settings:
-- Clears parity bit, disabling parity (most common)
-- Clears stop field, only one stop bit used in communication (most common)
-- Clear all bits that set the data size
-- 8 bits per byte (most common)
-- Disable RTS/CTS hardware flow control (most common)
-- Turn on READ & ignore ctrl lines (CLOCAL = 1)
-- Disable echo
-- Disable erasure
-- Disable new-line echo
-- Disable interpretation of INTR, QUI and SUSP
-- Turn off s/w flow ctrl
-- Disable any special handling of received bytes
-- Prevent special interpretation of output bytes (e.g. newline chars)
-- Prevent conversion of newline  to carriage return/line feed
-- Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
-
-When the API Cycle reads from the Serial Port, The Comm Objects reads to file descriptor and stores the available bytes to an array buffer of at most 512 bytes.
-The API Cycle will then process the array buffer by reading the array by index until bytes are no longer available. A message from the array is structured as followed:
-- <b>Start Charactor (255):</b> the beginning byte for all requests and responses.
-- <b>Op Code:</b> The Byte to represent the type of request or response.
-- <b>Body:</b> the number bytes representing the parameters for message if available. The body will also have different lengths.
-- <b>CRC:</b> Byte to represent the ending of the message.
-
-Messages written to the file descriptor's are stored on an array buffer as well and are structured the same way.
-
-## Message Object and Message Queue
-
-The queue is built from a QQueue object.
-
-Definitions:
-- <b>Queue:</b> A data structure that follows the First-In-First-Out (FIFO) Principle, where the element added first will be the first to be removed. 
-  Elements are added to the "tail" of the queue, and removed from the "head" of the queue.
-- <b>Enqueue:</b> The operation of adding (pushing) an element to the rear end of a queue.
-- <b>Dequeue:</b> The operation of removing (popping) an element from the front end of a queue.
-
-A Message object for sending requests and responses to the system controller contains the following parameters:
-- <b>The Input Buffer Array:</b> The array at the size of 512 bytes that store the bytes representing the request or response to the serial port.
-- <b>The CRC Byte:</b> The character representing the end of the message, and is a unique character used to represent the message.
-- <b>TX Size:</b> The size of the message within the array buffer.
-
-While the backend and the rest of the application are enqueuing messages to the queue, up to 5 messages will be dequeued from the queue at the end of the API cycle.
-To ensure that no repeated messages are pushed to the queue before being sent to the system controller, the queue also tracks the unique crc bytes to an unordered set
-and checks if a new message contains an exisitng CRC byte before being pushed to the queue.
-
-## API Requests and Responses
-
-There are multiple requests and responses that need to be sent between the display controller and system controller. Each request and response will include a start character and a crc, both representing 2 bytes.
-- Power On Send Request and Power On Receive Response
-  - The System Controller sends a request to confirm with a response that the Display Controller is powered on alongside the System controller.
-  - Power On Received Response:
-    - Op Code: 0
-    - Length: 3
-  - Power On Send Request:
-    - Op Code: 100
-    - Length: 3
-- Get Settings Request and Response
-  - On startup, the Display Controller's Backend Controller will send a request for all pneumatic settings stored on the system and will receive a response with setting values.
-  - Get Settings Request: 
-    - Op Code: 1
-    - Length: 3
-  - Get Settings Response:
-    - Op Code: 101
-    - All 20 Pneumatic Settings, with settings stored as 4 bytes (4 * 20 = 80)
-    - Length: 83
-    - Note: Bytes representing settings are converted to float values.
-- Enable Notification Request and Response
-  - On startup, the Display Controller's Backend Controller will send a request to receive notifications from the system and will receive a response to confirm it.
-  - Enable Notification Request:
-    - Op Code: 2
-    - Enable or Disable State
-    - Length: 4
-  - Enable Notification Response:
-    - Op Code: 102
-    - Length: 3
-- Get Op Modes Request and Response
-  - On startup, the Display Controller's Backend Controller will send a request for all modes enabled and disabled on the system and will receive a response with mode states.
-  - Get Op Modes Request:
-    - Op Code: 3
-    - Length: 3
-  - Get Op Modes Response:
-    - Op Code: 103
-    - All 15 Op Mode States
-    - Length: 18
-- Get Subsystem States Request and Response
-  - On startup, the Display Controller's Backend Controller will send a request for all subsystems active on the system and will receive a response with subsystem status.
-  - Get Subsystem States Request:
-    - Op Code: 4
-    - Length: 3
-  - Get Subsystem States Response:
-    - Op Code: 104
-    - All 7 Subsystem States
-    - Length: 10
-- Get System Version Request and Response
-  - On startup, the Display Controller's Backend Controller will send a request for the system controller's version number and will receive a response with version number.
-  - Get System Version Request:
-    - Op Code: 5
-    - Length: 3
-  - Get System Version Response:
-    - Op Code: 105
-    - Major Version Part of the Version Number
-    - Minor Version Part of the Version Number
-    - Patch Part of the Version Number
-    - Length: 6
-- Set Settings Request and Response
- - The Display's Backend will send a request to update the pneumatic settings to the system and will receive a response to confirm that the update succeeded.
- - Set Settings Request:
-   - Op Code: 6
-   - All 20 Pneumatic Settings, with each setting stored as 4 bytes (4 * 20 = 80)
-   - Length: 83
- - Set Settings Response:
-   - Op Code: 106
-   - Length: 3
-- Get Measured Request and Response
-  - The Display's Backend will request a measurement running on the system and will receive a response with the measured value.
-  - Get Measured Request:
-    - Op Code: 7
-    - Requested Measurement ID
-    - Length: 4
-  - Get Measured Response:
-    - Op Code: 107
-    - Requested Measurement ID
-    - Measurement Float Value represented as 4 Bytes
-    - Length: 8
-- Clear Warning Request and Response
-  - The Display's Backend will send a request to clear a warning running on the system and will receive a response with the warning id to clear the warning from the warning banner.
-  - Clear Warning Request:
-    - Op Code: 8
-    - Requested Warning ID
-    - Length: 4
-  - Clear Warning Response:
-    - Op Code: 108
-    - Length: 3
-- Enable Op Mode Display Request and System Response
-  - The Display's Backend will send a request to enable or disable an op mode and will receive a response confirming that mode was enabled or disabled.
-  - Enable Op Mode Display Request:
-    - Op Code: 9
-    - Requested Op Mode ID
-    - Enable or Disable State
-    - Success State
-    - Length: 6
-  - Enable Op Mode System Response:
-    - Op Code: 109
-    - Requested Op Mode ID
-    - Enable or Disable State
-    - Length 5
-- Enable Op Mode System Request and Display Response
-  - The System will send a message that mode was enabled or disabled and the display will send a response to confirm that message was received.
-  - Enable Op Mode Display Response:
-    - Op Code: 10
-    - Requested Op Mode ID
-    - Enable or Disable State
-    - Length 5
-  - Enable Op Mode System Request:
-    - Op Code: 110
-    - Requested Op Mode ID
-    - Enable or Disable State
-    - Success State
-    - Length: 6 
-- Notifications Received
-  - The System will send the constant measurments for Stacking Pressure, Oxygen, Peak Inspiratory Pressure, Auxiliary Flow, Tidal Volume, Mean Average Pressure, O<sub>2</sub> Calibration Voltage, states of all warnings, and Alarm Silence Time.
-  - Notification Received Request:
-    - Op Code: 111
-    - All 9 measurements, with each measurement stored as 4 bytes (4 * 9 = 36 Bytes)
-    - 9 Bytes of warnings states, where each bit represents all 68 warning states
-    - The Silence Button Time that would be displayed on the Silence Button
-    - Length: 49
-- Subsystem Status Received and Updated
-  - The System sends changed states for subsystem states, and Display confirms received subsystem state change and saves new subsystem states.
-  - Subsystem Status Received:
-    - Op Code: 12
-    - Length: 3
-  - Subsystem Status Update:
-    - Op Code: 112
-    - All 7 Subsystem States
-    - Length: 10
-- Ventilation Status Received and Updated
-  - The System sends the state of ventilation, and the Display confirms and saves the received ventilation state.
-  - Ventilation Status Received:
-    - Op Code: 13
-    - Length: 3
-  - Ventilation Status Update:
-    - Op Code: 113
-    - Ventilation State
-    - Length: 4
-- HMI Button Pushed Received and Update
-  - The System sends which HMI Button was pressed and the Display confirms which HMI Button was pushed.
-  - HMI Button Pushed Received
-    - Op Code: 14
-    - HMI Button ID
-    - Length: 4
-  - HMI Button Pushed Update:
-    - Op Code: 114
-    - HMI Button ID
-    - Length: 4
-- Shutdown Received and Request
-  - The System sends request (triggered from user input of power button) to initiate the shutdown procedure, and the display confirms and will begin procedure.
-  - Shutdown Received
-    - Op Code: 15
-    - Length: 3
-  - Shutdown Request
-    - Op Code: 115
-    - Length: 3
-- Shutdown Confirm or Cancel Request and Shutdown Confirm Receceived
-  - The Display sends a request to confirm or cancel the shutdown, and the system responses back.
-  - Shutdown Confirm or Cancel Request
-    - Op Code: 16
-    - Confirm or Cancel State
-    - Length: 4
-  - Shutdown Confirm Received
-    - Op Code: 116
-    - Confirm or Cancel State
-    - Length: 4
-- Set DPR Calibration Value Request and Response
-  - The Display sends a request for the state of pressure regulator calibration, and system sends a response that calibration state is active.
-  - Set DPR Calibration Value Request:
-    - Op Code: 18
-    - Pressure Regulator Calibration State
-    - Length: 4
-  - Set DPR Calibration Value Response:
-    - Op Code: 118
-    - Length: 3
-- Enable Pressure Sensor Zero Request and Response
-  - The Display sends a request for sensor calibration, and system sends a response that completes the calibration completely.
-  - Enable Pressure Sensor Zero Request:
-    - Op Code: 20
-    - Sensor Calibration ID 
-    - Length: 4
-  - Enable Pressure Sensor Zero Response:
-    - Op Code: 220
-    - Success or Failure Value
-    - Length: 4
-    
-## Devices Object
-
-The device object tracks the connection between the system controller and display controller by tracking the number of devices mounted to the display controller via USB. On an API Cycle, if the system controller is disconnected, then the display will no longer receive notifications or other requests and responses, and the warning manager will raise "Display and System Disconnected!" itself. It is important to note that if the system controller is disconnected, there should only be 2 USB devices mounted, the Linux Foundation 2.0 root hub and Standard Microsystems Corp. USB 2.0 Hub. It is also important to note that when the system controller does get disconnected, the Portname will flip between "ttyUSB0" and "ttyUSB1". Because of this, and when the System Controller and the Display Controller is reconnected via USB and the devices object to 3 mounted devices, the serial port will be reopened and reconfigured.
