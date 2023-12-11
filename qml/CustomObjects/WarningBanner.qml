@@ -1,6 +1,5 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import QtGraphicalEffects 1.12
 import "../Styles"
 import NotificationIndex 1.0
 import IDs 1.0
@@ -29,22 +28,24 @@ Rectangle{
 
     function populateWarnings()
     {
-        model.clear()
-        var numWarnings = warnings.length
+        model.clear();
+        var numWarnings = warnings.length;
 
         for(var i = 0; i < numWarnings; i++)
         {
-            model.append({warningClassVal: warning_manager.getWarningClass(warnings[i]),
-                         warningBehaviorVal: warning_manager.getWarningBehavior(warnings[i]),
-                         warningActiveVal: warning_manager.getWarningActive(warnings[i]),
-                         warningColorVal: warning_manager.getWarningColor(warnings[i]),
-                         titleVal: warning_manager.getWarningTitle(warnings[i]),
-                         descriptionVal: warning_manager.getWarningDesc(warnings[i]),
-                         clearTextVal: warning_manager.getWarningClearText(warnings[i]),
-                         warningIDVal: warnings[i],
-                         warningIndexVal: i,
-                         laserMinStateVal: false,
-                         limitedO2TitleVal: getLimitedO2State(warnings[i])})
+            model.append({
+                             warningClassVal: warning_manager.getWarningClass(warnings[i]),
+                             warningBehaviorVal: warning_manager.getWarningBehavior(warnings[i]),
+                             warningActiveVal: warning_manager.getWarningActive(warnings[i]),
+                             warningColorVal: warning_manager.getWarningColor(warnings[i]),
+                             titleVal: warning_manager.getWarningTitle(warnings[i]),
+                             descriptionVal: warning_manager.getWarningDesc(warnings[i]),
+                             clearTextVal: warning_manager.getWarningClearText(warnings[i]),
+                             warningIDVal: warnings[i],
+                             warningIndexVal: i,
+                             laserMinStateVal: false,
+                             limitedO2TitleVal: getLimitedO2State(warnings[i])
+                         });
         }
     }
 
@@ -52,13 +53,26 @@ Rectangle{
 
         if (index === 52 || index === 53)
         {
-            if (state_manager.limited_o2_success === 1) return "Limited O<sub>2</sub> Prepping to 21%"
-            if (state_manager.limited_o2_success === 2) {
-                if (Math.round(state_manager.notification_vector[2]) > 22) return "Limited O<sub>2</sub> Prepping to 21%"
-                return "Limited O<sub>2</sub> Prepping at 21%"
+            if (state_manager.limited_o2_success === 1)
+            {
+                return "Limited O<sub>2</sub> Prepping to 21%";
             }
-            if (state_manager.limited_o2_success === 3) return "Limited O<sub>2</sub> Prepping to " + state_manager.o2 + "%"
-            if (state_manager.limited_o2_success === 4) return "Limited O<sub>2</sub> Safe"
+            if (state_manager.limited_o2_success === 2)
+            {
+                if (Math.round(state_manager.notification_vector[2]) > 22)
+                {
+                    return "Limited O<sub>2</sub> Prepping to 21%";
+                }
+                return "Limited O<sub>2</sub> Prepping at 21%";
+            }
+            if (state_manager.limited_o2_success === 3)
+            {
+                return "Limited O<sub>2</sub> Prepping to " + state_manager.o2 + "%";
+            }
+            if (state_manager.limited_o2_success === 4)
+            {
+                return "Limited O<sub>2</sub> Safe";
+            }
         }
         return "";
     }
