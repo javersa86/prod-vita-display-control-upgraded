@@ -6,7 +6,7 @@
 #include "../models/subsystems.h"
 
 /**
- * @addtogroup apiConstsModule
+ * @addtogroup apiModule
  * @{
  */
 

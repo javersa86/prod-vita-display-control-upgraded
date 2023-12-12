@@ -21,7 +21,7 @@
  *          - maximum value
  *          - unit
  *          - title
- *          - id
+ *          - setting_id
  *          - step
  *          - minimumOn
  *          - help text
@@ -87,7 +87,7 @@ class PneumaticSettings : public QObject
         /**
          * @brief Constructor to build a Pneumatic Setting with a "minimum on" parameter.
          * @note  The minOn parameter is only used for humidity. 0 is off and minimum on is 30.
-         * @param id
+         * @param setting_id
          * @param unit
          * @param title
          * @param help
@@ -239,7 +239,7 @@ public:
     /**
      * @brief Constructor for Driving Pressure.
      * @note  You can pass in the id, the title, and the help information and this will need to be done for double jet settings, but for now just id is required.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -257,7 +257,7 @@ public:
     /**
      * @brief Constructor for Rate.
      * @note  Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -275,7 +275,7 @@ public:
     /**
      * @brief Constructor for Inspiratory Time.
      * @note  Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -293,7 +293,7 @@ public:
     /**
      * @brief Constructor for Stacking Pressure.
      * @note  Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -311,7 +311,7 @@ public:
     /**
      * @brief Constructor for O2.
      * @note  Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -329,7 +329,7 @@ public:
     /**
      * @brief Constructor for PIP.
      * @note  Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -347,7 +347,7 @@ public:
     /**
      * @brief Constructor for AuxFlow.
      * @note  Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -365,7 +365,7 @@ public:
     /**
      * @brief Constructor for Humidity.
      * @note  Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -383,7 +383,7 @@ public:
     /**
      * @brief Constructior for Rate used during ETCO2 procedure.
      * @note  Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -401,7 +401,7 @@ public:
     /**
      * @brief Constructior for IT used during ETCO2 procedure.
      * @note  Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -419,7 +419,7 @@ public:
     /**
      * @brief Constructor for Number of breaths used during ETCO2.
      * @note  Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -437,7 +437,7 @@ public:
     /**
      * @brief Constructior for DP used during ETCO2 procedure.
      * @note  Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -455,7 +455,7 @@ public:
     /**
      * @brief Constructor for LaserO2.
      * @note  Upper O2 threshold while laser-safe mode is active. Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */
@@ -473,7 +473,7 @@ public:
     /**
      * @brief Constructor for Volume.
      * @note  Volume of auditory alarm. Only id is required to pass in.
-     * @param id
+     * @param setting_id
      * @param title
      * @param help
      */

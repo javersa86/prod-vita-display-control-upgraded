@@ -15,7 +15,7 @@
 #include "message.h"
 
 /**
- * @addtogroup messageQueueModule
+ * @addtogroup messageModule
  * @{
  */
 
@@ -36,7 +36,7 @@
 class MessageQueue
 {
     /**
-     * @addtogroup messageQueueModule
+     * @addtogroup messageModule
      * @{
      */
 
