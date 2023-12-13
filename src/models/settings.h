@@ -124,7 +124,7 @@ enum class SettingMinimumOn
     STACKING_PRESSURE = 1,
     O2 = 21,
     PIP = 1,
-    AUX_FLOW = 3,
+    AUX_FLOW = 5,
     HUM = 0,
     ETCO2_RATE = 5,
     ETCO2_IT = 20,
