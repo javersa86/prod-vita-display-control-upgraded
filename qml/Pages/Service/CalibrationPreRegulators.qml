@@ -1,6 +1,5 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import QtGraphicalEffects 1.12
 import QtQml 2.12
 import "../../Styles"
 import "../../CustomObjects"
@@ -127,7 +126,7 @@ Rectangle {
                 onClicked:
                 {
                     airState = true
-                    backend.regulatorConfirmation(1,2)
+                    backend.regulatorConfirmation([1,2])
                 }
             }
         }
@@ -181,7 +180,7 @@ Rectangle {
                 onClicked:
                 {
                     o2State = true
-                    backend.regulatorConfirmation(0,3)
+                    backend.regulatorConfirmation([0,3])
                 }
             }
         }
@@ -206,7 +205,7 @@ Rectangle {
 
             onClicked:
             {
-                backend.regulatorConfirmation(0,0);
+                backend.regulatorConfirmation([0,0]);
                 popupStack.clear()
             }
 

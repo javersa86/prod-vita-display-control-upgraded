@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QDirIterator>
+#include <QVariantList>
 
 #include "models/pneumatic_settings.h"
 #include "warnings/warning_manager.h"
@@ -163,7 +164,7 @@ class Backend : public QObject
          * @return bool
          * @callergraph
          */
-        bool exportDirectory(const QString &src, const QString &dst);
+        bool exportDirectory(const QVector<QString> &filePaths); //  const QString &src, const QString &dst);
 
         /**
          * @brief Reads directories and saves the total amount of files.
@@ -350,11 +351,10 @@ class Backend : public QObject
         /**
          * @brief      Sets humidity and humidity aux settings in state object and raises flag to send message to API.
          * @param  separate
-         * @param  hum_value
-         * @param  hum_aux_value
+         * @param  humidityInts
          * @callergraph
          */
-        void separateHumidity(unsigned char separate, int hum_value, int hum_aux_value);
+        void separateHumidity(unsigned char separate, const QVariantList &humidityInts); // int hum_value, int hum_aux_value);
 
         /**
          * @brief Sets humidity, double jet humidity, and humidity aux settings to 0.
@@ -571,7 +571,7 @@ class Backend : public QObject
          * @param id
          * @callergraph
          */
-        void regulatorConfirmation(unsigned char,unsigned char);
+        void regulatorConfirmation(const QVariantList &setList); //unsigned char,unsigned char);
 
         //From API
         /**
@@ -594,7 +594,7 @@ class Backend : public QObject
          * @param value
          * @callergraph
          */
-        void initZeroSensor(unsigned char sensor_id, float value);
+        void initZeroSensor(const QVariantList &setList); //unsigned char sensor_id, float value);
 
         //From API
         /**
@@ -1020,21 +1020,21 @@ class Backend : public QObject
          */
         void modesSet();
 
-        bool modeConditions(unsigned char modeID, unsigned char value);
+        bool modeConditions(const QVector<unsigned char> &check_parameters); //unsigned char modeID, unsigned char value);
 
         /**
          * @brief Gets high or low O<sub>2</sub> calibration values.
          * @param id
          * @param value
          */
-        void handleO2CalVals(unsigned char, unsigned char);
+        void handleO2CalVals(const QVector<unsigned char> &setMeasurement); //unsigned char, unsigned char);
 
         /**
          * @brief Gets high or low O<sub>2</sub> calibration voltages and saves all O<sub>2</sub> Calibration values and voltages.
          * @param id
          * @param value
          */
-        void handleVoltVals(unsigned char, float);
+        void handleVoltVals(const QVector<float> &setMeasurement); //unsigned char setting_id, float value);
 
         /**
          * @brief Raises or lowers flags for measured sensors.

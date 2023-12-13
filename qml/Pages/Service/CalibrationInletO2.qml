@@ -233,7 +233,7 @@ Rectangle {
                     zeroState = false
                     downArrowIcon.color = Style.numeric_ui_unit
                     upArrowIcon.color = Style.numeric_ui_unit
-                    backend.initZeroSensor(4)
+                    //backend.initZeroSensor(4)
                 }
             }
         }

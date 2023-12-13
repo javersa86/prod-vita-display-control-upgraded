@@ -205,8 +205,10 @@ InteractiveKnobPage
                     replace("HumidityUnifiedDial.qml", {"stack": adjustmentStack})
             }
 
-            function confirmSettings() {
-                backend.separateHumidity(root.separated,hum_1,hum_aux)
+            function confirmSettings()
+            {
+                var intList = [hum_1, hum_aux];
+                backend.separateHumidity(root.separated, intList)
                 stack.pop()
             }
 

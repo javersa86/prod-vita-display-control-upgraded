@@ -107,13 +107,17 @@ void Backend::saveLogsToDrive()
     QString serviceDirName = dirName + "/NVENT_FILES/NV_Vita_events";
     QString warningDirName = dirName + "/NVENT_FILES/NV_Vita_warnings";
 
-    if (!exportDirectory(QString::fromStdString("/media/NVENT_FILES/NV_Vita_events"),serviceDirName))
+    QVector<QString> tmpServicePaths = {QString::fromStdString("/media/NVENT_FILES/NV_Vita_events"), serviceDirName};
+    QVector<QString> tmpWarningPaths = {QString::fromStdString("/media/NVENT_FILES/NV_Vita_warnings"), warningDirName};
+
+    if (!exportDirectory(tmpServicePaths))
     {
         //Sends signal to QML if service logs failed to be exported.
         emit saveLogStatusSignal(0);
         return;
     }
-    if (!exportDirectory(QString::fromStdString("/media/NVENT_FILES/NV_Vita_warnings"),warningDirName))
+
+    if (!exportDirectory(tmpWarningPaths))
     {
         //Sends signal to QML if warning logs failed to be exported.
         emit saveLogStatusSignal(0);
@@ -170,10 +174,10 @@ auto Backend::findPort() -> QString
     return QString::fromStdString("");
 }
 
-auto Backend::exportDirectory(const QString &src, const QString &dst) -> bool
+auto Backend::exportDirectory(const QVector<QString> &filePaths) /*const QString &src, const QString &dst)*/ -> bool
 {
-    QDir sourceDir(src);
-    QDir destDir(dst);
+    QDir sourceDir(filePaths.at(0)); //  src);
+    QDir destDir(filePaths.at(1)); // dst);
 
     if (!destDir.exists())
     {
@@ -618,34 +622,41 @@ void Backend::sendSettingsUpdate()
     emit sendSettingSignal(settingsVector);
 }
 
-void Backend::separateHumidity(unsigned char separate, int hum_value, int hum_aux_value)
+void Backend::separateHumidity(unsigned char separate, const QVariantList &humidityInts) /// int hum_value, int hum_aux_value)
 {
-    m_stateManager->setSeparateHumidity(separate);
-
-    m_stateManager->setSetting((int)SettingIds::HUM_1,hum_value);
-    m_warningManager->setStateValue((int)SettingIds::HUM_1,hum_value);
-
-    m_stateManager->setSetting((int)SettingIds::HUM_AUX,hum_aux_value);
-    m_warningManager->setStateValue((int)SettingIds::HUM_AUX,hum_aux_value);
-
-    settingsVector = {};
-    for(unsigned char i = 0; i< NUM_SETTINGS; i++)
+    if (humidityInts.size() == 2 && humidityInts.at(0).canConvert<int>() && humidityInts.at(1).canConvert<int>())
     {
-        if ( i == (unsigned char)SettingIds::HUM_1 || i == (unsigned char)SettingIds::HUM_AUX)
+        int hum_value = humidityInts.at(0).toInt();
+        int hum_aux_value = humidityInts.at(1).toInt();
+
+        m_stateManager->setSeparateHumidity(separate);
+
+        m_stateManager->setSetting((int)SettingIds::HUM_1,hum_value);
+        m_warningManager->setStateValue((int)SettingIds::HUM_1,hum_value);
+
+        m_stateManager->setSetting((int)SettingIds::HUM_AUX,hum_aux_value);
+        m_warningManager->setStateValue((int)SettingIds::HUM_AUX,hum_aux_value);
+
+        settingsVector = {};
+        for(unsigned char i = 0; i< NUM_SETTINGS; i++)
         {
-            settingsVector.append(getHumidityPercentage(m_stateManager->getSettingValue(i)));
+            if ( i == (unsigned char)SettingIds::HUM_1 || i == (unsigned char)SettingIds::HUM_AUX)
+            {
+                settingsVector.append(getHumidityPercentage(m_stateManager->getSettingValue(i)));
+            }
+            else
+            {
+                settingsVector.append(m_stateManager->getSettingValue(i));
+            }
         }
-        else
-        {
-            settingsVector.append(m_stateManager->getSettingValue(i));
-        }
+
+        sendSettingsUpdate();
+        m_message_flags[(int) txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
+
+        qInfo() << "NVENT " << "," << "SETTING" << "," << "REQUEST" << QString::fromStdString(settingNameMap.at((int)SettingIds::HUM_1)) << hum_value;
+        qInfo() << "NVENT " << "," << "SETTING" << "," << "REQUEST" << QString::fromStdString(settingNameMap.at((int)SettingIds::HUM_AUX)) << hum_aux_value;
+
     }
-
-    sendSettingsUpdate();
-    m_message_flags[(int) txOpCodes::DISPLAY_SET_SETTINGS_REQUEST] = 1;
-
-    qInfo() << "NVENT " << "," << "SETTING" << "," << "REQUEST" << QString::fromStdString(settingNameMap.at((int)SettingIds::HUM_1)) << hum_value;
-    qInfo() << "NVENT " << "," << "SETTING" << "," << "REQUEST" << QString::fromStdString(settingNameMap.at((int)SettingIds::HUM_AUX)) << hum_aux_value;
 
 }
 
@@ -720,7 +731,8 @@ void Backend::receiveSensorMeasurements(unsigned char setting_id, unsigned char 
 
     if(m_getO2CalsFlag == 1)
     {
-        handleO2CalVals(setting_id, value);
+        QVector<unsigned char> tmp = {setting_id, value};
+        handleO2CalVals(tmp);
     }
 }
 
@@ -732,7 +744,8 @@ void Backend::receiveVolt(unsigned char setting_id, float value)
 
     if(m_getO2CalsFlag == 1)
     {
-        handleVoltVals(setting_id, value);
+        QVector<float> tmp = {(float) setting_id, value};
+        handleVoltVals(tmp); //setting_id, value);
     }
 }
 
@@ -752,8 +765,11 @@ void Backend::receiveWaterSensor(unsigned char setting_id, unsigned char value)
     }
 }
 
-void Backend::handleO2CalVals(unsigned char setting_id, unsigned char value)
+void Backend::handleO2CalVals(const QVector<unsigned char> &setMeasurement) //unsigned char setting_id, unsigned char value)
 {
+    unsigned char setting_id = setMeasurement.at(0);
+    unsigned char value = setMeasurement.at(1);
+
     if (setting_id == (int) MeasuredIDs::O2_LOWER_CAL_VAL)
     {
         m_O2Vals[0] = value;
@@ -773,8 +789,11 @@ void Backend::handleO2CalVals(unsigned char setting_id, unsigned char value)
     }
 }
 
-void Backend::handleVoltVals(unsigned char setting_id, float value)
+void Backend::handleVoltVals(const QVector<float> &setMeasurement) //unsigned char setting_id, float value)
 {
+    auto setting_id = (unsigned char) setMeasurement.at(0);
+    float value = setMeasurement.at(1);
+
     if (setting_id == (int)MeasuredIDs::O2_LOWER_BOUND)
     {
         m_Volts[0] = value;
@@ -883,7 +902,7 @@ void Backend::modesSet()
 
 void Backend::setMode(unsigned char modeID, unsigned char value)
 {
-    if (modeConditions(modeID,value))
+    if (modeConditions({modeID,value}))
     {
         return;
     }
@@ -991,8 +1010,11 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
 
 }
 
-auto Backend::modeConditions(unsigned char modeID, unsigned char value) -> bool
+auto Backend::modeConditions(const QVector<unsigned char> &check_parameters) /*unsigned char modeID, unsigned char value)*/ -> bool
 {
+    unsigned char modeID = check_parameters.at(0);
+    unsigned char value = check_parameters.at(1);
+
     //Section of code that prevents modes from being enabled.
     //ETCO2 Mode can't be enabled if system is ventilating and Manual Mode is active.
     if (modeID == (unsigned char) ModeIDs::ETCO2_MODE)
@@ -1307,25 +1329,31 @@ void Backend::highDPRConfirmation(int flag, float value)
     }
 }
 
-void Backend::regulatorConfirmation(unsigned char val,unsigned char regulator_id)
+void Backend::regulatorConfirmation(const QVariantList &setList) //unsigned char val, unsigned char regulator_id)
 {
-    if (val == 1)
+    if (setList.size() == 2 && setList.at(0).canConvert<unsigned char>() && setList.at(1).canConvert<unsigned char>())
     {
-        if (regulator_id == 2)
-        {
-            qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Confirm Calibration for Air Regulator Calibration.";
-        }
-        if (regulator_id == 3)
-        {
-            qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Confirm Calibration for Oxygen Regulator Calibration.";
-        }
-    }
-    setMode((int)ModeIDs::LISTENING_KNOB,0);
+        unsigned char val = setList.at(0).toInt();
+        unsigned char regulator_id = setList.at(1).toInt();
 
-    m_dpr = 4;
-    sendDPRValue();
-    m_message_flags[(int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
-    qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Change Pressure Regulator State: Default";
+        if (val == 1)
+        {
+            if (regulator_id == 2)
+            {
+                qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Confirm Calibration for Air Regulator Calibration.";
+            }
+            if (regulator_id == 3)
+            {
+                qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Confirm Calibration for Oxygen Regulator Calibration.";
+            }
+        }
+        setMode((int)ModeIDs::LISTENING_KNOB,0);
+
+        m_dpr = 4;
+        sendDPRValue();
+        m_message_flags[(int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
+        qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Change Pressure Regulator State: Default";
+    }
 }
 
 void Backend::sendDPRValue()
@@ -1360,31 +1388,37 @@ void Backend::endDPRCalibration()
 
 /*------------------------ZERO PRESSURE SENSOR PATHWAY--------------------------------------------*/
 
-void Backend::initZeroSensor(unsigned char sensor_id, float value)
+void Backend::initZeroSensor(const QVariantList &setList) //unsigned char sensor_id, float value)
 {
-    m_zeroSensor = sensor_id;
-    QString temp = QString::fromStdString("");
-
-    m_zero_values = {};
-    m_zero_values.append((float) sensor_id);
-
-    if (sensor_id == 0)
+    if (setList.size() == 2 && setList.at(0).canConvert<unsigned char>() && setList.at(1).canConvert<float>())
     {
-        temp = QString::fromStdString(" (PIP)");
-        m_stateManager->setVerifyPIP(value);
-        m_zero_values.append(m_stateManager->zeroPIP());
-    }
-    else if (sensor_id == 1)
-    {
-        temp = QString::fromStdString(" (SP)");
-        m_stateManager->setVerifySP(value);
-        m_zero_values.append(m_stateManager->zeroSP());
-    }
+        unsigned char sensor_id = setList.at(0).toInt();
+        float value = setList.at(1).toFloat();
 
-    sendZeroSensor();
-    m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = 1;
+        m_zeroSensor = sensor_id;
+        QString temp = QString::fromStdString("");
 
-    qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Zero Sensor: " + QString::number(sensor_id) + temp;
+        m_zero_values = {};
+        m_zero_values.append((float) sensor_id);
+
+        if (sensor_id == 0)
+        {
+            temp = QString::fromStdString(" (PIP)");
+            m_stateManager->setVerifyPIP(value);
+            m_zero_values.append(m_stateManager->zeroPIP());
+        }
+        else if (sensor_id == 1)
+        {
+            temp = QString::fromStdString(" (SP)");
+            m_stateManager->setVerifySP(value);
+            m_zero_values.append(m_stateManager->zeroSP());
+        }
+
+        sendZeroSensor();
+        m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = 1;
+
+        qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Zero Sensor: " + QString::number(sensor_id) + temp;
+    }
 }
 
 void Backend::sendZeroSensor()
