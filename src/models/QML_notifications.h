@@ -30,7 +30,7 @@ class NotificationIndex : public QObject
          * @brief Empty Constructor
          * @param parent
          */
-        NotificationIndex(QObject *parent=nullptr) : QObject(parent){}
+        NotificationIndex(QObject *parent = nullptr) : QObject(parent){}
 
         /**
          * @brief The Index Enumerations for Notification Updates on QML files.

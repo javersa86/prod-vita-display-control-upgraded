@@ -33,7 +33,7 @@ class IDs : public QObject
          * @brief Empty Constructor
          * @param parent
          */
-        IDs(QObject *parent=nullptr) : QObject(parent){}
+        IDs(QObject *parent = nullptr) : QObject(parent){}
 
         /**
          * @brief The enumerations for Mode IDs on QML files.
