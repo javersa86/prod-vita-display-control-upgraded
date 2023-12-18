@@ -35,6 +35,10 @@
  */
 #define START_CHAR 255
 
+const int generator = 341;
+const int byte_size = 8;
+const unsigned char byte_address = 0x80;
+
 /**
  * @file api.h
  * @brief The header file for api.cpp
@@ -470,6 +474,11 @@ class API : public QThread
         const unsigned long ms_count = 35;
         const int port_name_sub_length = 11;
 
+        const int bit_size = 8;
+        const int calibration_count = 8;
+
+        const int service_notification_count = 60;
+
         unsigned char power_cycle_response[(int)txLengths::DISPLAY_POWER_ON_RECEIVED] = {(unsigned char)txOpCodes::DISPLAY_POWER_ON_RECEIVED};
         unsigned char get_settings_request[(int)txLengths::DISPLAY_GET_SETTINGS_REQUEST] = {(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST};
         unsigned char notification_request[(int)txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST] = {(int)txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST, 0};
@@ -570,7 +579,7 @@ class API : public QThread
          * @param n
          * @return unsigned char
          */
-        static unsigned char calculateCRC(unsigned char*,int);
+        static unsigned char calculateCRC(unsigned char*, int);
 
         /**
          * @brief Valid crcs will produce 0.
@@ -578,7 +587,7 @@ class API : public QThread
          * @param n
          * @return int
          */
-        static int checkCRC(unsigned char*,int);
+        static int checkCRC(unsigned char*, int);
 
         /*POWER CYCLE PATHWAY*/
 

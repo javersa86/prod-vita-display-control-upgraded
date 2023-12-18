@@ -336,10 +336,6 @@ void API::sendComm1(unsigned char * buffer, int n)
 
 auto API::calculateCRC(unsigned char* buffer, int n) -> unsigned char
 {
-    const int generator = 341;
-    const int byte_size = 8;
-    const unsigned char byte_address = 0x80;
-
     unsigned char crc=0;
     for (int i = 0; i < n; i++)
     {
@@ -690,8 +686,6 @@ void API::handleWarnings(const unsigned char* buffer)
 {
     QVector<unsigned char> warnings(QVector<unsigned char>(NUM_WARNINGS));
     unsigned char *warnings_data = warnings.data();
-
-    const int bit_size = 8;
     int bitIndex = 0;
 
     for (int k = 0; k < NUM_WARNINGS; k++)
@@ -796,7 +790,6 @@ void API::handleInitPowerdownCommandOK(unsigned char* buffer)
 
 void API::slotServiceCalibrationResponse(QVector<float> calibration_data)
 {
-    const int calibration_count = 8;
     data_request[0] = (unsigned char) txOpCodes::DISPLAY_SERVICE_CALIBRATION_RESPONSE;
 
     int index = 1;
@@ -881,7 +874,6 @@ void API::zeroSensor(QVector<float> values)
 
 void API::handleServiceNotifications(unsigned char *buffer)
 {
-    const int service_notification_count = 60;
     if (m_num_of_notifications > service_notification_count)
     {
         emit resendMessagesSignal();

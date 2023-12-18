@@ -35,6 +35,8 @@
  */
 #define MAX_O2_VALS 5
 
+constexpr int INTERVAL_ONE_SECOND = 1000;
+
 /**
  * @brief The O2CalManager class
  */

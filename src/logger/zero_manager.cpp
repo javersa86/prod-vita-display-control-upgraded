@@ -3,7 +3,7 @@
 /**
  * @author Joseph Aversa
  * @name zero_manager
- * @date 0MAX_ZERO_VALS/31/2022
+ * @date 05/31/2022
  *
  * When the PIP and SP sensors are zeroed, the display asks the service technician to apply pressure
  * to those sensors to verify that the sensor zeroing was effective.

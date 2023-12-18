@@ -15,12 +15,13 @@ WarningManager::WarningManager(QVector<unsigned char> *clearable_warnings, QObje
         QVector<unsigned char> clearable = QVector<unsigned char>(NUM_WARNINGS);
         for(int i = 0; i< NUM_WARNINGS; i++)
         {
-            clearable.replace(i, (unsigned char) (m_warnings[i].clearingBehavior() == CLEAR_AUTONOMOUSLY || m_warnings[i].clearingBehavior() == CLEAR_ON_DEMAND));
+            clearable.replace(
+                        i,
+                        (unsigned char) (m_warnings[i].clearingBehavior() == CLEAR_AUTONOMOUSLY || m_warnings[i].clearingBehavior() == CLEAR_ON_DEMAND)
+                        );
         }
         setAutoClearingWarnings(&clearable);
     }
-
-    constexpr int INTERVAL_THREE_SECONDS = 3000;
 
     connect(m_disconnectTimer,&QTimer::timeout,this,&WarningManager::raiseDisconnectWarning);
     m_disconnectTimer->start(INTERVAL_THREE_SECONDS);

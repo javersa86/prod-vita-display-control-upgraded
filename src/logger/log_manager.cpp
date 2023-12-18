@@ -19,17 +19,6 @@
  * Warnings files are stored onto warnings folder.
  */
 
-//std::vector<std::string> m_columnTitles;
-//bool m_logInitiated;
-//QString m_currentEventFile;
-//QString m_currentEventFileWarnings;
-//CSVManager m_csvManager;
-//CSVManager m_csvManager_Warnings;
-//QVector<QString> m_activeFiles;
-//QVector<QString> m_activeWarningFiles;
-//CSVManager m_csvManager_Time;
-//bool m_service_state;
-
 void serviceState(bool state)
 {
     m_service_state = state;
@@ -47,12 +36,6 @@ auto deleteOldestEventFile() -> bool
     qint64 currentTimeLength = 0;
     QString path = QString::fromStdString(ROOT_FOLDER) + QString::fromStdString(EVENT_FOLDER);
 
-    const int file_begin = 5;
-    const int file_end = 19;
-
-    const int seconds_per_two_weeks = 1209600;
-    const int seconds_per_three_months = 7890000;
-
     //Will only loop through files if directory exists.
     if(QDir(path).exists())
     {
@@ -65,8 +48,8 @@ auto deleteOldestEventFile() -> bool
             {
                 //Extracts how old file is from file name.
                 QString fileName = file.fileName();
-                fileName = fileName.mid(file_begin,file_end);
-                QDateTime fileDT = QDateTime::fromString(fileName,QString::fromStdString("dd-MM-yyyy_HH_mm_ss"));
+                fileName = fileName.mid(oldest_file_begin, oldest_file_end);
+                QDateTime fileDT = QDateTime::fromString(fileName, QString::fromStdString("dd-MM-yyyy_HH_mm_ss"));
                 QDateTime now = QDateTime::currentDateTime();
 
                 qint64 tempTime = fileDT.secsTo(now);
@@ -109,12 +92,6 @@ void deleteOldestServiceLogs()
 {
     QString path = QString::fromStdString(ROOT_FOLDER) + QString::fromStdString(EVENT_FOLDER);
 
-    const int file_begin = 6;
-    const int file_end = 22;
-
-    const qint64 time_zone_conversion = (qint64) -5 * 3600;
-    const int seconds_per_two_weeks = 1209600;
-
     //Will only loop through files if directory exists.
     if(QDir(path).exists())
     {
@@ -128,7 +105,7 @@ void deleteOldestServiceLogs()
                 //Extracts how old file is from file name.
                 QString fileName = file.fileName();
                 fileName = fileName.mid(file_begin, file_end);
-                QDateTime fileDT = QDateTime::fromString(fileName,QString::fromStdString("MM-dd-yyyy.hh.mm.ss_AP"));
+                QDateTime fileDT = QDateTime::fromString(fileName, QString::fromStdString("MM-dd-yyyy.hh.mm.ss_AP"));
                 QDateTime now = QDateTime::currentDateTime().addSecs(time_zone_conversion);
                 qint64 tempTime = fileDT.secsTo(now);
 
@@ -153,12 +130,6 @@ void deleteOldestWarningLogs()
 {
     QString path = QString::fromStdString(ROOT_FOLDER) + QString::fromStdString(WARNINGS_FOLDER);
 
-    const int file_begin = 6;
-    const int file_end = 22;
-
-    const qint64 time_zone_conversion = (qint64) -5 * 3600;
-    const int seconds_per_three_months = 7890000;
-
     //Will only loop through files if directory exists.
     if(QDir(path).exists())
     {
@@ -172,7 +143,7 @@ void deleteOldestWarningLogs()
                 //Extracts how old file is from file name.
                 QString fileName = file.fileName();
                 fileName = fileName.mid(file_begin, file_end);
-                QDateTime fileDT = QDateTime::fromString(fileName,QString::fromStdString("MM-dd-yyyy.hh.mm.ss_AP"));
+                QDateTime fileDT = QDateTime::fromString(fileName, QString::fromStdString("MM-dd-yyyy.hh.mm.ss_AP"));
                 QDateTime now = QDateTime::currentDateTime().addSecs(time_zone_conversion);
 
                 qint64 tempTime = fileDT.secsTo(now);
@@ -284,7 +255,6 @@ auto findCurrentEventFile() -> bool
 
 auto fileSize(const QString &fileAbsolutePath) -> float
 {
-    const float abosolute_size = 1e3;
     QFileInfo file(fileAbsolutePath);
     float result = (float) file.size() / abosolute_size;
     return result;

@@ -56,6 +56,8 @@
  */
 #define DAYLIGHT_SAVINGS  "DAYLIGHT SAVINGS "
 
+constexpr int INTERVAL_ONE_SECOND = 1000;
+
 /**
  * @brief Costant string and values for time zones.
  */

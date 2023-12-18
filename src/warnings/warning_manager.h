@@ -33,6 +33,8 @@
  */
 #define NO_COMMUNICATION 40
 
+constexpr int INTERVAL_THREE_SECONDS = 3000;
+
 /**
  * @brief The WarningManager class
  */

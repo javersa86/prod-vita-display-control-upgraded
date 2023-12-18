@@ -30,7 +30,7 @@ void Knob::run()
         while(m_running)
         {
             memset((void*)fdset, 0, sizeof(fdset));
-            memset(buf, 0, sizeof(buf));
+            //memset(buf, 0, sizeof(buf));
 
             fdset[0].fd = m_pinA->getFD();
             fdset[0].events = POLLPRI;

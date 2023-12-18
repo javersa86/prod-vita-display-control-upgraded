@@ -58,6 +58,19 @@
  */
 #define TYPE_COLUMN "TYPE"
 
+const int oldest_file_begin = 5;
+const int oldest_file_end = 19;
+
+const int file_begin = 6;
+const int file_end = 22;
+
+const qint64 time_zone_conversion = (qint64) -5 * 3600;
+
+const int seconds_per_two_weeks = 1209600;
+const int seconds_per_three_months = 7890000;
+
+const float abosolute_size = 1e3;
+
 /**
  * @file log_manager.h
  * @authors Sarah, modifications by Joseph Aversa

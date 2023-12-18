@@ -14,8 +14,6 @@ O2CalManager::O2CalManager(QObject *parent) :
     m_volts = QVector<QVector<QString>>( MAX_O2_VALS );
     updateO2Vals();
 
-    constexpr int INTERVAL_ONE_SECOND = 1000;
-
     m_calibration_progress_timer->setInterval(INTERVAL_ONE_SECOND);
     m_calibration_progress_timer->setSingleShot(false);
     connect(m_calibration_progress_timer, &QTimer::timeout, this, &O2CalManager::incrementCalibrationProgress);
