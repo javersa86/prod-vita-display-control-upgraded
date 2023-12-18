@@ -18,7 +18,7 @@ TimeManager::TimeManager(QObject *parent) :
     updateTime();
 
     //Backend timer the increments the current date and time per second.
-    m_increment_time->setInterval(INTERVAL_ONE_SECOND);
+    m_increment_time->setInterval(TIMER_INTERVAL_ONE_SECOND);
     m_increment_time->setSingleShot(false);
     connect(m_increment_time, &QTimer::timeout, this, &TimeManager::setTime);
     m_increment_time->start();

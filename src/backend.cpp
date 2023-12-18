@@ -30,7 +30,7 @@ Backend::Backend(StateManager* stateManager,
     initResendFunctionPointers();
 
     // Set the dehumidification timer interval to 1 second (1000 milliseconds)
-    m_dehumidication_timer->setInterval(INTERVAL_ONE_SECOND);
+    m_dehumidication_timer->setInterval(BACKEND_INTERVAL_ONE_SECOND);
     m_dehumidication_timer->setSingleShot(false);
     connect(m_dehumidication_timer, &QTimer::timeout, this, &Backend::sendDehumidityValue);
 }

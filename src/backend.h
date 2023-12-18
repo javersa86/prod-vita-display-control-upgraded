@@ -57,7 +57,7 @@ const int percent_level_3 = 70;
 const int percent_level_2 = 50;
 const int percent_level_1 = 30;
 
-constexpr int INTERVAL_ONE_SECOND = 1000;
+constexpr int BACKEND_INTERVAL_ONE_SECOND = 1000;
 
 const int five_milliseconds = 5;
 const int sixty_milliseconds = 60;
