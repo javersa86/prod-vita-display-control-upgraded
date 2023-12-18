@@ -29,8 +29,6 @@ Backend::Backend(StateManager* stateManager,
 {
     initResendFunctionPointers();
 
-    constexpr int INTERVAL_ONE_SECOND = 1000;
-
     // Set the dehumidification timer interval to 1 second (1000 milliseconds)
     m_dehumidication_timer->setInterval(INTERVAL_ONE_SECOND);
     m_dehumidication_timer->setSingleShot(false);
@@ -101,8 +99,7 @@ inline void msdelay(int millisecondsWait)
 
 void Backend::saveLogsToDrive()
 {
-    const int milliseconds = 60;
-    msdelay(milliseconds);
+    msdelay(sixty_milliseconds);
 
     QString serviceDirName = dirName + "/NVENT_FILES/NV_Vita_events";
     QString warningDirName = dirName + "/NVENT_FILES/NV_Vita_warnings";
@@ -129,8 +126,7 @@ void Backend::saveLogsToDrive()
 
 void Backend::driveConnected()
 {
-    const int milliseconds = 100;
-    msdelay(milliseconds);
+    msdelay(hundered_milliseconds);
 
     dirName = findPort();
     if (dirName == QString::fromStdString(""))
@@ -145,8 +141,7 @@ void Backend::driveConnected()
 
 void Backend::driveDisconnected()
 {
-    const int milliseconds = 100;
-    msdelay(milliseconds);
+    msdelay(hundered_milliseconds);
     emit driveDisconnection(static_cast<int>(system(m_eject_command_line.toStdString().c_str()) == 0));
 }
 
@@ -199,10 +194,10 @@ auto Backend::exportDirectory(const QVector<QString> &filePaths) /*const QString
 
         if (!QFile::exists(destFilePath))
         {
-            if (QFile::copy(srcFilePath, destFilePath)) {
+            if (QFile::copy(srcFilePath, destFilePath))
+            {
                 m_stateManager->incrementSaveDataProgress();
-                const int milliseconds = 5;
-                msdelay(milliseconds);
+                msdelay(five_milliseconds);
             }
             else
             {
@@ -224,8 +219,7 @@ void Backend::updateFileCount()
     QDir serviceDir(QString::fromStdString("/media/NVENT_FILES/NV_Vita_events"));
     QDir warningDir(QString::fromStdString("/media/NVENT_FILES/NV_Vita_warnings"));
 
-    const int extraFileCount = 6;
-    int fileCount = static_cast<int>(serviceDir.count()) + static_cast<int>(warningDir.count()) - extraFileCount;
+    int fileCount = static_cast<int>(serviceDir.count()) + static_cast<int>(warningDir.count()) - extra_file_count;
 
     m_stateManager->setTotalFiles(fileCount);
     m_stateManager->setSaveDataProgress(0);
@@ -252,8 +246,7 @@ void Backend::stopProgress()
 
 void Backend::initDehumidification(unsigned char val)
 {
-    const int seconds = 120;
-    m_dehumidification_seconds = seconds; //0;
+    m_dehumidification_seconds = hundered_twenty_seconds;
     if (val == 1)
     {
         m_dehumidication_timer->start();
@@ -719,8 +712,7 @@ void Backend::receiveSensorMeasurements(unsigned char setting_id, unsigned char 
 
     if(m_getO2CalsFlag == 1)
     {
-        QVector<unsigned char> tmp = {setting_id, value};
-        handleO2CalVals(tmp);
+        handleO2CalVals(setting_id, value);
     }
 }
 
@@ -732,8 +724,7 @@ void Backend::receiveVolt(unsigned char setting_id, float value)
 
     if(m_getO2CalsFlag == 1)
     {
-        QVector<float> tmp = {(float) setting_id, value};
-        handleVoltVals(tmp); //setting_id, value);
+        handleVoltVals(setting_id, value);
     }
 }
 
@@ -753,11 +744,8 @@ void Backend::receiveWaterSensor(unsigned char setting_id, unsigned char value)
     }
 }
 
-void Backend::handleO2CalVals(const QVector<unsigned char> &setMeasurement) //unsigned char setting_id, unsigned char value)
+void Backend::handleO2CalVals(unsigned char setting_id, unsigned char value)
 {
-    unsigned char setting_id = setMeasurement.at(0);
-    unsigned char value = setMeasurement.at(1);
-
     if (setting_id == (int) MeasuredIDs::O2_LOWER_CAL_VAL)
     {
         m_O2Vals[0] = value;
@@ -777,11 +765,8 @@ void Backend::handleO2CalVals(const QVector<unsigned char> &setMeasurement) //un
     }
 }
 
-void Backend::handleVoltVals(const QVector<float> &setMeasurement)
+void Backend::handleVoltVals(unsigned char setting_id, float value)
 {
-    auto setting_id = (unsigned char) setMeasurement.at(0);
-    float value = setMeasurement.at(1);
-
     if (setting_id == (int)MeasuredIDs::O2_LOWER_BOUND)
     {
         m_Volts[0] = value;
@@ -890,7 +875,7 @@ void Backend::modesSet()
 
 void Backend::setMode(unsigned char modeID, unsigned char value)
 {
-    if (modeConditions({modeID,value}))
+    if (modeConditions(modeID,value))
     {
         return;
     }
@@ -998,11 +983,8 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
 
 }
 
-auto Backend::modeConditions(const QVector<unsigned char> &check_parameters) -> bool
+auto Backend::modeConditions(unsigned char modeID, unsigned char value) -> bool
 {
-    unsigned char modeID = check_parameters.at(0);
-    unsigned char value = check_parameters.at(1);
-
     //Section of code that prevents modes from being enabled.
     //ETCO2 Mode can't be enabled if system is ventilating and Manual Mode is active.
     if (modeID == (unsigned char) ModeIDs::ETCO2_MODE)
@@ -1317,31 +1299,25 @@ void Backend::highDPRConfirmation(int flag, float value)
     }
 }
 
-void Backend::regulatorConfirmation(const QVariantList &setList) //unsigned char val, unsigned char regulator_id)
+void Backend::regulatorConfirmation(unsigned char val, unsigned char regulator_id)
 {
-    if (setList.size() == 2 && setList.at(0).canConvert<unsigned char>() && setList.at(1).canConvert<unsigned char>())
+    if (val == 1)
     {
-        unsigned char val = setList.at(0).toInt();
-        unsigned char regulator_id = setList.at(1).toInt();
-
-        if (val == 1)
+        if (regulator_id == 2)
         {
-            if (regulator_id == 2)
-            {
-                qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Confirm Calibration for Air Regulator Calibration.";
-            }
-            if (regulator_id == 3)
-            {
-                qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Confirm Calibration for Oxygen Regulator Calibration.";
-            }
+            qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Confirm Calibration for Air Regulator Calibration.";
         }
-        setMode((int)ModeIDs::LISTENING_KNOB,0);
-
-        m_dpr = 4;
-        sendDPRValue();
-        m_message_flags[(int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
-        qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Change Pressure Regulator State: Default";
+        if (regulator_id == 3)
+        {
+            qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Confirm Calibration for Oxygen Regulator Calibration.";
+        }
     }
+    setMode((int)ModeIDs::LISTENING_KNOB,0);
+
+    m_dpr = 4;
+    sendDPRValue();
+    m_message_flags[(int) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = 1;
+    qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Change Pressure Regulator State: Default";
 }
 
 void Backend::sendDPRValue()
@@ -1376,37 +1352,31 @@ void Backend::endDPRCalibration()
 
 /*------------------------ZERO PRESSURE SENSOR PATHWAY--------------------------------------------*/
 
-void Backend::initZeroSensor(const QVariantList &setList) //unsigned char sensor_id, float value)
+void Backend::initZeroSensor(unsigned char sensor_id, float value)
 {
-    if (setList.size() == 2 && setList.at(0).canConvert<unsigned char>() && setList.at(1).canConvert<float>())
+    m_zeroSensor = sensor_id;
+    QString temp = QString::fromStdString("");
+
+    m_zero_values = {};
+    m_zero_values.append((float) sensor_id);
+
+    if (sensor_id == 0)
     {
-        unsigned char sensor_id = setList.at(0).toInt();
-        float value = setList.at(1).toFloat();
-
-        m_zeroSensor = sensor_id;
-        QString temp = QString::fromStdString("");
-
-        m_zero_values = {};
-        m_zero_values.append((float) sensor_id);
-
-        if (sensor_id == 0)
-        {
-            temp = QString::fromStdString(" (PIP)");
-            m_stateManager->setVerifyPIP(value);
-            m_zero_values.append(m_stateManager->zeroPIP());
-        }
-        else if (sensor_id == 1)
-        {
-            temp = QString::fromStdString(" (SP)");
-            m_stateManager->setVerifySP(value);
-            m_zero_values.append(m_stateManager->zeroSP());
-        }
-
-        sendZeroSensor();
-        m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = 1;
-
-        qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Zero Sensor: " + QString::number(sensor_id) + temp;
+        temp = QString::fromStdString(" (PIP)");
+        m_stateManager->setVerifyPIP(value);
+        m_zero_values.append(m_stateManager->zeroPIP());
     }
+    else if (sensor_id == 1)
+    {
+        temp = QString::fromStdString(" (SP)");
+        m_stateManager->setVerifySP(value);
+        m_zero_values.append(m_stateManager->zeroSP());
+    }
+
+    sendZeroSensor();
+    m_message_flags[(int) txOpCodes::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = 1;
+
+    qInfo() << "NVENT" << "," << "PRESSURE SENSOR CALIBRATION" << "," << "Zero Sensor: " + QString::number(sensor_id) + temp;
 }
 
 void Backend::sendZeroSensor()

@@ -434,7 +434,7 @@ Rectangle {
                 {
                     verifyState = false
                     zeroState = true
-                    backend.initZeroSensor([1, verifyValue])
+                    backend.initZeroSensor(1, verifyValue)
                 }
             }
 

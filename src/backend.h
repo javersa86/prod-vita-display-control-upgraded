@@ -57,6 +57,15 @@ const int percent_level_3 = 70;
 const int percent_level_2 = 50;
 const int percent_level_1 = 30;
 
+constexpr int INTERVAL_ONE_SECOND = 1000;
+
+const int five_milliseconds = 5;
+const int sixty_milliseconds = 60;
+const int hundered_milliseconds = 100;
+const int hundered_twenty_seconds = 120;
+
+const int extra_file_count = 6;
+
 /**
  * @brief The Backend class
  */
@@ -580,7 +589,7 @@ class Backend : public QObject
          * @param id
          * @callergraph
          */
-        void regulatorConfirmation(const QVariantList &setList); //unsigned char,unsigned char);
+        void regulatorConfirmation(unsigned char,unsigned char);
 
         //From API
         /**
@@ -603,7 +612,7 @@ class Backend : public QObject
          * @param value
          * @callergraph
          */
-        void initZeroSensor(const QVariantList &setList); //unsigned char sensor_id, float value);
+        void initZeroSensor(unsigned char sensor_id, float value);
 
         //From API
         /**
@@ -1030,21 +1039,21 @@ class Backend : public QObject
          */
         void modesSet();
 
-        bool modeConditions(const QVector<unsigned char> &check_parameters); //unsigned char modeID, unsigned char value);
+        bool modeConditions(unsigned char modeID, unsigned char value); //unsigned char modeID, unsigned char value);
 
         /**
          * @brief Gets high or low O<sub>2</sub> calibration values.
          * @param id
          * @param value
          */
-        void handleO2CalVals(const QVector<unsigned char> &setMeasurement); //unsigned char, unsigned char);
+        void handleO2CalVals(unsigned char, unsigned char);
 
         /**
          * @brief Gets high or low O<sub>2</sub> calibration voltages and saves all O<sub>2</sub> Calibration values and voltages.
          * @param id
          * @param value
          */
-        void handleVoltVals(const QVector<float> &setMeasurement); //unsigned char setting_id, float value);
+        void handleVoltVals(unsigned char setting_id, float value);
 
         /**
          * @brief Raises or lowers flags for measured sensors.
