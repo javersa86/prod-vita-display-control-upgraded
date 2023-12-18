@@ -47,6 +47,15 @@
 
 using namespace std;
 
+const int level_percent_100 = 4;
+const int level_percent_70 = 3;
+const int level_percent_50 = 2;
+const int level_percent_30 = 1;
+
+const int percent_level_4 = 100;
+const int percent_level_3 = 70;
+const int percent_level_2 = 50;
+const int percent_level_1 = 30;
 
 /**
  * @brief The Backend class
@@ -836,6 +845,7 @@ class Backend : public QObject
          * @brief Stores the total number of seconds for the dehumidication timer.
          */
         int m_dehumidification_seconds = 120; //0;
+
         //Timer for dehumidification progress
         /**
          * @brief Dehumidification Progress Timer for the dehumdification progress page.

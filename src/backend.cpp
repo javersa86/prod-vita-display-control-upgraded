@@ -348,10 +348,6 @@ auto Backend::updateVectorHumidity(QVector<int> setting_vals) -> QVector<int>
 auto Backend::getHumidityLevel(int value) -> int
 {
     int level = -1;
-    const int percent_level_4 = 100;
-    const int percent_level_3 = 70;
-    const int percent_level_2 = 50;
-    const int percent_level_1 = 30;
 
     if (value == percent_level_4)
     {
@@ -663,14 +659,6 @@ void Backend::separateHumidity(unsigned char separate, const QVariantList &humid
 auto Backend::getHumidityPercentage(int value) -> int
 {
     int percent = -1;
-    const int level_percent_100 = 4;
-    const int level_percent_70 = 3;
-    const int level_percent_50 = 2;
-    const int level_percent_30 = 1;
-    const int percent_level_4 = 100;
-    const int percent_level_3 = 70;
-    const int percent_level_2 = 50;
-    const int percent_level_1 = 30;
 
     if (value == level_percent_100)
     {
@@ -789,7 +777,7 @@ void Backend::handleO2CalVals(const QVector<unsigned char> &setMeasurement) //un
     }
 }
 
-void Backend::handleVoltVals(const QVector<float> &setMeasurement) //unsigned char setting_id, float value)
+void Backend::handleVoltVals(const QVector<float> &setMeasurement)
 {
     auto setting_id = (unsigned char) setMeasurement.at(0);
     float value = setMeasurement.at(1);
@@ -1010,7 +998,7 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
 
 }
 
-auto Backend::modeConditions(const QVector<unsigned char> &check_parameters) /*unsigned char modeID, unsigned char value)*/ -> bool
+auto Backend::modeConditions(const QVector<unsigned char> &check_parameters) -> bool
 {
     unsigned char modeID = check_parameters.at(0);
     unsigned char value = check_parameters.at(1);

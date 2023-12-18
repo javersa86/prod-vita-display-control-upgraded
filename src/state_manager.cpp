@@ -702,14 +702,6 @@ void StateManager::updateServiceNotificationVector(const QVector<float> &notific
         QVector<double> temp;
         temp.reserve(notification.size());
 
-//        const float *_data = notification.constData();
-//        double *notifications_data = temp.data();
-
-//        for (int i = 0; i < notification.size(); i++)
-//        {
-//            notifications_data[i] = _data[i];
-//        }
-
         std::transform(notification.begin(), notification.end(), std::back_inserter(temp), [](float value) -> double
         {
             return static_cast<double>(value);
