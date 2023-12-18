@@ -53,7 +53,7 @@ class Knob : public QThread
          * @param pin_switch
          * @param edge
          */
-        Knob(uint, uint, uint, char*);
+        Knob(uint, uint, uint);
 
         /**
          * @brief Loops to listen to the knob. Loops while m_running is true.
@@ -94,15 +94,8 @@ class Knob : public QThread
 
         const int MAX_BUF = 64;
 
-        struct pollfd fdset[4];
-        char buf[64];
-
         int m_encoderIncrement{0};
         bool m_running = false;
-
-        void pollPinA(pollfd*, char*);
-        void pollPinB(pollfd*, char*);
-        void pollPinSwitch(pollfd*, char*);
 
     private slots:
 
