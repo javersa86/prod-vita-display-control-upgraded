@@ -59,48 +59,6 @@
 constexpr int TIMER_INTERVAL_ONE_SECOND = 1000;
 
 /**
- * @brief Costant string and values for time zones.
- */
-const std::map<QString,int> timeZoneValues = {
-    {"EDT", -4},
-    {"EST", -5},
-    {"CDT", -5},
-    {"CST", -6},
-    {"MDT", -7},
-    {"MST", -7},
-    {"PDT", -7},
-    {"PST", -8},
-    {"AKDT",-8},
-    {"AKST",-9},
-    {"HADT",-9},
-    {"HAST",-10}
-};
-
-/**
- * @brief Constant strings for daylight savings time zones.
- */
-const std::vector<std::string> daylightSavingsTimeZones = {
-    "EDT",
-    "CDT",
-    "MDT",
-    "PDT",
-    "AKDT",
-    "HADT"
-};
-
-/**
- * @brief Constant strings for standard time zones.
- */
-const std::vector<std::string> standardTimeZones = {
-    "EST",
-    "CST",
-    "MST",
-    "PST",
-    "AKST",
-    "HAST"
-};
-
-/**
  * @brief The TimeManager class
  */
 class TimeManager : public QObject
@@ -120,7 +78,7 @@ class TimeManager : public QObject
     /**
      * @brief daylightSavings
      */
-    Q_PROPERTY(unsigned char daylightSavings READ getDaylightSavings NOTIFY daylightChanged)
+    Q_PROPERTY(char daylightSavings READ getDaylightSavings NOTIFY daylightChanged)
 
     public:
         /**
@@ -134,6 +92,12 @@ class TimeManager : public QObject
          * @return QString
          */
         QString getCurrentDateTime();
+
+        /**
+         * @brief Gets the state of daylight savings.
+         * @return unsigned char
+         */
+        char getDaylightSavings() const;
 
     public slots:
 
@@ -167,12 +131,6 @@ class TimeManager : public QObject
         void setTime();
 
         /**
-         * @brief Gets the state of daylight savings.
-         * @return unsigned char
-         */
-        unsigned char getDaylightSavings() const;
-
-        /**
          * @brief Switches between daylight savings.
          * @callergraph
          */
@@ -200,6 +158,49 @@ class TimeManager : public QObject
         void daylightChanged();
 
     private:
+
+        /**
+         * @brief Costant string and values for time zones.
+         */
+        const std::map<QString,int> timeZoneValues = {
+            {"EDT", -4},
+            {"EST", -5},
+            {"CDT", -5},
+            {"CST", -6},
+            {"MDT", -7},
+            {"MST", -7},
+            {"PDT", -7},
+            {"PST", -8},
+            {"AKDT",-8},
+            {"AKST",-9},
+            {"HADT",-9},
+            {"HAST",-10}
+        };
+
+        /**
+         * @brief Constant strings for daylight savings time zones.
+         */
+        const std::vector<std::string> daylightSavingsTimeZones = {
+            "EDT",
+            "CDT",
+            "MDT",
+            "PDT",
+            "AKDT",
+            "HADT"
+        };
+
+        /**
+         * @brief Constant strings for standard time zones.
+         */
+        const std::vector<std::string> standardTimeZones = {
+            "EST",
+            "CST",
+            "MST",
+            "PST",
+            "AKST",
+            "HAST"
+        };
+
         CSVManager m_timeCsvManager;
 
         QDateTime m_current_date_time;
@@ -216,7 +217,7 @@ class TimeManager : public QObject
         unsigned char m_time_state = 0;
         unsigned char m_time_zone_state = 0;
 
-        unsigned char m_daylight_savings_state = 0;
+        char m_daylight_savings_state = 0;
 
         const qint64 MINUTE_TO_MILLISECECONDS = 3600;
 

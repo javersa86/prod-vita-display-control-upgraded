@@ -193,7 +193,7 @@ void TimeManager::getTimeZoneDifference(const QString &oldZone, const QString &n
     m_temp_time_zone = -1 * (timeZoneValues.at(oldZone) - timeZoneValues.at(newZone));
 }
 
-auto TimeManager::getDaylightSavings() const -> unsigned char
+auto TimeManager::getDaylightSavings() const -> char
 {
     return m_daylight_savings_state;
 }

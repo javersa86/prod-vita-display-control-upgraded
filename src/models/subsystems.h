@@ -32,17 +32,4 @@ enum class SubsystemIDs
 
 };
 
-/**
- * @brief The contant values for Subsystem names.
- */
-const std::map<int,std::string> subsystemNameMap = {
-        {(int)SubsystemIDs::PRIMARY_VENTILATION , "Primary Ventilation"},
-        {(int)SubsystemIDs::SECONDARY_VENTILATION , "Secondary Ventilation"},
-        {(int)SubsystemIDs::AUXILIARY_FLOW , "Auxiliary Flow"},
-        {(int)SubsystemIDs::OXYGEN_CONTROL , "Oxygen Control"},
-        {(int)SubsystemIDs::PRIMARY_HUMIDIFICATION , "Primary Humidification"},
-        {(int)SubsystemIDs::SECONDARY_HUMIDIFICATION , "Secondary Humidification"},
-        {(int)SubsystemIDs::AUXILIARY_HUMIDITY , "Auxiliary Humidity"}
-};
-
 /** @} */

@@ -14,7 +14,7 @@
 #include "logger/part_manager.h"
 #include "logger/dpr_manager.h"
 #include <QVector>
-#include <time.h>
+#include <ctime>
 #include "state_manager.h"
 #include "models/modes.h"
 #include "models/sensors.h"
@@ -38,12 +38,12 @@
 /**
  * @brief Constant number API messages.
  */
-#define NUM_API 22
+constexpr int NUM_API = 22;
 
 /**
  * @brief Constant of warning clear.
  */
-#define WARNING_CLEARED -1
+constexpr int WARNING_CLEARED = -1;
 
 using namespace std;
 
@@ -102,7 +102,7 @@ class Backend : public QObject
                 StateManager* stateManager,
                 WarningManager* warningManager,
                 O2CalManager* o2CalManager,
-                ZeroManager* zerManager,
+                ZeroManager* zeroManager,
                 PartManager* partManager,
                 DPRManager* dprManager,
                 QObject *parent = nullptr
@@ -823,6 +823,40 @@ class Backend : public QObject
         void highDPRFinished();
 
     private:
+
+        /**
+         * @brief Constants for Mode Names.
+         */
+        const std::map<int,std::string> modeNameMap = {
+                {(int)ModeIDs::LASER_MODE , "Laser-safe O2"},
+                {(int)ModeIDs::DOUBLE_JET_MODE , "Double Jet"},
+                {(int)ModeIDs::MANUAL_MODE , "Manual"},
+                {(int)ModeIDs::SCREEN_LOCK_MODE , "Screen Lock"},
+                {(int)ModeIDs::DEMO_MODE , "Demo"},
+                {(int)ModeIDs::PIP_MONITORING_MODE , "PIP Monitoring"},
+                {(int)ModeIDs::ETCO2_MODE , "ETCO2"},
+                {(int)ModeIDs::DEHUMIDIFY_MODE , "Dehumidify"},
+                {(int)ModeIDs::O2_CALIBRATION_MODE , "O2 Calibration"},
+                {(int)ModeIDs::ALARM_SOUNDING , "Alarm Sounding"},
+                {(int)ModeIDs::HUMIDITY_PRIMING_RESET_AVAILABLE, "Humidity Priming Reset Available"},
+                {(int)ModeIDs::LISTENING_KNOB, "DC is listening to the knob"},
+                {(int)ModeIDs::SOUND_ICON, "Sound Icon Activated"},
+                {(int)ModeIDs::CALIBRATION_MODE, "Calibration is active."},
+                {(int)ModeIDs::SCREEN_LOCK_TOUCHED_MODE, "Screen Lock Touched."}
+        };
+
+        /**
+         * @brief The contant values for Subsystem names.
+         */
+        const std::map<int,std::string> subsystemNameMap = {
+                {(int)SubsystemIDs::PRIMARY_VENTILATION , "Primary Ventilation"},
+                {(int)SubsystemIDs::SECONDARY_VENTILATION , "Secondary Ventilation"},
+                {(int)SubsystemIDs::AUXILIARY_FLOW , "Auxiliary Flow"},
+                {(int)SubsystemIDs::OXYGEN_CONTROL , "Oxygen Control"},
+                {(int)SubsystemIDs::PRIMARY_HUMIDIFICATION , "Primary Humidification"},
+                {(int)SubsystemIDs::SECONDARY_HUMIDIFICATION , "Secondary Humidification"},
+                {(int)SubsystemIDs::AUXILIARY_HUMIDITY , "Auxiliary Humidity"}
+        };
 
         /**
          * @brief The state manager that stores the current states for all pneumatic settings, modes, and other features.

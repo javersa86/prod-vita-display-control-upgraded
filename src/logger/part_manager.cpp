@@ -358,12 +358,12 @@ void PartManager::setNewPart(const QString &newTime)
     emit serialChanged();
 }
 
-void PartManager::setPartIndex(unsigned char index)
+void PartManager::setPartIndex(char index)
 {
     m_part_index = index;
 }
 
-auto PartManager::getPartIndex() const -> unsigned char
+auto PartManager::getPartIndex() const -> char
 {
     return m_part_index;
 }

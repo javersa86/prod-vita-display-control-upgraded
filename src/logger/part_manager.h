@@ -52,44 +52,6 @@
 #define PART_VENTILATING_FILE "components_ventilating.csv"
 
 /**
- * @brief Constant strings for column names.
- */
-const std::map<int, std::string> partNameMap = {
-    {0, "Part"},
-    {1, "Serial Number"},
-    {2, "DateTime"}
-};
-
-/**
- * @brief Constant strings for part names.
- */
-const std::map<int, std::string> componentNameMap = {
-    {0, "Oxygen Sensor"},
-    {1, "25 Micron filter (Air Inlet Filter)"},
-    {2, "25 Micron filter (Oxygen Inlet Filter)"},
-    {3, "Water Injector (Jet)"},
-    {4, "Water Injector (AUX)"},
-    {5, "Humidity Sensor (Jet)"},
-    {6, "Humidity Sensor (AUX)"},
-    {7, "Humidity Sensor (PCB)"},
-    {8, "Jet Water Pump"},
-    {9, "Aux Water Pump"},
-    {10,"Internal Tubing Sets"},
-    {11,"Water Tubing Sets"},
-    {12,"Mechanical Pressure Regulator (Air)"},
-    {13,"Mechanical Pressure Regulator (O2)"},
-    {14,"Proportional Valve (Air)"},
-    {15,"Proportional Valve (O2)"},
-    {16,"Proportional Valve (AUX)"},
-    {17,"Flow Sensor (Jet)"},
-    {18,"Flow Sensor (AUX)"},
-    {19,"Calibration Valve"},
-    {20,"Driving Pressure Regulator"},
-    {21,"Heater Cartridge"},
-    {22,"Jet Valve"}
-};
-
-/**
  * @brief The PartManager class
  */
 class PartManager : public QObject
@@ -140,7 +102,7 @@ class PartManager : public QObject
     /**
      * @brief partIndex
      */
-    Q_PROPERTY(unsigned char partIndex READ getPartIndex WRITE setPartIndex NOTIFY partChanged)
+    Q_PROPERTY(char partIndex READ getPartIndex WRITE setPartIndex NOTIFY partChanged)
 
     public:
         /**
@@ -190,9 +152,9 @@ class PartManager : public QObject
 
         /**
          * @brief Gets index of part that was replaced.
-         * @return unsigned char
+         * @return char
          */
-        unsigned char getPartIndex() const;
+        char getPartIndex() const;
 
     public slots:
         /**
@@ -256,7 +218,7 @@ class PartManager : public QObject
          * @param index
          * @callergraph
          */
-        void setPartIndex(unsigned char index);
+        void setPartIndex(char index);
 
     signals:
         /**
@@ -281,6 +243,43 @@ class PartManager : public QObject
         void serialChanged();
 
     private:
+        /**
+         * @brief Constant strings for column names.
+         */
+        const std::map<int, std::string> partNameMap = {
+            {0, "Part"},
+            {1, "Serial Number"},
+            {2, "DateTime"}
+        };
+
+        /**
+         * @brief Constant strings for part names.
+         */
+        const std::map<int, std::string> componentNameMap = {
+            {0, "Oxygen Sensor"},
+            {1, "25 Micron filter (Air Inlet Filter)"},
+            {2, "25 Micron filter (Oxygen Inlet Filter)"},
+            {3, "Water Injector (Jet)"},
+            {4, "Water Injector (AUX)"},
+            {5, "Humidity Sensor (Jet)"},
+            {6, "Humidity Sensor (AUX)"},
+            {7, "Humidity Sensor (PCB)"},
+            {8, "Jet Water Pump"},
+            {9, "Aux Water Pump"},
+            {10,"Internal Tubing Sets"},
+            {11,"Water Tubing Sets"},
+            {12,"Mechanical Pressure Regulator (Air)"},
+            {13,"Mechanical Pressure Regulator (O2)"},
+            {14,"Proportional Valve (Air)"},
+            {15,"Proportional Valve (O2)"},
+            {16,"Proportional Valve (AUX)"},
+            {17,"Flow Sensor (Jet)"},
+            {18,"Flow Sensor (AUX)"},
+            {19,"Calibration Valve"},
+            {20,"Driving Pressure Regulator"},
+            {21,"Heater Cartridge"},
+            {22,"Jet Valve"}
+        };
 
         CSVManager m_partCsvManager;
         CSVManager m_hoursOperatingCsvManager;
@@ -301,13 +300,13 @@ class PartManager : public QObject
         unsigned char m_ventilation_state = 0;
 
         int m_temp_row_index = -1;
-        QString m_temp_name = "";
-        QString m_temp_serial_number = "";
-        QString m_temp_date = "";
+        QString m_temp_name = QString::fromStdString("");
+        QString m_temp_serial_number = QString::fromStdString("");
+        QString m_temp_date = QString::fromStdString("");
         unsigned char m_temp_oper_index = -1;
         unsigned char m_temp_vent_index = -1;
 
-        unsigned char m_part_index = -1;
+        char m_part_index = -1;
 
 
         //Increments hours operating and ventilating per second.

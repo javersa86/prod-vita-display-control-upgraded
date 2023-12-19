@@ -39,25 +39,4 @@ enum class ModeIDs
     SCREEN_LOCK_TOUCHED_MODE = 14
 };
 
-/**
- * @brief Constants for Mode Names.
- */
-const std::map<int,std::string> modeNameMap = {
-        {(int)ModeIDs::LASER_MODE , "Laser-safe O2"},
-        {(int)ModeIDs::DOUBLE_JET_MODE , "Double Jet"},
-        {(int)ModeIDs::MANUAL_MODE , "Manual"},
-        {(int)ModeIDs::SCREEN_LOCK_MODE , "Screen Lock"},
-        {(int)ModeIDs::DEMO_MODE , "Demo"},
-        {(int)ModeIDs::PIP_MONITORING_MODE , "PIP Monitoring"},
-        {(int)ModeIDs::ETCO2_MODE , "ETCO2"},
-        {(int)ModeIDs::DEHUMIDIFY_MODE , "Dehumidify"},
-        {(int)ModeIDs::O2_CALIBRATION_MODE , "O2 Calibration"},
-        {(int)ModeIDs::ALARM_SOUNDING , "Alarm Sounding"},
-        {(int)ModeIDs::HUMIDITY_PRIMING_RESET_AVAILABLE, "Humidity Priming Reset Available"},
-        {(int)ModeIDs::LISTENING_KNOB, "DC is listening to the knob"},
-        {(int)ModeIDs::SOUND_ICON, "Sound Icon Activated"},
-        {(int)ModeIDs::CALIBRATION_MODE, "Calibration is active."},
-        {(int)ModeIDs::SCREEN_LOCK_TOUCHED_MODE, "Screen Lock Touched."}
-};
-
 /** @} */

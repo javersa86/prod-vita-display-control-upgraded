@@ -94,6 +94,13 @@ class O2CalManager : public QObject
          */
         QString getCalibrationProgressTime();
 
+        /**
+         * @brief Gets the number of o2 calibration entries. Relies on the CSVManager method.
+         * @return int
+         * @callergraph
+         */
+        int getNumO2CalVals() const;
+
 
     public slots:
         /**
@@ -140,13 +147,6 @@ class O2CalManager : public QObject
          * @callergraph
          */
         QVector<QString> getLastVoltVal();
-
-        /**
-         * @brief Gets the number of o2 calibration entries. Relies on the CSVManager method.
-         * @return int
-         * @callergraph
-         */
-        int getNumO2CalVals() const;
 
         /**
          * @brief Starts the calibration timer, and won't restart timer if warning is triggered again.
@@ -213,7 +213,7 @@ class O2CalManager : public QObject
             " HIGHEST VOLTAGE"
         };
 
-        QString m_calibration_text = "01:00";
+        QString m_calibration_text = QString::fromStdString("01:00");
         int m_calibration_seconds = 60;
         QTimer *m_calibration_progress_timer;
 

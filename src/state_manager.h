@@ -43,15 +43,15 @@ class StateManager : public QObject
     /**
      * @brief power_down_flag
      */
-    Q_PROPERTY (int power_down_flag READ powerdownFlag WRITE setPowerdownFlag NOTIFY powerdownFlagChanged)
+    Q_PROPERTY(int power_down_flag READ powerdownFlag WRITE setPowerdownFlag NOTIFY powerdownFlagChanged)
     /**
      * @brief start_up_flag
      */
-    Q_PROPERTY (int start_up_flag READ startupFlag NOTIFY startupComplete)
+    Q_PROPERTY(int start_up_flag READ startupFlag NOTIFY startupComplete)
     /**
      * @brief ventilating
      */
-    Q_PROPERTY (unsigned char ventilating READ ventilating NOTIFY ventilatingChanged)
+    Q_PROPERTY(unsigned char ventilating READ ventilating NOTIFY ventilatingChanged)
 
     //SOFTWARE VERSIONS
     /**
@@ -359,7 +359,7 @@ class StateManager : public QObject
         * @brief Gets state of powerdown status.
         * @return int
         */
-        int powerdownFlag() const;
+        auto powerdownFlag() const -> int;
         /**
         * @brief Sets state of powerdown status and emits signal for it.
         * @param flag
@@ -374,19 +374,19 @@ class StateManager : public QObject
         * @brief Gets state of ventilation.
         * @return unsigned char
         */
-        unsigned char ventilating() const;
+        auto ventilating() const -> unsigned char;
 
         //SOFTWARE VERSIONS
         /**
         * @brief Gets version number for display controller.
         * @return QString
         */
-        static QString getDisplaySoftwareVersion();
+        static auto getDisplaySoftwareVersion() -> QString;
         /**
         * @brief Gets version number for system controller.
         * @return QString
         */
-        QString getSystemSoftwareVersion();
+        auto getSystemSoftwareVersion() -> QString;
         /**
         * @brief Sets version number for system controller.
         * @param version
@@ -398,7 +398,7 @@ class StateManager : public QObject
         * @brief  Gets state for the startup sequence.
         * @return int
         */
-        int startupFlag() const;
+        auto startupFlag() const -> int;
         /**
         * @brief Sets state for when startup is complete and emits signal for it.
         */
@@ -409,83 +409,83 @@ class StateManager : public QObject
          * @brief Gets state of Laser-Safe Mode.
          * @return unsigned char
          */
-        unsigned char laserMode();
+        auto laserMode() -> unsigned char;
         /**
          * @brief Gets state of Manual Mode.
          * @return unsigned char
          */
-        unsigned char manualMode();
+        auto manualMode() -> unsigned char;
         /**
          * @brief  Gets state of PIP Monitoring Mode (PIP Disconnection).
          * @return unsigned char
          */
-        unsigned char pipMonitoringMode();
+        auto pipMonitoringMode() -> unsigned char;
         /**
          * @brief  Gets state of Demo Mode.
          * @return unsigned char
          */
-        unsigned char demoMode();
+        auto demoMode() -> unsigned char;
         /**
          * @brief  Gets state of Screen Lock Mode.
          * @return unsigned char
          */
-        unsigned char screenLockMode();
+        auto screenLockMode() -> unsigned char;
         /**
          * @brief  Gets state of Double Jets Mode.
          * @return unsigned char
          */
-        unsigned char doubleJetMode();
+        auto doubleJetMode() -> unsigned char;
         /**
          * @brief  Gets state of End-Tidal Mode.
          * @return unsigned char
          */
-        unsigned char etCO2Mode();
+        auto etCO2Mode() -> unsigned char;
         /**
          * @brief  Gets state of Dehumidification Mode.
          * @return unsigned char
          */
-        unsigned char dehumidifyMode();
+        auto dehumidifyMode() -> unsigned char;
         /**
          * @brief  Gets state of O2 Calibration Mode.
          * @return unsigned char
          */
-        unsigned char o2CalMode();
+        auto o2CalMode() -> unsigned char;
         /**
          * @brief  Gets state of alarms.
          * @return unsigned char
          */
-        unsigned char alarmSounding();
+        auto alarmSounding() -> unsigned char;
         /**
          * @brief  Gets state of pumps.
          * @return unsigned char
          */
-        unsigned char humidityPrimingResetAvailable();
+        auto humidityPrimingResetAvailable() -> unsigned char;
         /**
          * @brief  Gets state of knob listening.
          * @return unsigned char
          */
-        unsigned char listeningToKnob();
+        auto listeningToKnob() -> unsigned char;
         /**
          * @brief  Gets state of sound icon.
          * @return unsigned char
          */
-        unsigned char soundIcon();
+        auto soundIcon() -> unsigned char;
         /**
          * @brief  Gets state of Service Calibration Mode.
          * @return unsigned char
          */
-        unsigned char calMode();
+        auto calMode() -> unsigned char;
         /**
          * @brief  Gets state for when screen is touched in Screen Lock Mode.
          * @return unsigned char
          */
-        unsigned char screenLockTouchedMode();
+        auto screenLockTouchedMode() -> unsigned char;
 
         /**
         * @brief Gets state for when humidity and humidity aux are unified or separated.
         * @return unsigned char
         */
-        unsigned char separatedHumidity() const;
+        auto separatedHumidity() const -> unsigned char;
         /**
         * @brief Sets state for when humidity and humidity aux needs to be unified or separated and emits signal for it.
         * @param value
@@ -496,29 +496,29 @@ class StateManager : public QObject
         * @brief  Gets state for when Limited O2 succeeds, fails, or other states available.
         * @return unsigned char
          */
-        unsigned char limitedO2Success();
+        auto limitedO2Success() -> unsigned char;
         /**
         * @brief  Gets state for when dehumidification succeeds or fails.
         * @return unsigned char
         */
-        unsigned char dehumidifySuccess();
+        auto dehumidifySuccess() -> unsigned char;
         /**
         * @brief  Gets state for when O2 Calibration succeeds or failss.
         * @return unsigned char
         */
-        unsigned char o2CalSuccess();
+        auto o2CalSuccess() -> unsigned char;
         /**
         * @brief  Gets state for when the End-Tidal Procedure succeeds or fails.
         * @return unsigned char
         */
-        unsigned char etco2Success();
+        auto etco2Success() -> unsigned char;
 
         /**
         * @brief  Gets state of mode searched by id.
         * @param  modeID
         * @return unsigned char
         */
-        unsigned char getModeEnabled(unsigned char);
+        auto getModeEnabled(unsigned char) -> unsigned char;
 
         /**
         * @brief Sets state for mode and mode's success and emits signal for it.
@@ -534,37 +534,37 @@ class StateManager : public QObject
         * @brief  Gets state of ventilation on Jet Line 1.
         * @return unsigned char
         */
-        unsigned char primaryVentilationState();
+        auto primaryVentilationState() -> unsigned char;
         /**
         * @brief  Gets state of ventilation on Jet Line 2.
         * @return unsigned char
         */
-        unsigned char secondaryVentilationState();
+        auto secondaryVentilationState() -> unsigned char;
         /**
         * @brief  Gets state of Auxiliary Flow Line.
         * @return unsigned char
         */
-        unsigned char auxiliaryFlowState();
+        auto auxiliaryFlowState() -> unsigned char;
         /**
         * @brief  Gets state of oxygen subsystem.
         * @return unsigned char
         */
-        unsigned char oxygenControlState();
+        auto oxygenControlState() -> unsigned char;
         /**
         * @brief  Gets state of humidification subsystem on Jet Line 1.
         * @return unsigned char
         */
-        unsigned char primaryHumidificationState();
+        auto primaryHumidificationState() -> unsigned char;
         /**
         * @brief  Gets state of humidification subsystem on Jet Line 2.
         * @return unsigned char
         */
-        unsigned char secondaryHumidificationState();
+        auto secondaryHumidificationState() -> unsigned char;
         /**
         * @brief  Gets state of humidification subsystem on Auxiliary Line.
         * @return unsigned char
         */
-        unsigned char auxiliaryHumidificationState();
+        auto auxiliaryHumidificationState() -> unsigned char;
 
         /**
         * @brief Sets subsystem states.
@@ -577,108 +577,109 @@ class StateManager : public QObject
          * @brief  Gets value for Driving Pressure 1 Setting.
          * @return unsigned char
          */
-        unsigned char dp1Setting();
+        auto dp1Setting() -> unsigned char;
         /**
          * @brief  Gets value for Driving Pressure 2 Setting.
          * @return unsigned char
          */
-        unsigned char dp2Setting();
+        auto dp2Setting() -> unsigned char;
         /**
          * @brief  Gets value for Rate 1 Setting.
          * @return unsigned char
          */
-        unsigned char rate1Setting();
+        auto rate1Setting() -> unsigned char;
         /**
          * @brief  Gets value for Rate 2 Setting.
          * @return unsigned char
          */
-        unsigned char rate2Setting();
+        auto rate2Setting() -> unsigned char;
         /**
          * @brief  Gets value for Inspiratory Time 1 Setting.
          * @return unsigned char
          */
-        unsigned char it1Setting();
+        auto it1Setting() -> unsigned char;
         /**
          * @brief  Gets value for Inspiratory Time 2 Setting.
          * @return unsigned char
          */
-        unsigned char it2Setting();
+        auto it2Setting() -> unsigned char;
         /**
          * @brief  Gets value for Stacking Pressure 1 Setting.
          * @return unsigned char
          */
-        unsigned char sp1Setting();
+        auto sp1Setting() -> unsigned char;
         /**
          * @brief  Gets value for Stacking Pressure 2 Setting.
          * @return unsigned char
          */
-        unsigned char sp2Setting();
+        auto sp2Setting() -> unsigned char;
         /**
          * @brief  Gets value for Oxygen Concentration Setting.
          * @return unsigned char
          */
-        unsigned char o2Setting();
+        auto o2Setting() -> unsigned char;
         /**
          * @brief  Gets value for Peak Inspiratory Pressure Setting.
          * @return unsigned char
          */
-        unsigned char pipSetting();
+        auto pipSetting() -> unsigned char;
         /**
          * @brief  Gets value for Auxiliary Flow Setting.
          * @return unsigned char
          */
-        unsigned char auxSetting();
+        auto auxSetting() -> unsigned char;
         /**
          * @brief  Gets value for Humidity 1 Setting.
          * @return unsigned char
          */
-        unsigned char hum1Setting();
+        auto hum1Setting() -> unsigned char;
         /**
          * @brief  Gets value for Humidity 2 Setting.
          * @return unsigned char
          */
-        unsigned char hum2Setting();
+        auto hum2Setting() -> unsigned char;
         /**
          * @brief  Gets value for Humidity Auxiliary Setting.
          * @return unsigned char
          */
-        unsigned char humauxSetting();
+        auto humauxSetting() -> unsigned char;
         /**
          * @brief  Gets value for End-Tidal Rate Setting.
          * @return unsigned char
          */
-        unsigned char etco2RateSetting();
+        auto etco2RateSetting() -> unsigned char;
         /**
          * @brief  Gets value for End-Tidal Inspiratory Time Setting.
          * @return unsigned char
          */
-        unsigned char etco2ITSetting();
+        auto etco2ITSetting() -> unsigned char;
         /**
          * @brief  Gets value for End-Tidal Number of Breaths Setting.
          * @return unsigned char
          */
-        unsigned char etco2NumBreathsSetting();
+        auto etco2NumBreathsSetting() -> unsigned char;
         /**
          * @brief  Gets value for End-Tidal Driving Pressure Setting.
          * @return unsigned char
          */
-        unsigned char etco2DPSetting();
+        auto etco2DPSetting() -> unsigned char;
         /**
          * @brief  Gets value for Laser-Safe Oxygen Concentration Setting.
          * @return unsigned char
          */
-        unsigned char laserO2Setting();
+        auto laserO2Setting() -> unsigned char;
         /**
          * @brief  Gets value for Volume.
          * @return unsigned char
          */
-        unsigned char volumeSetting();
+        auto volumeSetting() -> unsigned char;
 
         /**
         * @brief Gets O2 value for Laser-Safe Mode.
         * @return unsigned char
         */
-        unsigned char getSetO2Val() const;
+        auto getSetO2Val() const -> unsigned char;
+
         /**
         * @brief Sets O2 value for Laser-Safe Mode.
         * @param val
@@ -690,7 +691,7 @@ class StateManager : public QObject
         * @brief Gets DPR Calibration value.
         * @return int
         */
-        int currentDPR() const;
+        auto currentDPR() const -> int;
         /**
         * @brief Sets DPR Calibration value and emits signal for it.
         * @param val
@@ -702,57 +703,57 @@ class StateManager : public QObject
          * @brief  Gets calibration value for Inlet Air.
          * @return float
          */
-        float zeroInletAir();
+        auto zeroInletAir() -> float;
 
         /**
          * @brief Gets verify value for Inlet Air.
          * @return float
          */
-        float verifyInletAir();
+        auto verifyInletAir() -> float;
 
         /**
          * @brief  Gets calibration value for Inlet O2.
          * @return float
          */
-        float zeroInletO2();
+        auto zeroInletO2() -> float;
 
         /**
          * @brief Gets verify value for Inlet O2.
          * @return float
          */
-        float verifyInletO2();
+        auto verifyInletO2() -> float;
 
         //INLET PIP AND SP
         /**
          * @brief Gets calibration value for PIP.
          * @return float
          */
-        float zeroPIP();
+        auto zeroPIP() -> float;
 
         /**
          * @brief Gets verify value for PIP.
          * @return float
          */
-        float verifyPIP();
+        auto verifyPIP() -> float;
 
         /**
          * @brief  Gets calibration value for SP.
          * @return float
          */
-        float zeroSP();
+        auto zeroSP() -> float;
 
         /**
          * @brief Gets verify value for SP.
          * @return float
          */
-        float verifySP();
+        auto verifySP() -> float;
 
         //SAVED DRIVING PRESSURE BEFORE DPR CALIBRATION
         /**
         * @brief Gets saved Driving Pressure setting value for when Service Calibration Mode is enabled.
         * @return unsigned char
         */
-        unsigned char getSavedDP() const;
+        auto getSavedDP() const -> unsigned char;
         /**
         * @brief Sets saved Driving Pressure setting value for when Service Calibration Mode is enabled.
         * @param val
@@ -764,7 +765,8 @@ class StateManager : public QObject
         * @brief Get measured values from notifications.
         * @return QVector<double>
         */
-        QVector<double> getNotificationVector();
+        auto getNotificationVector() -> QVector<double>;
+
         /**
         * @brief   Set measured values to notifications.
         * @details Sets the following values to notifications and emits signal for it:
@@ -787,7 +789,8 @@ class StateManager : public QObject
         * @brief Gets sensor measurements.
         * @return QVector<int>
         */
-        QVector<int> sensorMeasurements();
+        auto sensorMeasurements() -> QVector<int>;
+
         /**
         * @brief Sets sensor measurement by id and emits signal for it.
         * @param id
@@ -819,14 +822,14 @@ class StateManager : public QObject
         * @brief Gets IP Address.
         * @return QString
         */
-        QString getIPAddress();
+        auto getIPAddress() -> QString;
 
         //STATE OF PRESET IMPLEMENTATION.
         /**
         * @brief Gets state of preset implementation progress.
         * @return unsigned char
         */
-        unsigned char getPresetComplete() const;
+        auto getPresetComplete() const -> unsigned char;
         /**
         * @brief Sets state of preset implementation progress and emits signal for it.
         * @param val
@@ -839,7 +842,7 @@ class StateManager : public QObject
         * @note  Function utilizied for service menu calibration page.
         * @return unsigned char
         */
-        unsigned char getDisplayWarnings() const;
+        auto getDisplayWarnings() const -> unsigned char;
         /**
         * @brief Sets state of warnings banner visibility
         * @note  Function utilized for  service menu calibration page.
@@ -852,7 +855,8 @@ class StateManager : public QObject
         * @brief Gets state for when preset edit page is opened, so that page won't timeout.
         * @return unsigned char
         */
-        unsigned char getPresetCreateActive() const;
+        auto getPresetCreateActive() const -> unsigned char;
+
         /**
         * @brief Sets state for when preset edit page is opened, so that page won't timeout and emits signal for it.
         * @param val
@@ -863,14 +867,14 @@ class StateManager : public QObject
          * @brief Gets state of visibility for SP Line on the graph.
          * @return unsigned char
          */
-        unsigned char getSPLineState() const;
+        auto getSPLineState() const -> unsigned char;
 
         //ETCO2 BUTTON STATE
         /**
          * @brief Gets the state of the functionality of the ETCO2 Button.
          * @return unsigned char
          */
-        unsigned char getEtco2ButtonState() const;
+        auto getEtco2ButtonState() const -> unsigned char;
 
         //SAVE DATA
         /**
@@ -883,7 +887,7 @@ class StateManager : public QObject
          * @brief Gets total service log files and warning log files.
          * @return int
          */
-        int getTotalFiles() const;
+        auto getTotalFiles() const -> int;
 
         /**
          * @brief Sets progress for exporting files to USB Drive.
@@ -900,32 +904,31 @@ class StateManager : public QObject
          * @brief Gets progress for exporting files to USB Drive.
          * @return int
          */
-        int getSaveDataProgress() const;
+        auto getSaveDataProgress() const -> int;
 
         /**
          * @brief Get measured values from service notifications.
          * @return QVector<double>
          */
-        QVector<double> getServiceNotificationVector();
+        auto getServiceNotificationVector() -> QVector<double>;
 
         /**
          * @brief Get adjustment state for oxygen measurement.
          * @return int
          */
-        int getOxygenAdjustmentState();
+        auto getOxygenAdjustmentState() -> int;
 
         /**
          * @brief Update adjustment state for oxygen measurement.
          */
         void adjustOxygen();
 
-    public slots:
         /**
         * @brief  Gets setting value by id.
         * @param  id
         * @return unsigned char
         */
-        unsigned char getSettingValue(unsigned char);
+        auto getSettingValue(unsigned char) -> unsigned char;
 
         /**
         * @brief Retrieves and sets IP Address from local network and emits signal for it.
@@ -942,7 +945,7 @@ class StateManager : public QObject
         * @param  id
         * @return unsigned char
         */
-        float getZeroValue(unsigned char);
+        auto getZeroValue(unsigned char) -> float;
 
         /**
          * @brief Sets the state of visibility for SP Line on the graph.
@@ -1084,7 +1087,7 @@ class StateManager : public QObject
          * @brief Signal for adjusting O2.
          * @param id
          */
-        void oxygenAdjustmentSignal(unsigned char id);
+        void oxygenAdjustmentSignal(unsigned char setting_id);
         /**
          * @brief Signal for updating the state of the ETCO2 button.
          */
@@ -1115,8 +1118,8 @@ class StateManager : public QObject
 
         int m_currentDPR = 0;
 
-        float m_inlets[4] = {0};
-        float m_inlets_verified[4] = {0};
+        std::array<float,4> m_inlets = {0};
+        std::array<float,4> m_inlets_verified = {0};
 
         unsigned char m_saved_dp = 0;
 
