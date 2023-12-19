@@ -1,15 +1,14 @@
 #include "knob.h"
 
-Knob::Knob(uint pin_a, uint pin_b, uint pin_switch)
+Knob::Knob(uint pin_a, uint pin_b, uint pin_switch) : button(new Switch()), encoder(new Encoder())
 {
-    char edge[]="both";
-    m_pinA= new GPIO{pin_a, edge, false};
-    m_pinB = new GPIO{pin_b, edge, false};
-    m_pinButton = new GPIO{pin_switch, edge, false};
+    const int edge_len = 5;
+    std::array<char, edge_len> edge = {'b', 'o', 't', 'h', '\0'};
 
-    button = new Switch();
+    m_pinA = std::unique_ptr<GPIO>(new GPIO(pin_a, edge.data(), false));
+    m_pinB = std::unique_ptr<GPIO>(new GPIO(pin_b, edge.data(), false));
+    m_pinButton = std::unique_ptr<GPIO>(new GPIO(pin_switch, edge.data(), false));
 
-    encoder = new Encoder();
 
     connect(encoder,&Encoder::encoderIncrement,
             this, &Knob::onEncoderIncrement);
@@ -20,11 +19,12 @@ Knob::Knob(uint pin_a, uint pin_b, uint pin_switch)
 
 void Knob::run()
 {
-    struct pollfd fdset[4];
+    std::array<pollfd, 4> fdset;
     int nfds = 4;
     int rcProcessPoll = -1;
     const int timeout_count = 1000;
-    char buf[MAX_BUF];
+    //char buf[MAX_BUF];
+    std::vector<char> buf(MAX_BUF);
     int len = 0;
 
     m_pinA->openFd();
@@ -36,7 +36,7 @@ void Knob::run()
 
     while(m_running)
     {
-        memset((void*)fdset, 0, sizeof(fdset));
+        memset((void*)fdset.data(), 0, sizeof(fdset));
 
         fdset[0].fd = m_pinA->getFD();
         fdset[0].events = POLLPRI;
@@ -47,60 +47,72 @@ void Knob::run()
         fdset[2].fd = m_pinButton->getFD();
         fdset[2].events = POLLPRI;
 
-        rcProcessPoll = poll(fdset, nfds, 3 * timeout_count);
+        rcProcessPoll = poll(fdset.data(), nfds, 3 * timeout_count);
 
         if(rcProcessPoll < 0) {
             qDebug()<<"\npoll() failed!\n";
         }
 
-        if (fdset[0].revents & POLLPRI)
+        if ((fdset[0].revents & POLLPRI) != 0)
         {
             lseek(fdset[0].fd, 0, SEEK_SET);
-            len = read(fdset[0].fd, buf, MAX_BUF);
+            len = read(fdset[0].fd, buf.data(), MAX_BUF);
 
             if (len > 0)
             {
-                unsigned char result = buf[0] - '0';
-                if((result | 1) == 1)
-                {
-                    encoder->onPinAChange(result);
-                }
+                resultPinA(buf[0] - '0');
             }
         }
 
-        if (fdset[1].revents & POLLPRI)
+        if ((fdset[1].revents & POLLPRI) != 0)
         {
             lseek(fdset[1].fd, 0, SEEK_SET);
-            len = read(fdset[1].fd, buf, MAX_BUF);
+            len = read(fdset[1].fd, buf.data(), MAX_BUF);
 
             if (len > 0)
             {
-                unsigned char result = buf[0] - '0';
-                if((result | 1) == 1)
-                {
-                    encoder->onPinBChange(result);
-                }
+                resultPinB(buf[0] - '0');
             }
         }
 
         const unsigned long milliseconds = 75;
-        if (fdset[2].revents & POLLPRI)
+        if ((fdset[2].revents & POLLPRI) != 0)
         {
             lseek(fdset[2].fd, 0, SEEK_SET);
-            len = read(fdset[2].fd, buf, MAX_BUF);
+            len = read(fdset[2].fd, buf.data(), MAX_BUF);
 
             if (len > 0)
             {
-                unsigned char result = buf[0] - '0';
-                if((result | 1) == 1)
-                {
-                    button->onPinChange(result);
-                }
+                resultPinButton(buf[0] - '0');
                 msleep(milliseconds);
             }
         }
 
         fflush(stdout);
+    }
+}
+
+void Knob::resultPinA(unsigned char result)
+{
+    if((result | 1) == 1)
+    {
+        encoder->onPinAChange(result);
+    }
+}
+
+void Knob::resultPinB(unsigned char result)
+{
+    if((result | 1) == 1)
+    {
+        encoder->onPinBChange(result);
+    }
+}
+
+void Knob::resultPinButton(unsigned char result)
+{
+    if((result | 1) == 1)
+    {
+        button->onPinChange(result);
     }
 }
 

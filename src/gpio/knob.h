@@ -8,6 +8,8 @@
 #include <QThread>
 #include <syslog.h>
 #include <unistd.h>
+#include <memory>
+#include <array>
 
 #include "encoder.h"
 #include "gpio.h"
@@ -88,14 +90,18 @@ class Knob : public QThread
         Switch* button;
         Encoder* encoder;
 
-        GPIO* m_pinA;
-        GPIO* m_pinB;
-        GPIO* m_pinButton;
+        std::unique_ptr<GPIO> m_pinA;
+        std::unique_ptr<GPIO> m_pinB;
+        std::unique_ptr<GPIO> m_pinButton;
 
         const int MAX_BUF = 64;
 
         int m_encoderIncrement{0};
         bool m_running = false;
+
+        void resultPinA(unsigned char result);
+        void resultPinB(unsigned char result);
+        void resultPinButton(unsigned char result);
 
     private slots:
 
