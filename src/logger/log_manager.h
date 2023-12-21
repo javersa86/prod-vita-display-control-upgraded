@@ -232,10 +232,6 @@ void log(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 void logEvent(const QString &msg);
 
 /**
- * @brief Vector that stores Titles for Service Log files.
- */
-static std::vector<std::string> m_columnTitles;
-/**
  * @brief Variable used to declared when log manager is initiated.
  */
 static bool m_logInitiated;
