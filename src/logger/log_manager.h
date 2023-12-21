@@ -267,7 +267,6 @@ static CSVManager m_csvManager_Time;
  * @brief Boolean variable used to log service events directly from the service menu.
  */
 static bool m_service_state;
-
 /**
  * @brief String variable that stores the title of the currently active service log file.
  */
