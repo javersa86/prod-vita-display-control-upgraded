@@ -201,7 +201,7 @@ class TimeManager : public QObject
             "HAST"
         };
 
-        const int default_time_zone = -5;
+        const int default_time_zone = -4;
 
         CSVManager m_timeCsvManager;
 
