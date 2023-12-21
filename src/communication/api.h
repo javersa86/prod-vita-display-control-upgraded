@@ -471,24 +471,24 @@ class API : public QThread
 
         array<unsigned char, (int) txLengths::DISPLAY_POWER_ON_RECEIVED> power_cycle_response = {(unsigned char)txOpCodes::DISPLAY_POWER_ON_RECEIVED};
         array<unsigned char, (int) txLengths::DISPLAY_GET_SETTINGS_REQUEST> get_settings_request = {(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST};
-        std::array<unsigned char, (int) txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST> notification_request = {(int)txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST, 0};
-        std::array<unsigned char, (int) txLengths::DISPLAY_GET_OP_MODES_REQUEST> get_op_modes_request = {(unsigned char) txOpCodes::DISPLAY_GET_OP_MODES_REQUEST};
-        std::array<unsigned char, (int) txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST> get_subsystem_request = {(unsigned char) txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST};
-        std::array<unsigned char, (int) txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST> version_message = {(unsigned char)txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST};
-        std::array<unsigned char, (int) txLengths::DISPLAY_SET_SETTINGS_REQUEST> set_request = {0};
-        std::array<unsigned char, (int) txLengths::DISPLAY_GET_MEASURED_REQUEST> measured_request = {(unsigned char)txOpCodes::DISPLAY_GET_MEASURED_REQUEST, 0};
-        std::array<unsigned char, (int) txLengths::DISPLAY_CLEAR_WARNING_REQUEST> clear_warning_request = {(unsigned char)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST,0};
-        std::array<unsigned char, (int) txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST> display_set_mode_request = {0};
-        std::array<unsigned char, (int) txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE> system_set_mode_request = {0};
-        std::array<unsigned char, (int) txLengths::DISPLAY_NOTIFICATION_RECEIVED> notification_response = {(unsigned char)txOpCodes::DISPLAY_NOTIFICATION_RECEIVED};
-        std::array<unsigned char, (int) txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED> subsystem_response = {(unsigned char) txOpCodes::DISPLAY_SUBSYSTEM_STATUS_RECEIVED};
-        std::array<unsigned char, (int) txLengths::DISPLAY_VENTILATION_STATUS_RECEIVED> ventilation_response = {(unsigned char) txOpCodes::DISPLAY_VENTILATION_STATUS_RECEIVED};
-        std::array<unsigned char, (int) txLengths::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED> hmi_response = {(unsigned char) txOpCodes::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED, 0};
-        std::array<unsigned char, (int) txLengths::DISPLAY_SHUTDOWN_RECEIVED> shutdown_request = {(unsigned char) txOpCodes::DISPLAY_SHUTDOWN_RECEIVED};
-        std::array<unsigned char, (int) txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND> shutdown_confirm_request = {(unsigned char) txOpCodes::DISPLAY_SHUTDOWN_CONFIRM_SEND, 0};
-        std::array<unsigned char, (int) txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE> data_request = {0};
-        std::array<unsigned char, (int) txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST> dpr_request = {(unsigned char) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST, 0};
-        std::array<unsigned char, (int) txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST> zero_request = {0};
+        array<unsigned char, (int) txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST> notification_request = {(int)txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST, 0};
+        array<unsigned char, (int) txLengths::DISPLAY_GET_OP_MODES_REQUEST> get_op_modes_request = {(unsigned char) txOpCodes::DISPLAY_GET_OP_MODES_REQUEST};
+        array<unsigned char, (int) txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST> get_subsystem_request = {(unsigned char) txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST};
+        array<unsigned char, (int) txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST> version_message = {(unsigned char)txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST};
+        array<unsigned char, (int) txLengths::DISPLAY_SET_SETTINGS_REQUEST> set_request = {0};
+        array<unsigned char, (int) txLengths::DISPLAY_GET_MEASURED_REQUEST> measured_request = {(unsigned char)txOpCodes::DISPLAY_GET_MEASURED_REQUEST, 0};
+        array<unsigned char, (int) txLengths::DISPLAY_CLEAR_WARNING_REQUEST> clear_warning_request = {(unsigned char)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST,0};
+        array<unsigned char, (int) txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST> display_set_mode_request = {0};
+        array<unsigned char, (int) txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE> system_set_mode_request = {0};
+        array<unsigned char, (int) txLengths::DISPLAY_NOTIFICATION_RECEIVED> notification_response = {(unsigned char)txOpCodes::DISPLAY_NOTIFICATION_RECEIVED};
+        array<unsigned char, (int) txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED> subsystem_response = {(unsigned char) txOpCodes::DISPLAY_SUBSYSTEM_STATUS_RECEIVED};
+        array<unsigned char, (int) txLengths::DISPLAY_VENTILATION_STATUS_RECEIVED> ventilation_response = {(unsigned char) txOpCodes::DISPLAY_VENTILATION_STATUS_RECEIVED};
+        array<unsigned char, (int) txLengths::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED> hmi_response = {(unsigned char) txOpCodes::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED, 0};
+        array<unsigned char, (int) txLengths::DISPLAY_SHUTDOWN_RECEIVED> shutdown_request = {(unsigned char) txOpCodes::DISPLAY_SHUTDOWN_RECEIVED};
+        array<unsigned char, (int) txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND> shutdown_confirm_request = {(unsigned char) txOpCodes::DISPLAY_SHUTDOWN_CONFIRM_SEND, 0};
+        array<unsigned char, (int) txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE> data_request = {0};
+        array<unsigned char, (int) txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST> dpr_request = {(unsigned char) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST, 0};
+        array<unsigned char, (int) txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST> zero_request = {0};
 
         /**
          * @brief Checks for the USB connection between the display and system controller.
