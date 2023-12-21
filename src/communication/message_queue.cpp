@@ -10,7 +10,7 @@ void MessageQueue::push(const Message &message)
     m_dataAvailable.wakeAll();
 }
 
-auto MessageQueue::pop() -> Message
+Message MessageQueue::pop()
 {
     if (m_queue.isEmpty())
     {
@@ -23,13 +23,13 @@ auto MessageQueue::pop() -> Message
     return message;
 }
 
-auto MessageQueue::empty() const -> bool
+bool MessageQueue::empty() const
 {
     return m_queue.isEmpty();
 }
 
 
-auto MessageQueue::size() const -> int
+int MessageQueue::size() const
 {
     return m_queue.size();
 }

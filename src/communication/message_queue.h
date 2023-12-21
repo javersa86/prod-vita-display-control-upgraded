@@ -9,8 +9,8 @@
 #include <QDebug>
 #include <unordered_set>
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
 #include "message.h"
 
@@ -44,7 +44,7 @@ class MessageQueue
         /**
          * @brief Empty Constructor.
          */
-        MessageQueue() {}
+        MessageQueue() = default;
 
         /**
          * @brief Pushes the message to the queue.

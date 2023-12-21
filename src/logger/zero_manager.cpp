@@ -582,7 +582,7 @@ void ZeroManager::addVerifiedValue(int sensor_id, float value)
 
 }
 
-auto ZeroManager::getZeroPIP() -> float
+float ZeroManager::getZeroPIP()
 {
     if (m_numPipVals > 0)
     {
@@ -591,7 +591,7 @@ auto ZeroManager::getZeroPIP() -> float
     return -1;
 }
 
-auto ZeroManager::getZeroSP() -> float
+float ZeroManager::getZeroSP()
 {
     if (m_numSpVals > 0)
     {
@@ -600,7 +600,7 @@ auto ZeroManager::getZeroSP() -> float
     return -1;
 }
 
-auto ZeroManager::getInletAir() -> float
+float ZeroManager::getInletAir()
 {
     if (m_numAirVals > 0)
     {
@@ -609,7 +609,7 @@ auto ZeroManager::getInletAir() -> float
     return -1;
 }
 
-auto ZeroManager::getInletO2() -> float
+float ZeroManager::getInletO2()
 {
     if (m_numO2Vals > 0)
     {
@@ -618,7 +618,7 @@ auto ZeroManager::getInletO2() -> float
     return -1;
 }
 
-auto ZeroManager::getVerifiedZeroPIP() -> float
+float ZeroManager::getVerifiedZeroPIP()
 {
     if (m_numVerifiedPipVals > 0)
     {
@@ -627,7 +627,7 @@ auto ZeroManager::getVerifiedZeroPIP() -> float
     return -1;
 }
 
-auto ZeroManager::getVerifiedZeroSP() -> float
+float ZeroManager::getVerifiedZeroSP()
 {
     if (m_numVerifiedSpVals > 0)
     {
@@ -636,7 +636,7 @@ auto ZeroManager::getVerifiedZeroSP() -> float
     return -1;
 }
 
-auto ZeroManager::getVerifiedInletAir() -> float
+float ZeroManager::getVerifiedInletAir()
 {
     if (m_numVerifiedAirVals > 0)
     {
@@ -645,7 +645,7 @@ auto ZeroManager::getVerifiedInletAir() -> float
     return -1;
 }
 
-auto ZeroManager::getVerifiedInletO2() -> float
+float ZeroManager::getVerifiedInletO2()
 {
     if (m_numVerifiedO2Vals > 0)
     {

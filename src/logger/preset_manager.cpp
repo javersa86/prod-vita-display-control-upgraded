@@ -21,68 +21,67 @@ PresetManager::PresetManager(QObject *parent) :
     updatePresets();
 }
 
-auto PresetManager::getNumPresets() -> int
+int PresetManager::getNumPresets()
 {
      return m_presetCsvManager.getNumEntries();
 }
 
-auto PresetManager::getPreset1() -> QVector<int>
+QVector<int> PresetManager::getPreset1()
 {
     return m_presets.at(PRESET_INDEX_1);
 }
 
-auto PresetManager::getPreset2() -> QVector<int>
+QVector<int> PresetManager::getPreset2()
 {
     return m_presets.at(PRESET_INDEX_2);
 }
 
-auto PresetManager::getPreset3() -> QVector<int>
+QVector<int> PresetManager::getPreset3()
 {
     return m_presets.at(PRESET_INDEX_3);
 }
 
-auto PresetManager::getPreset4() -> QVector<int>
+QVector<int> PresetManager::getPreset4()
 {
     return m_presets.at(PRESET_INDEX_4);
 }
 
-auto PresetManager::getPreset5() -> QVector<int>
+QVector<int> PresetManager::getPreset5()
 {
     return m_presets.at(PRESET_INDEX_5);
 }
 
-auto PresetManager::getPreset6() -> QVector<int>
+QVector<int> PresetManager::getPreset6()
 {
     return m_presets.at(PRESET_INDEX_6);
 }
 
-auto PresetManager::getPreset7() -> QVector<int>
+QVector<int> PresetManager::getPreset7()
 {
     return m_presets.at(PRESET_INDEX_7);
 }
 
-auto PresetManager::getPreset8() -> QVector<int>
+QVector<int> PresetManager::getPreset8()
 {
     return m_presets.at(PRESET_INDEX_8);
 }
 
-auto PresetManager::getPreset9() -> QVector<int>
+QVector<int> PresetManager::getPreset9()
 {
     return m_presets.at(PRESET_INDEX_9);
 }
 
-auto PresetManager::getPreset10() -> QVector<int>
+QVector<int> PresetManager::getPreset10()
 {
     return m_presets.at(PRESET_INDEX_10);
 }
 
-
-auto PresetManager::getPreset11() -> QVector<int>
+QVector<int> PresetManager::getPreset11()
 {
     return m_presets.at(PRESET_INDEX_11);
 }
 
-auto PresetManager::getPreset12() -> QVector<int>
+QVector<int> PresetManager::getPreset12()
 {
     return m_presets.at(PRESET_INDEX_12);
 }
@@ -207,7 +206,7 @@ void PresetManager::updatePresetNameIndex(unsigned char index)
     m_preset_name = m_preset_names[m_preset_name_index];
 }
 
-auto PresetManager::getPresetName() -> QString
+QString PresetManager::getPresetName()
 {
     return m_preset_name;
 }
@@ -287,12 +286,12 @@ void PresetManager::updateKeyboardState(unsigned char preset_id)
     emit presetKeyboardStateChanged();
 }
 
-auto PresetManager::getKeyboardState() const -> unsigned char
+unsigned char PresetManager::getKeyboardState() const
 {
     return m_keyboard_state;
 }
 
-auto PresetManager::getAllCapState() const -> unsigned char
+unsigned char PresetManager::getAllCapState() const
 {
     return all_caps_state;
 }

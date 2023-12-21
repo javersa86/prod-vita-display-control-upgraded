@@ -43,6 +43,20 @@ class BrightnessManager : public QObject
          */
         BrightnessManager(QObject *parent = nullptr);
 
+        /**
+         * @brief Gets the max brightness percentage.
+         * @return int
+         * @callergraph
+         */
+        int getMaxPercent() const;
+
+        /**
+         * @brief Gets the min brightness percentage.
+         * @return int
+         * @callergraph
+         */
+        int getMinPercent() const;
+
     public slots:
 
         /**
@@ -57,21 +71,7 @@ class BrightnessManager : public QObject
          * @param value
          * @callergraph
          */
-        void changeBrightness(double value);
-
-        /**
-         * @brief Gets the max brightness percentage.
-         * @return int
-         * @callergraph
-         */
-        int getMaxPercent() const;
-
-        /**
-         * @brief Gets the min brightness percentage.
-         * @return int
-         * @callergraph
-         */
-        int getMinPercent() const;
+        void changeBrightness(double percentage);
 
 
     signals:

@@ -24,13 +24,13 @@ void serviceState(bool state)
     m_service_state = state;
 }
 
-auto directoryExists(const QString &path) -> bool
+bool directoryExists(const QString &path)
 {
     QFileInfo check_file(path);
     return check_file.exists() && check_file.isDir();
 }
 
-auto deleteOldestEventFile() -> bool
+bool deleteOldestEventFile()
 {
     int index = -1;
     qint64 currentTimeLength = 0;
@@ -236,7 +236,7 @@ void generateNewEventFile()
     m_activeWarningFiles.append(m_currentEventFileWarnings);
 }
 
-auto findCurrentEventFile() -> bool
+bool findCurrentEventFile()
 {
 //    QDirIterator iterator(QString::fromStdString(ROOT_FOLDER) + QString::fromStdString(EVENT_FOLDER), QDir::Files);
 //    QDirIterator iterator1(QString::fromStdString(ROOT_FOLDER) + QString::fromStdString(WARNINGS_FOLDER), QDir::Files);
@@ -253,7 +253,7 @@ auto findCurrentEventFile() -> bool
     return true;
 }
 
-auto fileSize(const QString &fileAbsolutePath) -> float
+float fileSize(const QString &fileAbsolutePath)
 {
     QFileInfo file(fileAbsolutePath);
     float result = (float) file.size() / abosolute_size;
@@ -340,7 +340,7 @@ void startLogs()
     m_service_state = false;
 }
 
-auto getLogDateTime() -> QString
+QString getLogDateTime()
 {
     return QString::fromStdString(m_csvManager_Time.readRecord(0).at(1)) +
             " - " +
@@ -416,7 +416,8 @@ void log(QtMsgType type, const QMessageLogContext &context, const QString &msg)
         case QtDebugMsg:
         {
             //fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-            fprintf(stderr, "%s \n", localMsg.constData());
+            //fprintf(stderr, "%s \n", localMsg.constData());
+            std::cerr << localMsg.constData() << std::endl;
             break;
         }
         case QtInfoMsg:
@@ -426,17 +427,20 @@ void log(QtMsgType type, const QMessageLogContext &context, const QString &msg)
         }
         case QtWarningMsg:
         {
-            fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            //fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            std::cerr << "Warning: " << localMsg.constData() << " (" << file << ":" << context.line << ", " << function << ")" << std::endl;
             break;
         }
         case QtCriticalMsg:
         {
-            fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            //fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            std::cerr << "Critical: " << localMsg.constData() << " (" << file << ":" << context.line << ", " << function << ")" << std::endl;
             break;
         }
         case QtFatalMsg:
         {
-            fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            //fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+            std::cerr << "Fatal: " << localMsg.constData() << " (" << file << ":" << context.line << ", " << function << ")" << std::endl;
             break;
         }
     }

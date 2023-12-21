@@ -20,17 +20,17 @@
 /**
  * @brief Name of csv file for maintenance manager.
  */
-#define MAINTENANCE_FILE "maintenance.csv"
+constexpr const char* MAINTENANCE_FILE = "maintenance.csv";
 
 /**
  * @brief Name of row for last service date.
  */
-#define LAST_DATE "LAST SERVICE DATE"
+constexpr const char* LAST_DATE = "LAST SERVICE DATE";
 
 /**
  * @brief Name of row for next service date.
  */
-#define NEXT_DATE "NEXT SERVICE DATE"
+constexpr const char* NEXT_DATE = "NEXT SERVICE DATE";
 
 /**
  * @file maintenance_manager.h

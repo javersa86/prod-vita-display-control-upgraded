@@ -6,7 +6,7 @@
 #include <QTextStream>
 #include <QDateTime>
 #include <QTimeZone>
-#include <stdio.h>
+#include <cstdio>
 #include <unistd.h>
 #include <cstdlib>
 
@@ -21,42 +21,42 @@
 /**
  * @brief Name and path for directory where all files are stored.
  */
-#define ROOT_FOLDER "/media/NVENT_FILES/"  //change to folder on display not SD card
+constexpr const char* ROOT_FOLDER = "/media/NVENT_FILES/";  //change to folder on display not SD card
 
 /**
  * @brief Name and path for directory where all service logs are stored.
  */
-#define EVENT_FOLDER "NV_Vita_events/"
+constexpr const char* EVENT_FOLDER = "NV_Vita_events/";
 
 /**
  * @brief Beginning of each service log file title.
  */
-#define EVENT_FILE_ROOT "event"
+constexpr const char* EVENT_FILE_ROOT = "event";
 
 /**
  * @brief Name and path for directory where all warning logs are stored.
  */
-#define WARNINGS_FOLDER "NV_Vita_warnings/"
+constexpr const char* WARNINGS_FOLDER = "NV_Vita_warnings/";
 
 /**
  * @brief Name of event column on service log.
  */
-#define EVENT_COLUMN "EVENT"
+constexpr const char* EVENT_COLUMN = "EVENT";
 
 /**
  * @brief File extension.
  */
-#define CSV ".csv"
+constexpr const char* CSV = ".csv";
 
 /**
  * @brief Time stamp of event column on service log.
  */
-#define TIMESTAMP_COLUMN "TIME STAMP"
+constexpr const char* TIMESTAMP_COLUMN = "TIME STAMP";
 
 /**
  * @brief Type of event column on service log.
  */
-#define TYPE_COLUMN "TYPE"
+constexpr const char* TYPE_COLUMN = "TYPE";
 
 const int oldest_file_begin = 5;
 const int oldest_file_end = 19;
@@ -275,7 +275,7 @@ static bool m_service_state;
 /**
  * @brief String variable that stores the title of the currently active service log file.
  */
-extern QString m_fileName;
+static QString m_fileName;
 
 /** @} */
 

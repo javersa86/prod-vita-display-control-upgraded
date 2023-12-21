@@ -226,32 +226,32 @@ void PartManager::setVentilationState(unsigned char val)
     m_ventilation_state = val;
 }
 
-auto PartManager::getPartName() -> QString
+QString PartManager::getPartName()
 {
     return m_partName;
 }
 
-auto PartManager::getPartNumber() -> QString
+QString PartManager::getPartNumber()
 {
     return m_partNumber;
 }
 
-auto PartManager::getPartDateTime() -> QString
+QString PartManager::getPartDateTime()
 {
     return m_partDateTime;
 }
 
-auto PartManager::getHoursOperating() const -> int
+int PartManager::getHoursOperating() const
 {
     return m_hoursOperating;
 }
 
-auto PartManager::getHoursVentilating() const -> int
+int PartManager::getHoursVentilating() const
 {
     return m_hoursVentilating;
 }
 
-auto PartManager::getIndex() const -> int
+int PartManager::getIndex() const
 {
     return m_row_index;
 }
@@ -286,7 +286,7 @@ void PartManager::setTempSerial(const QString &number)
     m_temp_serial_number = number;
 }
 
-auto PartManager::getSerialNumber() -> QString
+QString PartManager::getSerialNumber()
 {
     //If part number length is greater than 20, will return substring of serial number at length of 20.
     if (m_temp_serial_number.size() > PART_NUMBER_SIZE)
@@ -363,7 +363,7 @@ void PartManager::setPartIndex(char index)
     m_part_index = index;
 }
 
-auto PartManager::getPartIndex() const -> char
+char PartManager::getPartIndex() const
 {
     return m_part_index;
 }

@@ -19,7 +19,7 @@ Knob::Knob(uint pin_a, uint pin_b, uint pin_switch) : button(new Switch()), enco
 
 void Knob::run()
 {
-    std::array<pollfd, 4> fdset;
+    std::array<pollfd, 4> fdset{};
     int nfds = 4;
     int rcProcessPoll = -1;
     const int timeout_count = 1000;

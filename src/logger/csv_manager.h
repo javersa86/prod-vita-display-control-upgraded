@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <time.h>
+#include <ctime>
 #include <cstdlib>
 
 #include <QDebug>
@@ -17,7 +17,12 @@
 /**
  * @brief Number of O<sub>2</sub> Columns for O<sub>2</sub> Calibration Manager.
  */
-#define NUM_O2_COLS 7
+constexpr int NUM_O2_COLS = 7;
+
+/**
+ * @brief Constant value for number of columns on DPR Managers csv file.
+ */
+constexpr int MAX_O2_VALS = 5;
 
 /**
  * @file csv_manager.h
@@ -115,7 +120,7 @@ class CSVManager
 
         std::string m_filePath;
         std::string m_currDir;
-        int m_numArgs;
+        int m_numArgs = 0;
         /** @} */
 };
 

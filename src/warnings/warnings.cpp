@@ -1,11 +1,10 @@
 #include "warnings.h"
 
 
-Warning::Warning(
-        const int warning_id,
+Warning::Warning(int warning_id,
         const QVector<QString> &troubleshooting_steps,
         const QString &title,
-        const int warning_class,
+        int warning_class,
         const QString &desc,
         const unsigned char
         clearingBehavior,
@@ -53,27 +52,27 @@ Notice::Notice(
 {
 }
 
-auto Warning::id() const -> int
+int Warning::id() const
 {
     return m_id;
 }
 
-auto Warning::title() const -> QString
+QString Warning::title() const
 {
     return m_title;
 }
 
-auto Warning::warningClass() const -> int
+int Warning::warningClass() const
 {
     return m_warning_class;
 }
 
-auto Warning::description() const -> QString
+QString Warning::description() const
 {
     return m_desc;
 }
 
-auto Warning::clearText() const -> QString
+QString Warning::clearText() const
 {
     return m_clear;
 }
@@ -83,17 +82,17 @@ void Warning::setClearText(const QString &text)
     m_clear = text;
 }
 
-auto Warning::troubleshootingSteps() const -> QVector<QString>
+QVector<QString> Warning::troubleshootingSteps() const
 {
     return m_troubleshooting_steps;
 }
 
-auto Warning::clearingBehavior() const -> unsigned char
+unsigned char Warning::clearingBehavior() const
 {
     return m_clearingBehavior;
 }
 
-auto Warning::color() const -> QString
+QString Warning::color() const
 {
     return m_color;
 }

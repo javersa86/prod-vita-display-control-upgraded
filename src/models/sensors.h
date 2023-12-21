@@ -143,7 +143,7 @@ class SensorIDs : public QObject
             STACKING_PRESSURE_1 = (int)MeasuredIDs::STACKING_PRESSURE_1,
             STACKING_PRESSURE_2 = (int)MeasuredIDs::STACKING_PRESSURE_2,
             OXYGEN = (int)MeasuredIDs::OXYGEN,
-            PIP = (int)MeasuredIDs::DRIVING_PRESSURE_1,
+            PIP = (int)MeasuredIDs::PIP,
             AUX = (int)MeasuredIDs::AUX,
             HUM_1 = (int)MeasuredIDs::HUM_1,
             HUM_2 = (int)MeasuredIDs::HUM_2,

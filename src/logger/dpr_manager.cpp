@@ -99,7 +99,7 @@ void DPRManager::deleteOldestDPRVal()
     qInfo() << "NVENT" << "," << "PRESSURE REGULATOR CALIBRATION" << "," << "Delete Oldest Calibration value.";
 }
 
-auto DPRManager::getDPRCalVal() -> int
+int DPRManager::getDPRCalVal()
 {
     if(!m_dprVals.isEmpty() && m_numDPRVals > 0)
     {

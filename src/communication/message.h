@@ -1,10 +1,9 @@
 #pragma once
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include <unistd.h>
 #include <iostream>
-#include <cstring>
 #include <sstream>
 #include <QString>
 #include <QVector>
@@ -17,12 +16,12 @@
 /**
  * @brief Constant value for buffer size for message sent to api.
  */
-#define INPUT_BUFFER_SIZE 512
+constexpr int INPUT_BUFFER_SIZE = 512;
 
 /**
  * @brief Constant character that appears at the beginning of all messages.
  */
-#define START_CHAR 255
+const unsigned char START_CHAR = 255;
 
 /**
  * @file message.h

@@ -74,17 +74,17 @@ void MaintenanceManager::updateServiceDates()
     emit dateChanged();
 }
 
-auto MaintenanceManager::getLastServiceDate() -> QString
+QString MaintenanceManager::getLastServiceDate()
 {
     return m_last_date;
 }
 
-auto MaintenanceManager::getNextServiceDate() -> QString
+QString MaintenanceManager::getNextServiceDate()
 {
     return m_next_date;
 }
 
-auto MaintenanceManager::updateLastTodayDate() -> QString
+QString MaintenanceManager::updateLastTodayDate()
 {
     std::vector<std::string> date_time_row = m_timeCsvManager.readRecord(0);
     QString date_time_string = QString::fromStdString(date_time_row.at(1));
@@ -93,7 +93,7 @@ auto MaintenanceManager::updateLastTodayDate() -> QString
     return dateTimeStamp.date().toString(QString::fromStdString("MM/dd/yyyy"));
 }
 
-auto MaintenanceManager::updateNextTwelveMonthDate() -> QString
+QString MaintenanceManager::updateNextTwelveMonthDate()
 {
     QDate temp0 = QDate::fromString(m_last_date,QString::fromStdString("MM/dd/yyyy"));
     QDate temp1 = temp0.addMonths(TWELVE_MONTHS);

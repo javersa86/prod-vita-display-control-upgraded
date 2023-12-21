@@ -22,7 +22,7 @@ GPIO::~GPIO()
     }
 }
 
-auto GPIO::getValue() -> unsigned char
+unsigned char GPIO::getValue()
 {
     //If the pin has direction "in,"
     if( !_is_out )
@@ -51,13 +51,13 @@ auto GPIO::getValue() -> unsigned char
     return 0;
 }
 
-auto GPIO::exportPin() const -> int
+int GPIO::exportPin() const
 {
     int fileDescriptor = -1;
     int len = -1;
     std::array<char,ENCODER_MAX_BUF> buf{};
 
-    fileDescriptor = open(SYSFS_GPIO_DIR "/export", O_WRONLY);
+    fileDescriptor = open((std::string(SYSFS_GPIO_DIR) + "/export").c_str(), O_WRONLY);
 
     if( fileDescriptor < 0 ){
         //TODO: log error
@@ -75,7 +75,7 @@ void GPIO::openFd()
 {
     std::array<char,ENCODER_MAX_BUF> buf{};
 
-    qsnprintf(buf.data(), sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", _pinNumber);
+    qsnprintf(buf.data(), sizeof(buf), (std::string(SYSFS_GPIO_DIR) + "/gpio%d/value").c_str(), _pinNumber);
 
     if( 0 <= _ioFd )
     {
@@ -97,17 +97,17 @@ void GPIO::openFd()
     }
 }
 
-auto GPIO::getFD() const -> int
+int GPIO::getFD() const
 {
     return _ioFd;
 }
 
-auto GPIO::setDirection(bool out) -> int
+int GPIO::setDirection(bool out)
 {
     int fileDescriptor = -1;
     std::array<char,ENCODER_MAX_BUF> buf{};
 
-    qsnprintf(buf.data(), sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/direction", _pinNumber);
+    qsnprintf(buf.data(), sizeof(buf), (std::string(SYSFS_GPIO_DIR) + "/gpio%d/direction").c_str(), _pinNumber);
     fileDescriptor = open(buf.data(), O_WRONLY);
 
     if( fileDescriptor < 0 )
@@ -132,12 +132,12 @@ auto GPIO::setDirection(bool out) -> int
     return 0;
 }
 
-auto GPIO::setEdge(char *edge) const -> int
+int GPIO::setEdge(char *edge) const
 {
     int fileDescriptor = -1;
     std::array<char,ENCODER_MAX_BUF> buf{};
 
-    qsnprintf(buf.data(), sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/edge", _pinNumber);
+    qsnprintf(buf.data(), sizeof(buf), (std::string(SYSFS_GPIO_DIR) + "/gpio%d/edge").c_str(), _pinNumber);
 
     fileDescriptor = open(buf.data(), O_WRONLY);
 

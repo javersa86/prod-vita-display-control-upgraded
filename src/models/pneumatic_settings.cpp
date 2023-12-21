@@ -52,32 +52,32 @@ PneumaticSettings::PneumaticSettings(
 {
 }
 
-auto PneumaticSettings::unit() const -> QString
+QString PneumaticSettings::unit() const
 {
     return m_unit;
 }
 
-auto PneumaticSettings::title() const -> QString
+QString PneumaticSettings::title() const
 {
     return m_title;
 }
 
-auto PneumaticSettings::min() const -> int
+int PneumaticSettings::min() const
 {
     return m_min;
 }
 
-auto PneumaticSettings::max() const -> int
+int PneumaticSettings::max() const
 {
     return m_max;
 }
 
-auto PneumaticSettings::step() const -> int
+int PneumaticSettings::step() const
 {
     return m_step;
 }
 
-auto PneumaticSettings::id() const -> int
+int PneumaticSettings::id() const
 {
     return m_id;
 }
@@ -86,17 +86,17 @@ auto PneumaticSettings::id() const -> int
  * @brief PneumaticSettings::minOn getter for setting minimum on
  * @return Get value when minimum is set
  */
-auto PneumaticSettings::minOn() const -> int
+int PneumaticSettings::minOn() const
 {
     return m_minOn;
 }
 
-auto PneumaticSettings::warningThreshold() const -> int
+int PneumaticSettings::warningThreshold() const
 {
     return m_warningThreshold;
 }
 
-auto PneumaticSettings::help() const -> QString
+QString PneumaticSettings::help() const
 {
     return m_help;
 }

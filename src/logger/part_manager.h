@@ -27,29 +27,29 @@
 /**
  * @brief Number of columns of CSV file for part manager.
  */
-#define PART_DATA 3
+constexpr int PART_DATA = 3;
 
 /**
  * @brief Number of parts and rows for part manager.
  */
-#define NUMBER_OF_PARTS 23
+constexpr int NUMBER_OF_PARTS = 23;
 
-#define PART_NUMBER_SIZE 20
+constexpr int PART_NUMBER_SIZE = 20;
 
 /**
  * @brief Name of csv file for part information.
  */
-#define PART_FILE "components.csv"
+constexpr const char* PART_FILE = "components.csv";
 
 /**
  * @brief Name of csv file for each parts hours of operation.
  */
-#define PART_OPERATING_FILE "components_operating.csv"
+constexpr const char* PART_OPERATING_FILE = "components_operating.csv";
 
 /**
  * @brief Name of csv file for each parts hours of ventilation.
  */
-#define PART_VENTILATING_FILE "components_ventilating.csv"
+constexpr const char* PART_VENTILATING_FILE = "components_ventilating.csv";
 
 /**
  * @brief The PartManager class

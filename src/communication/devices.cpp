@@ -1,6 +1,6 @@
 #include "devices.h"
 
-auto devices::deviceCount() -> size_t
+size_t devices::deviceCount()
 {
     libusb_context *ctx = nullptr;
     libusb_device **list = nullptr;

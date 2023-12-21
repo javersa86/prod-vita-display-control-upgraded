@@ -10,7 +10,7 @@ CSVManager::CSVManager(std::string filePath, std::string *buffer, int numArgs) :
     }
 }
 
-auto CSVManager::getNumEntries() -> int
+int CSVManager::getNumEntries()
 {
     std::fstream fin;
     fin.open(m_filePath,std::ios::in);
@@ -28,9 +28,9 @@ auto CSVManager::getNumEntries() -> int
     return numLines;
 }
 
-auto CSVManager::exists(std::string &filePath) -> bool
+bool CSVManager::exists(std::string &filePath)
 {
-    struct stat buffer;
+    struct stat buffer{};
     return (stat(filePath.c_str(), &buffer) == 0);
 }
 
@@ -68,7 +68,7 @@ void CSVManager::createRecord(std::string *buffer)
     fout.close();
 }
 
-auto CSVManager::readRecord(int rowIndex) -> std::vector<std::string>
+std::vector<std::string> CSVManager::readRecord(int rowIndex)
 {
     // File pointer
     std::fstream fin;

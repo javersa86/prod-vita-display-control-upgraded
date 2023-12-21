@@ -13,7 +13,7 @@
 /**
  * @brief Number of measurements.
  */
-#define NUM_MEASURED_REQUESTS 36
+constexpr int NUM_MEASURED_REQUESTS = 36;
 
 /**
  * @brief The enumerations for Measured IDs.

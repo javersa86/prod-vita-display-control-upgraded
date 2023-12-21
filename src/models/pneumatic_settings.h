@@ -217,7 +217,7 @@ class PneumaticSettings : public QObject
         int m_max{-1};
         int m_step{1};
         int m_minOn{m_min};
-        int m_warningThreshold;
+        int m_warningThreshold = 1;
         QString m_help;
         /** @} */
 

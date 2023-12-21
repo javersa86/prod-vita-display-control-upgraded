@@ -145,7 +145,7 @@ void Backend::driveDisconnected()
     emit driveDisconnection(static_cast<int>(system(m_eject_command_line.toStdString().c_str()) == 0));
 }
 
-auto Backend::findPort() -> QString
+QString Backend::findPort()
 {
     QDirIterator iterator(QString::fromStdString("/run/media"), QDirIterator::Subdirectories);
     while (iterator.hasNext())
@@ -169,7 +169,7 @@ auto Backend::findPort() -> QString
     return QString::fromStdString("");
 }
 
-auto Backend::exportDirectory(const QVector<QString> &filePaths) /*const QString &src, const QString &dst)*/ -> bool
+bool Backend::exportDirectory(const QVector<QString> &filePaths)
 {
     QDir sourceDir(filePaths.at(0)); //  src);
     QDir destDir(filePaths.at(1)); // dst);
@@ -326,7 +326,7 @@ void Backend::receiveGetSettingsSlot(QVector<int> setting_vals)
     }
 }
 
-auto Backend::updateVectorHumidity(QVector<int> setting_vals) -> QVector<int>
+QVector<int> Backend::updateVectorHumidity(QVector<int> setting_vals)
 {
     for (int i = 0; i < setting_vals.size(); i++)
     {
@@ -338,7 +338,7 @@ auto Backend::updateVectorHumidity(QVector<int> setting_vals) -> QVector<int>
     return setting_vals;
 }
 
-auto Backend::getHumidityLevel(int value) -> int
+int Backend::getHumidityLevel(int value)
 {
     int level = -1;
 
@@ -649,7 +649,7 @@ void Backend::separateHumidity(unsigned char separate, const QVariantList &humid
 
 }
 
-auto Backend::getHumidityPercentage(int value) -> int
+int Backend::getHumidityPercentage(int value)
 {
     int percent = -1;
 
@@ -983,7 +983,7 @@ void Backend::setMode(unsigned char modeID, unsigned char value)
 
 }
 
-auto Backend::modeConditions(unsigned char modeID, unsigned char value) -> bool
+bool Backend::modeConditions(unsigned char modeID, unsigned char value)
 {
     //Section of code that prevents modes from being enabled.
     //ETCO2 Mode can't be enabled if system is ventilating and Manual Mode is active.

@@ -72,9 +72,9 @@ class Encoder : public QObject
 
     private:
 
-        uint m_a_state;
-        uint m_b_state;
-        volatile int m_last_encoded;
+        uint m_a_state = 0;
+        uint m_b_state = 0;
+        volatile int m_last_encoded = 0;
 
         volatile int m_sum_0 = -1;
         volatile int m_sum_1 = -1;

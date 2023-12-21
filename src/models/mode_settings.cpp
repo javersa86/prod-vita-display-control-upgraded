@@ -13,27 +13,27 @@ void ModeSetting::value(int value)
     m_value = value;
 }
 
-auto ModeSetting::value() const -> int
+int ModeSetting::value() const
 {
     return m_value;
 }
 
-auto ModeSetting::id() const -> int
+int ModeSetting::id() const
 {
     return m_id;
 }
 
-auto ModeSetting::min() const -> int
+int ModeSetting::min() const
 {
     return m_min;
 }
 
-auto ModeSetting::max() const -> int
+int ModeSetting::max() const
 {
     return m_max;
 }
 
-auto ModeSetting::step() const -> int
+int ModeSetting::step() const
 {
     return m_step;
 }

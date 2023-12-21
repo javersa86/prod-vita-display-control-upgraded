@@ -17,7 +17,7 @@ WarningManager::WarningManager(QVector<unsigned char> *clearable_warnings, QObje
         {
             clearable.replace(
                         i,
-                        (unsigned char) (m_warnings[i].clearingBehavior() == CLEAR_AUTONOMOUSLY || m_warnings[i].clearingBehavior() == CLEAR_ON_DEMAND)
+                        (unsigned char) (m_warnings.at(i).clearingBehavior() == CLEAR_AUTONOMOUSLY || m_warnings.at(i).clearingBehavior() == CLEAR_ON_DEMAND)
                         );
         }
         setAutoClearingWarnings(&clearable);
@@ -68,7 +68,7 @@ void WarningManager::setActiveWarnings(QVector<unsigned char> *warnings)
     }
 }
 
-auto WarningManager::setActiveAlarms(unsigned char changed, QVector<unsigned char> *warnings) -> unsigned char
+unsigned char WarningManager::setActiveAlarms(unsigned char changed, QVector<unsigned char> *warnings)
 {
     for (int i = 0; i < BEGIN_NOTICE_INDEX; i++)
     {
@@ -86,7 +86,7 @@ auto WarningManager::setActiveAlarms(unsigned char changed, QVector<unsigned cha
                     << ","
                     << "WARNING"
                     << ","
-                    << m_warnings[i].title().replace(
+                    << m_warnings.at(i).title().replace(
                            QString::fromStdString(","),
                            QString::fromStdString("")
                            )
@@ -120,7 +120,7 @@ auto WarningManager::setActiveAlarms(unsigned char changed, QVector<unsigned cha
     }
     return changed;
 }
-auto WarningManager::setActiveNotices(unsigned char changed, QVector<unsigned char> *warnings) -> unsigned char
+unsigned char WarningManager::setActiveNotices(unsigned char changed, QVector<unsigned char> *warnings)
 {
     for (int i = BEGIN_NOTICE_INDEX; i< NUM_WARNINGS; i++)
     {
@@ -143,7 +143,7 @@ auto WarningManager::setActiveNotices(unsigned char changed, QVector<unsigned ch
                     << ","
                     << "WARNING"
                     << ","
-                    << m_warnings[i].title().replace(
+                    << m_warnings.at(i).title().replace(
                            QString::fromStdString(","),
                            QString::fromStdString("")
                            )
@@ -186,7 +186,7 @@ void WarningManager::setCalibrationProgress(int o2_index)
     }
 }
 
-auto WarningManager::getLaserWarning() -> int
+int WarningManager::getLaserWarning()
 {
     if (m_notices.at(0) == 1)
     {
@@ -222,7 +222,7 @@ void WarningManager::clearWarning(unsigned char clear_id)
     }
 }
 
-auto WarningManager::activeWarnings() -> bool
+bool WarningManager::activeWarnings()
 {
     for (int i = 0; i < NUM_WARNINGS; i++)
     {
@@ -234,7 +234,7 @@ auto WarningManager::activeWarnings() -> bool
     return false;
 }
 
-auto WarningManager::notices() -> bool
+bool WarningManager::notices()
 {
     for (int i = 0; i < NUM_WARNINGS - BEGIN_NOTICE_INDEX; i++)
     {
@@ -246,7 +246,7 @@ auto WarningManager::notices() -> bool
     return false;
 }
 
-auto WarningManager::getWarningActive(unsigned char warning_id) -> bool
+bool WarningManager::getWarningActive(unsigned char warning_id)
 {
     if (warning_id < NUM_WARNINGS)
     {
@@ -259,16 +259,16 @@ auto WarningManager::getWarningActive(unsigned char warning_id) -> bool
     return false;
 }
 
-auto WarningManager::getWarningBehavior(unsigned char warning_id) -> int
+int WarningManager::getWarningBehavior(unsigned char warning_id)
 {
     if(warning_id < NUM_WARNINGS)
     {
-        return m_warnings[warning_id].clearingBehavior();
+        return m_warnings.at(warning_id).clearingBehavior();
     }
     return 0;
 }
 
-auto WarningManager::getNumActiveWarnings() -> int
+int WarningManager::getNumActiveWarnings()
 {
     int num_warnings = 0;
     for(int i = 0; i < BEGIN_NOTICE_INDEX; i++)
@@ -288,7 +288,7 @@ auto WarningManager::getNumActiveWarnings() -> int
     return num_warnings;
 }
 
-auto WarningManager::getWarningBanners() -> QVector<int>
+QVector<int> WarningManager::getWarningBanners()
 {
     QVector<int> warnings = QVector<int>();
     if(activeWarnings())
@@ -330,56 +330,56 @@ void WarningManager::updateWarnings(QVector<unsigned char> *warnings)
     setActiveWarnings(warnings);
 }
 
-auto WarningManager::getWarningTitle(unsigned char warning_id) -> QString
+QString WarningManager::getWarningTitle(unsigned char warning_id)
 {
     if (warning_id < NUM_WARNINGS)
     {
-        return m_warnings[warning_id].title();
+        return m_warnings.at(warning_id).title();
     }
     return {};
 }
 
-auto WarningManager::getWarningDesc(unsigned char warning_id) -> QString
+QString WarningManager::getWarningDesc(unsigned char warning_id)
 {
     if (warning_id < NUM_WARNINGS)
     {
-        return m_warnings[warning_id].description();
+        return m_warnings.at(warning_id).description();
     }
     return {};
 }
 
-auto WarningManager::getWarningClearText(unsigned char warning_id) -> QString
+QString WarningManager::getWarningClearText(unsigned char warning_id)
 {
     if (warning_id < NUM_WARNINGS)
     {
-        return m_warnings[warning_id].clearText();
+        return m_warnings.at(warning_id).clearText();
     }
     return {};
 }
 
-auto WarningManager::getWarningInformation(unsigned char warning_id) -> QVector<QString>
+QVector<QString> WarningManager::getWarningInformation(unsigned char warning_id)
 {
     if (warning_id < NUM_WARNINGS)
     {
-        return m_warnings[warning_id].troubleshootingSteps();
+        return m_warnings.at(warning_id).troubleshootingSteps();
     }
     return {};
 }
 
-auto WarningManager::getWarningClass(unsigned char warning_id) -> int
+int WarningManager::getWarningClass(unsigned char warning_id)
 {
     if (warning_id < NUM_WARNINGS)
     {
-        return m_warnings[warning_id].warningClass();
+        return m_warnings.at(warning_id).warningClass();
     }
     return NO_WARNINGS;
 }
 
-auto WarningManager::getWarningColor(unsigned char warning_id) -> QString
+QString WarningManager::getWarningColor(unsigned char warning_id)
 {
     if (warning_id < NUM_WARNINGS)
     {
-        return m_warnings[warning_id].color();
+        return m_warnings.at(warning_id).color();
     }
     return QString::fromStdString("");
 }

@@ -60,7 +60,7 @@ class Knob : public QThread
         /**
          * @brief Loops to listen to the knob. Loops while m_running is true.
          */
-        void run();
+        void run() override;
 
     public slots:
 

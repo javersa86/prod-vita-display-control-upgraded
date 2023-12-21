@@ -75,7 +75,7 @@
  * @param argv
  * @return
  */
-auto main(int argc, char *argv[]) -> int
+int main(int argc, char *argv[])
 {
     //This initiates the logging of qDebug messages to a file.
     //Note the file /home/root/logs does not exist, logs will not be saved.

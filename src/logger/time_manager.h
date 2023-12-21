@@ -34,27 +34,27 @@
 /**
  * @brief Name of csv file that stores digital clock information.
  */
-#define TIME_FILE "time.csv"
+constexpr const char* TIME_FILE = "time.csv";
 
 /**
  * @brief Name of row for date and time displayed on screen.
  */
-#define DATE_TIME "DATE & TIME      "
+constexpr const char* DATE_TIME = "DATE & TIME      ";
 
 /**
  * @brief Name of row for time zone.
  */
-#define TIME_ZONE "TIME ZONE        "
+constexpr const char* TIME_ZONE = "TIME ZONE        ";
 
 /**
  * @brief Name of row for date and time tracked within display controller.
  */
-#define INTERNAL  "INTERNAL         "
+constexpr const char* INTERNAL = "INTERNAL         ";
 
 /**
  * @brief Name of row for daylight savings.
  */
-#define DAYLIGHT_SAVINGS  "DAYLIGHT SAVINGS "
+constexpr const char* DAYLIGHT_SAVINGS = "DAYLIGHT SAVINGS ";
 
 constexpr int TIMER_INTERVAL_ONE_SECOND = 1000;
 
@@ -78,7 +78,7 @@ class TimeManager : public QObject
     /**
      * @brief daylightSavings
      */
-    Q_PROPERTY(char daylightSavings READ getDaylightSavings NOTIFY daylightChanged)
+    Q_PROPERTY(unsigned char daylightSavings READ getDaylightSavings NOTIFY daylightChanged)
 
     public:
         /**
@@ -97,7 +97,7 @@ class TimeManager : public QObject
          * @brief Gets the state of daylight savings.
          * @return unsigned char
          */
-        char getDaylightSavings() const;
+        unsigned char getDaylightSavings() const;
 
     public slots:
 
@@ -201,6 +201,8 @@ class TimeManager : public QObject
             "HAST"
         };
 
+        const int default_time_zone = -5;
+
         CSVManager m_timeCsvManager;
 
         QDateTime m_current_date_time;
@@ -211,13 +213,13 @@ class TimeManager : public QObject
 
         QDate m_temp_date;
         QTime m_temp_time;
-        int m_temp_time_zone = -5;
+        int m_temp_time_zone = default_time_zone;
 
         unsigned char m_date_state = 0;
         unsigned char m_time_state = 0;
         unsigned char m_time_zone_state = 0;
 
-        char m_daylight_savings_state = 0;
+        unsigned char m_daylight_savings_state = 0;
 
         const qint64 MINUTE_TO_MILLISECECONDS = 3600;
 

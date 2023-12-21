@@ -20,47 +20,47 @@
 /**
  * @brief Constant title for service contact csv file.
  */
-#define SERVICE_CONTACT_FILE "service_contact_information.csv"
+constexpr const char* SERVICE_CONTACT_FILE = "service_contact_information.csv";
 
 /**
  * @brief Constant title for sales contact csv file.
  */
-#define SALES_CONTACT_FILE "sales_contact_information.csv"
+constexpr const char* SALES_CONTACT_FILE = "sales_contact_information.csv";
 
 /**
  * @brief Constant string for company.
  */
-#define COMPANY "COMPANY"
+constexpr const char* COMPANY = "COMPANY";
 
 /**
  * @brief Constant string for street.
  */
-#define STREET "STREET"
+constexpr const char* STREET = "STREET";
 
 /**
  * @brief Constant string for city.
  */
-#define CITY "CITY"
+constexpr const char* CITY = "CITY";
 
 /**
  * @brief Constant string for state.
  */
-#define STATE "STATE"
+constexpr const char* STATE = "STATE";
 
 /**
  * @brief Constant string for postal code.
  */
-#define POSTAL_CODE "POSTAL CODE"
+constexpr const char* POSTAL_CODE = "POSTAL CODE";
 
 /**
  * @brief Constant string for email.
  */
-#define EMAIL "EMAIL"
+constexpr const char* EMAIL = "EMAIL";
 
 /**
  * @brief Constant string for phone number.
  */
-#define PHONE_NUMBER "PHONE NUMBER"
+constexpr const char* PHONE_NUMBER = "PHONE NUMBER";
 
 /**
  * @file contact_manager.h

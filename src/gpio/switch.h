@@ -63,7 +63,7 @@ class Switch : public QObject
 
     private:
 
-        uint m_state;
+        uint m_state = 0;
         unsigned char m_ignore = 0;
         /** @} */
 };

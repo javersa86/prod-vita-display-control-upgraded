@@ -30,17 +30,17 @@
 /**
  * @brief Name of csv file that stores system controller version number.
  */
-#define VERSION_FILE "versions.csv"
+constexpr const char* VERSION_FILE = "versions.csv";
 
 /**
  * @brief Name of row for HMI version number.
  */
-#define HMI "HMI"
+constexpr const char* HMI = "HMI";
 
 /**
  * @brief Name of row for serial number.
  */
-#define SERIAL_NUMBER "SERIAL NUMBER"
+constexpr const char* SERIAL_NUMBER = "SERIAL NUMBER";
 
 /**
  * @brief The VersionManager class

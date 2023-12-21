@@ -15,7 +15,7 @@
 /**
  * @brief Number of subsystems.
  */
-#define NUM_SUBSYSTEMS 7
+constexpr int NUM_SUBSYSTEMS = 7;
 
 /**
  * @brief The enumerations for Subsystem IDs.

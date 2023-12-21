@@ -8,7 +8,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <sstream>
-#include <time.h>
+#include <ctime>
 
 /**
  * @addtogroup o2CalManagerModule
@@ -28,12 +28,7 @@
 /**
  * @brief Name of title for O<sub>2</sub> Calibration Manager csv file.
  */
-#define O2_CAL_FILE "o2_cal_vals.csv"
-
-/**
- * @brief Number of O<sub>2</sub> Columns for O<sub>2</sub> Calibration Manager.
- */
-#define MAX_O2_VALS 5
+constexpr const char* O2_CAL_FILE = "o2_cal_vals.csv";
 
 constexpr int INTERVAL_ONE_SECOND = 1000;
 
@@ -214,10 +209,10 @@ class O2CalManager : public QObject
         };
 
         QString m_calibration_text = QString::fromStdString("01:00");
-        int m_calibration_seconds = 60;
         QTimer *m_calibration_progress_timer;
 
         const int DEFAULT_SECONDS = 60;
+        int m_calibration_seconds = DEFAULT_SECONDS;
         /** @} */
 };
 

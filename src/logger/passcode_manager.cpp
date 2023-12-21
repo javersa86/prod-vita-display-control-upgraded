@@ -155,22 +155,22 @@ void PasscodeManager::editPresetPasscodeManual(const QString &newPasscode)
     updatePasscode();
 }
 
-auto PasscodeManager::getServicePasscode() -> QString
+QString PasscodeManager::getServicePasscode()
 {
     return m_service_passcode;
 }
 
-auto PasscodeManager::getPresetPasscode() -> QString
+QString PasscodeManager::getPresetPasscode()
 {
     return m_preset_passcode;
 }
 
-auto PasscodeManager::getChangedValue() const -> int
+int PasscodeManager::getChangedValue() const
 {
     return m_signal_change_value;
 }
 
-auto PasscodeManager::getPresetPasscodeManual() -> QString
+QString PasscodeManager::getPresetPasscodeManual()
 {
     return m_preset_passcode;
 }

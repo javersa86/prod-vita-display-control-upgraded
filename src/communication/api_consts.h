@@ -13,27 +13,27 @@
 /**
  * @brief Constant for number of warnings in system.
  */
-#define NUM_WARNINGS 72
+constexpr int NUM_WARNINGS = 72;
 
 /**
  * @brief Constant for number of bytes used for warnings in notification vector.
  */
-#define NUM_WARNINGS_BYTES 9
+constexpr int NUM_WARNINGS_BYTES = 9;
 
 /**
  * @brief Constant for number of bytes used for pneumatic setting values in notification vector.
  */
-#define NUM_SETTINGS_NOTIFICATIONS 5
+constexpr int NUM_SETTINGS_NOTIFICATIONS = 5;
 
 /**
  * @brief Constant for number of bytes used for measured values in notification vector.
  */
-#define NUM_CALCULATIONS_NOTIFICATIONS 3
+constexpr int NUM_CALCULATIONS_NOTIFICATIONS = 3;
 
 /**
  * @brief Constant for number of bytes used service calibration values.
  */
-#define NUM_SERVICE_NOTIFICATIONS 5
+constexpr int NUM_SERVICE_NOTIFICATIONS = 5;
 
 /**
  * @file api_consts.h

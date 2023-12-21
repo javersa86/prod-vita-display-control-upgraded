@@ -24,47 +24,47 @@
 /**
  * @brief Name of csv file for storing PIP info.
  */
-#define PIP_FILE "/media/NVENT_FILES/calibration/pip_vals.csv"
+constexpr const char* PIP_FILE = "/media/NVENT_FILES/calibration/pip_vals.csv";
 
 /**
  * @brief Name of csv file for storing SP info.
  */
-#define SP_FILE "/media/NVENT_FILES/calibration/sp_vals.csv"
+constexpr const char* SP_FILE = "/media/NVENT_FILES/calibration/sp_vals.csv";
 
 /**
  * @brief Name of csv file for storing Inlet Air info.
  */
-#define INLET_AIR_FILE "/media/NVENT_FILES/calibration/inlet_air_vals.csv"
+constexpr const char* INLET_AIR_FILE = "/media/NVENT_FILES/calibration/inlet_air_vals.csv";
 
 /**
  * @brief Name of csv file for storing Inlet O2 info.
  */
-#define INLET_O2_FILE "/media/NVENT_FILES/calibration/inlet_o2_vals.csv"
+constexpr const char* INLET_O2_FILE = "/media/NVENT_FILES/calibration/inlet_o2_vals.csv";
 
 /**
  * @brief Name of csv file for storing PIP Verification info.
  */
-#define PIP_VERIFY_FILE "/media/NVENT_FILES/calibration/pip_verify.csv"
+constexpr const char* PIP_VERIFY_FILE = "/media/NVENT_FILES/calibration/pip_verify.csv";
 
 /**
  * @brief Name of csv file for storing SP Verification info.
  */
-#define SP_VERIFY_FILE "/media/NVENT_FILES/calibration/sp_verify.csv"
+constexpr const char* SP_VERIFY_FILE = "/media/NVENT_FILES/calibration/sp_verify.csv";
 
 /**
  * @brief Name of csv file for storing Inlet Air Verification info.
  */
-#define INLET_AIR_VERIFY_FILE "/media/NVENT_FILES/calibration/inlet_air_verify.csv"
+constexpr const char* INLET_AIR_VERIFY_FILE = "/media/NVENT_FILES/calibration/inlet_air_verify.csv";
 
 /**
  * @brief Name of csv file for storing Inlet O2 Verification info.
  */
-#define INLET_O2_VERIFY_FILE "/media/NVENT_FILES/calibration/inlet_o2_verify.csv"
+constexpr const char* INLET_O2_VERIFY_FILE = "/media/NVENT_FILES/calibration/inlet_o2_verify.csv";
 
 /**
  * @brief Number of columns on csv files.
  */
-#define MAX_ZERO_VALS 5
+constexpr int MAX_ZERO_VALS = 5;
 
 /**
  * @brief The ZeroManager class
@@ -179,14 +179,6 @@ class ZeroManager : public QObject
          */
         float getVerifiedInletO2();
 
-        /**
-         * @brief Column names for csv file for Zero Manager.
-         */
-        std::vector<std::string> zeroColumns = {
-            "TIMESTAMP",
-            "Value"
-        };
-
     public slots:
         /**
          * @brief Adds an entry to the Zero values associated CSV file.
@@ -253,6 +245,14 @@ class ZeroManager : public QObject
         int m_numVerifiedSpVals = 0;
         int m_numVerifiedAirVals = 0;
         int m_numVerifiedO2Vals = 0;
+
+        /**
+         * @brief Column names for csv file for Zero Manager.
+         */
+        std::vector<std::string> zeroColumns = {
+            "TIMESTAMP",
+            "Value"
+        };
 
         /**
          * @brief   Retrieves current values from .csv files.

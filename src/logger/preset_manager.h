@@ -1,6 +1,7 @@
 #pragma once
 
 #include "csv_manager.h"
+#include "../models/settings.h"
 #include <QObject>
 #include <QVector>
 
@@ -22,14 +23,14 @@
 /**
  * @brief Name of csv that stores presets.
  */
-#define PRESET_FILE "presets.csv"
+constexpr const char* PRESET_FILE = "presets.csv";
 
 /**
  * @brief Name of number of presets stored on device.
  */
-#define MAX_PRESETS 12
+constexpr int MAX_PRESETS = 12;
 
-#define PRESET_NAME_LENGTH 20
+constexpr int PRESET_NAME_LENGTH = 20;
 
 /**
  * @brief The PresetManager class
@@ -211,7 +212,7 @@ class PresetManager : public QObject
          * @param id
          * @callergraph
          */
-        void deletePreset(int id);
+        void deletePreset(int preset_id);
 
         /**
          * @brief Updates the preset with the given id.
@@ -219,7 +220,7 @@ class PresetManager : public QObject
          * @param preset
          * @callergraph
          */
-        void updatePreset(int id, const QVector<int> &preset);
+        void updatePreset(int preset_id, const QVector<int> &preset);
 
         /**
          * @brief Adds character at end of preset name.
@@ -263,7 +264,7 @@ class PresetManager : public QObject
          * @param id
          * @callergraph
          */
-        void updateKeyboardState(unsigned char id);
+        void updateKeyboardState(unsigned char preset_id);
 
         /**
          * @brief Updates the variable to edit the current preset name.
@@ -344,6 +345,32 @@ class PresetManager : public QObject
         const int PRESET_INDEX_10 = 9;
         const int PRESET_INDEX_11 = 10;
         const int PRESET_INDEX_12 = 11;
+
+        /**
+         * @brief The constant strings for setting names.
+         */
+        const std::map<int, std::string> settingNameMap = {
+            {(int)SettingIds::DRIVING_PRESSURE_1 , "Driving Pressure 1"},
+            {(int)SettingIds::DRIVING_PRESSURE_2 , "Driving Pressure 2"},
+            {(int)SettingIds::RATE_1 , "Rate 1"},
+            {(int)SettingIds::RATE_2 , "Rate 2"},
+            {(int)SettingIds::INSPIRATORY_TIME_1 , "Inspiratory Time 1"},
+            {(int)SettingIds::INSPIRATORY_TIME_2 , "Inspiratory Time 2"},
+            {(int)SettingIds::STACKING_PRESSURE_1 , "Stacking Pressure 1"},
+            {(int)SettingIds::STACKING_PRESSURE_2 , "Stacking Pressure 2"},
+            {(int)SettingIds::O2 , "Oxygen"},
+            {(int)SettingIds::PIP , "PIP"},
+            {(int)SettingIds::AUX_FLOW , "Auxiliary Flow"},
+            {(int)SettingIds::HUM_1 , "Humidity 1"},
+            {(int)SettingIds::HUM_2 , "Humidity 2"},
+            {(int)SettingIds::HUM_AUX , "Humidity Auxiliary"},
+            {(int)SettingIds::ETCO2_RATE , "End-tidal CO2 Rate"},
+            {(int)SettingIds::ETCO2_IT , "End-tidal CO2 Inspiratory Time"},
+            {(int)SettingIds::ETCO2_NUM_BREATHS , "End-tidal CO2 Num Breaths"},
+            {(int)SettingIds::ETCO2_DP , "End-tidal CO2 Driving Pressure"},
+            {(int)SettingIds::LASER_O2 , "Laser-safe O2"},
+            {(int)SettingIds::VOLUME , "Volume"}
+        };
         /** @} */
 };
 

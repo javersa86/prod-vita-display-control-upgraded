@@ -132,7 +132,7 @@ void O2CalManager::constructO2CalValRows(std::vector<std::string> tmp, int index
     }
 }
 
-auto O2CalManager::getNumO2CalVals() const -> int
+int O2CalManager::getNumO2CalVals() const
 {
     return m_numO2Vals;
 }
@@ -187,7 +187,7 @@ void O2CalManager::deleteOldestO2CalVal()
     qInfo() << "NVENT" << "," << "O2 CALIBRATION" << "," << "Delete Oldest Calibration values.";
 }
 
-auto O2CalManager::getMostRecentTimeStamp() -> QString
+QString O2CalManager::getMostRecentTimeStamp()
 {
     if (!m_timeStamps.isEmpty() && m_numO2Vals > 0)
     {
@@ -196,7 +196,7 @@ auto O2CalManager::getMostRecentTimeStamp() -> QString
     return QString::fromStdString("");
 }
 
-auto O2CalManager::getLastTimeStamp() -> QString
+QString O2CalManager::getLastTimeStamp()
 {
     if (m_numO2Vals >= 2)
     {
@@ -209,7 +209,7 @@ auto O2CalManager::getLastTimeStamp() -> QString
     return QString::fromStdString("");
 }
 
-auto O2CalManager::getMostRecentO2CalVal() -> QVector<int>
+QVector<int> O2CalManager::getMostRecentO2CalVal()
 {
     if (m_numO2Vals > 0)
     {
@@ -218,7 +218,7 @@ auto O2CalManager::getMostRecentO2CalVal() -> QVector<int>
     return QVector<int>(2);
 }
 
-auto O2CalManager::getMostRecentVoltVal() -> QVector<QString>
+QVector<QString> O2CalManager::getMostRecentVoltVal()
 {
     if (m_numO2Vals > 0)
     {
@@ -227,7 +227,7 @@ auto O2CalManager::getMostRecentVoltVal() -> QVector<QString>
     return QVector<QString>(2);
 }
 
-auto O2CalManager::getLastVoltVal() -> QVector<QString>
+QVector<QString> O2CalManager::getLastVoltVal()
 {
     if (m_numO2Vals >= 2)
     {
@@ -270,7 +270,7 @@ void O2CalManager::incrementCalibrationProgress()
     }
 }
 
-auto O2CalManager::prependZero(int value) -> QString
+QString O2CalManager::prependZero(int value)
 {
     const int UNDER_TEN = 10;
     if (value < UNDER_TEN)
@@ -280,7 +280,7 @@ auto O2CalManager::prependZero(int value) -> QString
     return QString::number(value);
 }
 
-auto O2CalManager::getCalibrationProgressTime() -> QString
+QString O2CalManager::getCalibrationProgressTime()
 {
     return m_calibration_text;
 }

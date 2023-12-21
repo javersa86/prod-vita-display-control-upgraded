@@ -32,12 +32,12 @@ void VersionManager::updateVersions()
     emit versionChanged();
 }
 
-auto VersionManager::getHmiVersion() -> QString
+QString VersionManager::getHmiVersion()
 {
     return m_hmiVersion;
 }
 
-auto VersionManager::getSerialNumber() -> QString
+QString VersionManager::getSerialNumber()
 {
     return m_serialNumber;
 }

@@ -21,37 +21,37 @@
 /**
  * @brief Constant value for warnings that clear autonomously.
  */
-#define CLEAR_AUTONOMOUSLY 0
+constexpr unsigned char CLEAR_AUTONOMOUSLY = 0;
 
 /**
  * @brief Constant value for warnings that clear by button input.
  */
-#define CLEAR_ON_DEMAND 1
+constexpr unsigned char  CLEAR_ON_DEMAND = 1;
 
 /**
  * @brief Constant value for warnings that clear by fixing issue.
  */
-#define CLEAR_AFTER_RESOLVED 2
+constexpr unsigned char CLEAR_AFTER_RESOLVED = 2;
 
 /**
  * @brief Beginning index for notices sent for system.
  */
-#define BEGIN_NOTICE_INDEX 52
+constexpr int BEGIN_NOTICE_INDEX = 52;
 
 /**
  * @brief Constant value that represent patient warnings.
  */
-#define PATIENT_CLASS 0
+constexpr int PATIENT_CLASS = 0;
 
 /**
  * @brief Constant value that represent system warnings.
  */
-#define SYSTEM_CLASS 1
+constexpr int SYSTEM_CLASS = 1;
 
 /**
  * @brief Constant value that represent notices.
  */
-#define NOTICE_CLASS 2
+constexpr int NOTICE_CLASS = 2;
 
 
 /**
@@ -90,10 +90,10 @@ class Warning
         * @param clearText
         */
         Warning(
-                const int warning_id,
+                int warning_id,
                 const QVector<QString> &troubleshooting_steps,
                 const QString &title,
-                const int warning_class,
+                int warning_class,
                 const QString &desc,
                 unsigned char clearingBehavior,
                 const QString &color,
@@ -154,7 +154,7 @@ class Warning
         QString m_desc;
         QString m_clear;
         QVector<QString> m_troubleshooting_steps;
-        unsigned char m_clearingBehavior;
+        unsigned char m_clearingBehavior = -1;
         QString m_color;
         /** @} */
 };
@@ -801,7 +801,7 @@ public:
     /**
      * @brief Constructor Method.
      */
-    BreathTimingFailure(int warning_id, const QVector<QString> &troubleshootingSteps =
+    BreathTimingFailure(int warning_id, const QVector<QString> &troubleshooting_steps =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Breath Timing Failure!"));
 };
 
@@ -814,7 +814,7 @@ public:
     /**
      * @brief Constructor Method.
      */
-    JetWaterSensorFailure(int warning_id, const QVector<QString> &troubleshootingSteps =
+    JetWaterSensorFailure(int warning_id, const QVector<QString> &troubleshooting_steps =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Jet Water Sensor Failure!"));
 };
 
@@ -827,7 +827,7 @@ public:
     /**
      * @brief Constructor Method.
      */
-    AuxWaterSensorFailure(int warning_id, const QVector<QString> &troubleshootingSteps =
+    AuxWaterSensorFailure(int warning_id, const QVector<QString> &troubleshooting_steps =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Auxiliary Water Sensor Failure!"));
 };
 
@@ -840,7 +840,7 @@ public:
     /**
      * @brief Constructor Method.
      */
-    AmbientTempSensorDefect(int warning_id, const QVector<QString> &troubleshootingSteps =
+    AmbientTempSensorDefect(int warning_id, const QVector<QString> &troubleshooting_steps =
             QVector<QString>({QStringLiteral("Contact clinical support @ 888-730-5463")}), const QString &title = QStringLiteral("Ambient Temperature Sensor Defect!"));
 };
 

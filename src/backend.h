@@ -19,6 +19,7 @@
 #include "models/modes.h"
 #include "models/sensors.h"
 #include "models/hmi_buttons.h"
+#include "models/settings.h"
 
 /**
  * @addtogroup backendController
@@ -66,6 +67,10 @@ const int hundered_twenty_seconds = 120;
 
 const int extra_file_count = 6;
 
+const int sensor_count = 6;
+
+const int default_dehumidification_seconds = 120;
+
 /**
  * @brief The Backend class
  */
@@ -110,6 +115,7 @@ class Backend : public QObject
 
     /**
      * @callergraph
+     * @note The inclusion of public slots line, despite being redundant, is required.
      */
     public slots:
 
@@ -389,7 +395,7 @@ class Backend : public QObject
          * @param  value
          * @callergraph
          */
-        void receiveSensorMeasurements(unsigned char id, unsigned char value);
+        void receiveSensorMeasurements(unsigned char setting_id, unsigned char value);
 
         /**
          * @brief      Receive message from API to get sensor measurements for O2 voltages from O2 calibration.
@@ -397,7 +403,7 @@ class Backend : public QObject
          * @param  value
          * @callergraph
          */
-        void receiveVolt(unsigned char id, float value);
+        void receiveVolt(unsigned char setting_id, float value);
 
         /**
          * @brief Receive message from API to get sensor measurements for water sensors for the Initiated Shutdown Procedure.
@@ -405,7 +411,7 @@ class Backend : public QObject
          * @param value
          * @callergraph
          */
-        void receiveWaterSensor(unsigned char id, unsigned char value);
+        void receiveWaterSensor(unsigned char setting_id, unsigned char value);
 
         /**
          * @brief Raises flags to send message to API to get measured values for O2 calibration.
@@ -580,7 +586,7 @@ class Backend : public QObject
          * @param   value
          * @callergraph
          */
-        void highDPRConfirmation(int id, float value);
+        void highDPRConfirmation(int flag, float value);
 
         /**
          * @brief Switches to default DPR state at end Air and O2 Regulator Calibration.
@@ -721,7 +727,7 @@ class Backend : public QObject
          * @param id
          * @callgraph
          */
-        void sendGetSensorMeasurementSignal(unsigned char id);
+        void sendGetSensorMeasurementSignal(unsigned char sensor_id);
 
         /*--Cleared Warnings--------------------------------------------------------------*/
 
@@ -755,7 +761,7 @@ class Backend : public QObject
          * @param id
          * @callgraph
          */
-        void hmiButtonPressed(int id);
+        void hmiButtonPressed(int hmi_id);
 
         /*--Shutdown Confirm--------------------------------------------------------------*/
 
@@ -859,6 +865,32 @@ class Backend : public QObject
         };
 
         /**
+         * @brief The constant strings for setting names.
+         */
+        const std::map<int, std::string> settingNameMap = {
+            {(int)SettingIds::DRIVING_PRESSURE_1 , "Driving Pressure 1"},
+            {(int)SettingIds::DRIVING_PRESSURE_2 , "Driving Pressure 2"},
+            {(int)SettingIds::RATE_1 , "Rate 1"},
+            {(int)SettingIds::RATE_2 , "Rate 2"},
+            {(int)SettingIds::INSPIRATORY_TIME_1 , "Inspiratory Time 1"},
+            {(int)SettingIds::INSPIRATORY_TIME_2 , "Inspiratory Time 2"},
+            {(int)SettingIds::STACKING_PRESSURE_1 , "Stacking Pressure 1"},
+            {(int)SettingIds::STACKING_PRESSURE_2 , "Stacking Pressure 2"},
+            {(int)SettingIds::O2 , "Oxygen"},
+            {(int)SettingIds::PIP , "PIP"},
+            {(int)SettingIds::AUX_FLOW , "Auxiliary Flow"},
+            {(int)SettingIds::HUM_1 , "Humidity 1"},
+            {(int)SettingIds::HUM_2 , "Humidity 2"},
+            {(int)SettingIds::HUM_AUX , "Humidity Auxiliary"},
+            {(int)SettingIds::ETCO2_RATE , "End-tidal CO2 Rate"},
+            {(int)SettingIds::ETCO2_IT , "End-tidal CO2 Inspiratory Time"},
+            {(int)SettingIds::ETCO2_NUM_BREATHS , "End-tidal CO2 Num Breaths"},
+            {(int)SettingIds::ETCO2_DP , "End-tidal CO2 Driving Pressure"},
+            {(int)SettingIds::LASER_O2 , "Laser-safe O2"},
+            {(int)SettingIds::VOLUME , "Volume"}
+        };
+
+        /**
          * @brief The state manager that stores the current states for all pneumatic settings, modes, and other features.
          */
         StateManager* m_stateManager;
@@ -887,7 +919,7 @@ class Backend : public QObject
         /**
          * @brief Stores the total number of seconds for the dehumidication timer.
          */
-        int m_dehumidification_seconds = 120; //0;
+        int m_dehumidification_seconds = default_dehumidification_seconds; //0;
 
         //Timer for dehumidification progress
         /**
@@ -917,7 +949,7 @@ class Backend : public QObject
         /**
          * @brief type definition for pointer.
          */
-        typedef void (Backend::*resend_function_pointer)();
+        using resend_function_pointer = void (Backend::*)();
         /**
          * @brief Function array to send messages to API.
          */
@@ -926,12 +958,12 @@ class Backend : public QObject
         /**
          * @brief Variable to track the current directory name for a USB drive.
          */
-        QString dirName = "";
+        QString dirName = QString::fromStdString("");
 
         /**
          * @brief Variable to track the current directory to eject USB drive.
          */
-        QString m_eject_command_line = "";
+        QString m_eject_command_line = QString::fromStdString("");
         unsigned char copyProgressing = 0;
 
         /**
@@ -942,7 +974,7 @@ class Backend : public QObject
         /**
          * @brief Array that tracks the state of modes.
          */
-        unsigned char m_activeModes[NUM_MODES] = {0};
+        std::array<unsigned char,NUM_MODES> m_activeModes = {0};
         /**
          * @brief Tracks the state for which sensor to be calibrated.
          */
@@ -958,15 +990,23 @@ class Backend : public QObject
          * @brief The state for exporting data.
          */
         unsigned char m_export_status = 0;
+
         /**
          * @brief Array of measurement ids for calibration.
          */
-        int sensor_cal_vals[6] = {9,6,7,23,24,35};
+        std::array<int,sensor_count> sensor_cal_vals = {
+            (int) MeasuredIDs::PIP,
+            (int) MeasuredIDs::STACKING_PRESSURE_1,
+            (int) MeasuredIDs::STACKING_PRESSURE_2,
+            (int) MeasuredIDs::INLET_AIR_PRESSURE,
+            (int) MeasuredIDs::INLET_O2_PRESSURE,
+            (int) MeasuredIDs::REAL_DPR_VAL
+        };
 
         /**
          * @brief The index for array of measurement ids for calibration.
          */
-        unsigned char m_calibration_index = 6;
+        unsigned char m_calibration_index = sensor_count;
         /**
          * @brief Vector for sending pneumatic setting updates to system.
          */
@@ -987,12 +1027,12 @@ class Backend : public QObject
         /**
          * @brief Array for low and high oxygen calibration values.
          */
-        unsigned char m_O2Vals[2]{0};
+        std::array<unsigned char,2> m_O2Vals{0};
         /**
          * @brief Array for low and high oxygen calibration voltages.
          */
-        float m_Volts[2]{0};
-        float m_DPRs[2]{0};
+        std::array<float,2> m_Volts = {0};
+        std::array<float,2> m_DPRs = {0};
 
         unsigned char m_sp_line_hidden = 0;
 

@@ -19,22 +19,22 @@ Message::Message(const unsigned char* data, unsigned char crc, int tx_size)
     m_tx_size = tx_size + 2;
 }
 
-auto Message::getCRC() const -> unsigned char
+unsigned char Message::getCRC() const
 {
     return m_crc;
 }
 
-auto Message::getMessage() -> unsigned char *
+unsigned char * Message::getMessage()
 {
     return &(m_message.data())[0];
 }
 
-auto Message::getSize() const -> int
+int Message::getSize() const
 {
     return m_tx_size;
 }
 
-auto Message::toString() -> QString
+QString Message::toString()
 {
     QString tmp = QString::fromStdString("");
     for (int i = 0; i < m_tx_size; i++)

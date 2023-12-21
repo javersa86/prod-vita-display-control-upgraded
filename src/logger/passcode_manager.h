@@ -25,7 +25,7 @@
 /**
  * @brief Name of CSV file that stores passcodes.
  */
-#define PASSCODE_FILE "passcodes.csv"
+constexpr const char* PASSCODE_FILE = "passcodes.csv";
 
 /**
  * @brief The PasscodeManager class

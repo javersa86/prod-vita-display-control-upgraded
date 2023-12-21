@@ -27,12 +27,12 @@
 /**
  * @brief MAX Buffer size for pin update.
  */
-#define ENCODER_MAX_BUF 64
+constexpr int ENCODER_MAX_BUF = 64;
 
 /**
  * @brief Constant string for file path for gpio.
  */
-#define SYSFS_GPIO_DIR "/sys/class/gpio"
+constexpr const char* SYSFS_GPIO_DIR = "/sys/class/gpio";
 
 /**
  * @brief The GPIO class
@@ -77,11 +77,16 @@ class GPIO : public QObject{
          * @param isOut
          * @param parent
          */
-        explicit GPIO(uint pinNumber, char* edge, bool isOut, QObject *parent = 0);
+        explicit GPIO(uint pinNumber, char* edge, bool isOut, QObject *parent = nullptr);
         /**
          * @brief GPIO destructor. Closes the pin
          */
-        ~GPIO();
+        ~GPIO() override;
+
+        GPIO(const GPIO&) = delete;
+        GPIO& operator=(const GPIO&) = delete; // Delete the copy assignment operator
+        GPIO(GPIO&&) = delete; // Delete the move constructor
+        GPIO& operator=(GPIO&&) = delete; // Delete the move assignment operator
 
         /**
          * @brief Gets the current value of a pin
@@ -106,11 +111,6 @@ class GPIO : public QObject{
          * @brief watch
          */
         void watch();
-        /**
-         * @brief run
-         * @return
-         */
-        int run();
 
         /**
          * @brief Gets the file descriptor for the pin

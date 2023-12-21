@@ -4,12 +4,12 @@
 #include <QObject>
 #include <QString>
 #include <QVector>
-#include <time.h>
+#include <ctime>
 #include <QtDebug>
 
 // C library headers
-#include <stdio.h>
-#include <time.h>
+#include <cstdio>
+#include <cstring>
 #include <unistd.h>
 #include <cstdint>
 
@@ -24,16 +24,6 @@
  * @addtogroup communicationModule
  * @{
  */
-
-/**
- * @brief Constant value for buffer size for message sent to api.
- */
-#define INPUT_BUFFER_SIZE 512
-
-/**
- * @brief Constant character that appears at the beginning of all messages.
- */
-#define START_CHAR 255
 
 const int generator = 341;
 const int byte_size = 8;
@@ -95,22 +85,7 @@ class API : public QThread
          *          4) Sleep
          * @note Checks for the USB connection between the display and system controller on each loop.
          */
-        void run();
-
-        /**
-         * @brief Variable used to check if display controller is disconnected to system controller.
-         */
-        int _signal_warning = 1;
-
-        /**
-         * @brief Variable stores portname.
-         */
-        QString myPortName;
-
-        /**
-         * @brief Variable stores port number.
-         */
-        int port_num = 0;
+        void run() override;
 
     public slots:
 
@@ -176,7 +151,7 @@ class API : public QThread
          * @param id
          * @callergraph
          */
-        void getMeasured(unsigned char id);
+        void getMeasured(unsigned char measured_id);
 
         /* warnings */
 
@@ -216,7 +191,7 @@ class API : public QThread
          * @param calibration_data
          * @callergraph
          */
-        void slotServiceCalibrationResponse(QVector<float>);
+        void slotServiceCalibrationResponse(const QVector<float>&);
 
         /* dpr */
 
@@ -321,20 +296,20 @@ class API : public QThread
          * @param value
          * @callgraph
          */
-        void receiveMeasuredValue(unsigned char id, unsigned char value);
+        void receiveMeasuredValue(unsigned char measured_id, unsigned char value);
         /**
          * @brief Sends signal to backend program with calibration voltages.
          * @param id
          * @param value
          * @callgraph
          */
-        void receiveVoltValue(unsigned char id, float value);
+        void receiveVoltValue(unsigned char measured_id, float value);
         /**
          * @brief Sends signal to backend program with water sensor detection value.
          * @param id
          * @param value
          */
-        void receiveWaterSensorValue(unsigned char id, unsigned char value);
+        void receiveWaterSensorValue(unsigned char measured_id, unsigned char value);
         /**
          * @brief Sends signal to backend program that warning id was cleared.
          * @param warning_id
@@ -394,7 +369,7 @@ class API : public QThread
          * @param id
          * @callgraph
          */
-        void HMIButtonPushReceived(unsigned char id);
+        void HMIButtonPushReceived(unsigned char hmi_id);
 
         /* power down */
 
@@ -424,7 +399,7 @@ class API : public QThread
          * @brief Sends signal to backend program to confirm DPR Value change.
          * @callgraph
          */
-        void signalDPRValue(); //, unsigned char regAirValue, unsigned char regO2Value, float setValue);
+        void signalDPRValue();
 
         /* sensor zero */
 
@@ -442,6 +417,21 @@ class API : public QThread
         void serviceNotificationUpdateSignal(QVector<float> notifications);
 
     private:
+
+        /**
+         * @brief Variable used to check if display controller is disconnected to system controller.
+         */
+        int _signal_warning = 1;
+
+        /**
+         * @brief Variable stores portname.
+         */
+        QString myPortName;
+
+        /**
+         * @brief Variable stores port number.
+         */
+        int port_num = 0;
 
         Comm serial;
 
@@ -462,13 +452,13 @@ class API : public QThread
 
         //__processBytes data
         unsigned char _index = 0;
-        unsigned char _op_code = 255;
+        unsigned char _op_code = START_CHAR;
         unsigned char _in_progress = 0;
-        QVector<unsigned char> input_buffer = QVector<unsigned char>(INPUT_BUFFER_SIZE); //[INPUT_BUFFER_SIZE] = {};
+        array<unsigned char,INPUT_BUFFER_SIZE> input_buffer{};
         int _ndx = 0;
         int _message_length = 0;
 
-        unsigned long _cycle_period = 30; // api run method should take 30 ms each cycle
+        const unsigned long _cycle_period = 30; // api run method should take 30 ms each cycle
 
         const int max_messages = 5;
         const unsigned long ms_count = 35;
@@ -479,30 +469,26 @@ class API : public QThread
 
         const int service_notification_count = 60;
 
-        unsigned char power_cycle_response[(int)txLengths::DISPLAY_POWER_ON_RECEIVED] = {(unsigned char)txOpCodes::DISPLAY_POWER_ON_RECEIVED};
-        unsigned char get_settings_request[(int)txLengths::DISPLAY_GET_SETTINGS_REQUEST] = {(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST};
-        unsigned char notification_request[(int)txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST] = {(int)txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST, 0};
-        unsigned char get_op_modes_request[(int)txLengths::DISPLAY_GET_OP_MODES_REQUEST] = {(unsigned char) txOpCodes::DISPLAY_GET_OP_MODES_REQUEST};
-        unsigned char get_subsystem_request[(int)txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST] = {(unsigned char) txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST};
-        unsigned char version_message[(int)txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST] = {(unsigned char)txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST};
-
-        QVector<unsigned char> set_request = QVector<unsigned char>((int) txLengths::DISPLAY_SET_SETTINGS_REQUEST);
-
-        unsigned char measured_request[(int)txLengths::DISPLAY_GET_MEASURED_REQUEST] = {(unsigned char)txOpCodes::DISPLAY_GET_MEASURED_REQUEST, 0};
-        unsigned char clear_warning_request[(int)txLengths::DISPLAY_CLEAR_WARNING_REQUEST] = {(unsigned char)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST,0};
-        unsigned char display_set_mode_request[(int)txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST] = {0};
-        unsigned char system_set_mode_request[(int)txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE] = {0};
-        unsigned char notification_response[(int)txLengths::DISPLAY_NOTIFICATION_RECEIVED] = {(unsigned char)txOpCodes::DISPLAY_NOTIFICATION_RECEIVED};
-        unsigned char subsystem_response[(int)txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED] = {(unsigned char) txOpCodes::DISPLAY_SUBSYSTEM_STATUS_RECEIVED};
-        unsigned char ventilation_response[(int)txLengths::DISPLAY_VENTILATION_STATUS_RECEIVED] = {(unsigned char) txOpCodes::DISPLAY_VENTILATION_STATUS_RECEIVED};
-        unsigned char hmi_response[(int)txLengths::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED] = {(unsigned char) txOpCodes::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED, 0};
-        unsigned char shutdown_request[(int)txLengths::DISPLAY_SHUTDOWN_RECEIVED] = {(unsigned char) txOpCodes::DISPLAY_SHUTDOWN_RECEIVED};
-        unsigned char shutdown_confirm_request[(int)txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND] = {(unsigned char) txOpCodes::DISPLAY_SHUTDOWN_CONFIRM_SEND, 0};
-
-        QVector<unsigned char> data_request = QVector<unsigned char>((int)txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE); //[(int)txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE] = {0};
-
-        unsigned char dpr_request[(int)txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST] = {(unsigned char) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST, 0};
-        unsigned char zero_request[(int)txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST] = {0};
+        array<unsigned char, (int) txLengths::DISPLAY_POWER_ON_RECEIVED> power_cycle_response = {(unsigned char)txOpCodes::DISPLAY_POWER_ON_RECEIVED};
+        array<unsigned char, (int) txLengths::DISPLAY_GET_SETTINGS_REQUEST> get_settings_request = {(int)txOpCodes::DISPLAY_GET_SETTINGS_REQUEST};
+        std::array<unsigned char, (int) txLengths::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST> notification_request = {(int)txOpCodes::DISPLAY_ENABLE_NOTIFICATIONS_REQUEST, 0};
+        std::array<unsigned char, (int) txLengths::DISPLAY_GET_OP_MODES_REQUEST> get_op_modes_request = {(unsigned char) txOpCodes::DISPLAY_GET_OP_MODES_REQUEST};
+        std::array<unsigned char, (int) txLengths::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST> get_subsystem_request = {(unsigned char) txOpCodes::DISPLAY_GET_SUBSYSTEM_STATE_REQUEST};
+        std::array<unsigned char, (int) txLengths::DISPLAY_GET_SYSTEM_VERSION_REQUEST> version_message = {(unsigned char)txOpCodes::DISPLAY_GET_SYSTEM_VERSION_REQUEST};
+        std::array<unsigned char, (int) txLengths::DISPLAY_SET_SETTINGS_REQUEST> set_request = {0};
+        std::array<unsigned char, (int) txLengths::DISPLAY_GET_MEASURED_REQUEST> measured_request = {(unsigned char)txOpCodes::DISPLAY_GET_MEASURED_REQUEST, 0};
+        std::array<unsigned char, (int) txLengths::DISPLAY_CLEAR_WARNING_REQUEST> clear_warning_request = {(unsigned char)txOpCodes::DISPLAY_CLEAR_WARNING_REQUEST,0};
+        std::array<unsigned char, (int) txLengths::DISPLAY_ENABLE_OP_MODE_REQUEST> display_set_mode_request = {0};
+        std::array<unsigned char, (int) txLengths::DISPLAY_ENABLE_OP_MODE_RESPONSE> system_set_mode_request = {0};
+        std::array<unsigned char, (int) txLengths::DISPLAY_NOTIFICATION_RECEIVED> notification_response = {(unsigned char)txOpCodes::DISPLAY_NOTIFICATION_RECEIVED};
+        std::array<unsigned char, (int) txLengths::DISPLAY_SUBSYSTEM_STATUS_RECEIVED> subsystem_response = {(unsigned char) txOpCodes::DISPLAY_SUBSYSTEM_STATUS_RECEIVED};
+        std::array<unsigned char, (int) txLengths::DISPLAY_VENTILATION_STATUS_RECEIVED> ventilation_response = {(unsigned char) txOpCodes::DISPLAY_VENTILATION_STATUS_RECEIVED};
+        std::array<unsigned char, (int) txLengths::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED> hmi_response = {(unsigned char) txOpCodes::DISPLAY_HMI_BUTTON_PUSHED_RECEIVED, 0};
+        std::array<unsigned char, (int) txLengths::DISPLAY_SHUTDOWN_RECEIVED> shutdown_request = {(unsigned char) txOpCodes::DISPLAY_SHUTDOWN_RECEIVED};
+        std::array<unsigned char, (int) txLengths::DISPLAY_SHUTDOWN_CONFIRM_SEND> shutdown_confirm_request = {(unsigned char) txOpCodes::DISPLAY_SHUTDOWN_CONFIRM_SEND, 0};
+        std::array<unsigned char, (int) txLengths::DISPLAY_SERVICE_CALIBRATION_RESPONSE> data_request = {0};
+        std::array<unsigned char, (int) txLengths::DISPLAY_SET_DPR_CAL_VAL_REQUEST> dpr_request = {(unsigned char) txOpCodes::DISPLAY_SET_DPR_CAL_VAL_REQUEST, 0};
+        std::array<unsigned char, (int) txLengths::DISPLAY_ENABLE_PRESSURE_SENSOR_ZERO_REQUEST> zero_request = {0};
 
         /**
          * @brief Checks for the USB connection between the display and system controller.
@@ -563,14 +549,16 @@ class API : public QThread
          * @param buffer
          * @param n
          */
-        void sendComm(unsigned char*, int);
+        template<size_t Size>
+        void sendComm(const std::array<unsigned char, Size>& buffer, int n);
 
         /**
          * @brief Adds start character and CRC to comm array, then adds it to the outgoing messages.
          * @param buffer
          * @param n
          */
-        void sendComm1(unsigned char*, int);
+        template<size_t Size>
+        void sendComm1(const std::array<unsigned char, Size>& buffer, int n);
 
         /**
          * @brief Calculate a xor crc with a 341 generator.
@@ -579,7 +567,8 @@ class API : public QThread
          * @param n
          * @return unsigned char
          */
-        static unsigned char calculateCRC(unsigned char*, int);
+        template<size_t Size>
+        static unsigned char calculateCRC(const std::array<unsigned char, Size>& buffer, int n);
 
         /**
          * @brief Valid crcs will produce 0.
@@ -587,7 +576,8 @@ class API : public QThread
          * @param n
          * @return int
          */
-        static int checkCRC(unsigned char*, int);
+        template<size_t Size>
+        static int checkCRC(const std::array<unsigned char, Size>& buffer, int n);
 
         /*POWER CYCLE PATHWAY*/
 

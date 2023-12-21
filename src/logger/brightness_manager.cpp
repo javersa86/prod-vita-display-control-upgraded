@@ -14,7 +14,7 @@ BrightnessManager::BrightnessManager(QObject *parent)
 
 }
 
-auto BrightnessManager::getMax() -> int
+int BrightnessManager::getMax()
 {
     QFile maxFile(QString::fromStdString("/sys/class/backlight/backlight/max_brightness"));
     if (maxFile.open(QIODevice::ReadOnly))
@@ -28,12 +28,12 @@ auto BrightnessManager::getMax() -> int
     return -1;
 }
 
-auto BrightnessManager::getMaxPercent() const -> int
+int BrightnessManager::getMaxPercent() const
 {
     return m_max_percent;
 }
 
-auto BrightnessManager::getMinPercent() const -> int
+int BrightnessManager::getMinPercent() const
 {
     return m_min_percent;
 }
@@ -55,7 +55,7 @@ void BrightnessManager::changeBrightness(double percentage)
     }
 }
 
-auto BrightnessManager::getBrightness() -> double
+double BrightnessManager::getBrightness()
 {
     QFile maxFile(m_file);
     if (maxFile.open(QIODevice::ReadOnly))

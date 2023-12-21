@@ -16,12 +16,12 @@
 /**
  * @brief Number of settings.
  */
-#define NUM_SETTINGS 20
+constexpr int NUM_SETTINGS = 20;
 
 /**
  * @brief Number of pneumatic settings.
  */
-#define NUM_PNEUMATIC_SETTINGS 14
+constexpr int NUM_PNEUMATIC_SETTINGS = 14;
 
 /**
  * @brief The enumerations for Setting IDs.
@@ -98,19 +98,19 @@ enum class SettingMax
 enum class SettingIncrement
 {
     DRIVING_PRESSURE = 1,
-    RATE = 5,
-    INSPIRATORY_TIME = 5,
+    RATE = 5 * 1,
+    INSPIRATORY_TIME = 5 * 1,
     STACKING_PRESSURE = 1,
     O2 = 1,
     PIP = 1,
     AUX_FLOW = 1,
     HUM = 1,
     ETCO2_RATE = 1,
-    ETCO2_IT = 5,
+    ETCO2_IT = 5 * 1,
     ETCO2_NUM_BREATHS = 1,
     ETCO2_DP = 1,
     LASER_O2 = 1,
-    VOLUME = 10
+    VOLUME = 10 * 1
 };
 
 /**
@@ -153,32 +153,6 @@ enum class SettingWarningThreshold
     ETCO2_DP = (int)SettingMax::ETCO2_DP + 1,
     LASER_O2 = (int)SettingMax::LASER_O2 + 1,
     VOLUME = (int)SettingMax::VOLUME + 1
-};
-
-/**
- * @brief The constant strings for setting names.
- */
-const std::map<int, std::string> settingNameMap = {
-    {(int)SettingIds::DRIVING_PRESSURE_1 , "Driving Pressure 1"},
-    {(int)SettingIds::DRIVING_PRESSURE_2 , "Driving Pressure 2"},
-    {(int)SettingIds::RATE_1 , "Rate 1"},
-    {(int)SettingIds::RATE_2 , "Rate 2"},
-    {(int)SettingIds::INSPIRATORY_TIME_1 , "Inspiratory Time 1"},
-    {(int)SettingIds::INSPIRATORY_TIME_2 , "Inspiratory Time 2"},
-    {(int)SettingIds::STACKING_PRESSURE_1 , "Stacking Pressure 1"},
-    {(int)SettingIds::STACKING_PRESSURE_2 , "Stacking Pressure 2"},
-    {(int)SettingIds::O2 , "Oxygen"},
-    {(int)SettingIds::PIP , "PIP"},
-    {(int)SettingIds::AUX_FLOW , "Auxiliary Flow"},
-    {(int)SettingIds::HUM_1 , "Humidity 1"},
-    {(int)SettingIds::HUM_2 , "Humidity 2"},
-    {(int)SettingIds::HUM_AUX , "Humidity Auxiliary"},
-    {(int)SettingIds::ETCO2_RATE , "End-tidal CO2 Rate"},
-    {(int)SettingIds::ETCO2_IT , "End-tidal CO2 Inspiratory Time"},
-    {(int)SettingIds::ETCO2_NUM_BREATHS , "End-tidal CO2 Num Breaths"},
-    {(int)SettingIds::ETCO2_DP , "End-tidal CO2 Driving Pressure"},
-    {(int)SettingIds::LASER_O2 , "Laser-safe O2"},
-    {(int)SettingIds::VOLUME , "Volume"}
 };
 
 /** @} */

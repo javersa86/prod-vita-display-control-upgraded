@@ -1,7 +1,7 @@
 #include "serial.h"
 
 
-auto Comm::openPort() -> int
+int Comm::openPort()
 {
     QByteArray byte_array = _portname.toLocal8Bit();
     const char *c_str1 = byte_array.data();
@@ -19,9 +19,9 @@ auto Comm::openPort() -> int
     //port is open
 }
 
-auto Comm::configurePort() const -> int
+int Comm::configurePort() const
 {
-    struct termios tty; //structure to store the port settings in
+    struct termios tty{}; //structure to store the port settings in
     // Read in existing settings, and handle any error
     if(tcgetattr(fileDescriptor, &tty) != 0) {
         qDebug() << "Error from tcgetattr: " << strerror(errno);
@@ -66,7 +66,7 @@ auto Comm::configurePort() const -> int
     return 0;
 }   //configure_port
 
-auto Comm::getBaudrate() const -> int
+int Comm::getBaudrate() const
 {
     return _baudrate;
 }
@@ -76,7 +76,7 @@ void Comm::setBaudrate(int baudrate)
     _baudrate = baudrate;
 }
 
-auto Comm::getPortname() const -> QString
+QString Comm::getPortname() const
 {
     return _portname;
 }
@@ -98,7 +98,7 @@ void Comm::addTX(unsigned char byte)
 
 void Comm::writeToMCU()
 {
-    struct timeval timeout;
+    struct timeval timeout{};
     timeout.tv_sec=1;
     timeout.tv_usec=0;
 
@@ -111,7 +111,7 @@ void Comm::writeToMCU()
 
 void Comm::writeTxMessageToMCU(Message message) const
 {
-    struct timeval timeout;
+    struct timeval timeout{};
     timeout.tv_sec=1;
     timeout.tv_usec=0;
 
@@ -121,7 +121,7 @@ void Comm::writeTxMessageToMCU(Message message) const
     }
 }
 
-auto Comm::readIncoming() -> int
+int Comm::readIncoming()
 {
     int rx_space = RX_BUFFER_SIZE - rx_index;
     int nBytes = read(fileDescriptor, &rx_buf[rx_index], rx_space);
@@ -129,7 +129,7 @@ auto Comm::readIncoming() -> int
     return nBytes;
 }
 
-auto Comm::nextByteAvailable() -> unsigned char
+unsigned char Comm::nextByteAvailable()
 {
     if (reading_cursor < rx_index)
     {
@@ -140,7 +140,7 @@ auto Comm::nextByteAvailable() -> unsigned char
     return 0;
 }
 
-auto Comm::getRxByte() -> unsigned char
+unsigned char Comm::getRxByte()
 {
     unsigned char next_byte = rx_buf.at(reading_cursor); //[reading_cursor];
     reading_cursor++;

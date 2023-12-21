@@ -26,12 +26,12 @@
 /**
  * @brief Constant value for no warnings.
  */
-#define NO_WARNINGS -1
+constexpr int NO_WARNINGS = -1;
 
 /**
  * @brief ID for the Disconnection warning.
  */
-#define NO_COMMUNICATION 40
+constexpr int NO_COMMUNICATION = 40;
 
 constexpr int INTERVAL_THREE_SECONDS = 3000;
 
@@ -99,7 +99,7 @@ class WarningManager : public QObject
         * @param id
         * @param value
         */
-        void setStateValue(int id, int value);
+        void setStateValue(int warning_id, int value);
 
         /**
          * @brief For when the user enters the service menu, the disconnection timer will not raise disconnection.
@@ -226,7 +226,7 @@ class WarningManager : public QObject
         /**
          * @brief Constant array for all warnings on the system.
          */
-        const Warning m_warnings[NUM_WARNINGS] = {
+        const std::array<Warning,NUM_WARNINGS> m_warnings = {
             PIPHigh(0),
             StackingPressureHigh(1),
             StackingPressureHigh(2),
@@ -325,6 +325,32 @@ class WarningManager : public QObject
         const int SERVICE_NOTICE_ID = 7;
         const int CALIBRATION_ID = 19;
         const int CALIBRATION_LIMITED_ID = 20;
+
+        /**
+         * @brief The constant strings for setting names.
+         */
+        const std::map<int, std::string> settingNameMap = {
+            {(int)SettingIds::DRIVING_PRESSURE_1 , "Driving Pressure 1"},
+            {(int)SettingIds::DRIVING_PRESSURE_2 , "Driving Pressure 2"},
+            {(int)SettingIds::RATE_1 , "Rate 1"},
+            {(int)SettingIds::RATE_2 , "Rate 2"},
+            {(int)SettingIds::INSPIRATORY_TIME_1 , "Inspiratory Time 1"},
+            {(int)SettingIds::INSPIRATORY_TIME_2 , "Inspiratory Time 2"},
+            {(int)SettingIds::STACKING_PRESSURE_1 , "Stacking Pressure 1"},
+            {(int)SettingIds::STACKING_PRESSURE_2 , "Stacking Pressure 2"},
+            {(int)SettingIds::O2 , "Oxygen"},
+            {(int)SettingIds::PIP , "PIP"},
+            {(int)SettingIds::AUX_FLOW , "Auxiliary Flow"},
+            {(int)SettingIds::HUM_1 , "Humidity 1"},
+            {(int)SettingIds::HUM_2 , "Humidity 2"},
+            {(int)SettingIds::HUM_AUX , "Humidity Auxiliary"},
+            {(int)SettingIds::ETCO2_RATE , "End-tidal CO2 Rate"},
+            {(int)SettingIds::ETCO2_IT , "End-tidal CO2 Inspiratory Time"},
+            {(int)SettingIds::ETCO2_NUM_BREATHS , "End-tidal CO2 Num Breaths"},
+            {(int)SettingIds::ETCO2_DP , "End-tidal CO2 Driving Pressure"},
+            {(int)SettingIds::LASER_O2 , "Laser-safe O2"},
+            {(int)SettingIds::VOLUME , "Volume"}
+        };
 
         /**
         * @brief Raise a "No Comm" warning if warnings are not updated.

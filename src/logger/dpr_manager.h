@@ -16,12 +16,7 @@
 /**
  * @brief CSV file name for DPR Calibration Manager.
  */
-#define DPR_FILE "dpr_vals.csv"
-
-/**
- * @brief Constant value for number of columns on DPR Managers csv file.
- */
-#define MAX_O2_VALS 5
+constexpr const char* DPR_FILE = "dpr_vals.csv";
 
 /**
  * @file dpr_manager.h

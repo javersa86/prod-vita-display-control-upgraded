@@ -21,7 +21,7 @@ ContactManager::ContactManager(QObject *parent) :
     updateSalesContact();
 }
 
-auto ContactManager::getFullString(std::vector<std::string> vector) -> QString
+QString ContactManager::getFullString(std::vector<std::string> vector)
 {
     QString temp = QString::fromStdString("");
     for (int i = 1; i < vector.size(); i++)
@@ -126,7 +126,7 @@ void ContactManager::setService(
                ".";
 }
 
-auto ContactManager::constructServiceCompanyName() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructServiceCompanyName()
 {
     const int cvs_index = 0;
     std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
@@ -139,7 +139,7 @@ auto ContactManager::constructServiceCompanyName() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructServiceStreet() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructServiceStreet()
 {
     const int cvs_index = 1;
     std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
@@ -152,7 +152,7 @@ auto ContactManager::constructServiceStreet() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructServiceCity() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructServiceCity()
 {
     const int cvs_index = 2;
     std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
@@ -165,7 +165,7 @@ auto ContactManager::constructServiceCity() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructServiceState() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructServiceState()
 {
     const int cvs_index = 3;
     std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
@@ -178,7 +178,7 @@ auto ContactManager::constructServiceState() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructServicePostalCode() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructServicePostalCode()
 {
     const int cvs_index = 4;
     const int postal_code_length = 5;
@@ -192,7 +192,7 @@ auto ContactManager::constructServicePostalCode() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructServiceEmail() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructServiceEmail()
 {
     const int cvs_index = 5;
     std::vector<std::string> vector = m_serviceCsvManager.readRecord(cvs_index);
@@ -205,7 +205,7 @@ auto ContactManager::constructServiceEmail() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructServicePhoneNumber() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructServicePhoneNumber()
 {
     const int cvs_index = 6;
     const int phone_number_length = 13;
@@ -219,40 +219,41 @@ auto ContactManager::constructServicePhoneNumber() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::getServiceCompanyName() -> QString
+QString ContactManager::getServiceCompanyName()
 {
     return m_service_company_name;
 }
 
-auto ContactManager::getServiceStreet() -> QString
+QString ContactManager::getServiceStreet()
 {
     return m_service_street;
 }
 
-auto ContactManager::getServiceCity() -> QString
+QString ContactManager::getServiceCity()
 {
     return m_service_city;
 }
 
-auto ContactManager::getServiceState() -> QString
+QString ContactManager::getServiceState()
 {
     return m_service_state;
 }
 
-auto ContactManager::getServicePostalCode() -> QString
+QString ContactManager::getServicePostalCode()
 {
     return m_service_postal_code;
 }
 
-auto ContactManager::getServiceEmail() -> QString
+QString ContactManager::getServiceEmail()
 {
     return m_service_email;
 }
 
-auto ContactManager::getServicePhoneNumber() -> QString
+QString ContactManager::getServicePhoneNumber()
 {
     return m_service_phone_number;
 }
+
 void ContactManager::updateSalesContact()
 {
     if (m_salesCsvManager.getNumEntries() != number_of_entries)
@@ -345,7 +346,7 @@ void ContactManager::setSales(
                ".";
 }
 
-auto ContactManager::constructSalesCompanyName() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructSalesCompanyName()
 {
     const int cvs_index = 0;
     std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
@@ -358,7 +359,7 @@ auto ContactManager::constructSalesCompanyName() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructSalesStreet() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructSalesStreet()
 {
     const int cvs_index = 1;
     std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
@@ -371,7 +372,7 @@ auto ContactManager::constructSalesStreet() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructSalesCity() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructSalesCity()
 {
     const int cvs_index = 2;
     std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
@@ -384,7 +385,7 @@ auto ContactManager::constructSalesCity() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructSalesState() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructSalesState()
 {
     const int cvs_index = 3;
     std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
@@ -397,7 +398,7 @@ auto ContactManager::constructSalesState() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructSalesPostalCode() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructSalesPostalCode()
 {
     const int cvs_index = 4;
     const int postal_code_length = 5;
@@ -411,7 +412,7 @@ auto ContactManager::constructSalesPostalCode() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructSalesEmail() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructSalesEmail()
 {
     const int cvs_index = 5;
     std::vector<std::string> vector = m_salesCsvManager.readRecord(cvs_index);
@@ -424,7 +425,7 @@ auto ContactManager::constructSalesEmail() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::constructSalesPhoneNumber() -> std::vector<std::string>
+std::vector<std::string> ContactManager::constructSalesPhoneNumber()
 {
     const int cvs_index = 6;
     const int phone_number_length = 13;
@@ -438,37 +439,37 @@ auto ContactManager::constructSalesPhoneNumber() -> std::vector<std::string>
     return vector;
 }
 
-auto ContactManager::getSalesCompanyName() -> QString
+QString ContactManager::getSalesCompanyName()
 {
     return m_sales_company_name;
 }
 
-auto ContactManager::getSalesStreet() -> QString
+QString ContactManager::getSalesStreet()
 {
     return m_sales_street;
 }
 
-auto ContactManager::getSalesCity() -> QString
+QString ContactManager::getSalesCity()
 {
     return m_sales_city;
 }
 
-auto ContactManager::getSalesState() -> QString
+QString ContactManager::getSalesState()
 {
     return m_sales_state;
 }
 
-auto ContactManager::getSalesPostalCode() -> QString
+QString ContactManager::getSalesPostalCode()
 {
     return m_sales_postal_code;
 }
 
-auto ContactManager::getSalesEmail() -> QString
+QString ContactManager::getSalesEmail()
 {
     return m_sales_email;
 }
 
-auto ContactManager::getSalesPhoneNumber() -> QString
+QString ContactManager::getSalesPhoneNumber()
 {
     return m_sales_phone_number;
 }

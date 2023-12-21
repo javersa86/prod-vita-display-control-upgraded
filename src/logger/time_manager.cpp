@@ -100,7 +100,7 @@ void TimeManager::updateTime()
     emit timeChanged();
 }
 
-auto TimeManager::getCurrentDateTime() -> QString
+QString TimeManager::getCurrentDateTime()
 {
     return m_current_date_time.toString(QString::fromStdString("MM/dd/yyyy hh:mm:ss AP")) + " - " + m_time_zone;
 }
@@ -181,7 +181,7 @@ void TimeManager::setTime()
     emit timeChanged();
 }
 
-auto TimeManager::getTimeDifference(const QString &temp) -> qint64
+qint64 TimeManager::getTimeDifference(const QString &temp)
 {
     return QDateTime::fromString(
                 temp,
@@ -193,7 +193,7 @@ void TimeManager::getTimeZoneDifference(const QString &oldZone, const QString &n
     m_temp_time_zone = -1 * (timeZoneValues.at(oldZone) - timeZoneValues.at(newZone));
 }
 
-auto TimeManager::getDaylightSavings() const -> char
+unsigned char TimeManager::getDaylightSavings() const
 {
     return m_daylight_savings_state;
 }

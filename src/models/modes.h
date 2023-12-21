@@ -15,7 +15,7 @@
 /**
  * @brief Number of modes on the system.
  */
-#define NUM_MODES 15
+constexpr int NUM_MODES = 15;
 
 /**
  * @brief Enumerations for Mode IDs.
